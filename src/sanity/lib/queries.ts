@@ -355,6 +355,14 @@ export const trainingBySlugQuery = groq`
 
 export const trainingSlugsQuery = groq`*[_type == "training" && registrationEnabled == true].slug.current`;
 
+// Real last-edited dates for the sitemap's <lastmod>. Which URLs exist is
+// still decided by the *SlugsQuery queries above; this only supplies dates.
+export const sitemapUpdatedAtQuery = groq`
+  *[_type in ["project", "tool", "prompt", "experiment", "automation", "blog", "training", "portfolioProfile", "engineeringArea"] && defined(slug.current) && !(_id in path("drafts.**"))] {
+    _type, "slug": slug.current, _updatedAt
+  }
+`;
+
 // AI Lab → Engineering. Each area's evidence is every published entry that
 // tags it (engineeringAreas), with the same visibility filters as the
 // per-type queries — so publishing a tagged entry updates the page.

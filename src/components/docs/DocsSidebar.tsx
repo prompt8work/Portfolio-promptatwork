@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useAiLabNav, type DocsGroup } from "./AiLabNavContext";
+import { useAiLabNav, useDocsLabel, type DocsGroup } from "./AiLabNavContext";
 import DocsSearch from "./DocsSearch";
 
 function isCurrent(pathname: string, href: string) {
@@ -11,20 +11,21 @@ function isCurrent(pathname: string, href: string) {
 }
 
 function groupContains(pathname: string, g: DocsGroup) {
-  return pathname === g.href || pathname.startsWith(`${g.href}/`);
+  return pathname === g.href || pathname.startsWith(`${g.href}/`) || g.items.some((i) => i.href === pathname);
 }
 
 function Tree({ onNavigate }: { onNavigate?: () => void }) {
   const groups = useAiLabNav();
+  const label = useDocsLabel();
   const pathname = usePathname();
   // Start + the group you're in are open; the rest collapse so the tree
   // stays scannable. Manual toggles are remembered for the session.
   const [open, setOpen] = useState<Record<string, boolean>>({});
   const isOpen = (g: DocsGroup, i: number) =>
-    open[g.href] ?? (i === 0 || (g.href !== "/ai-lab" && groupContains(pathname, g)));
+    open[g.href] ?? (i === 0 || groupContains(pathname, g));
 
   return (
-    <nav aria-label="AI Lab" className="flex flex-col gap-5">
+    <nav aria-label={label} className="flex flex-col gap-5">
       {groups.map((g, i) => {
         const expanded = isOpen(g, i);
         const listId = `docs-group-${i}`;
@@ -102,10 +103,11 @@ export default function DocsSidebar() {
   const [drawer, setDrawer] = useState(false);
   const pathname = usePathname();
   const groups = useAiLabNav();
+  const label = useDocsLabel();
   const currentTitle =
     groups.flatMap((g) => g.items).find((i) => isCurrent(pathname, i.href))?.title ??
     groups.find((g) => g.href === pathname)?.title ??
-    "AI Lab";
+    label;
 
   useEffect(() => {
     document.body.style.overflow = drawer ? "hidden" : "";
@@ -142,7 +144,7 @@ export default function DocsSidebar() {
             >
               <path d="M4 6h16M4 12h10M4 18h16" />
             </svg>
-            <span className="font-mono text-[11px] tracking-[0.12em] text-neutral-500 shrink-0">AI LAB</span>
+            <span className="font-mono text-[11px] tracking-[0.12em] text-neutral-500 shrink-0">{label.toUpperCase()}</span>
             <span className="truncate">{currentTitle}</span>
           </button>
           <div className="ml-auto shrink-0">
@@ -152,16 +154,16 @@ export default function DocsSidebar() {
       </div>
 
       {drawer && (
-        <div className="lg:hidden fixed inset-0 z-50" role="dialog" aria-modal="true" aria-label="AI Lab navigation">
+        <div className="lg:hidden fixed inset-0 z-50" role="dialog" aria-modal="true" aria-label={`${label} navigation`}>
           <button
             type="button"
-            aria-label="Close AI Lab navigation"
+            aria-label={`Close ${label} navigation`}
             className="absolute inset-0 bg-neutral-900/30"
             onClick={() => setDrawer(false)}
           />
           <div className="absolute inset-y-0 left-0 w-[min(320px,85vw)] bg-neutral-50 border-r border-neutral-200 overflow-y-auto px-6 py-6 flex flex-col gap-6">
             <div className="flex items-center justify-between">
-              <span className="font-display text-lg font-semibold text-neutral-900">AI Lab</span>
+              <span className="font-display text-lg font-semibold text-neutral-900">{label}</span>
               <button
                 type="button"
                 onClick={() => setDrawer(false)}

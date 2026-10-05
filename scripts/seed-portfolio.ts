@@ -82,7 +82,7 @@ async function build(): Promise<SeedDoc[]> {
       "Hands-on AI training for engineers, business teams and students. I find where AI fits in your work, build it with you, and make sure everyone in the room can use it on their own.",
     heroCtas: ctas("hc", [
       { label: "Book a workshop", href: "/contact", style: "primary" },
-      { label: "Explore workshops", href: "#workshops" },
+      { label: "Explore workshops", href: "/training" },
       { label: "See my engineering work", href: SOLUTIONS_URL },
     ]),
     heroChecks: ["Tech & non-tech tracks", "Hands-on, on your own work", "Claude • Gemini • ChatGPT", "Reusable prompt templates"],
@@ -96,6 +96,8 @@ async function build(): Promise<SeedDoc[]> {
       { label: "Read my story", href: "/#about" },
     ]),
 
+    // The page shows the workshops and institutes from src/lib/trainings.ts
+    // (shared with /training); only these sections' headings are read here.
     offerings: {
       anchorId: "workshops",
       eyebrow: "Workshops & courses",

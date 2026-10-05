@@ -9,7 +9,7 @@ import { toolsQuery } from "../../../sanity/lib/queries";
 import { buildMetadata } from "../../../lib/site";
 
 export const metadata: Metadata = buildMetadata({
-  title: "Tools & Research — AI Lab — PromptAtWork",
+  title: "AI Tools Research — Claude, Claude Code, Gemini, OpenAI & Groq Reviewed | PromptAtWork",
   description:
     "AI tools, features, concepts and platforms researched hands-on — reviews, practical use cases and learning resources.",
   path: "/ai-lab/tools",

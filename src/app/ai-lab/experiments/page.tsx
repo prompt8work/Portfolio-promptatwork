@@ -8,8 +8,8 @@ import { experimentsQuery } from "../../../sanity/lib/queries";
 import { buildMetadata } from "../../../lib/site";
 
 export const metadata: Metadata = buildMetadata({
-  title: "Experiments — AI Lab — PromptAtWork",
-  description: "Objective, setup, what worked, what failed, what was learned.",
+  title: "AI Experiments — Hands-On LLM & RAG Tests by Niharika Dhande | PromptAtWork",
+  description: "Hands-on AI experiments by Niharika Dhande: the objective, setup, what worked, what failed and what was learned.",
   path: "/ai-lab/experiments",
 });
 

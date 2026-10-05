@@ -11,7 +11,7 @@ import { getPublishedTestimonials } from "../../supabase/testimonialRepository";
 import { buildMetadata } from "../../lib/site";
 
 export const metadata: Metadata = buildMetadata({
-  title: "Testimonials — PromptAtWork",
+  title: "Testimonials — Niharika Dhande, AI Trainer & AI Solutions Engineer | PromptAtWork",
   description: "What it's been like working with Niharika Dhande — and a place to add your own.",
   path: "/testimonials",
 });

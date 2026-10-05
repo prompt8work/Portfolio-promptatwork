@@ -11,6 +11,10 @@ export const hero = {
   eyebrow: "AI ENABLEMENT OFFICER · FOUNDER, PROMPT AT WORK",
   // Rotates inside the hero pill, first entry is what the server renders.
   roles: ["AI ENABLEMENT OFFICER", "AI SOLUTIONS ENGINEER", "CORPORATE TRAINER", "FOUNDER, PROMPT AT WORK"],
+  // The page's H1: name, every role and the city in plain server-rendered
+  // text, since the rotating pill only renders its first role on the
+  // server (Docs/development-plan/13-seo-aeo.md).
+  identity: "Niharika Dhande — AI Enablement Officer, AI Solutions Engineer, Prompt Engineer & Corporate AI Trainer in Indore, India",
   heading: "I help teams turn AI tools into everyday results.",
   description:
     "I'm Niharika Dhande. I sit between technology, product and people: I find where AI fits in a team's workflow, build the solution, and train the people who will use it.",

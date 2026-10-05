@@ -20,9 +20,9 @@ import { homeJsonLd } from "../lib/seo";
 export const revalidate = 60;
 
 export const metadata: Metadata = buildMetadata({
-  title: "Niharika Dhande — AI Enablement Officer & Corporate AI Trainer in Indore | PromptAtWork",
+  title: "Niharika Dhande — AI Enablement Officer, AI Solutions Engineer & Prompt Engineer, Indore | PromptAtWork",
   description:
-    "Niharika Dhande helps teams turn AI tools into everyday results: AI enablement, AI solutions on Claude and Gemini, and hands-on AI training for business and technical teams. Founder of Prompt at Work, Indore.",
+    "Niharika Dhande is an AI Enablement Officer, AI Solutions Engineer and prompt engineering trainer in Indore, India: AI enablement, RAG and generative AI solutions, and hands-on Claude, ChatGPT and AI tools training for teams. Founder of Prompt at Work.",
   path: "/",
 });
 
