@@ -35,7 +35,7 @@ async function main() {
   if (process.argv.includes("--list")) {
     const rows: { _type: string; slug: string; title: string }[] = await client.fetch(
       `*[_type in $types && !(_id in path("drafts.**"))]{ _type, "slug": slug.current, "title": coalesce(title, name) } | order(_type asc)`,
-      { types: contentTypes },
+      { types: [...contentTypes, "engineeringArea"] },
     );
     rows.forEach((r) => console.log(`${r._type.padEnd(11)} ${r.slug.padEnd(48)} ${r.title}`));
     return;
@@ -61,7 +61,7 @@ async function main() {
   const fields: Record<string, unknown> = {};
   const keptInStudio: string[] = [];
   for (const [k, v] of Object.entries(doc)) {
-    if (k.startsWith("_") || k === "slug" || k === "diagrams" || k === "relatedContent") continue;
+    if (k.startsWith("_") || ["slug", "diagrams", "relatedContent", "parts", "engineeringAreas"].includes(k)) continue;
     if (isRefOrAsset(v)) keptInStudio.push(k);
     else fields[k] = v;
   }
@@ -80,6 +80,17 @@ async function main() {
     { id: doc._id },
   );
 
+  const links: {
+    parts: { type: string; slug: string }[] | null;
+    engineeringAreas: string[] | null;
+  } = await client.fetch(
+    `*[_id == $id][0]{
+      "parts": parts[]->{ "type": _type, "slug": slug.current },
+      "engineeringAreas": engineeringAreas[]->slug.current
+    }`,
+    { id: doc._id },
+  );
+
   console.log(
     JSON.stringify(
       {
@@ -88,6 +99,8 @@ async function main() {
         source: `Docs/content-drafts/${slug}.source.md`,
         fields,
         diagrams,
+        ...(links.parts?.length ? { parts: links.parts } : {}),
+        ...(links.engineeringAreas?.length ? { engineeringAreas: links.engineeringAreas } : {}),
         relatedContent: related ?? [],
         keptInStudio,
       },

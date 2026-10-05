@@ -58,13 +58,26 @@ async function main() {
   );
   const baseId = existing ?? `${draft.type}-${draft.slug}`;
 
-  const related = await Promise.all(
-    (draft.relatedContent ?? []).map(async (r) => {
-      const id: string | null = await client.fetch(`*[_type == $type && slug.current == $slug][0]._id`, r);
-      if (!id) throw new Error(`relatedContent: no ${r.type} with slug "${r.slug}".`);
-      const clean = id.replace(/^drafts\./, "");
-      return { _type: "reference", _ref: clean, _key: clean };
-    }),
+  // Resolve { type, slug } links to Sanity references.
+  const resolveRefs = (field: string, links: { type: string; slug: string }[] = []) =>
+    Promise.all(
+      links.map(async (r) => {
+        const id: string | null = await client.fetch(`*[_type == $type && slug.current == $slug][0]._id`, r);
+        if (!id) throw new Error(`${field}: no ${r.type} with slug "${r.slug}".`);
+        const clean = id.replace(/^drafts\./, "");
+        const published: string | null = await client.fetch(`*[_id == $clean][0]._id`, { clean });
+        // A strong reference to a never-published doc is rejected by Sanity, so
+        // link drafts weakly; Studio strengthens the link when the target publishes.
+        return published
+          ? { _type: "reference", _ref: clean, _key: clean }
+          : { _type: "reference", _ref: clean, _key: clean, _weak: true, _strengthenOnPublish: { type: r.type } };
+      }),
+    );
+  const related = await resolveRefs("relatedContent", draft.relatedContent);
+  const parts = await resolveRefs("parts", draft.parts);
+  const areas = await resolveRefs(
+    "engineeringAreas",
+    draft.engineeringAreas?.map((slug) => ({ type: "engineeringArea", slug })),
   );
 
   // Start from the published document so fields the draft doesn't mention
@@ -90,7 +103,9 @@ async function main() {
       steps: d.steps?.map((s, j) => ({ _type: "diagramStep", _key: `s${j}`, ...s })),
       pairs: d.pairs?.map((p, j) => ({ _type: "analogyPair", _key: `p${j}`, ...p })),
     })),
-    ...(related.length ? { relatedContent: related } : {}),
+    ...(draft.relatedContent ? { relatedContent: related } : {}),
+    ...(draft.parts ? { parts } : {}),
+    ...(draft.engineeringAreas ? { engineeringAreas: areas } : {}),
   };
 
   console.log(

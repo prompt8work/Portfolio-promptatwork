@@ -34,6 +34,7 @@ type ProjectDetail = {
   challenges: string;
   results: string;
   learnings: string;
+  futureScope?: string;
   relatedContent?: RelatedItem[];
   diagrams?: Diagram[];
 };
@@ -125,6 +126,8 @@ export default async function ProjectDetailPage({ params }: PageProps<"/ai-lab/w
           <Diagrams items={project.diagrams} at="results" />
           <ContentSection heading="Learnings" body={project.learnings} />
           <Diagrams items={project.diagrams} at="learnings" />
+          <ContentSection heading="Future Scope" body={project.futureScope} />
+          <Diagrams items={project.diagrams} at="futureScope" />
 
           {project.confidentialityNote && (
             <Reveal className="bg-neutral-100 border border-neutral-200 rounded-xl p-5">

@@ -5,12 +5,9 @@ const nextConfig: NextConfig = {
   turbopack: {
     root: path.join(__dirname),
   },
-  // The resume PDF route reads its fonts from disk at runtime; make sure
-  // they're traced into that function's deployment bundle. Same reasoning
-  // for /og, which reads the headshot photo from disk to compose the
-  // social share image.
+  // /og reads the headshot photo from disk at runtime to compose the
+  // social share image; make sure it's traced into that function's bundle.
   outputFileTracingIncludes: {
-    "/resume/download": ["./assets/fonts/**/*"],
     "/og": ["./public/images/headshot.png"],
   },
   // Work, Engineering and About were folded into the AI Lab hub and the
@@ -22,6 +19,11 @@ const nextConfig: NextConfig = {
       { source: "/projects/:slug", destination: "/ai-lab/work/:slug", permanent: true },
       { source: "/engineering", destination: "/ai-lab/engineering", permanent: true },
       { source: "/about", destination: "/#about", permanent: true },
+      // The single Resume page (and its PDF download) became two portfolio
+      // profiles, and the Experience timeline lives inside them now.
+      { source: "/resume", destination: "/portfolio", permanent: true },
+      { source: "/resume/:path*", destination: "/portfolio", permanent: true },
+      { source: "/experience", destination: "/portfolio", permanent: true },
     ];
   },
   // Baseline security headers on every response. No Content-Security-Policy

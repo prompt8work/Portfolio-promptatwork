@@ -1,0 +1,121 @@
+{
+  "type": "automation",
+  "slug": "drive-to-meeting-search-index",
+  "source": "Docs/content-drafts/meeting-intelligence-chatbot.source.md",
+  "fields": {
+    "title": "Google Drive → Searchable Meeting Index",
+    "category": "Automation",
+    "description": "Keeps the Meeting Intelligence Chatbot's search index current: it syncs only new or updated files from a shared Google Drive folder, then cleans, chunks, embeds and indexes them so the chatbot can answer from them.",
+    "problem": "The chatbot can only answer from what is in its index, and meeting transcripts keep arriving in a shared Drive folder. Re-processing every file on every sync would waste time and API calls, and a cold start meant loading a heavy embedding model on top of stale data.\n\nThe automation has to notice what changed in the folder, process only that, and have the app ready with fresh data before the first person starts chatting.",
+    "trigger": "App startup, a greeting, page load or the Sync button",
+    "steps": [
+      {
+        "label": "Authenticate",
+        "description": "The backend signs in to Google Drive with a service account. If sign-in fails, it logs a warning and the chat keeps working on the existing index."
+      },
+      {
+        "label": "List the folder",
+        "description": "A paged Drive listing returns each file's ID, name, type, size and modified time. The listing is cached for 60 seconds to avoid redundant API calls."
+      },
+      {
+        "label": "Filter",
+        "description": "Unsupported file types are skipped, and so are files modified outside the 90-day window."
+      },
+      {
+        "label": "Compare with sync state",
+        "description": "Each file's modifiedTime is checked against gdrive_sync_state.json. Unchanged files count as up to date; the rest are marked new or updated."
+      },
+      {
+        "label": "Download",
+        "description": "Changed files are downloaded. Google Docs, Sheets and Slides are exported to text formats first."
+      },
+      {
+        "label": "Parse, clean & chunk",
+        "description": "Each format has its own parser. Meeting transcripts lose their filler words and are cut into speaker-aware chunks of 800 words with 150 overlapping; other documents into 600 with 100."
+      },
+      {
+        "label": "Embed & index",
+        "description": "Chunks are embedded with all-MiniLM-L6-v2 in batches of 32, added to the FAISS index, and the BM25 keyword index is rebuilt. Duplicate content hashes are skipped."
+      },
+      {
+        "label": "Save sync state",
+        "description": "The index and the updated sync state are written to disk, and the sync reports files synced, new chunks, files up to date and files outside the date range."
+      }
+    ],
+    "integrations": [
+      "Google Drive API v3 (service account)"
+    ],
+    "architecture": "Four components do the work: a Google Drive service with a 60-second folder cache, a file processor with one parser per format (PDF, DOCX, XLSX, CSV, PPTX, TXT, Markdown and JSON), a transcript processor that cleans and chunks meetings, and a vector store manager that owns the FAISS and BM25 indexes.\n\nState lives in three files on a persistent volume: vector_store.faiss, metadata.pkl and gdrive_sync_state.json. There is no database.\n\nThe same sync runs from several places. At startup, the app loads the embedding model in a background thread, loads the saved index, signs in to Drive and syncs only if any files need it, then waits up to 60 seconds for the model so the first request doesn't have to. A greeting in chat runs a silent sync before replying. The React app runs one on page load when Drive is connected, and the Sync button runs it on demand. A force-full-sync endpoint ignores the saved state.",
+    "input": "A shared Google Drive folder of meeting-recorder JSON transcripts and PDF, DOCX, XLSX, PPTX, CSV, TXT and Markdown files.",
+    "output": "New chunks in the FAISS and BM25 indexes, an updated sync-state file, and counts of files synced, new chunks, files up to date and files outside the date range.",
+    "limitations": "The greeting-triggered sync runs inside a chat request, which adds latency to that reply. The automation watches a single, fixed folder.\n\nFiles trashed in Drive are skipped when listing, but their chunks stay in the index: there is no removal step yet. Startup fails if the embedding model doesn't load within 60 seconds.",
+    "securityNotes": "The service-account JSON key sits on the server with chmod 600 and is excluded from git, and the Drive folder has to be shared with the service-account email. Other credentials are read from git-ignored .env files. The API endpoints that trigger a sync have no authentication of their own, which is one of the gaps the planned redesign addresses.",
+    "learnings": "Tracking each file's modifiedTime is enough to make sync incremental: only new or updated files are processed, and the rest are counted as up to date.\n\nCaching the folder listing cut redundant Drive API calls, and shortening the Drive timeout from 60s to 30s made failures show up faster. Loading the embedding model in the background at startup means the first user doesn't wait for it."
+  },
+  "diagrams": [
+    {
+      "key": "sync-decision",
+      "title": "Does this file need syncing?",
+      "kind": "advanced",
+      "placement": "workflow",
+      "caption": "Every file in the folder goes through the same checks: skip unsupported types and anything outside the 90-day window, count unchanged files as up to date, and process only new or updated ones before indexing them in one batch.",
+      "mermaid": "flowchart TD\n  S([Sync starts]) --> AU{Drive authenticated?}\n  AU -- no --> X[Stop: not authenticated]\n  AU -- yes --> L[List folder, cached 60s]\n  L --> F{Supported type?}\n  F -- no --> SK[Skip]\n  F -- yes --> W{Modified in last 90 days?}\n  W -- no --> OUT[Outside date range]\n  W -- yes --> C{Same modifiedTime as last sync?}\n  C -- yes --> UTD[Up to date]\n  C -- no --> P[Process: new or updated]\n  P --> I[Index all new chunks]\n  I --> ST[(Save sync state)]"
+    },
+    {
+      "key": "startup",
+      "title": "Startup: ready with fresh data",
+      "kind": "flow",
+      "placement": "architecture",
+      "caption": "Before accepting traffic the app loads the model in the background, restores the saved index, syncs only what changed in Drive, and waits for the model so the first request is fast.",
+      "steps": [
+        {
+          "label": "Launch script runs",
+          "detail": "Loads .env, stops the old process",
+          "kind": "trigger"
+        },
+        {
+          "label": "Load model in background",
+          "detail": "all-MiniLM-L6-v2 on CPU",
+          "kind": "action"
+        },
+        {
+          "label": "Load saved index",
+          "detail": "FAISS + metadata from disk",
+          "kind": "store"
+        },
+        {
+          "label": "Sign in to Drive",
+          "detail": "Service account",
+          "kind": "action"
+        },
+        {
+          "label": "Files changed?",
+          "detail": "Compare with sync state",
+          "kind": "decision",
+          "edgeLabel": "only if new or updated"
+        },
+        {
+          "label": "Incremental sync",
+          "detail": "Download, chunk, embed, index",
+          "kind": "action"
+        },
+        {
+          "label": "Wait for model",
+          "kind": "action",
+          "metric": "up to 60s"
+        },
+        {
+          "label": "App ready",
+          "detail": "Saves index and state on shutdown",
+          "kind": "output"
+        }
+      ]
+    }
+  ],
+  "engineeringAreas": [
+    "ai-automation"
+  ],
+  "relatedContent": [],
+  "numberAllowlist": [],
+  "openQuestions": []
+}

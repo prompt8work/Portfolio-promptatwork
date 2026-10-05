@@ -20,8 +20,8 @@ export default function AboutMe() {
             </p>
           ))}
           <div className="flex gap-6 flex-wrap pt-1 text-[14.5px] font-semibold">
-            <Link href="/resume" className="text-neutral-900 hover:text-plum-600">
-              Read my resume →
+            <Link href="/portfolio" className="text-neutral-900 hover:text-plum-600">
+              See my portfolio →
             </Link>
             <Link href="/contact" className="text-neutral-900 hover:text-plum-600">
               Say hello →

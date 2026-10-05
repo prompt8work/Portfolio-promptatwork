@@ -57,3 +57,7 @@ service-account*.json
 # Ignore all markdown except README files
 *.md
 !README.md
+
+# ---------- Local-only resume skill and generated resumes (personal data) ----------
+.claude/skills/resume/
+Docs/resumes/

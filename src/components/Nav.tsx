@@ -7,8 +7,8 @@ import { AnimatePresence, LayoutGroup, motion } from "framer-motion";
 import { menuItem, menuPanel, transition } from "../lib/motion";
 import { brand, contactCta, isActivePath, mainNav } from "../lib/navigation";
 
-// One menu for every page. `tone` only changes colours — /resume is the
-// site's one dark page and passes tone="dark"; options, order, dropdown and
+// One menu for every page. `tone` only changes colours — /portfolio is the
+// site's one dark area and passes tone="dark"; options, order, dropdown and
 // mobile menu are identical everywhere (links live in lib/navigation.ts).
 const tones = {
   light: {

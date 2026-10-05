@@ -1,0 +1,92 @@
+{
+  "type": "experiment",
+  "slug": "fast-vs-two-stage-vs-chained-document-generation",
+  "source": "Docs/content-drafts/meeting-intelligence-chatbot.source.md",
+  "fields": {
+    "title": "Fast, Two-Stage or Chained: Generating Documents From Meetings",
+    "objective": "Find a way to generate four delivery documents (Executive Summary, HLRD, User Stories and Timeline Matrix) from a project's meetings that works within the LLM provider's rate limits.",
+    "problem": "Asking a model to write a full requirements document in one go from raw meeting text is a lot to ask. Splitting the work into more calls gives the model smaller jobs, but every extra call counts against the Groq rate limits the system runs on.",
+    "setup": "Three implementations of the same four documents sit side by side in the codebase, chosen by a PIPELINE_MODE setting and a use_two_stage flag. They share the same document formatters and run on Groq, with llama-3.3-70b-versatile for documents.\n\nThe input for each run is a project's meeting chunks: up to 30, joined into one transcript.",
+    "promptOrWorkflow": "Fast mode makes one unified extraction call that returns everything the four documents need as one JSON, then formats it in code.\n\nTwo-stage mode makes two calls per document: an extraction prompt that lists every relevant fact, then a synthesis prompt that writes the document from them.\n\nChained mode runs the documents in sequence (Executive Summary, HLRD, User Stories, Timeline Matrix), passing a compressed hand-off of about 800 tokens from each stage to the next.",
+    "input": "A project's meeting transcripts, filtered by project and time range.",
+    "output": "The four delivery documents, in fixed templated structures.",
+    "whatWorked": "Fast mode worked well enough to become the default. Its one call stays clear of rate limits, and because formatting happens in code, every document keeps the same structure.\n\nThe chain's compressed hand-offs kept later stages within context: each stage reads a short summary of the previous document, not its full text.",
+    "whatFailed": "The multi-call modes hit Groq's rate limits. Keeping them running took retries raised to 5, a 15-second pause between stages, a 15-second initial backoff, and a fallback in the chained HLRD step to single-stage generation.\n\nThe original executive summary, a single pass driven by a selected template, was replaced by the two-stage version and kept only as a deprecated backup. No side-by-side quality comparison of the three modes was recorded, so this experiment has no quality scores to report.",
+    "learning": "Rate limits, not model quality, decided the architecture. In the code's own words, simple mode is faster and avoids rate limits. The richer two-stage path is worth its extra calls only where depth matters most.",
+    "decision": "Fast mode is the default. Two-stage generation is kept for the detailed executive summary endpoint, and the chained pipeline stays available behind PIPELINE_MODE=chained.",
+    "nextStep": "The planned redesign adds a reviewer after each stage of the chain, and an evaluation set of about 50 real questions and expected documents. That set is what will finally let the modes be compared on quality, not just on speed and rate limits."
+  },
+  "diagrams": [
+    {
+      "key": "three-modes",
+      "title": "The three modes compared",
+      "kind": "advanced",
+      "placement": "promptOrWorkflow",
+      "caption": "The same transcript can take three paths: one extraction call then formatting, two calls per document, or a chain where each document reads a compressed hand-off from the one before.",
+      "mermaid": "flowchart TD\n  T([Project transcript]) --> M{Mode}\n  M -- fast --> U[1 call: unified extraction]\n  U --> F[Format in code]\n  M -- two-stage --> S1[Call 1: extract facts]\n  S1 --> S2[Call 2: write document]\n  M -- chained --> E[Executive Summary]\n  E --> H[HLRD]\n  H --> U2[User Stories]\n  U2 --> TM[Timeline Matrix]\n  F --> D([Document])\n  S2 --> D\n  TM --> D"
+    },
+    {
+      "key": "how-default-chosen",
+      "title": "How fast mode became the default",
+      "kind": "flow",
+      "placement": "outcome",
+      "caption": "As the code records it: the multi-call modes ran into rate limits, the fixes added delays and fallbacks, and the one-call mode became the default.",
+      "steps": [
+        {
+          "label": "Three modes built",
+          "detail": "Fast, two-stage, chained",
+          "kind": "action"
+        },
+        {
+          "label": "Multi-call modes rate-limited",
+          "detail": "Groq API rate limits",
+          "kind": "decision"
+        },
+        {
+          "label": "Retries and pauses added",
+          "kind": "action",
+          "metric": "5 retries, 15s between stages"
+        },
+        {
+          "label": "Single-stage fallback",
+          "detail": "In the chained HLRD step",
+          "kind": "action"
+        },
+        {
+          "label": "Fast mode is the default",
+          "detail": "Two-stage kept for detail",
+          "kind": "output"
+        }
+      ]
+    },
+    {
+      "key": "retry-loop",
+      "title": "Retrying a rate-limited call",
+      "kind": "loop",
+      "placement": "outcome",
+      "caption": "A rate-limited call waits and tries again with the delay doubling each time, until it succeeds or reaches the retry limit.",
+      "loopBackTo": 1,
+      "loopLabel": "until success or 5 retries",
+      "steps": [
+        {
+          "label": "Call the model",
+          "kind": "ai"
+        },
+        {
+          "label": "Rate limited?",
+          "kind": "decision"
+        },
+        {
+          "label": "Wait, doubling the delay",
+          "kind": "action"
+        }
+      ]
+    }
+  ],
+  "engineeringAreas": [
+    "generative-ai"
+  ],
+  "relatedContent": [],
+  "numberAllowlist": [],
+  "openQuestions": []
+}

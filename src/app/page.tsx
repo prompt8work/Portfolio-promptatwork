@@ -7,7 +7,7 @@ import AILabBand from "../components/home/AILabBand";
 import ContentPreview from "../components/home/ContentPreview";
 import TrainingPreview from "../components/home/TrainingPreview";
 import Testimonial from "../components/home/Testimonial";
-import ResumeCTA from "../components/home/ResumeCTA";
+import PortfolioCTA from "../components/home/PortfolioCTA";
 import Contact from "../components/home/Contact";
 import SiteFooter from "../components/SiteFooter";
 import JsonLd from "../components/JsonLd";
@@ -20,9 +20,9 @@ import { homeJsonLd } from "../lib/seo";
 export const revalidate = 60;
 
 export const metadata: Metadata = buildMetadata({
-  title: "Niharika Dhande — Prompt Engineer & Generative AI Trainer in Indore | PromptAtWork",
+  title: "Niharika Dhande — AI Enablement Officer & Corporate AI Trainer in Indore | PromptAtWork",
   description:
-    "Niharika Dhande is a Full-Stack AI Engineer, prompt engineer and Generative AI trainer based in Indore, India. Prompt engineering training, RAG, LLM apps and AI automation — built and taught in the open.",
+    "Niharika Dhande helps teams turn AI tools into everyday results: AI enablement, AI solutions on Claude and Gemini, and hands-on AI training for business and technical teams. Founder of Prompt at Work, Indore.",
   path: "/",
 });
 
@@ -38,7 +38,7 @@ export default function Home() {
         <ContentPreview />
         <TrainingPreview />
         <Testimonial />
-        <ResumeCTA />
+        <PortfolioCTA />
         <Contact />
       </main>
       <SiteFooter />

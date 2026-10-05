@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import PageTransition from "../../../components/PageTransition";
 import DocsArticle from "../../../components/docs/DocsArticle";
+import Callout from "../../../components/docs/Callout";
 import DocsHeader, { DocsEntry } from "../../../components/docs/DocsHeader";
 import { client } from "../../../sanity/lib/client";
 import { automationsQuery } from "../../../sanity/lib/queries";
@@ -32,6 +33,9 @@ export default async function AutomationsPage() {
           title="Automations"
           description="Trigger → input → AI processing → decision → action → output, laid out end to end for each real workflow."
         />
+        {automations.length === 0 && (
+          <Callout title="Nothing published yet">No automations are published yet. New entries appear here as they&apos;re written up.</Callout>
+        )}
         <div>
           {automations.map((a) => (
             <DocsEntry

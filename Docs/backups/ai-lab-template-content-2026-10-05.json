@@ -1,0 +1,874 @@
+[
+  {
+    "_createdAt": "2026-09-25T19:09:59Z",
+    "_id": "automation-meeting-transcript-ingestion-indexing",
+    "_rev": "Fp6j2OFYXErtrNMrGGrEKo",
+    "_type": "automation",
+    "_updatedAt": "2026-09-25T19:09:59Z",
+    "architecture": "Google Drive API → transcript ingestion → Sentence Transformer embeddings → FAISS hybrid retrieval → Groq/OpenAI/Anthropic/Gemini synthesis → chat interface.",
+    "description": "Syncs new meeting transcripts and makes them immediately searchable through the RAG chat interface.",
+    "limitations": "[ Known limitations of this automation — to be added ]",
+    "problem": "Meeting content piled up faster than anyone could search it manually — new transcripts needed to become queryable without manual intervention.",
+    "relatedContent": [
+      {
+        "_key": "project-rag-meeting-intelligence-platform",
+        "_ref": "project-rag-meeting-intelligence-platform",
+        "_type": "reference"
+      }
+    ],
+    "securityNotes": "[ Data-handling notes for transcript content — to be added ]",
+    "slug": {
+      "_type": "slug",
+      "current": "meeting-transcript-ingestion-indexing"
+    },
+    "steps": [
+      {
+        "_key": "step-0",
+        "_type": "step",
+        "description": "Google Drive API detects a new transcript file",
+        "label": "Trigger"
+      },
+      {
+        "_key": "step-1",
+        "_type": "step",
+        "description": "Transcript text extracted",
+        "label": "Input"
+      },
+      {
+        "_key": "step-2",
+        "_type": "step",
+        "description": "Sentence Transformer embeddings generated",
+        "label": "AI Processing"
+      },
+      {
+        "_key": "step-3",
+        "_type": "step",
+        "description": "[ Chunking/indexing decision logic — to be added ]",
+        "label": "Decision"
+      },
+      {
+        "_key": "step-4",
+        "_type": "step",
+        "description": "Embeddings written to the FAISS index",
+        "label": "Action"
+      },
+      {
+        "_key": "step-5",
+        "_type": "step",
+        "description": "Transcript becomes queryable in the chat interface",
+        "label": "Output"
+      }
+    ],
+    "title": "Meeting Transcript Ingestion & Indexing",
+    "tools": [
+      {
+        "_key": "tool-groq",
+        "_ref": "tool-groq",
+        "_type": "reference"
+      }
+    ],
+    "trigger": "New file synced via the Google Drive API"
+  },
+  {
+    "_createdAt": "2026-09-25T19:09:58Z",
+    "_id": "automation-prospect-requirements-to-prototype",
+    "_rev": "Fp6j2OFYXErtrNMrGGrEEW",
+    "_type": "automation",
+    "_updatedAt": "2026-09-25T19:09:58Z",
+    "architecture": "C#/.NET backend, Angular front end, FastAPI service layer for AI orchestration, with OpenAI and Gemini as interchangeable LLM providers behind a common interface.",
+    "description": "Turns structured prospect requirements into a working software prototype during a live sales/demo cycle.",
+    "limitations": "[ Known limitations of this automation — to be added ]",
+    "problem": "Converting prospect requirements and technical presentations into working software prototypes fast enough to keep pace with a live sales/demo cycle.",
+    "relatedContent": [
+      {
+        "_key": "project-ai-workflow-automation-platform",
+        "_ref": "project-ai-workflow-automation-platform",
+        "_type": "reference"
+      }
+    ],
+    "securityNotes": "[ Full data-handling notes for prospect input to be added — no sensitive client data is exposed in this write-up ]",
+    "slug": {
+      "_type": "slug",
+      "current": "prospect-requirements-to-prototype"
+    },
+    "steps": [
+      {
+        "_key": "step-0",
+        "_type": "step",
+        "description": "Prospect requirements received",
+        "label": "Trigger"
+      },
+      {
+        "_key": "step-1",
+        "_type": "step",
+        "description": "Requirements parsed into a structured schema",
+        "label": "Input"
+      },
+      {
+        "_key": "step-2",
+        "_type": "step",
+        "description": "Routed to OpenAI or Gemini depending on task type",
+        "label": "AI Processing"
+      },
+      {
+        "_key": "step-3",
+        "_type": "step",
+        "description": "[ Routing/decision logic — to be added ]",
+        "label": "Decision"
+      },
+      {
+        "_key": "step-4",
+        "_type": "step",
+        "description": "Generates working prototype code and UI",
+        "label": "Action"
+      },
+      {
+        "_key": "step-5",
+        "_type": "step",
+        "description": "Demo-ready prototype delivered",
+        "label": "Output"
+      }
+    ],
+    "title": "Prospect Requirements → Working Prototype",
+    "tools": [
+      {
+        "_key": "tool-openai",
+        "_ref": "tool-openai",
+        "_type": "reference"
+      },
+      {
+        "_key": "tool-google-gemini",
+        "_ref": "tool-google-gemini",
+        "_type": "reference"
+      }
+    ],
+    "trigger": "New prospect requirements document submitted"
+  },
+  {
+    "_createdAt": "2026-09-25T19:09:54Z",
+    "_id": "experiment-hybrid-retrieval-tuning-meeting-transcripts",
+    "_rev": "UdgXhMQE3uTlo7yW0iX1ml",
+    "_type": "experiment",
+    "_updatedAt": "2026-09-25T19:09:54Z",
+    "input": "[ Representative test query set used for evaluation — to be added ]",
+    "learning": "[ Key takeaway from this tuning process — to be added ]",
+    "objective": "Improve retrieval relevance for the RAG-based meeting intelligence platform so that answers were reliably grounded in the actual transcript content, not a generic model guess.",
+    "output": "[ Example before/after retrieved-chunk comparison — to be added ]",
+    "problem": "Meeting content piled up faster than anyone could search it manually, and early retrieval-only answers weren't consistently grounded in the real transcript content.",
+    "promptOrWorkflow": "[ Exact hybrid scoring formula and reranking logic — not written up yet, to be added ]",
+    "publishedAt": "2026-09-25T19:09:54.828Z",
+    "relatedContent": [
+      {
+        "_key": "project-rag-meeting-intelligence-platform",
+        "_ref": "project-rag-meeting-intelligence-platform",
+        "_type": "reference"
+      },
+      {
+        "_key": "tool-groq",
+        "_ref": "tool-groq",
+        "_type": "reference"
+      }
+    ],
+    "setup": "FAISS vector search over Sentence Transformer embeddings, evaluated first as pure dense retrieval, then against a hybrid retrieval approach combining dense and keyword signals before synthesis through Groq.",
+    "slug": {
+      "_type": "slug",
+      "current": "hybrid-retrieval-tuning-meeting-transcripts"
+    },
+    "title": "Hybrid Retrieval Tuning for Meeting Transcript Search",
+    "tool": {
+      "_key": "tool-groq",
+      "_ref": "tool-groq",
+      "_type": "reference"
+    },
+    "useCases": [
+      "Meeting transcript search",
+      "Grounded Q&A over long-form audio content"
+    ],
+    "whatFailed": "[ Approaches tried and discarded before landing on the hybrid approach — to be added ]",
+    "whatWorked": "Hybrid retrieval measurably lifted relevance from 45% to 89% (see the RAG-Based Meeting Intelligence Platform project results), while Groq kept end-to-end p95 response time under 3 seconds at 100+ concurrent users."
+  },
+  {
+    "_createdAt": "2026-09-25T19:09:56Z",
+    "_id": "experiment-multi-llm-routing-prospect-to-prototype",
+    "_rev": "Fp6j2OFYXErtrNMrGGrE8E",
+    "_type": "experiment",
+    "_updatedAt": "2026-09-25T19:09:56Z",
+    "learning": "[ Key takeaway from running two providers behind one interface — to be added ]",
+    "objective": "Route prospect requirement inputs through the LLM best suited to each sub-task, rather than a single fixed model, inside the AI Workflow Automation Platform's chatbot.",
+    "problem": "Converting prospect requirements and technical presentations into working software prototypes fast enough to keep pace with a live sales/demo cycle.",
+    "promptOrWorkflow": "[ Actual routing/task-classification logic — to be added ]",
+    "publishedAt": "2026-09-25T19:09:56.169Z",
+    "relatedContent": [
+      {
+        "_key": "project-ai-workflow-automation-platform",
+        "_ref": "project-ai-workflow-automation-platform",
+        "_type": "reference"
+      },
+      {
+        "_key": "tool-openai",
+        "_ref": "tool-openai",
+        "_type": "reference"
+      },
+      {
+        "_key": "tool-google-gemini",
+        "_ref": "tool-google-gemini",
+        "_type": "reference"
+      }
+    ],
+    "setup": "OpenAI and Gemini exposed behind a common interface in the FastAPI orchestration layer, with per-task routing logic deciding which provider handled a given step.",
+    "slug": {
+      "_type": "slug",
+      "current": "multi-llm-routing-prospect-to-prototype"
+    },
+    "title": "Multi-LLM Routing for a Prospect-to-Prototype Chatbot",
+    "tool": {
+      "_key": "tool-openai",
+      "_ref": "tool-openai",
+      "_type": "reference"
+    },
+    "useCases": [
+      "Requirements-to-prototype automation",
+      "Multi-model orchestration"
+    ],
+    "whatFailed": "[ Routing edge cases or model mismatches encountered — to be added ]",
+    "whatWorked": "Contributed to 500+ production-ready solutions and prompts built for prospect presentations, with a reported 10x productivity improvement on affected workflows (see the AI Workflow Automation Platform project results)."
+  },
+  {
+    "_createdAt": "2026-09-24T16:43:39Z",
+    "_id": "project-ai-assisted-full-stack-application",
+    "_rev": "flqZNGp7VQ6a1CboDfnpYb",
+    "_type": "project",
+    "_updatedAt": "2026-09-28T20:20:58Z",
+    "architecture": "React + TypeScript front end; architecture and phase artifacts documented alongside the code itself.",
+    "category": "AI-Assisted Dev",
+    "challenges": "[ Specific challenges from running a fully AI-assisted workflow — to be added ]",
+    "context": "An independent build used to prove out the BMAD workflow itself: every phase from initial discovery through PRD, architecture, UX and QA handled with AI assistance, documented as it happened.",
+    "learnings": "This project — and this website's own build, PRD-first with Claude Code — is itself a live example of the workflow described here.",
+    "overview": "A full-stack application built using the BMAD (discovery → PRD → architecture → UX → development → QA) method with Claude Code as the primary AI-assisted development tool.",
+    "problem": "Demonstrating that AI-assisted development can carry a project through every phase — not just code generation — while keeping a clear paper trail of decisions.",
+    "publishedAt": "2026-09-24T16:43:39.242Z",
+    "relatedContent": [
+      {
+        "_key": "tool-claude-code",
+        "_ref": "tool-claude-code",
+        "_type": "reference"
+      }
+    ],
+    "results": "[ Concrete outcomes and metrics from this build — to be added ]",
+    "role": "Drove the entire BMAD workflow solo — product definition through shipped code.",
+    "slug": {
+      "_type": "slug",
+      "current": "ai-assisted-full-stack-application"
+    },
+    "solution": "A structured, phase-by-phase build: each stage (discovery, PRD, architecture, UX, development, QA) produced its own artifact before the next phase started, with Claude Code doing the implementation work against those artifacts.",
+    "summary": "Built end-to-end through a BMAD workflow — discovery, PRD, architecture, UX, development and QA driven by AI-assisted tooling.",
+    "tech": [
+      "BMAD",
+      "Claude Code",
+      "React",
+      "TypeScript"
+    ],
+    "title": "AI-Assisted Full-Stack Application",
+    "visibility": "public",
+    "workflow": "Discovery → PRD → Architecture → UX → Development → QA, each phase gated on the previous phase's written artifact rather than skipped ahead."
+  },
+  {
+    "_createdAt": "2026-09-24T16:43:40Z",
+    "_id": "project-ai-generated-marketing-visuals",
+    "_rev": "trzJwo7gNjLjmFEMdyPN36",
+    "_type": "project",
+    "_updatedAt": "2026-09-24T16:43:40Z",
+    "architecture": "N/A — tool evaluation and prompt experimentation, not a software architecture.",
+    "category": "AI Creative",
+    "challenges": "[ Specific tool limitations encountered — to be added ]",
+    "context": "Self-directed exploration, not a client engagement — testing each tool's strengths, limitations and practical use cases directly.",
+    "learnings": "[ Which tools proved production-ready and which didn't — to be added ]",
+    "overview": "Independent experimentation across the current generation of AI image and video tools, evaluated for campaign-ready creative output.",
+    "problem": "Understanding which generative visual tools are actually production-ready for marketing use, versus which are still novelty-grade.",
+    "publishedAt": "2026-09-24T16:43:40.253Z",
+    "results": "[ Example outputs and campaign-readiness verdicts — to be added ]",
+    "role": "Independent researcher and practitioner — ran every experiment personally.",
+    "slug": {
+      "_type": "slug",
+      "current": "ai-generated-marketing-visuals"
+    },
+    "solution": "Hands-on experiments across Midjourney, DALL·E, Runway, Sora, Pika, Stable Diffusion and Adobe Firefly, comparing output quality, control and iteration speed for marketing-style visuals.",
+    "summary": "Independent exploration of image and video generation tools for campaign-ready creative.",
+    "tech": [
+      "Midjourney",
+      "DALL·E",
+      "Runway",
+      "Sora",
+      "Pika",
+      "Stable Diffusion",
+      "Adobe Firefly"
+    ],
+    "title": "AI-Generated Marketing Visuals",
+    "visibility": "public",
+    "workflow": "Prompt → generate → evaluate against campaign-brief-style criteria → iterate."
+  },
+  {
+    "_createdAt": "2026-09-24T16:43:36Z",
+    "_id": "project-ai-workflow-automation-platform",
+    "_rev": "flqZNGp7VQ6a1CboDfnpTB",
+    "_type": "project",
+    "_updatedAt": "2026-09-28T20:20:57Z",
+    "aiModels": [
+      "OpenAI",
+      "Gemini"
+    ],
+    "architecture": "C#/.NET backend, Angular front end, FastAPI service layer for AI orchestration, with OpenAI and Gemini as interchangeable LLM providers behind a common interface.",
+    "category": "Full Stack · Automation",
+    "challenges": "[ Specific technical obstacles and how they were resolved — to be added for the full case study ]",
+    "confidentialityNote": "Client and proprietary implementation details are omitted per the confidentiality model (PRD §22) — this is a generalized case study.",
+    "context": "Built while working across Web, AI/ML and Cloud service demonstrations, supporting outreach campaigns that needed a working proof of concept within a matter of days, not weeks.",
+    "learnings": "[ Key takeaways from building and shipping this — to be added ]",
+    "overview": "A workflow automation platform that routes tasks through multiple LLM providers, turning prospect requirements into working prototypes and production-ready solutions.",
+    "problem": "Converting prospect requirements and technical presentations into working software prototypes fast enough to keep pace with a live sales/demo cycle.",
+    "publishedAt": "2026-09-24T16:43:36.342Z",
+    "relatedContent": [
+      {
+        "_key": "tool-openai",
+        "_ref": "tool-openai",
+        "_type": "reference"
+      },
+      {
+        "_key": "tool-google-gemini",
+        "_ref": "tool-google-gemini",
+        "_type": "reference"
+      },
+      {
+        "_key": "experiment-multi-llm-routing-prospect-to-prototype",
+        "_ref": "experiment-multi-llm-routing-prospect-to-prototype",
+        "_type": "reference"
+      },
+      {
+        "_key": "automation-prospect-requirements-to-prototype",
+        "_ref": "automation-prospect-requirements-to-prototype",
+        "_type": "reference"
+      },
+      {
+        "_key": "prompt-structured-requirements-extraction",
+        "_ref": "prompt-structured-requirements-extraction",
+        "_type": "reference"
+      }
+    ],
+    "results": "Contributed to 500+ production-ready solutions and prompts built for prospect presentations, with reported 10x productivity improvements on affected workflows.",
+    "role": "Sole technical analyst and solutions engineer — architecture, prompt design, and the full-stack implementation.",
+    "slug": {
+      "_type": "slug",
+      "current": "ai-workflow-automation-platform"
+    },
+    "solution": "An AI chatbot and workflow layer built on OpenAI and Gemini APIs, backed by a C#/Angular application shell, that turns structured input into a working prototype quickly enough to demo live.",
+    "summary": "Multi-LLM orchestration engine that automates enterprise task workflows end-to-end.",
+    "tech": [
+      "C#",
+      "Angular",
+      "OpenAI",
+      "Gemini",
+      "FastAPI"
+    ],
+    "title": "AI Workflow Automation Platform",
+    "visibility": "generalized",
+    "workflow": "[ Detailed step-by-step workflow diagram to be added ]"
+  },
+  {
+    "_createdAt": "2026-09-24T16:43:38Z",
+    "_id": "project-rag-meeting-intelligence-platform",
+    "_rev": "jFGCd09lO5Q5FStScn0GC4",
+    "_type": "project",
+    "_updatedAt": "2026-09-28T20:20:56Z",
+    "aiModels": [
+      "Groq",
+      "OpenAI",
+      "Anthropic",
+      "Gemini"
+    ],
+    "architecture": "Google Drive API → transcript ingestion → Sentence Transformer embeddings → FAISS hybrid retrieval → Groq/OpenAI/Anthropic/Gemini synthesis → chat interface.",
+    "category": "RAG · Web App",
+    "challenges": "Retrieval relevance was the core challenge — see Results for the measured improvement from hybrid retrieval tuning.",
+    "confidentialityNote": "Client and proprietary implementation details are omitted per the confidentiality model (PRD §22) — this is a generalized case study.",
+    "context": "Meeting transcripts synced via the Google Drive API, indexed and made queryable through a hybrid retrieval pipeline.",
+    "learnings": "[ Key takeaways from building and shipping this — to be added ]",
+    "overview": "A RAG-based intelligent chatbot over meeting transcripts, built on Python/FastAPI with Groq for sub-second response times.",
+    "problem": "Meeting content piles up faster than anyone can search it manually — the platform needed to answer questions grounded in real transcript content, not a generic LLM guess.",
+    "publishedAt": "2026-09-24T16:43:37.907Z",
+    "relatedContent": [
+      {
+        "_key": "tool-groq",
+        "_ref": "tool-groq",
+        "_type": "reference"
+      },
+      {
+        "_key": "tool-openai",
+        "_ref": "tool-openai",
+        "_type": "reference"
+      },
+      {
+        "_key": "tool-anthropic-claude",
+        "_ref": "tool-anthropic-claude",
+        "_type": "reference"
+      },
+      {
+        "_key": "tool-google-gemini",
+        "_ref": "tool-google-gemini",
+        "_type": "reference"
+      },
+      {
+        "_key": "experiment-hybrid-retrieval-tuning-meeting-transcripts",
+        "_ref": "experiment-hybrid-retrieval-tuning-meeting-transcripts",
+        "_type": "reference"
+      },
+      {
+        "_key": "prompt-grounded-rag-answer-synthesis",
+        "_ref": "prompt-grounded-rag-answer-synthesis",
+        "_type": "reference"
+      },
+      {
+        "_key": "automation-meeting-transcript-ingestion-indexing",
+        "_ref": "automation-meeting-transcript-ingestion-indexing",
+        "_type": "reference"
+      }
+    ],
+    "results": "Supports 100+ concurrent users with p95 response times under 3 seconds; retrieval relevance improved from 45% to 89% through hybrid retrieval tuning.",
+    "role": "Designed and built the RAG pipeline end-to-end — retrieval, embedding strategy, and the multi-LLM synthesis layer.",
+    "slug": {
+      "_type": "slug",
+      "current": "rag-meeting-intelligence-platform"
+    },
+    "solution": "A retrieval-augmented generation pipeline: FAISS vector search plus Sentence Transformer embeddings for hybrid retrieval, synthesized through Groq for sub-second response times, with OpenAI/Anthropic/Gemini available as alternate synthesis backends.",
+    "stats": [
+      "100+ concurrent users",
+      "p95 <3s",
+      "45%→89% retrieval relevance"
+    ],
+    "summary": "Hybrid retrieval over meeting transcripts with multi-LLM synthesis for searchable, grounded answers.",
+    "tech": [
+      "Python",
+      "FastAPI",
+      "FAISS",
+      "Sentence Transformers",
+      "Groq",
+      "OpenAI",
+      "Anthropic",
+      "Gemini",
+      "Google Drive API"
+    ],
+    "title": "RAG-Based Meeting Intelligence Platform",
+    "visibility": "generalized",
+    "workflow": "[ Detailed step-by-step workflow diagram to be added ]"
+  },
+  {
+    "_createdAt": "2026-09-25T19:09:52Z",
+    "_id": "prompt-grounded-rag-answer-synthesis",
+    "_rev": "Fp6j2OFYXErtrNMrGGrDve",
+    "_type": "prompt",
+    "_updatedAt": "2026-09-25T19:09:52Z",
+    "category": "RAG",
+    "exampleInput": "What did we decide about the Q3 launch date?",
+    "exampleOutput": "The team agreed to push the Q3 launch to August 15th [chunk_04].",
+    "prompt": "Answer the question using ONLY the retrieved context below. Cite the chunk id(s) you used in square brackets after each claim, e.g. [chunk_12].\n\nIf the retrieved context does not contain enough information to answer, respond exactly: \"I couldn't find this in the meeting transcripts.\" Do not use outside knowledge.\n\nRetrieved context:\n{{retrieved_chunks}}\n\nQuestion:\n{{question}}",
+    "purpose": "Synthesize an answer to a user's question strictly from retrieved transcript chunks, with inline citations — the core synthesis step behind the meeting intelligence platform's chat interface.",
+    "relatedContent": [
+      {
+        "_key": "project-rag-meeting-intelligence-platform",
+        "_ref": "project-rag-meeting-intelligence-platform",
+        "_type": "reference"
+      }
+    ],
+    "slug": {
+      "_type": "slug",
+      "current": "grounded-rag-answer-synthesis"
+    },
+    "tips": "Explicitly instruct the model to say when it doesn't know, in an exact fixed phrase. That single line is what keeps ungrounded, made-up answers out of a RAG-backed product — without it, models will confidently answer from prior knowledge instead of the retrieved context.",
+    "title": "Grounded RAG Answer Synthesis with Citations",
+    "tool": {
+      "_key": "tool-groq",
+      "_ref": "tool-groq",
+      "_type": "reference"
+    },
+    "variables": [
+      "question",
+      "retrieved_chunks"
+    ]
+  },
+  {
+    "_createdAt": "2026-09-25T19:09:53Z",
+    "_id": "prompt-prompt-regression-test-case-generator",
+    "_rev": "UdgXhMQE3uTlo7yW0iX1Md",
+    "_type": "prompt",
+    "_updatedAt": "2026-09-25T19:09:53Z",
+    "category": "Testing",
+    "prompt": "You are generating a regression test suite for the following production prompt. Do not solve the prompt's task — only generate adversarial and edge-case inputs that could break it.\n\nPrompt under test:\n{{prompt_under_test}}\n\nExpected output schema:\n{{expected_output_schema}}\n\nGenerate 10 test inputs covering: empty/missing fields, conflicting instructions embedded in the input, unusually long input, non-English input, and at least one prompt-injection attempt. For each, state what failure mode it's designed to catch.",
+    "purpose": "Generate a battery of edge-case test inputs for a production prompt before a model or prompt-version upgrade ships — matches the evaluation & regression-testing practice already part of this prompt engineering practice.",
+    "relatedContent": [],
+    "slug": {
+      "_type": "slug",
+      "current": "prompt-regression-test-case-generator"
+    },
+    "tips": "Run this against every prompt before a model upgrade, not just new prompts — a prompt that passed on one model version can silently regress on the next without a fixed test battery to catch it.",
+    "title": "Prompt Regression Test Case Generator",
+    "variables": [
+      "prompt_under_test",
+      "expected_output_schema"
+    ]
+  },
+  {
+    "_createdAt": "2026-09-25T19:09:51Z",
+    "_id": "prompt-structured-requirements-extraction",
+    "_rev": "Fp6j2OFYXErtrNMrGGrDpM",
+    "_type": "prompt",
+    "_updatedAt": "2026-09-25T19:09:51Z",
+    "category": "Automation",
+    "exampleInput": "We need a dashboard that shows daily active users and lets admins export the data as CSV.",
+    "exampleOutput": "{\"feature\": \"dashboard\", \"metrics\": [\"daily active users\"], \"actions\": [\"export as CSV\"], \"actor\": \"admin\"}",
+    "prompt": "You are a requirements-extraction engine. Read the input text and return ONLY valid JSON matching this schema — no prose, no markdown fences:\n\n{{target_schema}}\n\nRules:\n- If a field cannot be determined from the input, set it to null. Never guess or fabricate a value.\n- If the input contains multiple distinct requirements, return an array of objects, one per requirement.\n- Preserve the requester's original wording inside string fields; do not paraphrase.\n\nInput:\n{{raw_requirements_text}}",
+    "purpose": "Extract structured, schema-conformant JSON from unstructured prospect requirements text — the kind of contract the AI Workflow Automation Platform's chatbot relies on to turn a conversation into a working prototype.",
+    "relatedContent": [
+      {
+        "_key": "project-ai-workflow-automation-platform",
+        "_ref": "project-ai-workflow-automation-platform",
+        "_type": "reference"
+      }
+    ],
+    "slug": {
+      "_type": "slug",
+      "current": "structured-requirements-extraction"
+    },
+    "tips": "Always inline the exact target schema rather than a free-form 'return JSON' instruction — model behavior on loosely-specified JSON drifts across model versions, but an inlined schema stays stable.",
+    "title": "Structured Requirements Extraction",
+    "tool": {
+      "_key": "tool-openai",
+      "_ref": "tool-openai",
+      "_type": "reference"
+    },
+    "variables": [
+      "raw_requirements_text",
+      "target_schema"
+    ]
+  },
+  {
+    "_createdAt": "2026-09-25T18:51:23Z",
+    "_id": "tool-anthropic-claude",
+    "_rev": "Fp6j2OFYXErtrNMrGJhIcA",
+    "_type": "tool",
+    "_updatedAt": "2026-09-26T18:44:05Z",
+    "category": "LLM Provider",
+    "description": "Claude models via API, and Claude Code for AI-assisted development.",
+    "lastReviewed": "September 2026",
+    "lastUpdated": "2026-09-26T18:44:02.789Z",
+    "limitations": [
+      "Usage-based API cost scales with both input and output tokens, which matters more here given the large-context use case",
+      "Regional availability varies",
+      "No fully offline/self-hosted option"
+    ],
+    "myExperience": "One of the multi-LLM synthesis backends in the RAG-based meeting intelligence platform. Claude Code specifically was the primary tool behind the AI-Assisted Full-Stack Application project, run through a full BMAD workflow (discovery → PRD → architecture → UX → development → QA) — and this website's own build followed the same PRD-first, AI-assisted approach.",
+    "name": "Anthropic Claude",
+    "officialUrl": "https://www.anthropic.com",
+    "overview": "Anthropic's Claude model family, accessed via API or the Claude.ai product, with a strong reputation for long-context reasoning and reliability on complex multi-step tasks. Claude Code — Anthropic's separate agentic coding tool — has its own dedicated research entry; this page covers Claude as a model/API provider.",
+    "practicalScenarios": "A general scenario Claude's long context window suits well: synthesizing an answer from a large batch of retrieved transcript or document chunks in a single call, rather than needing a separate summarization pass first to fit a smaller context window.",
+    "pricing": "Usage-based API pricing; Claude.ai has free and paid tiers.",
+    "publishedAt": "2026-09-25T18:51:23.167Z",
+    "relatedContent": [
+      {
+        "_key": "tool-claude-code",
+        "_ref": "tool-claude-code",
+        "_type": "reference"
+      }
+    ],
+    "researchContent": "Claude models are available via API (used here as one of the multi-LLM synthesis backends in the RAG-based meeting intelligence platform) and via Claude.ai, which adds Projects (persistent context for a body of work), Artifacts (live-rendered code/content outputs), and file upload. The API supports a large context window, which matters directly for retrieval-augmented use cases where a synthesis step needs to reason over many retrieved chunks at once rather than a short excerpt.",
+    "researchStatus": "Published",
+    "reviewedVersion": "Claude 5 family",
+    "slug": {
+      "_type": "slug",
+      "current": "anthropic-claude"
+    },
+    "sources": [
+      {
+        "label": "Official Website",
+        "url": "https://www.anthropic.com"
+      },
+      {
+        "label": "Anthropic Documentation",
+        "url": "https://docs.claude.com"
+      }
+    ],
+    "strengths": [
+      "Large context window, useful for RAG-style synthesis over many retrieved chunks",
+      "Consistent, reliable behavior on complex multi-step reasoning",
+      "Claude.ai's Projects/Artifacts are genuinely useful for iterative work, not just chat"
+    ],
+    "tags": [
+      "LLM Provider",
+      "Claude",
+      "API",
+      "Long Context"
+    ],
+    "type": "Tool",
+    "useCases": [
+      "Long-context reasoning over large retrieved-document sets",
+      "Multi-step agentic tasks via the API",
+      "General synthesis backend in a multi-LLM architecture"
+    ],
+    "whatItDoes": "Hosted large language models via API, and an agentic coding tool (Claude Code) for AI-assisted development workflows."
+  },
+  {
+    "_createdAt": "2026-09-26T10:17:07Z",
+    "_id": "tool-claude-code",
+    "_rev": "NEBD0JSu27nGDHgUFJ4Hf7",
+    "_type": "tool",
+    "_updatedAt": "2026-09-26T10:17:07Z",
+    "category": "AI Coding Tool",
+    "description": "Anthropic's agentic coding tool — runs in the terminal, an IDE, or the SDK, and can plan, edit, run commands and iterate across a whole codebase.",
+    "lastReviewed": "September 2026",
+    "lastUpdated": "2026-09-26T10:17:07.426Z",
+    "limitations": [
+      "Autonomous execution still benefits from a human reviewing diffs before they're trusted, especially on unfamiliar codebases",
+      "Effectiveness on a very large, poorly-documented codebase depends heavily on how well the task is scoped up front",
+      "Requires a Claude subscription or API access — no fully offline/free tier",
+      "Best results come from an iterative, PRD-first workflow rather than a single vague instruction for a large task"
+    ],
+    "myExperience": "This website — promptatwork.com, including this very Tools & Research rebuild — was built using Claude Code, through a PRD-first workflow: each phase was written up as its own plan before implementation started, and every feature was verified in a real browser (or against the real Supabase/Sanity backends) before being called done, rather than just trusting that the code compiled.",
+    "name": "Claude Code",
+    "officialUrl": "https://claude.com/claude-code",
+    "overview": "Claude Code is Anthropic's agentic coding tool: instead of autocompleting one line at a time, it reads a codebase, plans a multi-step change, edits files, runs shell commands and tests, and iterates on the result — all from a natural-language instruction. It's built for developers who want an AI collaborator that can carry a task from description to a working, verified change, not just suggest snippets.",
+    "practicalScenarios": "A general scenario Claude Code is well-suited to: given a legacy repository with no up-to-date documentation, ask it to explore the codebase, summarize the architecture, and flag any inconsistencies between what the code does and what any existing docs claim. This is a capability described generally here — see Related Experiments below for cases where it was actually used, not just described.",
+    "pricing": "Included with Claude Pro/Max subscriptions, or pay-as-you-go via the Claude API.",
+    "publishedAt": "2026-09-26T10:17:07.426Z",
+    "relatedContent": [
+      {
+        "_key": "project-ai-assisted-full-stack-application",
+        "_ref": "project-ai-assisted-full-stack-application",
+        "_type": "reference"
+      },
+      {
+        "_key": "blog-building-promptatwork",
+        "_ref": "blog-building-promptatwork",
+        "_type": "reference"
+      }
+    ],
+    "researchContent": "Core capabilities: file read/write/edit, shell command execution, web search and fetch, and subagent delegation for isolating large or parallel tasks. Skills are packaged, reusable instruction sets Claude Code loads on demand for a specific kind of task (this very feature — the AI Lab Tools rebuild — was implemented by loading this project's own established conventions as context, the same mechanism). MCP (Model Context Protocol) lets Claude Code connect to external tools and data sources — databases, design tools, project trackers — through a standard interface, so the same agent can act across a real toolchain rather than just the local filesystem. Hooks let a user run their own shell commands at defined points in Claude Code's lifecycle (e.g. before a tool call, after a session ends) for custom validation or automation. Slash commands provide reusable, parameterized prompts saved as project or personal files. Permission modes range from asking approval for every action to fully autonomous execution within defined bounds — the developer chooses the tradeoff between speed and oversight per session.",
+    "researchStatus": "Published",
+    "resources": [
+      {
+        "_key": "resource-quick-reference",
+        "description": "A one-page summary of core concepts: skills, MCP, hooks, subagents and permission modes.",
+        "file": {
+          "_type": "file",
+          "asset": {
+            "_ref": "file-2c038e7b67f1495ac51fae93d4db163756ec981c-md",
+            "_type": "reference"
+          }
+        },
+        "publishedAt": "2026-09-26T10:17:07.426Z",
+        "resourceType": "Reference Guide",
+        "title": "Claude Code — Quick Reference",
+        "version": "1.0"
+      }
+    ],
+    "reviewedVersion": "Claude 5 family",
+    "slug": {
+      "_type": "slug",
+      "current": "claude-code"
+    },
+    "sources": [
+      {
+        "label": "Official Website",
+        "url": "https://claude.com/claude-code"
+      },
+      {
+        "label": "Anthropic Documentation",
+        "url": "https://docs.claude.com"
+      }
+    ],
+    "strengths": [
+      "Handles multi-file, multi-step tasks without needing every step spelled out",
+      "Runs real commands and tests, so it can verify its own changes rather than just proposing them",
+      "MCP support means it can act across an existing toolchain instead of being limited to the local filesystem",
+      "Permission model lets the developer dial oversight up or down per task"
+    ],
+    "tags": [
+      "AI Coding",
+      "Agentic Development",
+      "MCP",
+      "CLI"
+    ],
+    "type": "Tool",
+    "useCases": [
+      "Large-repository exploration and refactoring across many files at once",
+      "Turning a written spec/PRD into working, tested code end-to-end",
+      "Automating repetitive multi-step coding tasks (migrations, boilerplate, test generation)",
+      "Debugging by reproducing an issue, reading logs, and iterating on a fix in one loop",
+      "AI-assisted documentation kept in sync with the actual codebase"
+    ],
+    "whatItDoes": "An agentic CLI/IDE/SDK tool that plans and executes multi-step coding tasks: reading and editing files, running shell commands, searching the web, and calling external tools via MCP (Model Context Protocol) servers — all inside an approval-gated loop the developer controls."
+  },
+  {
+    "_createdAt": "2026-09-25T18:51:24Z",
+    "_id": "tool-google-gemini",
+    "_rev": "UdgXhMQE3uTlo7yW0nwTir",
+    "_type": "tool",
+    "_updatedAt": "2026-09-26T18:44:06Z",
+    "category": "LLM Provider",
+    "description": "Google's multimodal LLM family, via API.",
+    "lastReviewed": "September 2026",
+    "lastUpdated": "2026-09-26T18:44:02.789Z",
+    "limitations": [
+      "Feature and model-version rollout timing can lag or lead other providers depending on the capability",
+      "Vertex AI's enterprise path adds Google Cloud-specific setup overhead compared to a plain API key"
+    ],
+    "myExperience": "Used alongside OpenAI in the AI Workflow Automation Platform's chatbot (part of the reported 10x productivity improvement), and as an alternate synthesis backend in the RAG-based meeting intelligence platform.",
+    "name": "Google Gemini",
+    "officialUrl": "https://ai.google.dev",
+    "overview": "Google's Gemini model family, with strong native multimodal support (text, image, and beyond) via the Gemini API/AI Studio, and an enterprise path through Vertex AI. Used here as one of the interchangeable LLM backends in the AI Workflow Automation Platform and as an alternate RAG synthesis backend.",
+    "practicalScenarios": "A general scenario Gemini's multimodal support suits well: a single request that needs to reason jointly over a screenshot and accompanying text instructions, rather than running separate vision and text passes and merging the results manually.",
+    "pricing": "Usage-based API pricing with a free tier for lower-volume use.",
+    "publishedAt": "2026-09-25T18:51:24.158Z",
+    "researchContent": "Gemini models are natively multimodal — accepting text and image (and, depending on model/tier, audio/video) input in the same request, rather than requiring a separate vision-specific model or pipeline. Google AI Studio provides a free-tier path to the API for lower-volume use, with Vertex AI as the path for enterprise-scale deployment with Google Cloud's broader infrastructure and access controls.",
+    "researchStatus": "Published",
+    "reviewedVersion": "Gemini 2.x family",
+    "slug": {
+      "_type": "slug",
+      "current": "google-gemini"
+    },
+    "sources": [
+      {
+        "label": "Official Website",
+        "url": "https://ai.google.dev"
+      }
+    ],
+    "strengths": [
+      "Native multimodal input handling in a single request",
+      "Free tier via AI Studio, useful for prototyping before committing to paid usage",
+      "Straightforward path to enterprise scale via Vertex AI for teams already on Google Cloud"
+    ],
+    "tags": [
+      "LLM Provider",
+      "Multimodal",
+      "API"
+    ],
+    "type": "Tool",
+    "useCases": [
+      "Multimodal tasks combining text and image input in one request",
+      "Cost-conscious prototyping via the AI Studio free tier",
+      "An alternate synthesis backend in a multi-LLM architecture"
+    ],
+    "whatItDoes": "Hosted large language models via API, with strong multimodal (text/image) support."
+  },
+  {
+    "_createdAt": "2026-09-25T18:51:25Z",
+    "_id": "tool-groq",
+    "_rev": "UdgXhMQE3uTlo7yW0nwTvv",
+    "_type": "tool",
+    "_updatedAt": "2026-09-26T18:44:07Z",
+    "category": "Inference Platform",
+    "description": "LPU-based inference hosting, run here as the low-latency default for RAG synthesis.",
+    "lastReviewed": "September 2026",
+    "lastUpdated": "2026-09-26T18:44:02.789Z",
+    "limitations": [
+      "Hosts open models Groq chooses to serve, not proprietary frontier models from other labs",
+      "Free-tier rate limits are real constraints for higher-volume production traffic"
+    ],
+    "myExperience": "The primary synthesis backend for the RAG-based meeting intelligence platform, chosen specifically to hit sub-second response times at 100+ concurrent users (p95 under 3 seconds end-to-end, including retrieval).",
+    "name": "Groq",
+    "officialUrl": "https://groq.com",
+    "overview": "Groq is an inference platform, not a model provider — it hosts open models (Llama, Mixtral and others) on custom LPU (Language Processing Unit) hardware built specifically for extremely low-latency inference. Chosen here as the primary synthesis backend for the RAG-based meeting intelligence platform specifically for its speed.",
+    "practicalScenarios": "A general scenario Groq suits well: a user-facing chat interface where perceived responsiveness matters — sub-second time-to-first-token keeps the interaction feeling live rather than making the user wait on a visible spinner.",
+    "pricing": "Usage-based API pricing with a free tier.",
+    "publishedAt": "2026-09-25T18:51:25.172Z",
+    "researchContent": "Groq's LPU architecture is purpose-built for inference rather than being a general-purpose GPU repurposed for the task, which is what gives it a real, measurable latency advantage over typical GPU-hosted inference for the same open model. The API is OpenAI-SDK-compatible, meaning a codebase already using the OpenAI SDK's request/response shape can often point it at Groq's endpoint with minimal changes — relevant here since the RAG platform's architecture already treats LLM backends as interchangeable behind a common interface.",
+    "researchStatus": "Published",
+    "reviewedVersion": "GroqCloud",
+    "slug": {
+      "_type": "slug",
+      "current": "groq"
+    },
+    "sources": [
+      {
+        "label": "Official Website",
+        "url": "https://groq.com"
+      },
+      {
+        "label": "GroqCloud Documentation",
+        "url": "https://console.groq.com/docs"
+      }
+    ],
+    "strengths": [
+      "Genuinely fast inference — this was the deciding factor for using it in the RAG meeting intelligence platform, not just a marketing claim",
+      "OpenAI-SDK-compatible API, low switching friction",
+      "Free tier available"
+    ],
+    "tags": [
+      "Inference Platform",
+      "LPU",
+      "Low Latency",
+      "Open Models"
+    ],
+    "type": "Platform",
+    "useCases": [
+      "Latency-sensitive synthesis where sub-second response time matters more than access to the single most capable frontier model",
+      "RAG pipelines where retrieval already adds latency, so the synthesis step needs to be as fast as possible",
+      "Prototyping against an OpenAI-SDK-compatible endpoint without provider lock-in"
+    ],
+    "whatItDoes": "Extremely fast LLM inference hosting, used to serve open models with very low latency."
+  },
+  {
+    "_createdAt": "2026-09-25T18:51:21Z",
+    "_id": "tool-openai",
+    "_rev": "Fp6j2OFYXErtrNMrGJhIVs",
+    "_type": "tool",
+    "_updatedAt": "2026-09-26T18:44:04Z",
+    "category": "LLM Provider",
+    "description": "GPT-family models and APIs — used here for chatbot synthesis and structured-output generation.",
+    "lastReviewed": "September 2026",
+    "lastUpdated": "2026-09-26T18:44:02.789Z",
+    "limitations": [
+      "Cost scales with usage and can climb quickly for high-volume production traffic",
+      "No fully offline or self-hosted option",
+      "Rate limits require real handling (backoff/retry) in production systems, not just at prototype scale"
+    ],
+    "myExperience": "Used as one of the LLM backends in the AI Workflow Automation Platform's chatbot, where it contributed to a reported 10x productivity improvement on affected workflows, and as an alternate synthesis backend in the RAG-based meeting intelligence platform alongside Anthropic, Gemini and Groq.",
+    "name": "OpenAI",
+    "officialUrl": "https://openai.com",
+    "overview": "OpenAI is the LLM provider behind the GPT model family and ChatGPT. Its API exposes text, structured-output (JSON schema-constrained) and function/tool-calling capabilities, used here as one of the interchangeable synthesis backends behind the AI Workflow Automation Platform's chatbot.",
+    "practicalScenarios": "A general scenario OpenAI's API suits well: given a fixed downstream schema (e.g. a database row shape), use structured outputs to guarantee every response is schema-valid JSON rather than parsing free-form text and hoping it's well-formed.",
+    "pricing": "Usage-based API pricing; ChatGPT has a free tier and paid Plus/Pro plans.",
+    "publishedAt": "2026-09-25T18:51:20.790Z",
+    "researchContent": "GPT-family models are accessed via a REST API with strong support for JSON-schema-constrained structured outputs and function/tool calling — the two capabilities the AI Workflow Automation Platform's requirements-to-prototype pipeline relies on most directly. ChatGPT (the consumer product) sits on the same underlying models with a chat interface, file upload, and Projects/Custom GPTs for reusable configured assistants. The API is priced per token, varying by model tier (smaller/faster models cost less than the largest/most capable ones), with usage-based billing rather than a flat subscription for API access specifically.",
+    "researchStatus": "Published",
+    "reviewedVersion": "GPT-4 family",
+    "slug": {
+      "_type": "slug",
+      "current": "openai"
+    },
+    "sources": [
+      {
+        "label": "Official Website",
+        "url": "https://openai.com"
+      },
+      {
+        "label": "API Documentation",
+        "url": "https://platform.openai.com/docs"
+      }
+    ],
+    "strengths": [
+      "Mature, widely-adopted API with broad tooling and library support",
+      "Strong structured-output and function-calling reliability",
+      "Large model lineup covering a range of cost/capability tradeoffs"
+    ],
+    "tags": [
+      "LLM Provider",
+      "GPT",
+      "API",
+      "Structured Outputs"
+    ],
+    "type": "Tool",
+    "useCases": [
+      "Structured-output generation matched to a fixed JSON schema",
+      "Function/tool calling to connect a model to external systems",
+      "General-purpose chat and reasoning tasks",
+      "Rapid prototyping via ChatGPT's Projects/Custom GPTs for one-off configured assistants"
+    ],
+    "whatItDoes": "Hosted large language models accessible via API, plus the ChatGPT consumer product."
+  }
+]

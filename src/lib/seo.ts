@@ -4,13 +4,13 @@ import { personalInfo } from "../../data";
 // Search positioning. Every phrase here is backed by a fact already on the
 // site: Indore (data/personalInfo.ts, data/aboutMe.ts), the trainer role
 // (hero roles, aboutMe workshops/mentoring, /training), and the engineering
-// areas (data/engineering.ts). Don't add a city, service or credential that
+// areas (Sanity "engineeringArea" documents, /ai-lab/engineering). Don't add a city, service or credential that
 // isn't true — search engines and AI assistants repeat what this says.
 
 // Generative AI tools Niharika builds with, trains on and consults on — so
 // someone searching "<tool> trainer / expert in Indore" can find this site
-// and get in touch. Sources: resume (scripts/seed-resume.ts), data/skills.ts,
-// data/engineering.ts, data/projects.ts (generative media experiments).
+// and get in touch. Sources: the portfolio profiles (scripts/seed-portfolio.ts), data/skills.ts,
+// the Engineering areas in Sanity.
 // GitHub Copilot, Cursor, Perplexity, Notion AI and NotebookLM were added
 // on Niharika's own word (October 2026). Only list tools Niharika has
 // actually used. Also rendered as the "AI tools" section on /training.
@@ -134,7 +134,7 @@ export const homeJsonLd = {
       alternateName: ["Niharika Saxena Dhande", "Niharika"],
       jobTitle: personalInfo.title,
       description:
-        "Full-Stack AI Engineer, prompt engineer and Generative AI trainer based in Indore, India. Builds Generative AI, RAG and AI-powered applications and teaches prompt engineering.",
+        "AI Enablement Officer, AI Solutions Engineer and corporate AI trainer based in Indore, India, and founder of Prompt at Work. Finds where AI fits in a team's workflow, builds the solution, and trains the people who will use it.",
       url: getCanonicalUrl("/"),
       image: getCanonicalUrl("/images/Hero_image.png"),
       email: `mailto:${personalInfo.email}`,
@@ -152,9 +152,10 @@ export const homeJsonLd = {
         ...aiToolNames,
       ],
       hasOccupation: [
-        { "@type": "Occupation", name: "Full-Stack AI Engineer", occupationLocation: indore },
+        { "@type": "Occupation", name: "AI Enablement Officer", occupationLocation: indore },
+        { "@type": "Occupation", name: "AI Solutions Engineer", occupationLocation: indore },
+        { "@type": "Occupation", name: "Corporate AI Trainer", occupationLocation: indore },
         { "@type": "Occupation", name: "Prompt Engineer", occupationLocation: indore },
-        { "@type": "Occupation", name: "Generative AI Trainer", occupationLocation: indore },
       ],
       worksFor: { "@id": organizationId },
       sameAs: [`https://${personalInfo.linkedin}`],

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import PageTransition from "../../../components/PageTransition";
 import DocsArticle from "../../../components/docs/DocsArticle";
+import Callout from "../../../components/docs/Callout";
 import DocsHeader, { DocsEntry, DocsTag } from "../../../components/docs/DocsHeader";
 import CountUp from "../../../components/motion/CountUp";
 import { client } from "../../../sanity/lib/client";
@@ -10,7 +11,7 @@ import { buildMetadata } from "../../../lib/site";
 export const metadata: Metadata = buildMetadata({
   title: "Work & Case Studies — AI Lab — PromptAtWork",
   description:
-    "Full-Stack AI Engineering projects: workflow automation, RAG, AI-assisted development and AI creative work.",
+    "Full-Stack AI and agentic AI case studies: the problem, how it was solved, and the future scope, linked to every page that documents each project.",
   path: "/ai-lab/work",
 });
 
@@ -37,8 +38,11 @@ export default async function WorkPage() {
         <DocsHeader
           eyebrow="AI Lab / Work"
           title="Work & Case Studies"
-          description="Every project in one scroll: what it is, the numbers that matter and the stack behind it. Open any case study for the full problem → architecture → results → learnings write-up."
+          description="Every project in one scroll: what it is, the numbers that matter and the stack behind it. Open any case study for the full problem → solution → future scope write-up, linked to every page that documents the same project."
         />
+        {projects.length === 0 && (
+          <Callout title="Nothing published yet">No case studies are published yet. New entries appear here as they&apos;re written up.</Callout>
+        )}
         <div>
           {projects.map((p) => (
             <DocsEntry

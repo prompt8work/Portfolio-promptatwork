@@ -1,0 +1,102 @@
+{
+  "type": "automation",
+  "slug": "claude-openai-image-mcp-connector",
+  "source": "Docs/content-drafts/ai-executive-command-center.source.md",
+  "fields": {
+    "title": "Claude → OpenAI Image Generation via a Custom MCP Connector",
+    "category": "Image Generation",
+    "description": "An OAuth 2.1-secured MCP server, built into an existing Next.js app, that lets anyone on the team generate and edit images with OpenAI's image models directly inside Claude, which has no native connector for them.",
+    "problem": "The team works in Claude, but Claude has no native connector for OpenAI's image models. Generating an image meant leaving Claude, using another tool, and bringing the result back.",
+    "trigger": "Claude calls generate_image or edit_image",
+    "steps": [
+      {
+        "label": "Add connector URL",
+        "description": "A team member adds one custom connector URL in claude.ai or Claude Desktop."
+      },
+      {
+        "label": "Discover & register",
+        "description": "Claude finds the auth endpoints through protected-resource and authorization-server metadata (RFC 9728, RFC 8414) and registers itself as a client (RFC 7591)."
+      },
+      {
+        "label": "Google sign-in",
+        "description": "PKCE (S256) is mandatory. Login uses the same Google account as the app, with the same email and domain allow-lists."
+      },
+      {
+        "label": "Tokens issued",
+        "description": "Stateless signed JWTs: a 1-hour access token and a 30-day refresh token. No token database."
+      },
+      {
+        "label": "Claude calls a tool",
+        "description": "generate_image (text to a batch of images) or edit_image (images plus text to edited variants), 3 images by default."
+      },
+      {
+        "label": "OpenAI generates",
+        "description": "The server calls OpenAI's gpt-image models with the requested size, quality, background and format."
+      },
+      {
+        "label": "Images inline in Claude",
+        "description": "Returned as base64 at full resolution and lossless, so they render in Claude chat and Claude Desktop and work inside Claude artifacts."
+      }
+    ],
+    "integrations": [
+      "Model Context Protocol (MCP TypeScript SDK)",
+      "OpenAI Images API (gpt-image)",
+      "Google OAuth / Identity",
+      "Claude (claude.ai and Claude Desktop custom connectors)",
+      "mcp-remote (for Claude Desktop with a static token)"
+    ],
+    "architecture": "The MCP server lives inside the existing Next.js app at POST /api/mcp. It needs no extra infrastructure and reuses the app's HTTPS origin.\n\nThe app is its own OAuth 2.1 authorization server. It publishes RFC 9728 protected-resource metadata and RFC 8414 authorization-server metadata so clients can discover it automatically, and supports RFC 7591 dynamic client registration so Claude can register itself. PKCE with S256 is mandatory. Sign-in goes through the same Google account as the app, with the same allow-lists, so nobody gets access to the connector who couldn't already use the app.\n\nTokens are stateless signed JWTs (signed with jose): 1-hour access tokens and 30-day refresh tokens, with no token database to run. For clients that can't do OAuth, such as Claude Desktop through mcp-remote, an optional static bearer token is supported.\n\nThe server exposes two tools. generate_image takes a prompt plus n (default 3), size, quality, background, output format and model. edit_image takes one or more image paths plus a prompt and returns edited variants.",
+    "input": "A prompt, and for edits one or more source images, sent by Claude as an MCP tool call along with optional size, quality, background, output format and model.",
+    "output": "A batch of images returned inline as base64 at full resolution and lossless. Returning them inline instead of as links matters: Claude artifacts run in a sandbox that blocks external URLs, so a link would not render there.",
+    "limitations": "It covers image generation and editing only. The static bearer token is a fallback for clients that can't do OAuth; it skips the Google sign-in and its allow-lists.",
+    "securityNotes": "OAuth 2.1 with mandatory PKCE (S256). Login is restricted by the app's email and domain allow-lists. Access tokens expire after 1 hour and refresh tokens after 30 days. The OpenAI API key lives only in server environment variables and is never exposed to Claude or the client. The app refuses to boot with a weak or missing signing secret.",
+    "learnings": "Building the MCP server into the existing app, rather than as a separate service, meant no new infrastructure and the same sign-in the team already used. Self-describing OAuth metadata plus dynamic client registration is what makes \"paste one URL, sign in with Google\" possible."
+  },
+  "diagrams": [
+    {
+      "key": "mcp-sequence",
+      "title": "One image request, end to end",
+      "kind": "advanced",
+      "placement": "architecture",
+      "caption": "Claude discovers the server's auth setup, registers, and sends the user through Google sign-in with PKCE. After that, each tool call carries a short-lived token, and the server calls OpenAI and returns the images inline.",
+      "mermaid": "sequenceDiagram\n  participant U as Team member\n  participant C as Claude\n  participant S as App MCP server\n  participant G as Google sign-in\n  participant O as OpenAI gpt-image\n  U->>C: add connector URL\n  C->>S: fetch OAuth metadata\n  C->>S: register client\n  C->>G: sign in with PKCE\n  G-->>S: verified Google account\n  S-->>C: 1-hour access token\n  U->>C: image prompt\n  C->>S: generate_image (token)\n  S->>O: image request\n  O-->>S: images\n  S-->>C: base64 images inline\n  C-->>U: images in chat"
+    },
+    {
+      "key": "oauth-analogy",
+      "title": "OAuth 2.1 for an MCP connector, explained",
+      "kind": "analogy",
+      "placement": "workflow",
+      "concept": "OAuth 2.1 sign-in for an MCP connector",
+      "analogy": "Checking in at a hotel",
+      "caption": "The connector gets access the way a guest gets a room key: show ID at reception, receive a key card that expires, and renew it without checking in again. The analogy doesn't cover the static-token fallback.",
+      "pairs": [
+        {
+          "concept": "OAuth metadata discovery",
+          "analogy": "Signs in the lobby pointing to reception"
+        },
+        {
+          "concept": "Dynamic client registration",
+          "analogy": "Filling in the registration card"
+        },
+        {
+          "concept": "Google sign-in with allow-lists",
+          "analogy": "Showing ID that's on the guest list"
+        },
+        {
+          "concept": "1-hour access token",
+          "analogy": "A key card that stops working soon"
+        },
+        {
+          "concept": "30-day refresh token",
+          "analogy": "Re-coding the card at the desk without checking in again"
+        }
+      ]
+    }
+  ],
+  "engineeringAreas": [
+    "ai-automation"
+  ],
+  "relatedContent": [],
+  "numberAllowlist": [],
+  "openQuestions": []
+}

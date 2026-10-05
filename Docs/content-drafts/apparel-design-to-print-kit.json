@@ -1,0 +1,101 @@
+{
+  "type": "automation",
+  "slug": "apparel-design-to-print-kit",
+  "source": "Docs/content-drafts/ai-executive-command-center.source.md",
+  "fields": {
+    "title": "Apparel Design → Print-Ready Kit",
+    "category": "Image Generation",
+    "description": "Turns a one-line t-shirt or marketing-visual request into 1–4 on-brand, printable variants, garment mockups and a print-kit ZIP a print shop can use directly, with brand rules enforced in code.",
+    "problem": "For a founder-led apparel brand, every t-shirt design meant briefing a designer, waiting for drafts and re-briefing, and the brand drifted from one design to the next. Every channel and size of marketing visual was a separate request. Print placement and size were then specified by hand for each garment, which made the hand-off to print shops error-prone.",
+    "trigger": "Design request in chat (routed to the Graphic Designer agent)",
+    "steps": [
+      {
+        "label": "Design request",
+        "description": "The user asks in chat, e.g. a tee for the summer drop. The orchestrator routes it to the Graphic Designer agent, or an earlier workflow step hands over a visual brief."
+      },
+      {
+        "label": "Purpose → Template → Subject",
+        "description": "The Designer follows its PTS protocol and asks at most 2 clarifying questions. Slots already filled by an earlier step are not asked again."
+      },
+      {
+        "label": "Template pre-fill",
+        "description": "One of 8 templates (tshirt_design, instagram_story, hero_banner and others) fills aspect ratio, style, composition, lighting, tone, palette source and negative constraints. The user only supplies the subject."
+      },
+      {
+        "label": "Compose the prompt",
+        "description": "For apparel, the apparel prompt composer adds an explicit isolation directive so the result is a flat printable graphic, not a photo of a shirt. The brand kit is filled in automatically."
+      },
+      {
+        "label": "Inject brand chrome",
+        "description": "Logo and brand elements are appended to the prompt server-side, so brand consistency holds even if the model forgets."
+      },
+      {
+        "label": "Generate 1–4 variants",
+        "description": "OpenAI image generation, with a different layout style per variant from ten curated aesthetics."
+      },
+      {
+        "label": "Garment mockups",
+        "description": "Previews on a t-shirt, heavyweight tee, hoodie, polo, oxford and performance shirt."
+      },
+      {
+        "label": "Print-kit ZIP",
+        "description": "Master artwork, print-guide.json with standard placements and per-size print dimensions, and a README.txt, ready for the print shop."
+      }
+    ],
+    "integrations": [
+      "OpenAI Images API (gpt-image)",
+      "Anthropic Claude (Haiku 4.5 for the Graphic Designer)",
+      "Google Drive (save generated images)",
+      "MCP (the same image tools exposed to Claude)"
+    ],
+    "architecture": "This pipeline is the image half of a larger multi-agent system (linked below). The Graphic Designer agent runs on Claude Haiku 4.5 at temperature 0.3 and emits image-prompt directive blocks, which the server parses before anything is generated.\n\nBrand consistency comes from three layers that don't depend on the model remembering: a brand canon document (identity, ideology, voice, palette and logo rules) that every agent references, a workspace brand kit that is auto-filled into every prompt so the system never asks for brand details it already has, and brand chrome that the server appends to every image prompt.\n\nVariety is designed in rather than left to chance. Within a 4-variant batch, each variant gets a different look from ten curated poster aesthetics (editorial, vintage flyer, minimalist and others). Regenerating picks from twelve orthogonal variation hints (angle, time of day, focal length, medium, framing and others), so each re-roll gives a genuinely new direction instead of a near-duplicate. An existing image can also be edited with a text instruction.",
+    "input": "A short request with a subject, for example a \"statement\" marker-print tee, a block-print glyph tee, a summer-drop Instagram tile or a weekend workshop poster. Purpose, template and brand details are filled in by the agent and the brand kit.",
+    "output": "1–4 brand-consistent variants in the template's format, garment mockups for apparel, and a print-kit ZIP. The ZIP's print guide covers standard placements (left chest, centre chest, full front, oversized front, back collar, upper back, vertical side and others) and print dimensions for each garment size.",
+    "limitations": "The Designer doesn't check its own image against the brief: there is no self-verification loop yet, so a weak result needs a manual regenerate. Generation is triggered by code and parsed directives; the agent doesn't choose tools itself. The planned next step is a vision-based QA agent that checks each image for brand palette, printability and legible text, and automatically rejects and regenerates failures within a budget cap.",
+    "securityNotes": "API keys live only in environment variables, never in the database or the UI. A cost estimator holds a price table per model and fails loudly on an unknown model, so the cost gate is never silently skipped. Every database row is scoped to the signed-in user's Google account.",
+    "learnings": "Enforce brand rules in code, not only in prompts. Templates plus server-side brand chrome mean the user only has to describe the subject, and the brand holds whatever the model does. Asking the model for a flat, isolated graphic, explicitly, is what makes the output printable rather than a picture of a shirt."
+  },
+  "diagrams": [
+    {
+      "key": "brand-layers",
+      "title": "Where the brand rules come from",
+      "kind": "advanced",
+      "placement": "architecture",
+      "caption": "The user supplies only the subject. The template, the brand kit and the server-side brand chrome add everything else before the image model is called, so brand consistency doesn't rely on the model remembering.",
+      "mermaid": "flowchart TD\n  S([User: the subject]) --> P[Designer: Purpose, Template, Subject]\n  T[Template: ratio, style, lighting, constraints] --> C\n  K[Brand kit: palette, fonts, voice, logo rules] --> C\n  P --> C[Prompt composer]\n  C --> A{Apparel?}\n  A -- yes --> I[Add isolation directive: flat printable graphic]\n  A -- no --> B\n  I --> B[Server appends brand chrome]\n  B --> G[OpenAI gpt-image: 1-4 variants]\n  G --> M[Garment mockups]\n  M --> Z[(Print-kit ZIP)]"
+    },
+    {
+      "key": "template-analogy",
+      "title": "Templates and brand chrome, explained",
+      "kind": "analogy",
+      "placement": "workflow",
+      "concept": "Image templates + brand kit + brand chrome",
+      "analogy": "A print shop's order form",
+      "caption": "Like a print shop's order form, the template fixes everything except what you want printed, and the shop adds its own stamp whatever the customer writes. Unlike a shop, it doesn't check the result yet.",
+      "pairs": [
+        {
+          "concept": "Template pre-fills ratio, style and constraints",
+          "analogy": "The form's size and paper boxes are already ticked"
+        },
+        {
+          "concept": "User supplies only the subject",
+          "analogy": "The customer just writes what to print"
+        },
+        {
+          "concept": "Brand kit auto-filled into every prompt",
+          "analogy": "The shop keeps the customer's colours on file"
+        },
+        {
+          "concept": "Brand chrome appended server-side",
+          "analogy": "The shop stamps its label on every order"
+        }
+      ]
+    }
+  ],
+  "engineeringAreas": [
+    "generative-ai"
+  ],
+  "relatedContent": [],
+  "numberAllowlist": [],
+  "openQuestions": []
+}

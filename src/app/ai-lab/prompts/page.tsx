@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import PageTransition from "../../../components/PageTransition";
 import DocsArticle from "../../../components/docs/DocsArticle";
+import Callout from "../../../components/docs/Callout";
 import DocsHeader, { DocsEntry } from "../../../components/docs/DocsHeader";
 import { client } from "../../../sanity/lib/client";
 import { promptsQuery } from "../../../sanity/lib/queries";
@@ -33,6 +34,9 @@ export default async function PromptsPage() {
           title="Prompt Library"
           description="Categorized, copyable prompts with example input and output — real templates behind real projects, not generic starter examples."
         />
+        {prompts.length === 0 && (
+          <Callout title="Nothing published yet">No prompts are published yet. New entries appear here as they&apos;re written up.</Callout>
+        )}
         <div>
           {prompts.map((p) => (
             <DocsEntry

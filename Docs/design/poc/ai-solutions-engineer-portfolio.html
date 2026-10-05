@@ -1,0 +1,765 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>AI Solutions Portfolio — POC</title>
+<!-- POC for /portfolio/ai-solutions-engineer. Same visual system as
+     ai-enablement-officer-portfolio.html (approved). All copy comes from
+     Niharika's resume and portfolio copy; per the "no numbers for now"
+     decision, metrics (10x, 30%, 20%, sub-second, 99.9%) are left out.
+     Yellow "Needs your input" tags mark facts that are not known yet. -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #07111f;
+    --card: rgba(16, 32, 54, 0.62);
+    --card-solid: #0f2036;
+    --line: rgba(120, 200, 230, 0.16);
+    --line-strong: rgba(120, 200, 230, 0.32);
+    --text: #eaf2f8;
+    --muted: #9fb3c6;
+    --faint: #6f8599;
+    --cyan: #38c8e6;
+    --green: #2fd39a;
+    --violet: #a78bfa;
+    --grad: linear-gradient(90deg, var(--cyan), var(--green));
+    --warn-bg: rgba(250, 204, 21, 0.12);
+    --warn: #facc15;
+    --radius: 20px;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    font-family: Inter, system-ui, sans-serif;
+    color: var(--text);
+    background:
+      radial-gradient(900px 500px at 10% -10%, rgba(56, 200, 230, 0.12), transparent 60%),
+      radial-gradient(900px 600px at 95% 5%, rgba(167, 139, 250, 0.08), transparent 60%),
+      var(--bg);
+    line-height: 1.55;
+    overflow-x: hidden;
+  }
+  a { color: inherit; text-decoration: none; }
+  img { max-width: 100%; display: block; }
+  .wrap { max-width: 1200px; margin: 0 auto; padding-left: 16px; padding-right: 16px; }
+  @media (min-width: 768px) { .wrap { padding-left: 32px; padding-right: 32px; } }
+
+  .btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 20px; border-radius: 12px; font-weight: 600; font-size: 15px; border: 1px solid var(--line-strong); background: rgba(255,255,255,0.03); transition: transform .15s, border-color .15s; }
+  .btn:hover { transform: translateY(-1px); border-color: var(--cyan); }
+  .btn-primary { background: var(--grad); color: #04131f; border: 0; box-shadow: 0 8px 30px rgba(47, 211, 154, 0.25); }
+  .btn-sm { padding: 9px 14px; font-size: 14px; border-radius: 10px; }
+  .link { color: var(--cyan); font-weight: 600; font-size: 14px; }
+  .link:hover { text-decoration: underline; }
+
+  .pill { display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px; border-radius: 999px; border: 1px solid var(--line-strong); background: rgba(56, 200, 230, 0.06); font-size: 13px; color: var(--muted); }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--cyan); box-shadow: 0 0 12px var(--cyan); }
+  .mono { font-family: "JetBrains Mono", monospace; letter-spacing: .04em; text-transform: uppercase; font-size: 12px; color: var(--cyan); }
+  .grad-text { background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .todo { display: inline-flex; align-items: center; gap: 6px; padding: 3px 9px; border-radius: 6px; background: var(--warn-bg); color: var(--warn); border: 1px dashed rgba(250, 204, 21, 0.5); font-size: 12px; font-weight: 600; }
+
+  header { position: sticky; top: 0; z-index: 20; backdrop-filter: blur(12px); background: rgba(7, 17, 31, 0.75); border-bottom: 1px solid var(--line); }
+  .nav { display: flex; align-items: center; justify-content: space-between; height: 68px; gap: 16px; }
+  .brand { display: flex; align-items: center; gap: 12px; }
+  .brand img { width: 40px; height: 40px; border-radius: 12px; object-fit: cover; object-position: 50% 15%; border: 1px solid var(--line-strong); }
+  .brand b { display: block; font-size: 15px; }
+  .brand span { display: block; font-size: 12px; color: var(--muted); }
+  .nav-links { display: none; gap: 26px; font-size: 15px; color: var(--muted); }
+  .nav-links a:hover { color: var(--text); }
+  .nav-cta { display: none; gap: 10px; }
+  @media (min-width: 1000px) { .nav-links, .nav-cta { display: flex; } }
+
+  /* Hero */
+  .hero { display: grid; gap: 40px; padding-top: 56px; padding-bottom: 40px; }
+  @media (min-width: 1000px) { .hero { grid-template-columns: 1.3fr 1fr; align-items: center; padding-top: 72px; padding-bottom: 56px; } }
+  h1 { font-size: clamp(34px, 5.2vw, 56px); line-height: 1.08; letter-spacing: -0.02em; margin: 18px 0 16px; font-weight: 800; }
+  .lead { font-size: 18px; color: var(--muted); max-width: 620px; margin: 0 0 26px; }
+  .cta-row { display: flex; flex-wrap: wrap; gap: 12px; }
+  .checks { display: flex; flex-wrap: wrap; gap: 8px 18px; margin: 22px 0 0; padding: 0; list-style: none; font-size: 14px; color: var(--muted); }
+  .checks li::before { content: "✓"; color: var(--green); font-weight: 700; margin-right: 6px; }
+  .platforms { margin-top: 30px; }
+  .platforms p { margin: 0 0 12px; font-size: 13px; color: var(--faint); }
+  .chips { display: flex; flex-wrap: wrap; gap: 10px; }
+  .chip { font-family: "JetBrains Mono", monospace; font-size: 13px; padding: 9px 14px; border-radius: 10px; background: rgba(56, 200, 230, 0.06); border: 1px solid var(--line-strong); color: var(--text); }
+
+  .profile { padding: 18px; border-radius: 24px; background: var(--card); border: 1px solid var(--line-strong); box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45); max-width: 460px; justify-self: center; width: 100%; }
+  .profile .photo { border-radius: 16px; overflow: hidden; aspect-ratio: 1 / 1; background: var(--card-solid); }
+  .profile .photo img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 15%; }
+  .profile h3 { margin: 16px 0 2px; font-size: 20px; }
+  .profile .role { margin: 0 0 12px; color: var(--muted); font-size: 14px; }
+  .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+  .tag { padding: 5px 12px; border-radius: 999px; font-size: 13px; border: 1px solid var(--line-strong); color: var(--muted); }
+
+  section.block { padding: 72px 0; }
+  section.alt { background: linear-gradient(180deg, rgba(10, 26, 46, 0.7), rgba(10, 26, 46, 0.2)); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .head { text-align: center; max-width: 740px; margin: 0 auto 40px; }
+  h2 { font-size: clamp(26px, 3.4vw, 38px); line-height: 1.15; margin: 10px 0 12px; letter-spacing: -0.01em; }
+  .head p { color: var(--muted); margin: 0; font-size: 17px; }
+
+  .filters { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-bottom: 28px; }
+  .filters button { font: inherit; font-size: 14px; padding: 8px 16px; border-radius: 999px; border: 1px solid var(--line-strong); background: transparent; color: var(--muted); cursor: pointer; }
+  .filters button.on { background: var(--grad); color: #04131f; border-color: transparent; font-weight: 600; }
+  .grid { display: grid; gap: 20px; grid-template-columns: 1fr; }
+  @media (min-width: 700px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1050px) { .grid.three { grid-template-columns: repeat(3, 1fr); } }
+
+  /* Solution cards */
+  .card { display: flex; flex-direction: column; padding: 16px; border-radius: var(--radius); background: var(--card); border: 1px solid var(--line); transition: border-color .2s, transform .2s; }
+  .card:hover { border-color: var(--line-strong); transform: translateY(-2px); }
+  .card[hidden] { display: none; }
+  .badge { align-self: flex-start; display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; border: 1px solid var(--line-strong); color: var(--muted); margin-bottom: 12px; }
+  .badge i { width: 7px; height: 7px; border-radius: 50%; background: var(--cyan); }
+  .badge.integrate i { background: var(--green); }
+  .badge.enable i { background: var(--violet); }
+
+  /* "Terminal" thumbnail: shows the real pipeline of each solution. */
+  .term { border-radius: 14px; overflow: hidden; border: 1px solid rgba(255,255,255,0.08); background: #050c17; }
+  .term .bar { display: flex; gap: 6px; padding: 9px 12px; background: rgba(255,255,255,0.04); border-bottom: 1px solid rgba(255,255,255,0.06); }
+  .term .bar i { width: 9px; height: 9px; border-radius: 50%; background: #334155; }
+  .term .bar i:first-child { background: #f87171; } .term .bar i:nth-child(2) { background: #fbbf24; } .term .bar i:nth-child(3) { background: #34d399; }
+  .term pre { margin: 0; padding: 14px 14px 16px; font-family: "JetBrains Mono", monospace; font-size: 12.5px; line-height: 1.7; color: #cbd5e1; white-space: pre-wrap; min-height: 128px; }
+  .term .k { color: var(--cyan); } .term .g { color: var(--green); } .term .v { color: var(--violet); } .term .c { color: #64748b; }
+
+  .card h3 { margin: 16px 0 6px; font-size: 18px; }
+  .meta { display: flex; flex-wrap: wrap; gap: 4px 10px; font-size: 13px; color: var(--faint); margin-bottom: 10px; }
+  .meta span + span::before { content: "•"; margin-right: 10px; }
+  .card p { margin: 0 0 16px; color: var(--muted); font-size: 15px; flex: 1; }
+  .card .foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; }
+  .ideal { font-size: 13px; color: var(--faint); }
+  .ideal b { color: var(--muted); font-weight: 500; }
+
+  /* Featured project + architecture diagram */
+  .feature { display: grid; gap: 28px; padding: 26px; border-radius: 24px; background: var(--card); border: 1px solid var(--line-strong); }
+  @media (min-width: 1000px) { .feature { grid-template-columns: 1fr 1.25fr; padding: 34px; } }
+  .feature h3 { margin: 6px 0 10px; font-size: 26px; line-height: 1.2; }
+  .feature > div > p { color: var(--muted); margin: 0 0 16px; }
+  .arch { display: grid; gap: 10px; align-content: start; }
+  .arch-row { display: grid; gap: 10px; grid-template-columns: 1fr; }
+  @media (min-width: 640px) { .arch-row.three { grid-template-columns: repeat(3, 1fr); } }
+  .node { padding: 12px 14px; border-radius: 12px; border: 1px solid var(--line-strong); background: rgba(5, 12, 23, 0.7); }
+  .node b { display: block; font-size: 14px; }
+  .node span { display: block; font-size: 12.5px; color: var(--muted); font-family: "JetBrains Mono", monospace; }
+  .node.src { border-color: rgba(167, 139, 250, 0.45); }
+  .node.core { border-color: rgba(56, 200, 230, 0.55); background: rgba(56, 200, 230, 0.07); }
+  .node.out { border-color: rgba(47, 211, 154, 0.55); background: rgba(47, 211, 154, 0.07); }
+  .arrow { text-align: center; color: var(--cyan); font-weight: 700; line-height: 1; }
+  .arch-cap { font-size: 12.5px; color: var(--faint); margin-top: 4px; }
+
+  .proj { display: flex; flex-direction: column; padding: 22px; border-radius: var(--radius); background: var(--card); border: 1px solid var(--line); }
+  .proj .kind { font-family: "JetBrains Mono", monospace; font-size: 12px; color: var(--cyan); margin-bottom: 8px; }
+  .proj h3 { margin: 0 0 8px; font-size: 18px; }
+  .proj p { margin: 0 0 14px; color: var(--muted); font-size: 15px; flex: 1; }
+  .proj .tags { margin-bottom: 12px; }
+
+  /* Audience split */
+  .split { display: grid; gap: 20px; }
+  @media (min-width: 860px) { .split { grid-template-columns: 1fr 1fr; } }
+  .panel { padding: 26px; border-radius: var(--radius); background: var(--card); border: 1px solid var(--line); }
+  .panel h3 { margin: 6px 0 8px; font-size: 22px; }
+  .panel > p { margin: 0 0 18px; color: var(--muted); }
+  .ticks { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+  .ticks li { display: flex; gap: 12px; align-items: flex-start; padding: 12px 14px; border-radius: 12px; border: 1px solid var(--line); background: rgba(255,255,255,0.02); font-size: 15px; }
+  .ticks li::before { content: "✓"; flex: none; display: grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; font-size: 12px; color: var(--green); border: 1px solid rgba(47, 211, 154, 0.5); background: rgba(47, 211, 154, 0.08); }
+
+  /* Process flow */
+  .flow { display: grid; gap: 14px; grid-template-columns: 1fr; }
+  @media (min-width: 900px) { .flow { grid-template-columns: repeat(5, 1fr); } }
+  .step { position: relative; padding: 20px 18px; border-radius: 16px; background: var(--card); border: 1px solid var(--line); }
+  .step .n { font-family: "JetBrains Mono", monospace; font-size: 12px; color: var(--cyan); }
+  .step h4 { margin: 6px 0; font-size: 17px; }
+  .step p { margin: 0; color: var(--muted); font-size: 14px; }
+  @media (min-width: 900px) { .step:not(:last-child)::after { content: "→"; position: absolute; right: -13px; top: 50%; transform: translateY(-50%); color: var(--cyan); font-weight: 700; z-index: 2; background: var(--bg); padding: 0 2px; } }
+  @media (max-width: 899px) { .step:not(:last-child)::after { content: "↓"; position: absolute; left: 50%; bottom: -14px; transform: translateX(-50%); color: var(--cyan); font-weight: 700; z-index: 2; background: var(--bg); padding: 0 4px; } }
+  .loop { margin-top: 18px; display: flex; align-items: center; justify-content: center; gap: 10px; color: var(--muted); font-size: 14px; text-align: center; }
+
+  /* Stack */
+  .stack { display: grid; gap: 16px; }
+  @media (min-width: 760px) { .stack { grid-template-columns: repeat(2, 1fr); } }
+  .stack .panel h3 { font-size: 17px; margin: 0 0 12px; }
+  .stack .tags { margin: 0; }
+  .stack .feature-panel { border-color: var(--cyan); background: linear-gradient(135deg, rgba(56, 200, 230, 0.08), rgba(167, 139, 250, 0.06)); }
+  @media (min-width: 760px) { .stack .feature-panel { grid-column: 1 / -1; } }
+  .stack .feature-panel h3 { font-size: 21px; margin: 6px 0 6px; }
+  .panel-sub { margin: 0 0 16px; color: var(--muted); font-size: 15px; }
+  .fw { display: grid; gap: 10px; grid-template-columns: 1fr; }
+  @media (min-width: 560px) { .fw { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1000px) { .fw { grid-template-columns: repeat(3, 1fr); } }
+  .fw div { padding: 12px 14px; border-radius: 12px; border: 1px solid var(--line-strong); background: rgba(5, 12, 23, 0.6); }
+  .fw b { display: block; font-size: 15px; }
+  .fw span { display: block; font-size: 13px; color: var(--muted); }
+
+  /* Experience timeline */
+  .tl { position: relative; max-width: 880px; margin: 0 auto; padding-left: 28px; }
+  .tl::before { content: ""; position: absolute; left: 7px; top: 6px; bottom: 6px; width: 2px; background: linear-gradient(var(--cyan), rgba(56, 200, 230, 0.1)); }
+  .tl-item { position: relative; padding: 0 0 26px; }
+  .tl-item::before { content: ""; position: absolute; left: -27px; top: 6px; width: 12px; height: 12px; border-radius: 50%; background: var(--bg); border: 2px solid var(--cyan); }
+  .tl-item.major::before { background: var(--cyan); box-shadow: 0 0 12px var(--cyan); }
+  .tl-when { font-family: "JetBrains Mono", monospace; font-size: 12.5px; color: var(--cyan); }
+  .tl-item h3 { margin: 2px 0 2px; font-size: 18px; }
+  .tl-item .co { color: var(--muted); font-size: 15px; margin-bottom: 8px; }
+  .tl-item ul { margin: 0; padding-left: 18px; color: var(--muted); font-size: 15px; }
+  .tl-item li { margin-bottom: 4px; }
+  .earlier { display: grid; gap: 8px; margin-top: 4px; }
+  .earlier div { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 16px; padding: 10px 14px; border-radius: 10px; border: 1px solid var(--line); background: rgba(255,255,255,0.02); font-size: 14.5px; }
+  .earlier div span { color: var(--faint); font-family: "JetBrains Mono", monospace; font-size: 12.5px; }
+  .creds { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-top: 30px; }
+
+  /* Services offered */
+  .svc { display: grid; gap: 16px; }
+  @media (min-width: 860px) { .svc { grid-template-columns: repeat(3, 1fr); } }
+  .svc .panel { display: flex; flex-direction: column; }
+  .svc .panel.here { border-color: var(--cyan); box-shadow: 0 0 0 1px rgba(56, 200, 230, 0.25) inset; }
+  .svc .panel h3 { font-size: 19px; }
+  .svc .panel p { margin: 0 0 14px; color: var(--muted); font-size: 15px; flex: 1; }
+  .here-tag { align-self: flex-start; font-size: 12px; font-weight: 600; padding: 3px 9px; border-radius: 6px; background: rgba(56, 200, 230, 0.12); color: var(--cyan); }
+
+  /* Why */
+  .why { display: grid; gap: 16px; }
+  @media (min-width: 760px) { .why { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1050px) { .why { grid-template-columns: repeat(4, 1fr); } }
+  .why .panel h3 { font-size: 18px; }
+  .why .panel p { margin: 0; color: var(--muted); font-size: 15px; }
+  .icon { width: 42px; height: 42px; border-radius: 12px; display: grid; place-items: center; background: rgba(56, 200, 230, 0.1); border: 1px solid var(--line-strong); color: var(--cyan); }
+
+  .band { display: grid; gap: 20px; align-items: center; padding: 30px; border-radius: 24px; border: 1px solid var(--line-strong); background: linear-gradient(110deg, rgba(14, 116, 144, 0.35), rgba(76, 29, 149, 0.3)); }
+  @media (min-width: 860px) { .band { grid-template-columns: 1fr auto; padding: 36px 40px; } }
+  .band h3 { margin: 0 0 6px; font-size: 24px; }
+  .band p { margin: 0; color: var(--muted); }
+
+  .faq { display: grid; gap: 16px; }
+  @media (min-width: 860px) { .faq { grid-template-columns: repeat(3, 1fr); } }
+  .faq .panel h3 { font-size: 17px; margin-top: 0; }
+  .faq .panel p { margin: 0; color: var(--muted); font-size: 15px; }
+
+  footer { border-top: 1px solid var(--line); padding: 34px 0; margin-top: 40px; }
+  .foot-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; font-size: 14px; color: var(--muted); }
+  .foot-row nav { display: flex; flex-wrap: wrap; gap: 18px; }
+
+  .poc-note { position: fixed; bottom: 14px; right: 14px; z-index: 50; max-width: 300px; padding: 12px 14px; border-radius: 12px; background: #1c1917; border: 1px dashed var(--warn); color: #fde68a; font-size: 12.5px; line-height: 1.45; box-shadow: 0 10px 30px rgba(0,0,0,.5); }
+  .poc-note b { color: var(--warn); }
+  .poc-note button { float: right; background: none; border: 0; color: #fde68a; cursor: pointer; font-size: 14px; margin: -4px -4px 0 6px; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="#top">
+      <img src="images/headshot.jpg" alt="" />
+      <div><b>Niharika Dhande</b><span>AI Solutions Engineer</span></div>
+    </a>
+    <nav class="nav-links">
+      <a href="#solutions">Solutions</a>
+      <a href="#projects">Projects</a>
+      <a href="#how">How I build</a>
+      <a href="#stack">Stack</a>
+      <a href="#experience">Experience</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <div class="nav-cta">
+      <a class="btn btn-sm" href="ai-enablement-officer-portfolio.html">Training profile</a>
+      <a class="btn btn-sm btn-primary" href="#contact">Discuss a project</a>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+  <!-- HERO -->
+  <div class="wrap hero">
+    <div>
+      <span class="pill"><span class="dot"></span>AI Solutions • Integrations • Developer Enablement</span>
+      <h1>I build <span class="grad-text">AI solutions</span> that plug into the <span class="grad-text">systems you already use.</span></h1>
+      <p class="lead">I turn business requirements into working AI: RAG assistants grounded in your documents, chatbots, agents, and integrations with your internal systems through REST APIs and MCP. Built in Python and JavaScript, from proof of concept to production.</p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="#contact">Discuss a project</a>
+        <a class="btn" href="#projects">See projects</a>
+        <a class="btn" href="ai-enablement-officer-portfolio.html">Training profile</a>
+      </div>
+      <ul class="checks">
+        <li>Requirement → working PoC, fast</li>
+        <li>Secure by design (OAuth 2.0)</li>
+        <li>Documented hand-over</li>
+        <li>Developers coached to own it</li>
+      </ul>
+      <div class="platforms">
+        <p>Platforms I build on</p>
+        <div class="chips">
+          <span class="chip">Claude / Anthropic API</span>
+          <span class="chip">Gemini</span>
+          <span class="chip">OpenAI</span>
+          <span class="chip">Groq</span>
+          <span class="chip">FastAPI</span>
+          <span class="chip">LangChain</span>
+          <span class="chip">LangGraph</span>
+          <span class="chip">FAISS</span>
+          <span class="chip">MCP</span>
+        </div>
+      </div>
+    </div>
+
+    <aside class="profile">
+      <div class="photo"><img src="images/headshot.jpg" alt="Niharika Dhande" /></div>
+      <h3>Niharika Dhande</h3>
+      <p class="role">AI Solutions Engineer · Founder, Prompt at Work. A software engineer since 2013 who now builds and integrates AI for business and engineering teams.</p>
+      <div class="tags">
+        <span class="tag">RAG &amp; Retrieval</span>
+        <span class="tag">AI Agents &amp; MCP</span>
+        <span class="tag">API Integration</span>
+        <span class="tag">Claude Code</span>
+      </div>
+      <div class="cta-row">
+        <a class="btn btn-sm btn-primary" href="#contact">Book a discovery call</a>
+        <a class="btn btn-sm" href="#experience">View experience</a>
+      </div>
+    </aside>
+  </div>
+
+  <!-- SOLUTIONS -->
+  <section class="block alt" id="solutions">
+    <div class="wrap">
+      <div class="head">
+        <span class="mono">What I build</span>
+        <h2>AI solutions, end to end</h2>
+        <p>Each one starts with a workflow discovery session and ends with something your team runs every day, connected to the tools and data you already have.</p>
+      </div>
+
+      <div class="filters">
+        <button class="on" data-f="all">All</button>
+        <button data-f="build">Build</button>
+        <button data-f="integrate">Integrate</button>
+        <button data-f="enable">Enable</button>
+      </div>
+
+      <div class="grid three">
+        <article class="card" data-a="build">
+          <span class="badge"><i></i>Build</span>
+          <div class="term"><div class="bar"><i></i><i></i><i></i></div><pre><span class="c"># grounded answers</span>
+<span class="k">docs</span> → <span class="v">embed</span> → <span class="k">FAISS</span>
+query → <span class="k">retrieve</span> → <span class="g">LLM</span>
+       → <span class="g">answer + sources</span></pre></div>
+          <h3>RAG Assistants &amp; Knowledge Search</h3>
+          <div class="meta"><span>RAG</span><span>Embeddings</span><span>Semantic search</span></div>
+          <p>Assistants that answer from your company's own knowledge: meeting transcripts, uploaded files and Google Drive documents across PDF, DOCX, XLSX and PPTX.</p>
+          <div class="foot"><span class="ideal">Stack: <b>Python • FastAPI • FAISS • Groq</b></span></div>
+        </article>
+
+        <article class="card" data-a="build">
+          <span class="badge"><i></i>Build</span>
+          <div class="term"><div class="bar"><i></i><i></i><i></i></div><pre><span class="c"># multi-turn generation</span>
+user: <span class="g">"draft the test cases"</span>
+bot → <span class="k">context</span> + <span class="v">history</span>
+    → <span class="g">document / unit tests</span></pre></div>
+          <h3>AI Chatbots &amp; Document Generation</h3>
+          <div class="meta"><span>Multi-turn</span><span>System prompts</span></div>
+          <p>Chatbots that draft management documents and unit test cases through guided multi-turn conversations, built into the stack your team already uses.</p>
+          <div class="foot"><span class="ideal">Stack: <b>C# MVC • OpenAI • Gemini</b></span></div>
+        </article>
+
+        <article class="card" data-a="integrate">
+          <span class="badge integrate"><i></i>Integrate</span>
+          <div class="term"><div class="bar"><i></i><i></i><i></i></div><pre><span class="c"># agent with tools</span>
+<span class="g">LLM</span> ⇄ <span class="k">MCP server</span>
+     ⇄ <span class="k">REST API</span>
+     ⇄ <span class="v">internal system</span></pre></div>
+          <h3>AI Agents &amp; MCP Integrations</h3>
+          <div class="meta"><span>Tool use</span><span>Agentic workflows</span><span>MCP</span></div>
+          <p>Agents that can act, not just answer: tool use, agentic workflows and Model Context Protocol servers that give AI safe access to your systems.</p>
+          <div class="foot"><span class="ideal">Stack: <b>Claude • Anthropic API • MCP</b></span></div>
+        </article>
+
+        <article class="card" data-a="integrate">
+          <span class="badge integrate"><i></i>Integrate</span>
+          <div class="term"><div class="bar"><i></i><i></i><i></i></div><pre><span class="c"># secure sync</span>
+<span class="k">OAuth 2.0</span> → <span class="v">Google Drive API</span>
+  → <span class="k">parse</span> → <span class="g">re-index</span>
+  <span class="c"># runs automatically</span></pre></div>
+          <h3>API &amp; Internal-System Integration</h3>
+          <div class="meta"><span>REST APIs</span><span>OAuth 2.0</span><span>Automation scripts</span></div>
+          <p>Connect Claude, Gemini, OpenAI and Groq to internal tools and data through REST APIs, with secure authentication and automated document synchronisation.</p>
+          <div class="foot"><span class="ideal">Stack: <b>REST • Google Drive API • OAuth 2.0</b></span></div>
+        </article>
+
+        <article class="card" data-a="build">
+          <span class="badge"><i></i>Build</span>
+          <div class="term"><div class="bar"><i></i><i></i><i></i></div><pre><span class="c"># prompt system</span>
+<span class="k">system prompt</span> + <span class="v">template</span>
+  → <span class="g">LLM</span> → <span class="k">evaluate</span>
+  → <span class="g">ship</span> ↺ <span class="c">iterate</span></pre></div>
+          <h3>Prompt Systems &amp; Workflow Automation</h3>
+          <div class="meta"><span>System prompts</span><span>Templates</span><span>Testing &amp; evaluation</span></div>
+          <p>Production prompt systems and reusable templates that automate client business tasks, with testing, evaluation and quality checks built into every workflow.</p>
+          <div class="foot"><span class="ideal">Stack: <b>OpenAI • Gemini • Claude</b></span></div>
+        </article>
+
+        <article class="card" data-a="enable">
+          <span class="badge enable"><i></i>Enable</span>
+          <div class="term"><div class="bar"><i></i><i></i><i></i></div><pre><span class="c"># AI-assisted dev</span>
+<span class="k">$ claude</span>
+&gt; <span class="g">plan → code → test</span>
+&gt; <span class="v">MCP tools</span> • <span class="v">prompt patterns</span></pre></div>
+          <h3>Developer Enablement</h3>
+          <div class="meta"><span>Claude Code</span><span>GitHub Copilot</span><span>V0.dev</span></div>
+          <p>Coaching engineering teams on AI-assisted development: advanced Claude Code use, prompt patterns, agentic workflows and MCP server integrations.</p>
+          <div class="foot"><span class="ideal">For: <b>Developers • QA engineers</b></span><a class="link" href="ai-enablement-officer-portfolio.html#workshops">See workshops →</a></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section class="block" id="projects">
+    <div class="wrap">
+      <div class="head">
+        <span class="mono">Selected projects</span>
+        <h2>Shipped, not just prototyped</h2>
+        <p>Full write-ups with architecture and learnings live in the AI Lab. Here is the short version.</p>
+      </div>
+
+      <div class="feature">
+        <div>
+          <span class="mono">Featured · RAG</span>
+          <h3>RAG-Based Intelligent Meeting Assistant</h3>
+          <p>A production RAG pipeline that answers questions from Fireflies meeting transcripts and company documents. Files in Google Drive sync automatically, so answers stay grounded in the latest version.</p>
+          <div class="tags">
+            <span class="tag">Python</span><span class="tag">FastAPI</span><span class="tag">Groq API</span><span class="tag">FAISS</span><span class="tag">sentence-transformers</span><span class="tag">Google OAuth</span>
+          </div>
+          <a class="btn btn-sm" href="#">Read the case study in AI Lab →</a>
+        </div>
+        <div class="arch" aria-label="Architecture of the meeting assistant">
+          <div class="arch-row three">
+            <div class="node src"><b>Fireflies</b><span>meeting transcripts</span></div>
+            <div class="node src"><b>Google Drive</b><span>OAuth sync</span></div>
+            <div class="node src"><b>Uploads</b><span>PDF·DOCX·XLSX·PPTX</span></div>
+          </div>
+          <div class="arrow">↓</div>
+          <div class="node"><b>Document processing</b><span>parse → chunk</span></div>
+          <div class="arrow">↓</div>
+          <div class="arch-row three">
+            <div class="node core"><b>Embed</b><span>sentence-transformers</span></div>
+            <div class="node core"><b>Index</b><span>FAISS vector DB</span></div>
+            <div class="node core"><b>Retrieve</b><span>semantic search</span></div>
+          </div>
+          <div class="arrow">↓</div>
+          <div class="arch-row three">
+            <div class="node"><b>FastAPI</b><span>backend</span></div>
+            <div class="node core"><b>Groq API</b><span>LLM</span></div>
+            <div class="node out"><b>Answer</b><span>meeting insights</span></div>
+          </div>
+          <div class="arch-cap">How a question becomes a grounded answer: sources are processed and indexed once, then each query retrieves the relevant chunks before the LLM responds.</div>
+        </div>
+      </div>
+
+      <div class="grid three" style="margin-top:20px">
+        <article class="proj">
+          <div class="kind">Automation</div>
+          <h3>AI Workflow Automation System</h3>
+          <p>Prompt systems on OpenAI and Gemini APIs that automate client business tasks, with testing, evaluation and quality assurance for every workflow.</p>
+          <div class="tags"><span class="tag">OpenAI</span><span class="tag">Gemini</span><span class="tag">Evaluation</span></div>
+          <a class="link" href="#">Case study in AI Lab →</a>
+        </article>
+        <article class="proj">
+          <div class="kind">Chatbot</div>
+          <h3>AI Document &amp; Test-Case Generator</h3>
+          <p>A C# MVC chatbot using OpenAI and Gemini that drafts management documents and unit test cases through multi-turn conversations.</p>
+          <div class="tags"><span class="tag">C# MVC</span><span class="tag">OpenAI</span><span class="tag">Gemini</span></div>
+        </article>
+        <article class="proj">
+          <div class="kind">Internal tool</div>
+          <h3>Internal Operations Chrome Extension</h3>
+          <p>A Chrome extension for internal operations with OAuth 2.0 authentication, built for a VPN-secured environment and its security requirements.</p>
+          <div class="tags"><span class="tag">Chrome Extension</span><span class="tag">OAuth 2.0</span><span class="tag">VPN</span></div>
+        </article>
+        <article class="proj">
+          <div class="kind">Healthcare</div>
+          <h3>Hospital Management System</h3>
+          <p>Microservices REST APIs for patient records, appointments and billing, with Angular dashboards for real-time data visualisation and reporting.</p>
+          <div class="tags"><span class="tag">Microservices</span><span class="tag">REST</span><span class="tag">Angular</span></div>
+        </article>
+        <article class="proj">
+          <div class="kind">Pharma · regulated</div>
+          <h3>Pharmaceutical Management System</h3>
+          <p>Scalable microservices for inventory, order processing and compliance tracking in a regulated industry, with Angular components for real-time stock and sales monitoring.</p>
+          <div class="tags"><span class="tag">Microservices</span><span class="tag">Compliance</span><span class="tag">Angular</span></div>
+        </article>
+        <article class="proj" style="justify-content:center;align-items:flex-start;border-style:dashed">
+          <div class="kind">More in AI Lab</div>
+          <h3>Case studies, experiments &amp; tools</h3>
+          <p>Architecture diagrams, decisions and lessons from each build.</p>
+          <a class="btn btn-sm" href="#">Open AI Lab →</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHO -->
+  <section class="block alt">
+    <div class="wrap">
+      <div class="head">
+        <span class="mono">Who I work with</span>
+        <h2>The bridge between the business and the code</h2>
+        <p>I sit between technology, product and people: I can scope the problem with a department head and write the integration with the engineers.</p>
+      </div>
+      <div class="split">
+        <div class="panel">
+          <span class="mono">Business &amp; product stakeholders</span>
+          <h3>Department heads &amp; product owners</h3>
+          <p>You know the workflow pain. I find where AI actually helps.</p>
+          <ul class="ticks">
+            <li>Workflow discovery sessions and AI use-case assessment</li>
+            <li>Proof-of-concept pilots before any big commitment</li>
+            <li>Solutions on Claude Enterprise or Gemini for Workspace</li>
+            <li>Approved tools, usage guidelines and data handling</li>
+          </ul>
+        </div>
+        <div class="panel">
+          <span class="mono">Engineering teams</span>
+          <h3>Developers, QA &amp; tech leads</h3>
+          <p>You own the systems. I help AI fit into them cleanly.</p>
+          <ul class="ticks">
+            <li>LLM API integration: system prompts, tool use, multi-turn</li>
+            <li>RAG pipelines, vector search and embeddings</li>
+            <li>MCP servers and agentic workflows</li>
+            <li>Claude Code coaching and technical handover</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW -->
+  <section class="block" id="how">
+    <div class="wrap">
+      <div class="head">
+        <span class="mono">How I build</span>
+        <h2>From requirement to running solution</h2>
+        <p>Short cycles, a working proof of concept early, and documentation that lets your team own the result.</p>
+      </div>
+      <div class="flow">
+        <div class="step"><span class="n">01</span><h4>Discover</h4><p>Workflow discovery with stakeholders to find the pain points worth solving.</p></div>
+        <div class="step"><span class="n">02</span><h4>Assess</h4><p>Check whether AI fits, pick the platform and plan the integration.</p></div>
+        <div class="step"><span class="n">03</span><h4>Prototype</h4><p>Build a working proof of concept on real data in a short cycle.</p></div>
+        <div class="step"><span class="n">04</span><h4>Integrate</h4><p>Connect it to internal systems through APIs, OAuth and MCP.</p></div>
+        <div class="step"><span class="n">05</span><h4>Hand over</h4><p>Setup guides, usage guidelines and coaching so the team owns it.</p></div>
+      </div>
+      <div class="loop">
+        <svg width="36" height="20" viewBox="0 0 36 20" fill="none" aria-hidden="true"><path d="M30 4H10a6 6 0 0 0 0 12h18" stroke="#38c8e6" stroke-width="2" stroke-linecap="round"/><path d="M24 8l4 4-4 4" stroke="#38c8e6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Feedback from the prototype loops back into the assessment before anything is scaled.
+      </div>
+    </div>
+  </section>
+
+  <!-- STACK -->
+  <section class="block alt" id="stack">
+    <div class="wrap">
+      <div class="head">
+        <span class="mono">Tools &amp; platforms</span>
+        <h2>The stack behind the work</h2>
+      </div>
+      <div class="stack">
+        <div class="panel feature-panel">
+          <span class="mono">Agentic AI</span>
+          <h3>Agentic AI &amp; LLM frameworks</h3>
+          <p class="panel-sub">Chains, agents and multi-agent workflows, connected to real systems through the Model Context Protocol. The same frameworks I teach in institute cohorts.</p>
+          <div class="fw">
+            <div><b>LangChain</b><span>Chains, tools &amp; retrieval</span></div>
+            <div><b>LangGraph</b><span>Stateful agent graphs</span></div>
+            <div><b>CrewAI</b><span>Role-based multi-agent teams</span></div>
+            <div><b>AutoGen</b><span>Conversational multi-agent systems</span></div>
+            <div><b>Model Context Protocol</b><span>MCP servers &amp; integrations</span></div>
+            <div><b>Anthropic API</b><span>Tool use &amp; multi-turn</span></div>
+          </div>
+          <div class="tags" style="margin-top:14px"><span class="tag">Chains</span><span class="tag">AI agents</span><span class="tag">Agentic workflows</span><span class="tag">Tool use / function calling</span><span class="tag">Multi-turn conversations</span><span class="tag">MCP servers</span></div>
+        </div>
+        <div class="panel"><h3>AI platforms</h3><div class="tags"><span class="tag">Claude (claude.ai)</span><span class="tag">Claude Enterprise</span><span class="tag">Claude Code</span><span class="tag">Anthropic API</span><span class="tag">Gemini API</span><span class="tag">OpenAI API</span><span class="tag">Groq API</span></div></div>
+        <div class="panel"><h3>AI engineering</h3><div class="tags"><span class="tag">RAG pipelines</span><span class="tag">FAISS vector DB</span><span class="tag">Embeddings (sentence-transformers)</span><span class="tag">Semantic search</span><span class="tag">Document processing</span><span class="tag">Chatbot development</span><span class="tag">FastAPI</span></div></div>
+        <div class="panel"><h3>Prompt engineering &amp; reusable AI</h3><div class="tags"><span class="tag">System prompts</span><span class="tag">Custom instructions</span><span class="tag">AI skills</span><span class="tag">Prompt templates</span><span class="tag">Role-based prompt libraries</span><span class="tag">Chain-of-thought</span><span class="tag">Prompt testing &amp; evaluation</span></div></div>
+        <div class="panel"><h3>Workplace AI</h3><div class="tags"><span class="tag">Gemini for Google Workspace</span><span class="tag">Docs • Sheets • Gmail • Meet</span><span class="tag">Microsoft 365</span><span class="tag">Usage guidelines</span><span class="tag">Data handling</span></div></div>
+        <div class="panel"><h3>Development</h3><div class="tags"><span class="tag">Python</span><span class="tag">JavaScript</span><span class="tag">TypeScript</span><span class="tag">C#</span><span class="tag">ASP.NET Core</span><span class="tag">Angular</span><span class="tag">React</span><span class="tag">REST APIs</span><span class="tag">Microservices</span><span class="tag">SQL Server</span></div></div>
+        <div class="panel"><h3>AI-assisted development</h3><div class="tags"><span class="tag">Claude Code</span><span class="tag">Cursor</span><span class="tag">Google Antigravity</span><span class="tag">GitHub Copilot</span><span class="tag">V0.dev</span><span class="tag">Tabnine</span><span class="tag">Blackbox</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPERIENCE -->
+  <section class="block" id="experience">
+    <div class="wrap">
+      <div class="head">
+        <span class="mono">Experience</span>
+        <h2>From .NET engineer to AI solutions</h2>
+      </div>
+      <div class="tl">
+        <div class="tl-item major">
+          <div class="tl-when">Oct 2026 – Present</div>
+          <h3>Founder</h3>
+          <div class="co">Prompt at Work · Indore</div>
+          <ul>
+            <li>Founded an AI enablement and training firm delivering AI solutions and training for companies and institutes.</li>
+            <li>Run workflow discovery sessions with client companies and translate business requirements into AI-powered solutions.</li>
+          </ul>
+        </div>
+        <div class="tl-item major">
+          <div class="tl-when">Feb 2024 – Sep 2026</div>
+          <h3>AI Solutions Engineer</h3>
+          <div class="co">Gate6 Technologies Pvt. Ltd. · Indore</div>
+          <ul>
+            <li>Partnered with client and internal stakeholders to assess AI fit and deliver proof-of-concept builds in short cycles.</li>
+            <li>Integrated Claude, Gemini, OpenAI and Groq APIs into internal tooling and development workflows via REST, using system prompts, tool use and multi-turn conversations.</li>
+            <li>Built a RAG pipeline and chatbot in Python (FastAPI) with the Groq API, grounded in Fireflies meeting data, uploads and Google Drive documents.</li>
+            <li>Implemented FAISS with sentence-transformers embeddings for semantic search across PDF, DOCX, XLSX and PPTX files.</li>
+            <li>Built a C# MVC chatbot with OpenAI and Gemini, and a secure Chrome extension with OAuth 2.0 for a VPN-secured environment.</li>
+            <li>Coached developers on Claude Code, prompt patterns, agentic workflows and MCP server integrations.</li>
+          </ul>
+        </div>
+        <div class="tl-item">
+          <div class="tl-when">Jan 2020 – Dec 2023</div>
+          <h3>Co-founder &amp; Consultant</h3>
+          <div class="co">Dhande Creatives · Indore</div>
+          <ul>
+            <li>Technical consultant to clients, running requirement discovery and delivering custom .NET and web solutions end to end.</li>
+          </ul>
+        </div>
+        <div class="tl-item">
+          <div class="tl-when">Earlier roles</div>
+          <div class="earlier">
+            <div><b>Lead Software Engineer · Cyber Infrastructure</b><span>Dec 2017 – Jul 2018</span></div>
+            <div><b>Lead Software Engineer · Galaxy Weblinks</b><span>Apr 2017 – Nov 2017</span></div>
+            <div><b>Software Engineer · Infobeans Technologies</b><span>Aug 2015 – Nov 2016</span></div>
+            <div><b>Software Engineer · Gate6 Technologies</b><span>Jan 2015 – Aug 2015</span></div>
+            <div><b>Software Engineer · Om Software</b><span>2013 – 2014</span></div>
+            <div><b>Technical Trainer · NIIT Ltd.</b><span>Jul 2010 – May 2013</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="creds">
+        <span class="tag">Certified ScrumMaster (CSM) · Scrum Alliance</span>
+        <span class="tag">GNIIT Diploma in Software Engineering · NIIT</span>
+        <span class="tag">B.Sc. Biotechnology · Barkatullah University</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES OFFERED -->
+  <section class="block alt">
+    <div class="wrap">
+      <div class="head">
+        <span class="mono">Prompt at Work</span>
+        <h2>Services I offer</h2>
+        <p>Enablement, solutions and training under one roof.</p>
+      </div>
+      <div class="svc">
+        <div class="panel here">
+          <span class="here-tag">You are here</span>
+          <h3>AI Solutions Engineer</h3>
+          <p>Chatbots, RAG pipelines, agents, automation and REST API integrations that connect AI to the systems your team already uses.</p>
+          <a class="link" href="#solutions">What I build →</a>
+        </div>
+        <div class="panel">
+          <h3>AI Enablement Officer</h3>
+          <p>Workflow discovery, reusable prompt libraries and AI skills, and documented usage guidelines so adoption stays secure and consistent.</p>
+          <a class="link" href="ai-enablement-officer-portfolio.html">Enablement profile →</a>
+        </div>
+        <div class="panel">
+          <h3>Corporate Trainer</h3>
+          <p>Hands-on workshops for mixed audiences, so business users and technical staff both leave able to use AI on their own work.</p>
+          <a class="link" href="ai-enablement-officer-portfolio.html#workshops">See workshops →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY -->
+  <section class="block">
+    <div class="wrap">
+      <div class="head">
+        <span class="mono">Why work with me</span>
+        <h2>An engineer who also explains it</h2>
+      </div>
+      <div class="why">
+        <div class="panel">
+          <div class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M16 18l6-6-6-6M8 6l-6 6 6 6"/></svg></div>
+          <h3>Production engineering</h3>
+          <p>A software engineering career since 2013: enterprise apps, microservices and now AI systems.</p>
+        </div>
+        <div class="panel">
+          <div class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 12h16M12 4v16"/><circle cx="12" cy="12" r="9"/></svg></div>
+          <h3>Business to code</h3>
+          <p>Discovery with stakeholders first, so what gets built solves the problem the team actually has.</p>
+        </div>
+        <div class="panel">
+          <div class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7z"/><path d="M9 12l2 2 4-4"/></svg></div>
+          <h3>Secure &amp; regulated</h3>
+          <p>OAuth 2.0, VPN-secured tooling, data handling standards, and systems built for healthcare and pharma.</p>
+        </div>
+        <div class="panel">
+          <div class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 7l10-4 10 4-10 4z"/><path d="M6 9v5c0 1.5 3 3 6 3s6-1.5 6-3V9"/></svg></div>
+          <h3>Your team keeps it</h3>
+          <p>Docs for end users and engineers, plus coaching, so the solution doesn't depend on me.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="block" id="contact" style="padding-top:0">
+    <div class="wrap">
+      <div class="band">
+        <div>
+          <h3>Have a workflow AI should be handling?</h3>
+          <p>Tell me what your team is trying to do. I'll show you where AI fits and what a first proof of concept would look like.</p>
+        </div>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="#">Get in touch</a>
+          <a class="btn" href="#">Explore AI Lab</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="block" id="faq" style="padding-top:20px">
+    <div class="wrap">
+      <h2 style="margin-bottom:28px">Frequently asked questions</h2>
+      <div class="faq">
+        <div class="panel"><h3>Which AI platforms do you work with?</h3><p>Claude and the Anthropic API, Google Gemini, OpenAI and Groq, plus AI coding environments such as Claude Code, Cursor and Google Antigravity. I build on whichever platform your organisation has approved, and I can integrate any other model or tool you already use in your environment.</p></div>
+        <div class="panel"><h3>Can it connect to our internal systems?</h3><p>Yes. Integrations run through REST APIs, the Google Drive API, OAuth 2.0 and MCP servers, so AI works with your data where it already lives.</p></div>
+        <div class="panel"><h3>How do you handle security?</h3><p>Secure authentication, data handling and acceptable-use practices are part of the design, including builds for VPN-secured environments.</p></div>
+        <div class="panel"><h3>What do we get at hand-over?</h3><p>Setup guides, usage guidelines and technical handover documentation for both end users and engineers.</p></div>
+        <div class="panel"><h3>Can you upskill our developers too?</h3><p>Yes. I coach teams on Claude Code and AI-assisted development. See the training profile for workshops.</p></div>
+        <div class="panel"><h3>How is an engagement priced?</h3><p style="margin-bottom:14px">Every engagement is scoped to your team's needs, so pricing depends on what we build together. Tell me about your project and I'll share a tailored proposal.</p><a class="btn btn-sm btn-primary" href="/contact">Contact me for pricing →</a></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap foot-row">
+    <div><b style="color:var(--text)">Niharika Dhande</b> · Prompt at Work · © 2026</div>
+    <nav>
+      <a href="#">AI Lab</a>
+      <a href="ai-enablement-officer-portfolio.html">Training profile</a>
+      <a href="#">LinkedIn</a>
+      <a href="#">Contact</a>
+    </nav>
+  </div>
+</footer>
+
+<div class="poc-note">
+  <button aria-label="Close" onclick="this.parentElement.remove()">×</button>
+  <b>POC only.</b> Same design system as the Enablement page. Metrics are left out until you add them; yellow tags mark facts I still need.
+</div>
+
+<script>
+  const buttons = document.querySelectorAll(".filters button");
+  const cards = document.querySelectorAll(".card");
+  buttons.forEach((b) =>
+    b.addEventListener("click", () => {
+      buttons.forEach((x) => x.classList.toggle("on", x === b));
+      cards.forEach((c) => (c.hidden = b.dataset.f !== "all" && c.dataset.a !== b.dataset.f));
+    })
+  );
+</script>
+</body>
+</html>

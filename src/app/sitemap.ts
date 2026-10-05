@@ -4,6 +4,7 @@ import {
   automationSlugsQuery,
   blogSlugsQuery,
   experimentSlugsQuery,
+  portfolioSlugsQuery,
   projectSlugsQuery,
   promptSlugsQuery,
   toolSlugsQuery,
@@ -14,7 +15,7 @@ import { getCanonicalUrl } from "../lib/site";
 // Real, generated URLs only — every dynamic segment below is pulled from
 // the exact same Sanity queries the pages themselves use (never a
 // hand-maintained list that can drift from what's actually published).
-// /studio and /resume/download are deliberately excluded — see robots.ts.
+// /studio is deliberately excluded — see robots.ts.
 export const revalidate = 3600;
 
 const staticPaths = [
@@ -22,16 +23,12 @@ const staticPaths = [
   "/ai-lab",
   "/ai-lab/work",
   "/ai-lab/engineering",
-  "/ai-lab/tools",
-  "/ai-lab/experiments",
-  "/ai-lab/prompts",
   "/ai-lab/automations",
   "/blog",
   "/contact",
   "/cover-letter",
-  "/experience",
+  "/portfolio",
   "/privacy",
-  "/resume",
   "/testimonials",
   "/training",
   "/videos",
@@ -42,14 +39,15 @@ const staticPaths = [
 // in Indore" positioning, so they rank above individual entries.
 function priorityFor(path: string): number {
   if (path === "/") return 1;
-  if (["/training", "/ai-lab", "/contact", "/resume"].includes(path)) return 0.9;
+  if (["/training", "/ai-lab", "/contact", "/portfolio"].includes(path)) return 0.9;
+  if (path.startsWith("/portfolio/")) return 0.9;
   if (path.startsWith("/training/") || path === "/blog") return 0.8;
   if (["/privacy", "/cover-letter"].includes(path)) return 0.3;
   return 0.6;
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const [projectSlugs, toolSlugs, promptSlugs, experimentSlugs, automationSlugs, blogSlugs, trainingSlugs] =
+  const [projectSlugs, toolSlugs, promptSlugs, experimentSlugs, automationSlugs, blogSlugs, trainingSlugs, portfolioSlugs] =
     await Promise.all([
       client.fetch<string[]>(projectSlugsQuery),
       client.fetch<string[]>(toolSlugsQuery),
@@ -58,6 +56,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       client.fetch<string[]>(automationSlugsQuery),
       client.fetch<string[]>(blogSlugsQuery),
       client.fetch<string[]>(trainingSlugsQuery),
+      client.fetch<string[]>(portfolioSlugsQuery),
     ]);
 
   const dynamicPaths = [
@@ -68,6 +67,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...automationSlugs.map((s) => `/ai-lab/automations/${s}`),
     ...blogSlugs.map((s) => `/blog/${s}`),
     ...trainingSlugs.map((s) => `/training/${s}`),
+    ...portfolioSlugs.map((s) => `/portfolio/${s}`),
   ];
 
   return [...staticPaths, ...dynamicPaths].map((path) => ({

@@ -26,8 +26,8 @@ export default function Contact({ headingLevel = "section" }: { headingLevel?: "
           level={headingLevel}
           align="start"
           eyebrow="CONTACT"
-          title="Let's Build Something Together"
-          description="Job opportunity, AI consulting, a training program, or just want to talk about AI — I'd love to hear from you."
+          title="Let's make AI work for your team."
+          description="Whether you need a workshop, a prompt library or a working AI solution, tell me what your team is trying to do and I'll show you where AI fits."
         />
 
         <div className="grid grid-cols-1 lg:grid-cols-[0.85fr_1.15fr] gap-14">
