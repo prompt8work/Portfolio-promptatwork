@@ -72,9 +72,26 @@ export const siteKeywords = [
   "Niharika Dhande",
   "Niharika Saxena Dhande",
   "PromptAtWork",
-  "prompt engineer in",
+  "Prompt at Work",
+  "Prompt for Work",
+  "prompt engineer in Indore",
+  "prompt engineering trainer in Indore",
+  "prompt engineering course in Indore",
+  "AI Enablement Officer",
+  "AI Enablement Officer in Indore",
+  "AI Solutions Engineer",
+  "AI Solutions Engineer in Indore",
+  "AI engineer in Indore",
+  "generative AI engineer in Indore",
+  "corporate AI trainer in Indore",
+  "AI tools trainer in Indore",
+  "office AI tools training",
+  "Claude trainer in Indore",
+  "Claude Code training",
+  "prompt library",
+  "working prompt library",
   "prompt engineering trainer",
-  "generative AI trainer in",
+  "generative AI trainer in Indore",
   "generative AI training",
   "prompt engineering course",
   "prompt engineering training India",
@@ -101,6 +118,14 @@ export const siteKeywords = [
 ];
 
 export const personName = "Niharika Dhande";
+
+// Every profile Niharika owns, so search engines tie them to one person.
+// Add new profiles to data/personalInfo.ts and list them here.
+const profileUrls = [`https://${personalInfo.linkedin}`, `https://${personalInfo.github}`];
+
+// How people write the brand name. "Prompt for Work" is a mis-hearing,
+// not a name, so it stays a keyword above rather than an alternateName.
+const brandAlternateNames = ["Prompt at Work", "Prompt @ Work", "Prompt@Work"];
 export const personId = `${siteUrl}/#person`;
 const organizationId = `${siteUrl}/#organization`;
 const websiteId = `${siteUrl}/#website`;
@@ -132,7 +157,7 @@ export const homeJsonLd = {
       "@id": personId,
       name: personName,
       alternateName: ["Niharika Saxena Dhande", "Niharika"],
-      jobTitle: personalInfo.title,
+      jobTitle: [personalInfo.title, "AI Solutions Engineer", "Prompt Engineer", "Corporate AI Trainer"],
       description:
         "AI Enablement Officer, AI Solutions Engineer and corporate AI trainer based in Indore, India, and founder of Prompt at Work. Finds where AI fits in a team's workflow, builds the solution, and trains the people who will use it.",
       url: getCanonicalUrl("/"),
@@ -158,12 +183,13 @@ export const homeJsonLd = {
         { "@type": "Occupation", name: "Prompt Engineer", occupationLocation: indore },
       ],
       worksFor: { "@id": organizationId },
-      sameAs: [`https://${personalInfo.linkedin}`],
+      sameAs: profileUrls,
     },
     {
       "@type": "ProfessionalService",
       "@id": organizationId,
       name: "PromptAtWork",
+      alternateName: brandAlternateNames,
       url: getCanonicalUrl("/"),
       description:
         "Prompt engineering and Generative AI training, workshops and AI engineering by Niharika Dhande, based in Indore, India.",
@@ -171,7 +197,7 @@ export const homeJsonLd = {
       founder: { "@id": personId },
       address: indoreAddress,
       areaServed: [indore, { "@type": "Country", name: "India" }],
-      knowsAbout: ["Prompt engineering", "Generative AI", "RAG", "AI automation"],
+      knowsAbout: ["Prompt engineering", "Generative AI", "RAG", "AI automation", "AI enablement", "Claude and Claude Code", "AI tools training"],
       makesOffer: [
         { "@type": "Offer", itemOffered: { "@type": "Service", name: "Prompt engineering training" } },
         { "@type": "Offer", itemOffered: { "@type": "Service", name: "Generative AI workshops" } },
@@ -185,16 +211,31 @@ export const homeJsonLd = {
           },
         })),
       ],
-      sameAs: [`https://${personalInfo.linkedin}`],
+      sameAs: profileUrls,
     },
     {
       "@type": "WebSite",
       "@id": websiteId,
       name: "PromptAtWork",
-      alternateName: "PromptAtWork — Niharika Dhande",
+      alternateName: [...brandAlternateNames, "PromptAtWork — Niharika Dhande"],
       url: getCanonicalUrl("/"),
       inLanguage: "en-IN",
       publisher: { "@id": personId },
     },
   ],
 };
+
+// FAQPage for any page that shows question-and-answer pairs on screen.
+// Answer engines (ChatGPT, Perplexity, Gemini) quote these directly, so
+// only pass questions the page visibly renders.
+export function buildFaqJsonLd(items: { question: string; answer: string }[]) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: items.map((item) => ({
+      "@type": "Question",
+      name: item.question,
+      acceptedAnswer: { "@type": "Answer", text: item.answer },
+    })),
+  };
+}

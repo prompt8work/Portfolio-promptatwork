@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { hero } from "../../../data/homeContent";
+import { personalInfo } from "../../../data";
 import LinkedinIcon from "../icons/LinkedinIcon";
 import Button from "../ui/Button";
 import ArrowLink from "../ui/ArrowLink";
@@ -62,8 +63,14 @@ export default function Hero() {
             <RotatingText items={hero.roles} className="font-mono text-xs tracking-wide text-plum-700 font-semibold" />
           </IntroFade>
 
+          <IntroFade>
+            <h1 className="max-w-[560px] text-sm sm:text-[15px] leading-snug font-medium text-neutral-700">
+              {hero.identity}
+            </h1>
+          </IntroFade>
+
           <WordReveal
-            as="h1"
+            as="h2"
             className="font-display font-semibold text-4xl sm:text-5xl lg:text-[52px] leading-[1.12] text-neutral-900 tracking-tight"
           >
             {hero.heading}
@@ -107,7 +114,9 @@ export default function Hero() {
 
           <IntroFade after={hero.heading} step={3} className="flex items-center gap-3 mt-2">
             <a
-              href="#"
+              href={`https://${personalInfo.github}`}
+              target="_blank"
+              rel="noopener noreferrer"
               aria-label="GitHub"
               className="w-[38px] h-[38px] rounded-full border border-neutral-300 flex items-center justify-center text-neutral-800 hover:border-plum-600 hover:text-plum-600 motion-btn"
             >
@@ -116,7 +125,9 @@ export default function Hero() {
               </svg>
             </a>
             <a
-              href="#"
+              href={`https://${personalInfo.linkedin}`}
+              target="_blank"
+              rel="noopener noreferrer"
               aria-label="LinkedIn"
               className="w-[38px] h-[38px] rounded-full border border-neutral-300 flex items-center justify-center text-neutral-800 hover:border-plum-600 hover:text-plum-600 motion-btn"
             >

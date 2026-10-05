@@ -15,6 +15,14 @@ const nextConfig: NextConfig = {
   // search engines and shared links move to the new URLs.
   async redirects() {
     return [
+      // One host for search engines: www.promptatwork.com answered with a
+      // full copy of every page, splitting ranking signals with the apex.
+      {
+        source: "/:path*",
+        has: [{ type: "host", value: "www.promptatwork.com" }],
+        destination: "https://promptatwork.com/:path*",
+        permanent: true,
+      },
       { source: "/projects", destination: "/ai-lab/work", permanent: true },
       { source: "/projects/:slug", destination: "/ai-lab/work/:slug", permanent: true },
       { source: "/engineering", destination: "/ai-lab/engineering", permanent: true },

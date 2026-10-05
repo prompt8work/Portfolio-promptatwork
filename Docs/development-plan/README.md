@@ -27,6 +27,7 @@ The PRD specifies **Next.js + React + TypeScript + Sanity CMS + Supabase Postgre
 | [10](10-v3-admin-crm.md) | V3 — Admin CRM Dashboard | Brainstorm only — unified Sanity + Supabase admin, Google OAuth2 single-user login, dynamic content editor | (site-owned doc, not PRD) |
 | [11](11-ai-lab-docs-hub.md) | AI Lab Docs Hub | One docs-style hub for all work (Work, Engineering, Tools, Experiments, Prompts, Automations); light theme sitewide except Resume; homepage de-duplicated; one shared menu | (site-owned doc, not PRD) |
 | [12](12-process-diagrams-and-content-skill.md) | Process Diagrams & Content Skill | Required diagrams on every post (flow, loop, analogy, Mermaid); `/case-study` skill turns raw notes into checked Sanity drafts | (site-owned doc, not PRD) |
+| [13](13-seo-aeo.md) | SEO & AEO | Keyword bank, AI-assistant question bank, code fixes and off-site steps so the site ranks for Niharika's roles and Indore training searches | §78 (site-owned keyword bank) |
 
 Phase 4 has two follow-on change docs, both already implemented and folded into [04-ai-lab-content.md](04-ai-lab-content.md)'s own Status section — read that file first; the two below are the original change requests, kept for history:
 - [4.1](04.1-ai-lab-content-tools.md) — evolved Tools from a simple explorer into a full Tool Research & Learning Repository (research content, best-use-cases, downloadable resources, search/filter).

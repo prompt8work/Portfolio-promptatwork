@@ -8,8 +8,8 @@ import { automationsQuery } from "../../../sanity/lib/queries";
 import { buildMetadata } from "../../../lib/site";
 
 export const metadata: Metadata = buildMetadata({
-  title: "Automations — AI Lab — PromptAtWork",
-  description: "Trigger → input → AI processing → decision → action → output, laid out end to end.",
+  title: "AI Workflow Automations — End-to-End AI Automation Builds | PromptAtWork",
+  description: "AI workflow automations by Niharika Dhande, laid out end to end: trigger → input → AI processing → decision → action → output.",
   path: "/ai-lab/automations",
 });
 

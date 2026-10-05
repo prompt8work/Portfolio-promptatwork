@@ -8,8 +8,8 @@ import { promptsQuery } from "../../../sanity/lib/queries";
 import { buildMetadata } from "../../../lib/site";
 
 export const metadata: Metadata = buildMetadata({
-  title: "Prompt Library — AI Lab — PromptAtWork",
-  description: "Categorized, copyable prompts with example input/output.",
+  title: "Prompt Library — Working Prompts with Example Input & Output | PromptAtWork",
+  description: "A working prompt library by prompt engineer Niharika Dhande: categorized, copyable prompts, each with example input and output.",
   path: "/ai-lab/prompts",
 });
 

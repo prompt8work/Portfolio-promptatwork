@@ -7,24 +7,37 @@ export type DocsGroup = { title: string; href: string; items: DocsEntry[] };
 /** One project's documentation in reading order: the case study first, then its parts. */
 export type ProjectSeries = { project: string; pages: (DocsEntry & { kind: string })[] };
 
-const Ctx = createContext<{ groups: DocsGroup[]; series: ProjectSeries[] }>({ groups: [], series: [] });
+const Ctx = createContext<{ groups: DocsGroup[]; series: ProjectSeries[]; label: string }>({
+  groups: [],
+  series: [],
+  label: "AI Lab",
+});
 
 /**
  * The AI Lab sidebar tree, fetched once by the ai-lab layout and shared
  * with everything that needs it on the client: the sidebar, ⌘K search and
  * the previous/next links at the foot of each page. `series` groups a case
- * study with the entries that document parts of the same project.
+ * study with the entries that document parts of the same project. Training
+ * reuses the same shell with its own tree; `label` names the section in the
+ * sidebar and search.
  */
 export function AiLabNavProvider({
   groups,
   series = [],
+  label = "AI Lab",
   children,
 }: {
   groups: DocsGroup[];
   series?: ProjectSeries[];
+  label?: string;
   children: ReactNode;
 }) {
-  return <Ctx.Provider value={{ groups, series }}>{children}</Ctx.Provider>;
+  return <Ctx.Provider value={{ groups, series, label }}>{children}</Ctx.Provider>;
+}
+
+/** The section's name, e.g. "AI Lab" or "Training". */
+export function useDocsLabel() {
+  return useContext(Ctx).label;
 }
 
 export function useAiLabNav() {

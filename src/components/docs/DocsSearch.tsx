@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import { useAiLabNav } from "./AiLabNavContext";
+import { useAiLabNav, useDocsLabel } from "./AiLabNavContext";
 
 function SearchIcon() {
   return (
@@ -30,6 +30,7 @@ function SearchIcon() {
  */
 export default function DocsSearch({ compact = false }: { compact?: boolean }) {
   const groups = useAiLabNav();
+  const label = useDocsLabel();
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
@@ -80,7 +81,7 @@ export default function DocsSearch({ compact = false }: { compact?: boolean }) {
         <button
           type="button"
           onClick={openSearch}
-          aria-label="Search AI Lab"
+          aria-label={`Search ${label}`}
           className="w-9 h-9 flex items-center justify-center rounded-lg border border-neutral-300 text-neutral-600"
         >
           <SearchIcon />
@@ -92,7 +93,7 @@ export default function DocsSearch({ compact = false }: { compact?: boolean }) {
           className="w-full flex items-center gap-2.5 rounded-lg border border-neutral-300 bg-white px-3 py-2 text-sm text-neutral-500 hover:border-neutral-400"
         >
           <SearchIcon />
-          <span>Search AI Lab</span>
+          <span>Search {label}</span>
           <kbd className="ml-auto font-mono text-[10.5px] text-neutral-400 border border-neutral-200 rounded px-1.5 py-0.5">
             ⌘K
           </kbd>
@@ -104,7 +105,7 @@ export default function DocsSearch({ compact = false }: { compact?: boolean }) {
           className="fixed inset-0 z-[60] flex items-start justify-center px-4 pt-[12vh]"
           role="dialog"
           aria-modal="true"
-          aria-label="Search AI Lab"
+          aria-label={`Search ${label}`}
         >
           <button
             type="button"
@@ -135,7 +136,7 @@ export default function DocsSearch({ compact = false }: { compact?: boolean }) {
                   if (e.key === "Enter" && results[cursor]) go(results[cursor].href);
                 }}
                 placeholder="Search projects, tools, prompts…"
-                aria-label="Search AI Lab"
+                aria-label={`Search ${label}`}
                 role="combobox"
                 aria-expanded="true"
                 aria-controls="docs-search-results"

@@ -24,7 +24,7 @@ const jetbrainsMono = JetBrains_Mono({
   weight: ["400", "500", "600"],
 });
 
-const defaultTitle = "Niharika Dhande — Prompt Engineer & Generative AI Trainer, Indore | PromptAtWork";
+const defaultTitle = "Niharika Dhande — AI Enablement Officer, AI Solutions Engineer & Prompt Engineer, Indore | PromptAtWork";
 const defaultDescription =
   "Niharika Dhande is an AI Enablement Officer, AI Solutions Engineer and corporate AI trainer based in Indore, India — AI enablement, RAG and AI integrations, and hands-on AI training.";
 const defaultOgImage = `${siteUrl}/og?title=${encodeURIComponent(defaultTitle)}&variant=blog`;

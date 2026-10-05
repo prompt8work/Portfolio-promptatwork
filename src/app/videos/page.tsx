@@ -11,7 +11,7 @@ import { videosQuery } from "../../sanity/lib/queries";
 import { buildMetadata } from "../../lib/site";
 
 export const metadata: Metadata = buildMetadata({
-  title: "Videos — PromptAtWork",
+  title: "Videos — Prompt Engineering & AI Tools by Niharika Dhande | PromptAtWork",
   description:
     "Every video, synced from the PromptAtWork YouTube channel — watch right here, or follow the title through to YouTube.",
   path: "/videos",

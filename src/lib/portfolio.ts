@@ -30,6 +30,8 @@ export type Offering = {
   footLabel?: string;
   footText?: string;
   link?: Cta;
+  /** The offering's own page (trainings: /training/<slug>); links the title and cover. */
+  href?: string;
 };
 
 export type DiagramNode = { _key: string; title: string; detail?: string; tone?: "plain" | "source" | "core" | "output" };

@@ -9,7 +9,7 @@ import { projectsQuery } from "../../../sanity/lib/queries";
 import { buildMetadata } from "../../../lib/site";
 
 export const metadata: Metadata = buildMetadata({
-  title: "Work & Case Studies — AI Lab — PromptAtWork",
+  title: "AI Engineering Case Studies — RAG, Agentic & Full-Stack AI by Niharika Dhande | PromptAtWork",
   description:
     "Full-Stack AI and agentic AI case studies: the problem, how it was solved, and the future scope, linked to every page that documents each project.",
   path: "/ai-lab/work",

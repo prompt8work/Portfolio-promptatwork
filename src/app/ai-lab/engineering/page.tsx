@@ -12,7 +12,7 @@ import { buildMetadata } from "../../../lib/site";
 export const revalidate = 60;
 
 export const metadata: Metadata = buildMetadata({
-  title: "Engineering — AI Lab — PromptAtWork",
+  title: "AI Engineering — RAG, Generative AI, Agentic AI & AI Automation | PromptAtWork",
   description:
     "Full-Stack AI Engineering, RAG & Retrieval, Generative AI, Agentic AI and AI Automation — each grounded in real, shipped work.",
   path: "/ai-lab/engineering",

@@ -23,7 +23,9 @@ export default function SiteFooter() {
             </p>
             <div className="flex gap-2.5 mt-1">
               <a
-                href="#"
+                href={`https://${personalInfo.github}`}
+                target="_blank"
+                rel="noopener noreferrer"
                 aria-label="GitHub"
                 className="w-[34px] h-[34px] rounded-full border border-neutral-300 flex items-center justify-center text-neutral-600 hover:border-plum-600 hover:text-plum-600 motion-btn"
               >
