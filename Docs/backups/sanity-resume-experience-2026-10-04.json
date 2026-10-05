@@ -1,0 +1,421 @@
+[
+  {
+    "_createdAt": "2026-09-24T16:43:41Z",
+    "_id": "experience-0",
+    "_rev": "trzJwo7gNjLjmFEMdyPNIC",
+    "_type": "experience",
+    "_updatedAt": "2026-09-24T16:43:41Z",
+    "company": "Gate6 Technologies Pvt. Ltd.",
+    "displayOrder": 0,
+    "location": "Indore, M.P.",
+    "responsibilities": [
+      "Conduct 25+ live technical presentations to prospects, converting requirements into working prototypes using vibe coding",
+      "Execute outreach campaigns creating compelling POCs within 3-7 days cycles across Web, AI/ML, and Cloud services",
+      "Identify and qualify potential leads through technical demonstrations, building strong sales pipeline for IT services",
+      "Collaborate with Business Development and Marketing teams supporting sales growth through technical consultation",
+      "Research target markets in international IT services, tailoring technical demonstrations to specific industry needs",
+      "Built RAG-based intelligent chatbot using Python FastAPI and Groq API with sub-second response times",
+      "Created AI chatbot with OpenAI and Gemini APIs showcasing 10x productivity improvements",
+      "Developed 500+ production-ready solutions and prompts for prospect presentations"
+    ],
+    "role": "Technical Analyst Lead Generation & Solutions Engineer",
+    "startDate": "2024-02-01"
+  },
+  {
+    "_createdAt": "2026-09-24T16:43:42Z",
+    "_id": "experience-1",
+    "_rev": "7OkmNeJfeu3frDLfgnVtaE",
+    "_type": "experience",
+    "_updatedAt": "2026-09-28T19:25:53Z",
+    "company": "Dhande Creative",
+    "displayOrder": 1,
+    "endDate": "2024-01-01",
+    "location": "Indore, M.P.",
+    "responsibilities": [
+      "Founded and ran an independent IT consulting practice, managing client engagements end to end",
+      "Led project management and stakeholder coordination across client engagements, from requirements through delivery",
+      "Served as the primary point of collaboration between clients and delivery teams on custom software projects"
+    ],
+    "role": "Founder — Project & Stakeholder Management",
+    "startDate": "2018-05-01"
+  },
+  {
+    "_createdAt": "2026-09-24T16:43:43Z",
+    "_id": "experience-2",
+    "_rev": "Fp6j2OFYXErtrNMrGDRWvy",
+    "_type": "experience",
+    "_updatedAt": "2026-09-24T16:43:43Z",
+    "company": "Cyber Infrastructure Pvt. Ltd.",
+    "displayOrder": 2,
+    "endDate": "2018-05-01",
+    "location": "Indore, M.P.",
+    "responsibilities": [
+      "Led technical teams developing enterprise web applications using ASP.NET Core and Angular",
+      "Conducted technical presentations to clients explaining architecture and implementation strategies"
+    ],
+    "role": "Lead Software Engineer",
+    "startDate": "2017-12-01"
+  },
+  {
+    "_createdAt": "2026-09-24T16:43:44Z",
+    "_id": "experience-3",
+    "_rev": "9bEXvZgmUI2zGf3DfLWRdP",
+    "_type": "experience",
+    "_updatedAt": "2026-09-24T16:43:44Z",
+    "company": "Galaxy Weblinks Ltd.",
+    "displayOrder": 3,
+    "endDate": "2017-11-01",
+    "location": "Indore, M.P.",
+    "responsibilities": [
+      "Developed enterprise-grade web applications using full-stack technologies"
+    ],
+    "role": "Sr. Software Engineer",
+    "startDate": "2017-04-01"
+  },
+  {
+    "_createdAt": "2026-09-24T16:43:45Z",
+    "_id": "experience-4",
+    "_rev": "Fp6j2OFYXErtrNMrGDRX2G",
+    "_type": "experience",
+    "_updatedAt": "2026-09-24T16:43:45Z",
+    "company": "Gate6 Technologies Pvt. Ltd.",
+    "displayOrder": 4,
+    "endDate": "2016-11-01",
+    "location": "Indore, M.P.",
+    "responsibilities": [
+      "Developed scalable web applications using ASP.NET MVC, Web API, and Angular"
+    ],
+    "role": "Software Engineer",
+    "startDate": "2015-08-01"
+  },
+  {
+    "_createdAt": "2026-09-24T16:43:46Z",
+    "_id": "resume-singleton",
+    "_rev": "flqZNGp7VQ6a1CboDfj8dd",
+    "_type": "resume",
+    "_updatedAt": "2026-09-28T19:25:45Z",
+    "certifications": [
+      {
+        "_key": "cert0",
+        "credentialId": "1894098-csm",
+        "issuer": "Scrum Alliance",
+        "name": "Certified ScrumMaster (CSM)"
+      }
+    ],
+    "earlierRolesHeading": "Earlier — .NET Engineering",
+    "education": [
+      {
+        "_key": "edu0",
+        "degree": "GNIIT Diploma, Software Engineering",
+        "institution": "NIIT Education Center",
+        "year": "2012"
+      },
+      {
+        "_key": "edu1",
+        "degree": "B.Sc. Biotechnology",
+        "institution": "Barkatullah University, Bhopal",
+        "year": "2010"
+      }
+    ],
+    "email": "niharikadhande1@gmail.com",
+    "heroStats": [
+      {
+        "_key": "stat0",
+        "label": "Years engineering",
+        "value": "8+"
+      },
+      {
+        "_key": "stat1",
+        "label": "Production prompts",
+        "value": "500+"
+      },
+      {
+        "_key": "stat2",
+        "label": "Schema-valid output",
+        "value": "99.9%"
+      }
+    ],
+    "linkedin": "linkedin.com/in/niharikasaxenadhande",
+    "location": "Indore, Madhya Pradesh, India",
+    "name": "Niharika Dhande",
+    "numbers": [
+      {
+        "_key": "num0",
+        "label": "LLM spend cut",
+        "value": "~80%"
+      },
+      {
+        "_key": "num1",
+        "label": "Retrieval relevance",
+        "value": "45→89%"
+      },
+      {
+        "_key": "num2",
+        "label": "p95 latency",
+        "value": "<3s"
+      },
+      {
+        "_key": "num3",
+        "label": "Uptime",
+        "value": "99%+"
+      }
+    ],
+    "projects": [
+      {
+        "_key": "project0",
+        "badge": "RAG",
+        "description": [],
+        "name": "RAG Applications",
+        "points": [
+          "Production RAG service turning meeting transcripts into executive summaries and user stories — 100+ concurrent users, p95 < 3s, ~1.2GB footprint.",
+          "Hybrid retrieval (FAISS + BM25 fused with Reciprocal Rank Fusion) lifted relevance from 45% to 89%; a regression suite gates every release.",
+          "Cost-aware multi-LLM router with automatic failover picks the cheapest model meeting the quality bar per request at 99%+ uptime."
+        ],
+        "tech": [
+          "Python",
+          "FastAPI",
+          "FAISS",
+          "OpenAI / Anthropic / Gemini / Groq"
+        ]
+      },
+      {
+        "_key": "project1",
+        "badge": "Automation",
+        "description": [],
+        "name": "AI Workflow Automation and Scheduling Tools (100+)",
+        "points": [
+          "500+ production prompts across 18 SDLC modules (requirements, QA, dev) generating structured documents and test cases at 99.9% schema validity.",
+          "Delivered across Python services, C# integrations and Angular UI on Azure — backend, AI layer and frontend inside one product surface.",
+          "Cut per-document LLM spend sharply via prompt compression, response caching, request batching and cross-provider model selection."
+        ],
+        "tech": [
+          "Zapier",
+          "n8n",
+          "Workato",
+          "Claude"
+        ]
+      },
+      {
+        "_key": "project2",
+        "badge": "Voice AI",
+        "description": [],
+        "name": "Voice AI Agent - Nextiva",
+        "points": [
+          "Shipped a complete application through AI-assisted delivery — discovery, PRD, architecture, UX, sprint planning, implementation and QA, with human validation at each gate.",
+          "Multi-agent orchestration across Analyst, Architect, PM, UX, Developer and QA roles — agentic GenAI workflows applied to real product delivery."
+        ],
+        "tech": [
+          "TypeScript",
+          "Node.js",
+          "React.js",
+          "Groq",
+          "Claude",
+          "Big Data",
+          "Vapi",
+          "Twilio"
+        ]
+      },
+      {
+        "_key": "project3",
+        "badge": "Platform",
+        "description": [
+          "Designed and developed an AI-powered centralized platform for a fashion, e-commerce, travel, and event organization business to streamline retreat/trip planning, campaign generation, product customization, marketing collateral, and customer engagement. The solution used AI agent orchestration and reusable prompt libraries to automate the creation of travel itineraries, market research, sales and marketing content, event campaigns, brochures, trip guides, and customized merchandise such as T-shirts, hoodies, caps, and promotional goodies.",
+          "Integrated multiple AI models including Anthropic, OpenAI/ChatGPT, Google Gemini, and Grok, with automated fallback/failover mechanisms to maintain service continuity when a model was unavailable or reached usage limits. Implemented AI-powered image generation for branded merchandise and campaign creatives, along with a prompt development and management environment enabling teams to create, test, store, reuse, and standardize prompts across business workflows."
+        ],
+        "name": "AI-Powered E-commerce, Campaign & Retreat Planning Platform",
+        "points": [],
+        "tech": [
+          "AI agent orchestration",
+          "Prompt engineering",
+          "Prompt libraries",
+          "OpenAI/ChatGPT",
+          "Anthropic",
+          "Google Gemini",
+          "Grok",
+          "AI image generation",
+          "Multi-model failover",
+          "Content automation",
+          "Campaign generation",
+          "E-commerce customization"
+        ],
+        "techLabel": "Key technologies"
+      }
+    ],
+    "roles": [
+      {
+        "_key": "role0",
+        "company": "Gate6 Technologies Pvt. Ltd.",
+        "highlights": [
+          "Own generative AI development end to end — translating product goals into production systems serving real users at sub-3s p95 latency and 99%+ uptime.",
+          "Authored and maintain 500+ production prompts across 18 content and document-generation modules, engineered for schema-valid, format-consistent structured output at 99.9% accuracy.",
+          "Built a prompt-evaluation and regression harness that canary-rolls changes to a traffic slice before full release, protecting quality as prompts evolve.",
+          "Architected multi-LLM routing and failover across OpenAI, Anthropic, Gemini and Groq with cost-aware model selection — 99%+ availability and graceful degradation through provider outages.",
+          "Engineered a 4-stage pipeline with 5:1 token compression and TTL caching, cutting LLM spend ~80% while holding 99.9% structured-output accuracy.",
+          "Documented prompt systems for cross-team reuse while switching fluidly across .NET/C#, Python (FastAPI) and Angular on Azure AI Services and Azure AI Search."
+        ],
+        "location": "Indore",
+        "role": "Generative AI & Prompt Engineer",
+        "startDate": "2024-02-01"
+      },
+      {
+        "_key": "role-dhande-creative",
+        "_type": "role",
+        "company": "Dhande Creative",
+        "endDate": "2024-01-01",
+        "highlights": [
+          "Founded and ran an independent IT consulting practice, managing client engagements end to end.",
+          "Led project management and stakeholder coordination across client engagements, from requirements through delivery.",
+          "Served as the primary point of collaboration between clients and delivery teams on custom software projects."
+        ],
+        "location": "Indore",
+        "role": "Founder — Project & Stakeholder Management",
+        "startDate": "2018-05-01"
+      },
+      {
+        "_key": "role1",
+        "company": "Cyber Infrastructure Pvt. Ltd.",
+        "endDate": "2018-05-01",
+        "highlights": [],
+        "location": "Indore",
+        "role": "Lead Software Engineer",
+        "startDate": "2017-12-01"
+      },
+      {
+        "_key": "role2",
+        "company": "Galaxy Weblinks Pvt. Ltd.",
+        "endDate": "2017-11-01",
+        "highlights": [],
+        "location": "Indore",
+        "role": "Lead Software Engineer",
+        "startDate": "2017-04-01"
+      },
+      {
+        "_key": "role3",
+        "company": "Infobeans Technologies Pvt. Ltd.",
+        "endDate": "2016-11-01",
+        "highlights": [],
+        "location": "Indore",
+        "role": "Software Engineer",
+        "startDate": "2015-08-01"
+      },
+      {
+        "_key": "role4",
+        "company": "Gate6 Technologies Pvt. Ltd.",
+        "endDate": "2015-08-01",
+        "highlights": [],
+        "location": "Indore",
+        "role": "Software Engineer",
+        "startDate": "2015-01-01"
+      },
+      {
+        "_key": "role5",
+        "company": "Om Software Technologies Pvt. Ltd.",
+        "endDate": "2014-10-01",
+        "highlights": [],
+        "location": "Bhopal",
+        "role": "Software Engineer",
+        "startDate": "2013-07-01"
+      },
+      {
+        "_key": "role6",
+        "company": "NIIT Ltd",
+        "endDate": "2014-03-01",
+        "highlights": [],
+        "location": "Bhopal",
+        "role": "Dot Net Trainer",
+        "startDate": "2010-07-01"
+      }
+    ],
+    "skills": [
+      {
+        "_key": "skill0",
+        "category": "LLM Systems",
+        "items": [
+          "Multi-LLM routing & failover",
+          "cost-aware model selection",
+          "function/tool calling",
+          "LangChain",
+          "OpenAI GPT-4",
+          "Claude 3.5",
+          "Gemini",
+          "Groq (Llama 3.3, Qwen 3.2)"
+        ]
+      },
+      {
+        "_key": "skill1",
+        "category": "Prompt Engineering",
+        "items": [
+          "Chain-of-Thought",
+          "few-shot",
+          "ReAct",
+          "role/persona",
+          "structured outputs (JSON, Pydantic)",
+          "guardrails",
+          "500+ production prompts"
+        ]
+      },
+      {
+        "_key": "skill2",
+        "category": "RAG & Retrieval",
+        "items": [
+          "FAISS",
+          "Sentence Transformer embeddings",
+          "hybrid FAISS + BM25 with Reciprocal Rank Fusion",
+          "Redis caching"
+        ]
+      },
+      {
+        "_key": "skill3",
+        "category": "Evaluation & Quality",
+        "items": [
+          "Prompt-evaluation harnesses",
+          "regression suites",
+          "canary rollout",
+          "schema validation",
+          "latency and cost budgets"
+        ]
+      },
+      {
+        "_key": "skill4",
+        "category": "Engineering",
+        "items": [
+          "Python (FastAPI, Pydantic, Asyncio)",
+          "C# / .NET / ASP.NET Core",
+          "SQL Server",
+          "REST",
+          "microservices",
+          "OAuth 2.0",
+          "Angular",
+          "React",
+          "TypeScript"
+        ]
+      },
+      {
+        "_key": "skill5",
+        "category": "Cloud & Delivery",
+        "items": [
+          "Azure AI Services",
+          "Azure AI Search",
+          "Docker",
+          "CI/CD (Azure DevOps)",
+          "Git",
+          "multi-agent delivery workflows (BMAD)"
+        ]
+      }
+    ],
+    "summary": [
+      "Generative AI Engineer with 8+ years of full-stack software engineering experience and 2+ years building and deploying production-grade GenAI systems. Skilled in scoping complex problems, designing scalable architectures, and delivering end-to-end AI solutions.",
+      "Experienced in architecting multi-LLM orchestration platforms using OpenAI, Anthropic, Gemini, and Groq, with cost-aware routing, failover mechanisms, and performance optimisation. Designed and implemented evaluation and regression-testing frameworks that gate every production release.",
+      "Proficient in Python, FastAPI, C#/.NET, generative AI, prompt engineering, and multi-model orchestration. Experienced in developing AI solutions within no-code and low-code environments, while leveraging modern tools and emerging engineering practices to improve developer productivity and delivery speed."
+    ],
+    "teaching": [
+      {
+        "_key": "teach0",
+        "description": "Delivers structured, production-grade prompt design training to college and corporate cohorts.",
+        "title": "Instructor — Prompt Engineering"
+      }
+    ],
+    "title": "Full-Stack AI Engineer",
+    "updatedAt": "2026-09-27T03:54:12.587Z"
+  }
+]

@@ -1,0 +1,591 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>AI Training Portfolio — POC</title>
+<!-- POC for /portfolio/ai-enablement-officer. Layout takes reference from
+     Docs/Template design/Corporate trainer portfolio design sample.png; all
+     copy comes from Niharika's resume and portfolio copy. Yellow "Needs your
+     input" tags mark facts that are not known yet — nothing is invented. -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #07111f;
+    --bg-2: #0a1a2e;
+    --card: rgba(16, 32, 54, 0.62);
+    --card-solid: #0f2036;
+    --line: rgba(120, 200, 230, 0.16);
+    --line-strong: rgba(120, 200, 230, 0.32);
+    --text: #eaf2f8;
+    --muted: #9fb3c6;
+    --faint: #6f8599;
+    --cyan: #38c8e6;
+    --green: #2fd39a;
+    --grad: linear-gradient(90deg, var(--cyan), var(--green));
+    --warn-bg: rgba(250, 204, 21, 0.12);
+    --warn: #facc15;
+    --radius: 20px;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    font-family: Inter, system-ui, sans-serif;
+    color: var(--text);
+    background:
+      radial-gradient(900px 500px at 10% -10%, rgba(56, 200, 230, 0.12), transparent 60%),
+      radial-gradient(900px 600px at 95% 5%, rgba(47, 211, 154, 0.08), transparent 60%),
+      var(--bg);
+    line-height: 1.55;
+    overflow-x: hidden;
+  }
+  a { color: inherit; text-decoration: none; }
+  img { max-width: 100%; display: block; }
+  .wrap { max-width: 1200px; margin: 0 auto; padding: 0 16px; }
+  @media (min-width: 768px) { .wrap { padding: 0 32px; } }
+
+  /* Buttons */
+  .btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 20px; border-radius: 12px; font-weight: 600; font-size: 15px; border: 1px solid var(--line-strong); background: rgba(255,255,255,0.03); transition: transform .15s, border-color .15s, background .15s; }
+  .btn:hover { transform: translateY(-1px); border-color: var(--cyan); }
+  .btn-primary { background: var(--grad); color: #04131f; border: 0; box-shadow: 0 8px 30px rgba(47, 211, 154, 0.25); }
+  .btn-sm { padding: 9px 14px; font-size: 14px; border-radius: 10px; }
+
+  .pill { display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px; border-radius: 999px; border: 1px solid var(--line-strong); background: rgba(56, 200, 230, 0.06); font-size: 13px; color: var(--muted); }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--cyan); box-shadow: 0 0 12px var(--cyan); }
+  .mono { font-family: "JetBrains Mono", monospace; letter-spacing: .04em; text-transform: uppercase; font-size: 12px; color: var(--cyan); }
+  .grad-text { background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .todo { display: inline-flex; align-items: center; gap: 6px; padding: 3px 9px; border-radius: 6px; background: var(--warn-bg); color: var(--warn); border: 1px dashed rgba(250, 204, 21, 0.5); font-size: 12px; font-weight: 600; }
+
+  /* Nav */
+  header { position: sticky; top: 0; z-index: 20; backdrop-filter: blur(12px); background: rgba(7, 17, 31, 0.75); border-bottom: 1px solid var(--line); }
+  .nav { display: flex; align-items: center; justify-content: space-between; height: 68px; gap: 16px; }
+  .brand { display: flex; align-items: center; gap: 12px; }
+  .brand img { width: 40px; height: 40px; border-radius: 12px; object-fit: cover; object-position: 50% 20%; border: 1px solid var(--line-strong); }
+  .brand b { display: block; font-size: 15px; }
+  .brand span { display: block; font-size: 12px; color: var(--muted); }
+  .nav-links { display: none; gap: 28px; font-size: 15px; color: var(--muted); }
+  .nav-links a:hover { color: var(--text); }
+  .nav-cta { display: none; gap: 10px; }
+  @media (min-width: 960px) { .nav-links, .nav-cta { display: flex; } }
+
+  /* Hero */
+  .hero { display: grid; gap: 40px; padding-top: 56px; padding-bottom: 40px; }
+  @media (min-width: 1000px) { .hero { grid-template-columns: 1.15fr 1fr; align-items: center; padding-top: 72px; padding-bottom: 56px; } }
+  h1 { font-size: clamp(34px, 5.4vw, 58px); line-height: 1.08; letter-spacing: -0.02em; margin: 18px 0 16px; font-weight: 800; }
+  .lead { font-size: 18px; color: var(--muted); max-width: 600px; margin: 0 0 26px; }
+  .cta-row { display: flex; flex-wrap: wrap; gap: 12px; }
+  .checks { display: flex; flex-wrap: wrap; gap: 8px 18px; margin: 22px 0 0; padding: 0; list-style: none; font-size: 14px; color: var(--muted); }
+  .checks li::before { content: "✓"; color: var(--green); font-weight: 700; margin-right: 6px; }
+
+  .trusted { margin-top: 30px; }
+  .trusted p { margin: 0 0 12px; font-size: 13px; color: var(--faint); }
+  .logos { display: flex; flex-wrap: wrap; gap: 12px; }
+  .logo-chip { display: grid; place-items: center; height: 64px; padding: 10px 18px; border-radius: 14px; background: #f5f8fb; border: 1px solid var(--line); }
+  .logo-chip img { max-height: 40px; width: auto; }
+
+  .profile { padding: 18px; border-radius: 24px; background: var(--card); border: 1px solid var(--line-strong); box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45); }
+  .profile .photo { border-radius: 16px; overflow: hidden; aspect-ratio: 4 / 3; background: var(--card-solid); }
+  .profile .photo img { width: 100%; height: 100%; object-fit: cover; }
+  .profile h3 { margin: 16px 0 2px; font-size: 20px; }
+  .profile .role { margin: 0 0 12px; color: var(--muted); font-size: 14px; }
+  .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+  .tag { padding: 5px 12px; border-radius: 999px; font-size: 13px; border: 1px solid var(--line-strong); color: var(--muted); }
+
+  /* Sections */
+  section.block { padding: 72px 0; }
+  section.alt { background: linear-gradient(180deg, rgba(10, 26, 46, 0.7), rgba(10, 26, 46, 0.2)); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .head { text-align: center; max-width: 720px; margin: 0 auto 40px; }
+  h2 { font-size: clamp(26px, 3.4vw, 38px); line-height: 1.15; margin: 10px 0 12px; letter-spacing: -0.01em; }
+  .head p { color: var(--muted); margin: 0; font-size: 17px; }
+
+  /* Workshop filter + grid */
+  .filters { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-bottom: 28px; }
+  .filters button { font: inherit; font-size: 14px; padding: 8px 16px; border-radius: 999px; border: 1px solid var(--line-strong); background: transparent; color: var(--muted); cursor: pointer; }
+  .filters button.on { background: var(--grad); color: #04131f; border-color: transparent; font-weight: 600; }
+  .grid { display: grid; gap: 20px; grid-template-columns: 1fr; }
+  @media (min-width: 700px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1050px) { .grid.three { grid-template-columns: repeat(3, 1fr); } }
+
+  .ws { display: flex; flex-direction: column; padding: 16px; border-radius: var(--radius); background: var(--card); border: 1px solid var(--line); transition: border-color .2s, transform .2s; }
+  .ws:hover { border-color: var(--line-strong); transform: translateY(-2px); }
+  .ws[hidden] { display: none; }
+  .badge { align-self: flex-start; display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; border: 1px solid var(--line-strong); color: var(--muted); margin-bottom: 12px; }
+  .badge i { width: 7px; height: 7px; border-radius: 50%; background: var(--green); }
+  .badge.tech i { background: var(--cyan); }
+  .badge.both i { background: #a78bfa; }
+
+  /* Generated thumbnail: stands in for the designed workshop thumbnails. */
+  .thumb { position: relative; border-radius: 14px; aspect-ratio: 16 / 9; overflow: hidden; padding: 18px; display: flex; flex-direction: column; justify-content: space-between; border: 1px solid rgba(255,255,255,0.08); }
+  .thumb::after { content: ""; position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.05) 1px, transparent 1px); background-size: 22px 22px; pointer-events: none; }
+  .thumb .big { position: relative; z-index: 1; font-weight: 800; font-size: 24px; line-height: 1.05; letter-spacing: -0.01em; text-transform: uppercase; max-width: 85%; }
+  .thumb .big em { font-style: normal; background: #facc15; color: #111; padding: 0 6px; border-radius: 4px; }
+  .thumb .tools { position: relative; z-index: 1; display: flex; flex-wrap: wrap; gap: 6px; }
+  .thumb .tools span { font-family: "JetBrains Mono", monospace; font-size: 11px; padding: 4px 8px; border-radius: 6px; background: rgba(0,0,0,.35); border: 1px solid rgba(255,255,255,.15); }
+  .t1 { background: linear-gradient(135deg, #0e7490, #064e3b); }
+  .t2 { background: linear-gradient(135deg, #1e3a8a, #0e7490); }
+  .t3 { background: linear-gradient(135deg, #312e81, #0f766e); }
+  .t4 { background: linear-gradient(135deg, #7c2d12, #1e293b); }
+  .t5 { background: linear-gradient(135deg, #065f46, #1e3a8a); }
+  .t6 { background: linear-gradient(135deg, #4c1d95, #0e7490); }
+  .t7 { background: linear-gradient(135deg, #0f172a, #155e75); }
+  .t8 { background: linear-gradient(135deg, #14532d, #0c4a6e); }
+  .t9 { background: linear-gradient(135deg, #1e1b4b, #7c2d12); }
+
+  .ws h3 { margin: 16px 0 6px; font-size: 18px; }
+  .meta { display: flex; flex-wrap: wrap; gap: 4px 10px; font-size: 13px; color: var(--faint); margin-bottom: 10px; }
+  .meta span + span::before { content: "•"; margin-right: 10px; }
+  .ws p { margin: 0 0 16px; color: var(--muted); font-size: 15px; flex: 1; }
+  .ws .foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; }
+  .ideal { font-size: 13px; color: var(--faint); }
+  .ideal b { color: var(--muted); font-weight: 500; }
+
+  /* Audience split */
+  .split { display: grid; gap: 20px; }
+  @media (min-width: 860px) { .split { grid-template-columns: 1fr 1fr; } }
+  .panel { padding: 26px; border-radius: var(--radius); background: var(--card); border: 1px solid var(--line); }
+  .panel h3 { margin: 6px 0 8px; font-size: 22px; }
+  .panel > p { margin: 0 0 18px; color: var(--muted); }
+  .ticks { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+  .ticks li { display: flex; gap: 12px; align-items: flex-start; padding: 12px 14px; border-radius: 12px; border: 1px solid var(--line); background: rgba(255,255,255,0.02); font-size: 15px; }
+  .ticks li::before { content: "✓"; flex: none; display: grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; font-size: 12px; color: var(--green); border: 1px solid rgba(47, 211, 154, 0.5); background: rgba(47, 211, 154, 0.08); }
+
+  /* Process flow */
+  .flow { display: grid; gap: 14px; grid-template-columns: 1fr; position: relative; }
+  @media (min-width: 900px) { .flow { grid-template-columns: repeat(5, 1fr); } }
+  .step { position: relative; padding: 20px 18px; border-radius: 16px; background: var(--card); border: 1px solid var(--line); }
+  .step .n { font-family: "JetBrains Mono", monospace; font-size: 12px; color: var(--cyan); }
+  .step h4 { margin: 6px 0 6px; font-size: 17px; }
+  .step p { margin: 0; color: var(--muted); font-size: 14px; }
+  @media (min-width: 900px) {
+    .step:not(:last-child)::after { content: "→"; position: absolute; right: -13px; top: 50%; transform: translateY(-50%); color: var(--cyan); font-weight: 700; z-index: 2; background: var(--bg); padding: 0 2px; }
+  }
+  @media (max-width: 899px) {
+    .step:not(:last-child)::after { content: "↓"; position: absolute; left: 50%; bottom: -14px; transform: translateX(-50%); color: var(--cyan); font-weight: 700; z-index: 2; background: var(--bg); padding: 0 4px; }
+  }
+  .loop { margin-top: 18px; display: flex; align-items: center; justify-content: center; gap: 10px; color: var(--muted); font-size: 14px; }
+  .loop svg { flex: none; }
+
+  /* Institutes */
+  .inst { display: flex; flex-direction: column; padding: 22px; border-radius: var(--radius); background: var(--card); border: 1px solid var(--line); }
+  .inst .logo-chip { height: 84px; margin-bottom: 18px; }
+  .inst .logo-chip img { max-height: 54px; }
+  .inst h3 { margin: 0 0 4px; font-size: 18px; }
+  .inst .when { font-size: 13px; color: var(--cyan); margin-bottom: 10px; font-family: "JetBrains Mono", monospace; }
+  .inst p { margin: 0 0 14px; color: var(--muted); font-size: 15px; }
+  .inst .tags { margin: 0; }
+
+  /* Why learn */
+  .why { display: grid; gap: 16px; }
+  @media (min-width: 760px) { .why { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1050px) { .why { grid-template-columns: repeat(4, 1fr); } }
+  .why .panel h3 { font-size: 18px; }
+  .why .panel p { margin: 0; color: var(--muted); font-size: 15px; }
+  .icon { width: 42px; height: 42px; border-radius: 12px; display: grid; place-items: center; background: rgba(56, 200, 230, 0.1); border: 1px solid var(--line-strong); color: var(--cyan); }
+
+  /* CTA band */
+  .band { display: grid; gap: 20px; align-items: center; padding: 30px; border-radius: 24px; border: 1px solid var(--line-strong); background: linear-gradient(110deg, rgba(14, 116, 144, 0.35), rgba(6, 78, 59, 0.35)); }
+  @media (min-width: 860px) { .band { grid-template-columns: 1fr auto; padding: 36px 40px; } }
+  .band h3 { margin: 0 0 6px; font-size: 24px; }
+  .band p { margin: 0; color: var(--muted); }
+  .band .cta-row { justify-content: flex-start; }
+
+  /* FAQ */
+  .faq { display: grid; gap: 16px; }
+  @media (min-width: 860px) { .faq { grid-template-columns: repeat(3, 1fr); } }
+  .faq .panel h3 { font-size: 17px; margin-top: 0; }
+  .faq .panel p { margin: 0; color: var(--muted); font-size: 15px; }
+
+  footer { border-top: 1px solid var(--line); padding: 34px 0; margin-top: 40px; }
+  .foot-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; font-size: 14px; color: var(--muted); }
+  .foot-row nav { display: flex; flex-wrap: wrap; gap: 18px; }
+  .foot-row nav a:hover { color: var(--text); }
+
+  .poc-note { position: fixed; bottom: 14px; right: 14px; z-index: 50; max-width: 300px; padding: 12px 14px; border-radius: 12px; background: #1c1917; border: 1px dashed var(--warn); color: #fde68a; font-size: 12.5px; line-height: 1.45; box-shadow: 0 10px 30px rgba(0,0,0,.5); }
+  .poc-note b { color: var(--warn); }
+  .poc-note button { float: right; background: none; border: 0; color: #fde68a; cursor: pointer; font-size: 14px; margin: -4px -4px 0 6px; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="#top">
+      <img src="images/corporate-trainer.jpg" alt="" />
+      <div><b>Niharika Dhande</b><span>AI Training &amp; Enablement</span></div>
+    </a>
+    <nav class="nav-links">
+      <a href="#workshops">Workshops</a>
+      <a href="#who">Who it's for</a>
+      <a href="#how">How it works</a>
+      <a href="#institutes">Institutes</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <div class="nav-cta">
+      <a class="btn btn-sm" href="#">Engineering profile</a>
+      <a class="btn btn-sm btn-primary" href="#contact">Book a workshop</a>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+  <!-- HERO -->
+  <div class="wrap hero">
+    <div>
+      <span class="pill"><span class="dot"></span>AI Training • Enablement • Workshops</span>
+      <h1>I help teams turn <span class="grad-text">AI tools</span> into <span class="grad-text">everyday results.</span></h1>
+      <p class="lead">Hands-on AI training for engineers, business teams and students. I find where AI fits in your work, build it with you, and make sure everyone in the room can use it on their own.</p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="#contact">Book a workshop</a>
+        <a class="btn" href="#workshops">Explore workshops</a>
+        <a class="btn" href="#">See my engineering work</a>
+      </div>
+      <ul class="checks">
+        <li>Tech &amp; non-tech tracks</li>
+        <li>Hands-on, on your own work</li>
+        <li>Claude • Gemini • ChatGPT</li>
+        <li>Reusable prompt templates</li>
+      </ul>
+      <div class="trusted">
+        <p>Trained learners and teams at</p>
+        <div class="logos">
+          <div class="logo-chip"><img src="images/bia-logo.png" alt="Boston Institute of Analytics" /></div>
+          <div class="logo-chip"><img src="images/bignalytics-logo.png" alt="Bignalytics" /></div>
+          <div class="logo-chip"><img src="images/niit-logo.png" alt="NIIT" /></div>
+        </div>
+      </div>
+    </div>
+
+    <aside class="profile">
+      <div class="photo"><img src="images/corporate-trainer.jpg" alt="Niharika Dhande delivering a training session" /></div>
+      <h3>Niharika Dhande</h3>
+      <p class="role">Founder, Prompt at Work · AI Enablement Officer &amp; Corporate Trainer. A software engineer who teaches, so every session is built on systems I have shipped.</p>
+      <div class="tags">
+        <span class="tag">Prompt Engineering</span>
+        <span class="tag">AI-Assisted Coding</span>
+        <span class="tag">Agentic AI &amp; MCP</span>
+        <span class="tag">Claude &amp; Gemini at Work</span>
+      </div>
+      <div class="cta-row">
+        <a class="btn btn-sm btn-primary" href="#contact">Book a discovery call</a>
+        <a class="btn btn-sm" href="#">Read my story</a>
+      </div>
+    </aside>
+  </div>
+
+  <!-- WORKSHOPS -->
+  <section class="block alt" id="workshops">
+    <div class="wrap">
+      <div class="head">
+        <span class="mono">Workshops &amp; courses</span>
+        <h2>Pick the session that fits your team</h2>
+        <p>Every session is hands-on: participants work on real tasks from their own job and leave with prompts, templates and a workflow they can keep using.</p>
+      </div>
+
+      <div class="filters" role="tablist">
+        <button class="on" data-f="all">All</button>
+        <button data-f="tech">Technical</button>
+        <button data-f="nontech">Non-technical</button>
+        <button data-f="both">Tech + non-tech</button>
+      </div>
+
+      <div class="grid three">
+        <article class="ws" data-a="nontech">
+          <span class="badge"><i></i>Non-technical</span>
+          <div class="thumb t1"><div class="big">Prompt <em>engineering</em> for business teams</div><div class="tools"><span>Claude</span><span>Gemini</span><span>ChatGPT</span></div></div>
+          <h3>Prompt Engineering for Business Teams</h3>
+          <div class="meta"><span>Prompt patterns</span><span>Role-based libraries</span></div>
+          <p>Write prompts that give reliable results for everyday work: documents, emails, analysis and meeting notes. Comes with ready-to-use prompts organised by role.</p>
+          <div class="foot"><span class="ideal">Ideal for: <b>Managers • Product Owners • Operations</b></span><a class="btn btn-sm btn-primary" href="#contact">Enquire</a></div>
+        </article>
+
+        <article class="ws" data-a="tech">
+          <span class="badge tech"><i></i>Technical</span>
+          <div class="thumb t2"><div class="big">Advanced prompt engineering <em>for engineers</em></div><div class="tools"><span>Claude API</span><span>OpenAI</span><span>2-day course</span></div></div>
+          <h3>Advanced Prompt Engineering for Engineers</h3>
+          <div class="meta"><span>2-day course</span><span>Chain-of-thought</span><span>LLM APIs</span></div>
+          <p>Foundations, advanced prompt patterns and production integration with Claude, OpenAI and other LLM platforms, with real-world case studies and a reusable prompt library.</p>
+          <div class="foot"><span class="ideal">Ideal for: <b>Developers • QA Engineers</b></span><a class="btn btn-sm btn-primary" href="#contact">Enquire</a></div>
+        </article>
+
+        <article class="ws" data-a="tech">
+          <span class="badge tech"><i></i>Technical</span>
+          <div class="thumb t3"><div class="big">AI-first <em>assisted coding</em></div><div class="tools"><span>Claude Code</span><span>Copilot</span><span>MCP</span></div></div>
+          <h3>AI-First Assisted Coding</h3>
+          <div class="meta"><span>Claude Code</span><span>Prompt patterns</span><span>Agentic workflows</span></div>
+          <p>Use Claude Code, GitHub Copilot and V0.dev as everyday coding partners: prompt patterns for code, agentic workflows and connecting tools through MCP servers.</p>
+          <div class="foot"><span class="ideal">Ideal for: <b>Developers • QA • Tech leads</b></span><a class="btn btn-sm btn-primary" href="#contact">Enquire</a></div>
+        </article>
+
+        <article class="ws" data-a="tech">
+          <span class="badge tech"><i></i>Technical</span>
+          <div class="thumb t4"><div class="big">Full-stack development <em>with AI</em></div><div class="tools"><span>React</span><span>Python</span><span>REST APIs</span></div></div>
+          <h3>Full-Stack Web Development with AI</h3>
+          <div class="meta"><span>Requirements → deploy</span><span>AI pair-programming</span></div>
+          <p>Build and ship a working web application end to end with AI assistants, from requirements and design through code, tests and deployment.</p>
+          <div class="foot"><span class="ideal">Ideal for: <b>Developers • Engineering students</b></span><a class="btn btn-sm btn-primary" href="#contact">Enquire</a></div>
+        </article>
+
+        <article class="ws" data-a="both">
+          <span class="badge both"><i></i>Tech + non-tech</span>
+          <div class="thumb t5"><div class="big">AI builder <em>fundamentals</em></div><div class="tools"><span>LLMs</span><span>RAG</span><span>APIs</span></div></div>
+          <h3>Fundamentals Workshop for AI Builders</h3>
+          <div class="meta"><span>LLMs</span><span>Embeddings &amp; RAG</span><span>Tool use</span></div>
+          <p>The building blocks behind every AI product: models, prompts, embeddings, retrieval, APIs and tools, explained through building a first working AI app.</p>
+          <div class="foot"><span class="ideal">Ideal for: <b>Students • Professionals • Product teams</b></span><a class="btn btn-sm btn-primary" href="#contact">Enquire</a></div>
+        </article>
+
+        <article class="ws" data-a="tech">
+          <span class="badge tech"><i></i>Technical</span>
+          <div class="thumb t6"><div class="big">Agentic AI <em>&amp; MCP</em></div><div class="tools"><span>LangChain</span><span>LangGraph</span><span>CrewAI</span><span>AutoGen</span></div></div>
+          <h3>Agentic AI, LLM Frameworks &amp; MCP</h3>
+          <div class="meta"><span>Chains</span><span>AI agents</span><span>Model Context Protocol</span></div>
+          <p>Build chains, AI agents and agentic workflows with LangChain, LangGraph, CrewAI and AutoGen, and connect them to real systems through the Model Context Protocol.</p>
+          <div class="foot"><span class="ideal">Ideal for: <b>Developers • Data &amp; AI students</b></span><a class="btn btn-sm btn-primary" href="#contact">Enquire</a></div>
+        </article>
+
+        <article class="ws" data-a="both">
+          <span class="badge both"><i></i>Tech + non-tech</span>
+          <div class="thumb t7"><div class="big">AI concepts, <em>clearly explained</em></div><div class="tools"><span>No code</span><span>How LLMs work</span></div></div>
+          <h3>AI Concepts, Clearly Explained</h3>
+          <div class="meta"><span>Conceptual class</span><span>No coding needed</span></div>
+          <p>How generative AI actually works, what it is good and bad at, and how to judge its output, taught so that technical and non-technical learners leave with the same mental model.</p>
+          <div class="foot"><span class="ideal">Ideal for: <b>Leaders • Mixed teams • Students</b></span><a class="btn btn-sm btn-primary" href="#contact">Enquire</a></div>
+        </article>
+
+        <article class="ws" data-a="nontech">
+          <span class="badge"><i></i>Non-technical</span>
+          <div class="thumb t8"><div class="big">AI in your <em>office tools</em></div><div class="tools"><span>Claude</span><span>Google Workspace</span><span>Microsoft 365</span></div></div>
+          <h3>AI at Work: Claude, Google Workspace &amp; Microsoft 365</h3>
+          <div class="meta"><span>claude.ai</span><span>Gemini in Docs, Sheets, Gmail, Meet</span><span>Microsoft 365</span></div>
+          <p>Use Claude, Gemini for Google Workspace and Microsoft 365 for daily work, department by department, with clear usage guidelines and data handling practices so adoption stays secure.</p>
+          <div class="foot"><span class="ideal">Ideal for: <b>MIS • Accounts • Sales • Admin • Design</b></span><a class="btn btn-sm btn-primary" href="#contact">Enquire</a></div>
+        </article>
+
+        <article class="ws" data-a="tech">
+          <span class="badge tech"><i></i>Technical</span>
+          <div class="thumb t9"><div class="big">AI-enabled <em>SDLC</em></div><div class="tools"><span>Requirements</span><span>Testing</span><span>Templates</span></div></div>
+          <h3>AI-Enabled SDLC</h3>
+          <div class="meta"><span>Every delivery phase</span><span>Setup guides</span><span>Document templates</span></div>
+          <p>Use AI across every phase of software delivery, from requirements gathering to maintenance, with setup guides for Claude.ai, GitHub Copilot and VS Code and reusable document templates.</p>
+          <div class="foot"><span class="ideal">Ideal for: <b>Dev teams • QA • Project managers</b></span><a class="btn btn-sm btn-primary" href="#contact">Enquire</a></div>
+        </article>
+      </div>
+
+      <p style="text-align:center;margin:26px 0 0"><span class="todo">Needs your input</span> <span style="color:var(--muted);font-size:14px">Duration, format (online / in person) and fees for each workshop. Only the 2-day prompt engineering course is known.</span></p>
+    </div>
+  </section>
+
+  <!-- WHO IT'S FOR -->
+  <section class="block" id="who">
+    <div class="wrap">
+      <div class="head">
+        <span class="mono">Who it's for</span>
+        <h2>One trainer for the whole room</h2>
+        <p>Most AI training is either too technical for business users or too shallow for engineers. I teach both, often in the same session.</p>
+      </div>
+      <div class="split">
+        <div class="panel">
+          <span class="mono">Technical teams</span>
+          <h3>Engineers, QA &amp; tech students</h3>
+          <p>Go from using AI in a chat window to building with it in code.</p>
+          <ul class="ticks">
+            <li>AI-assisted coding with Claude Code and Copilot</li>
+            <li>LLM APIs, tool use, RAG pipelines and AI agents</li>
+            <li>Agentic workflows and MCP server integrations</li>
+            <li>AI across the full SDLC, with templates</li>
+          </ul>
+        </div>
+        <div class="panel">
+          <span class="mono">Business teams</span>
+          <h3>Managers, operations &amp; professionals</h3>
+          <p>Get dependable results from AI tools in the work you already do.</p>
+          <ul class="ticks">
+            <li>Prompt patterns that work in Claude, Gemini and ChatGPT</li>
+            <li>Role-based prompt libraries ready to reuse</li>
+            <li>AI inside Docs, Sheets, Gmail and Meet</li>
+            <li>Usage guidelines and safe data handling</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS (process flow) -->
+  <section class="block alt" id="how">
+    <div class="wrap">
+      <div class="head">
+        <span class="mono">How a corporate engagement works</span>
+        <h2>From your workflow to a trained team</h2>
+        <p>Training starts with how your team works today, not with a fixed slide deck.</p>
+      </div>
+      <div class="flow">
+        <div class="step"><span class="n">01</span><h4>Discover</h4><p>Workflow discovery session with team leads to find where AI will actually help.</p></div>
+        <div class="step"><span class="n">02</span><h4>Design</h4><p>Tailor the curriculum to your roles, your tools and your real tasks.</p></div>
+        <div class="step"><span class="n">03</span><h4>Deliver</h4><p>Live, hands-on sessions where people practise on their own work.</p></div>
+        <div class="step"><span class="n">04</span><h4>Equip</h4><p>Hand over prompt libraries, templates, guides and usage guidelines.</p></div>
+        <div class="step"><span class="n">05</span><h4>Iterate</h4><p>Review what the team is using, then refine the material and next session.</p></div>
+      </div>
+      <div class="loop">
+        <svg width="36" height="20" viewBox="0 0 36 20" fill="none" aria-hidden="true"><path d="M30 4H10a6 6 0 0 0 0 12h18" stroke="#38c8e6" stroke-width="2" stroke-linecap="round"/><path d="M24 12l4 4-4 4" stroke="#38c8e6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" transform="translate(0,-4)"/></svg>
+        Feedback from step 05 loops back into step 02 for the next batch.
+      </div>
+    </div>
+  </section>
+
+  <!-- INSTITUTES -->
+  <section class="block" id="institutes">
+    <div class="wrap">
+      <div class="head">
+        <span class="mono">Training engagements</span>
+        <h2>Institutes I've trained for</h2>
+        <p>From .NET classrooms to agentic AI cohorts, teaching has run alongside my engineering work since 2010.</p>
+      </div>
+      <div class="grid three">
+        <article class="inst">
+          <div class="logo-chip"><img src="images/bia-logo.png" alt="Boston Institute of Analytics" /></div>
+          <h3>Boston Institute of Analytics</h3>
+          <div class="when">Prompt at Work · Oct 2026 – Present</div>
+          <p>Training on LLM application frameworks: chains, AI agents, agentic workflows and the Model Context Protocol.</p>
+          <div class="tags"><span class="tag">LangChain</span><span class="tag">LangGraph</span><span class="tag">CrewAI</span><span class="tag">AutoGen</span><span class="tag">MCP</span></div>
+        </article>
+        <article class="inst">
+          <div class="logo-chip"><img src="images/bignalytics-logo.png" alt="Bignalytics" /></div>
+          <h3>Bignalytics</h3>
+          <div class="when">6-day programme · Sep 2026</div>
+          <p>A complete AI enablement programme for a corporate client (name confidential), covering basic and advanced prompt engineering and AI in the tools each team uses every day.</p>
+          <p style="font-size:14px;margin-top:-4px"><b style="color:var(--text);font-weight:600">Teams trained:</b> MIS, Design, Accounts, Sales, Pre-sales and Administration.</p>
+          <div class="tags"><span class="tag">Prompt engineering</span><span class="tag">Google Workspace</span><span class="tag">Claude</span><span class="tag">Microsoft 365</span></div>
+        </article>
+        <article class="inst">
+          <div class="logo-chip"><img src="images/niit-logo.png" alt="NIIT" /></div>
+          <h3>NIIT Ltd., Bhopal</h3>
+          <div class="when">Technical Trainer · Jul 2010 – May 2013</div>
+          <p>Ran .NET training for junior developers and interns, and built the curriculum and hands-on exercises for software engineering concepts.</p>
+          <div class="tags"><span class="tag">.NET</span><span class="tag">Curriculum design</span><span class="tag">Hands-on labs</span></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY LEARN -->
+  <section class="block alt">
+    <div class="wrap">
+      <div class="head">
+        <span class="mono">Why learn with me</span>
+        <h2>I build what I teach</h2>
+        <p>Every workshop draws on AI systems I have designed and shipped, not just tools I have read about.</p>
+      </div>
+      <div class="why">
+        <div class="panel">
+          <div class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M16 18l6-6-6-6M8 6l-6 6 6 6"/></svg></div>
+          <h3>Engineer first</h3>
+          <p>Software engineer since 2013, building RAG pipelines, chatbots and API integrations in production.</p>
+        </div>
+        <div class="panel">
+          <div class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 7l10-4 10 4-10 4z"/><path d="M6 9v5c0 1.5 3 3 6 3s6-1.5 6-3V9"/></svg></div>
+          <h3>Trainer since 2010</h3>
+          <p>Started as a technical trainer at NIIT and has designed curriculum ever since, for companies and institutes.</p>
+        </div>
+        <div class="panel">
+          <div class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></div>
+          <h3>Material you keep</h3>
+          <p>Role-based prompt libraries for Managers, Developers, Product Owners and QA Engineers, plus templates and guides.</p>
+        </div>
+        <div class="panel">
+          <div class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7z"/><path d="M9 12l2 2 4-4"/></svg></div>
+          <h3>Responsible by default</h3>
+          <p>Approved tools, usage guidelines and data handling built into every rollout. Certified ScrumMaster.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA BAND -->
+  <section class="block" id="contact">
+    <div class="wrap">
+      <div class="band">
+        <div>
+          <h3>Let's make AI work for your team.</h3>
+          <p>Whether you need a workshop, a prompt library or a full training programme, tell me what your team is trying to do and I'll show you where AI fits.</p>
+        </div>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="#">Get in touch</a>
+          <a class="btn" href="#">Engineering profile</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="block" id="faq" style="padding-top:20px">
+    <div class="wrap">
+      <h2 style="margin-bottom:28px">Frequently asked questions</h2>
+      <div class="faq">
+        <div class="panel">
+          <h3>Do participants need coding skills?</h3>
+          <p>Not for the non-technical tracks. Prompt engineering for business teams, Claude &amp; Gemini at work and AI concepts need no code at all.</p>
+        </div>
+        <div class="panel">
+          <h3>Can you tailor a workshop to our tools?</h3>
+          <p>Yes. Every engagement starts with a discovery session, and the exercises use your team's real tasks on the AI platform you have approved.</p>
+        </div>
+        <div class="panel">
+          <h3>What do participants keep afterwards?</h3>
+          <p>Prompt templates, role-based prompt libraries, setup guides and usage guidelines they can reuse in their day-to-day work.</p>
+        </div>
+        <div class="panel">
+          <h3>Online or in person?</h3>
+          <p><span class="todo">Needs your input</span></p>
+        </div>
+        <div class="panel">
+          <h3>Do you train students as well as companies?</h3>
+          <p>Yes. I run sessions for institutes such as Boston Institute of Analytics as well as for corporate teams.</p>
+        </div>
+        <div class="panel">
+          <h3>Can you train several departments at once?</h3>
+          <p>Yes. A recent 6-day programme trained MIS, Design, Accounts, Sales, Pre-sales and Administration teams in one programme.</p>
+        </div>
+        <div class="panel">
+          <h3>How long is a typical workshop?</h3>
+          <p><span class="todo">Needs your input</span></p>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap foot-row">
+    <div><b style="color:var(--text)">Niharika Dhande</b> · Prompt at Work · © 2026</div>
+    <nav>
+      <a href="#">AI Lab</a>
+      <a href="#">Training</a>
+      <a href="#">Engineering profile</a>
+      <a href="#">LinkedIn</a>
+      <a href="#">Contact</a>
+    </nav>
+  </div>
+</footer>
+
+<div class="poc-note" id="pocNote">
+  <button aria-label="Close" onclick="this.parentElement.remove()">×</button>
+  <b>POC only.</b> Yellow tags mark facts I still need from you. Workshop thumbnails are placeholders until real ones are designed.
+</div>
+
+<script>
+  // Workshop audience filter.
+  const buttons = document.querySelectorAll(".filters button");
+  const cards = document.querySelectorAll(".ws");
+  buttons.forEach((b) =>
+    b.addEventListener("click", () => {
+      buttons.forEach((x) => x.classList.toggle("on", x === b));
+      const f = b.dataset.f;
+      cards.forEach((c) => (c.hidden = f !== "all" && c.dataset.a !== f));
+    })
+  );
+</script>
+</body>
+</html>

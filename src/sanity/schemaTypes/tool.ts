@@ -1,6 +1,7 @@
 import { defineField, defineType } from "sanity";
 import { diagramsField } from "./processDiagram";
 import { diagramPlacements } from "./diagramPlacements";
+import { engineeringAreasField } from "./engineeringArea";
 
 // PRD §66 (base schema) + §24 (Tool Explorer detail fields), evolved per
 // Docs/development-plan/04.1-ai-lab-content-tools.md into a Tool Research &
@@ -122,6 +123,7 @@ export default defineType({
       ],
     }),
     diagramsField(diagramPlacements.tool),
+    engineeringAreasField,
     defineField({
       name: "relatedContent",
       type: "array",

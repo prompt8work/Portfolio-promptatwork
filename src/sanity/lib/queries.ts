@@ -22,7 +22,7 @@ const diagramsProjection = groq`
 
 // `visibility != "private"` is enforced in the query itself, not just in
 // application code — the same defense-in-depth principle as
-// `getProjectBySlug` in data/projects.ts (PRD §22): a private project
+// the original static `getProjectBySlug` (PRD §22): a private project
 // should never even leave the dataset in a public-facing fetch, not just
 // be hidden by the page that receives it.
 
@@ -62,6 +62,7 @@ export const projectBySlugQuery = groq`
     challenges,
     results,
     learnings,
+    futureScope,
     "coverImage": coverImage.asset->url,
     ${diagramsProjection},
     ${relatedContentProjection}
@@ -72,42 +73,47 @@ export const projectSlugsQuery = groq`
   *[_type == "project" && visibility != "private"].slug.current
 `;
 
-export const experienceQuery = groq`
-  *[_type == "experience"] | order(displayOrder asc) {
-    company,
-    role,
-    location,
-    startDate,
-    endDate,
-    description,
-    responsibilities,
-    achievements,
-    technologies
+// Portfolio pages (/portfolio, /portfolio/[slug]) — see portfolioProfile.ts.
+// Images are resolved to their CDN url + dimensions for next/image.
+const portfolioImage = `{ alt, "url": asset->url, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height }`;
+
+export const portfolioProfilesQuery = groq`
+  *[_type == "portfolioProfile" && defined(slug.current)] | order(order asc) {
+    title, "slug": slug.current, summary, heroEyebrow, "heroImage": heroImage ${portfolioImage}
   }
 `;
 
-// Singleton by convention (see resume.ts) — [0] takes the first (only)
-// document rather than requiring a known _id. Feeds both the /resume page
-// and the generated PDF (/resume/download) — see src/lib/resume.ts.
-export const resumeQuery = groq`
-  *[_type == "resume"][0] {
-    name, title, email, location, linkedin,
-    summary,
-    "skills": skills[]{ category, "items": coalesce(items, []) },
-    "roles": roles[]{ role, company, location, startDate, endDate, "highlights": coalesce(highlights, []) },
-    earlierRolesHeading,
-    "projects": projects[]{
-      name, badge, techLabel,
-      "tech": coalesce(tech, []),
-      "points": coalesce(points, []),
-      "description": coalesce(description, [])
-    },
-    "certifications": coalesce(certifications, []),
-    "education": coalesce(education, []),
-    "teaching": coalesce(teaching, []),
-    "heroStats": coalesce(heroStats, []),
-    "numbers": coalesce(numbers, []),
-    updatedAt
+export const portfolioSlugsQuery = groq`
+  *[_type == "portfolioProfile" && defined(slug.current)].slug.current
+`;
+
+export const portfolioProfileBySlugQuery = groq`
+  *[_type == "portfolioProfile" && slug.current == $slug][0] {
+    ...,
+    "slug": slug.current,
+    "heroImage": heroImage ${portfolioImage},
+    "heroLogos": heroLogos[] ${portfolioImage},
+    institutes { ..., "items": items[] { ..., "logo": logo ${portfolioImage} } }
+  }
+`;
+
+// AI Lab case studies shown on a portfolio profile's projects section, newest
+// first, so publishing a project in AI Lab adds it to the portfolio too.
+// Same visibility filter as projectsQuery.
+export const portfolioAiLabProjectsQuery = groq`
+  *[_type == "project" && visibility != "private"] | order(publishedAt desc) {
+    "slug": slug.current, title, category, summary, stats, tech
+  }
+`;
+
+// Singleton by convention (_id "portfolio-settings") — [0] takes the only one.
+export const portfolioSettingsQuery = groq`
+  *[_type == "portfolioSettings"][0] {
+    landingEyebrow, landingTitle, landingIntro,
+    servicesEyebrow, servicesTitle, servicesIntro,
+    "services": services[] { title, description, anchor, linkLabel, "profileSlug": profile->slug.current },
+    "earlierRoles": coalesce(earlierRoles, []),
+    "credentials": coalesce(credentials, [])
   }
 `;
 
@@ -349,12 +355,46 @@ export const trainingBySlugQuery = groq`
 
 export const trainingSlugsQuery = groq`*[_type == "training" && registrationEnabled == true].slug.current`;
 
+// AI Lab → Engineering. Each area's evidence is every published entry that
+// tags it (engineeringAreas), with the same visibility filters as the
+// per-type queries — so publishing a tagged entry updates the page.
+const engineeringEvidenceFilter = `references(^._id) && (
+  (_type == "project" && visibility != "private") ||
+  _type in ["automation", "prompt", "experiment"] ||
+  (${publishedToolFilter})
+)`;
+
+export const engineeringAreasQuery = groq`
+  *[_type == "engineeringArea"] | order(order asc) {
+    "id": slug.current, title, description, items,
+    "evidence": *[${engineeringEvidenceFilter}] | order(title asc, name asc) {
+      _type, "slug": slug.current, "title": coalesce(title, name)
+    }
+  }
+`;
+
 // One round-trip for the AI Lab hub's sidebar, ⌘K search index and
 // previous/next links (src/app/ai-lab/layout.tsx). Same visibility filters
 // as the per-type list queries above.
+// AI Lab overview: every case study with the pages that document its parts,
+// plus how many entries each section has so empty sections can be left out.
+export const aiLabOverviewQuery = groq`{
+  "projects": *[_type == "project" && visibility != "private"] | order(publishedAt desc) {
+    "slug": slug.current, title, category, summary,
+    "parts": parts[]->{ _type, "slug": slug.current, "title": coalesce(title, name) }
+  },
+  "counts": {
+    "tools": count(*[${publishedToolFilter}]),
+    "experiments": count(*[_type == "experiment"]),
+    "prompts": count(*[_type == "prompt"]),
+    "automations": count(*[_type == "automation"])
+  }
+}`;
+
 export const aiLabNavQuery = groq`{
   "projects": *[_type == "project" && visibility != "private"] | order(publishedAt desc) {
-    "slug": slug.current, title, "summary": summary
+    "slug": slug.current, title, "summary": summary,
+    "parts": parts[]->{ _type, "slug": slug.current, "title": coalesce(title, name) }
   },
   "tools": *[${publishedToolFilter}] | order(name asc) {
     "slug": slug.current, "title": name, "summary": description
@@ -367,5 +407,8 @@ export const aiLabNavQuery = groq`{
   },
   "automations": *[_type == "automation"] | order(title asc) {
     "slug": slug.current, title, "summary": description
+  },
+  "engineering": *[_type == "engineeringArea" && count(*[${engineeringEvidenceFilter}]) > 0] | order(order asc) {
+    "id": slug.current, title, "summary": description
   }
 }`;

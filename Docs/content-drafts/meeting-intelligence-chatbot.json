@@ -1,0 +1,347 @@
+{
+  "type": "project",
+  "slug": "meeting-intelligence-chatbot",
+  "source": "Docs/content-drafts/meeting-intelligence-chatbot.source.md",
+  "parts": [
+    {
+      "type": "automation",
+      "slug": "drive-to-meeting-search-index"
+    },
+    {
+      "type": "automation",
+      "slug": "meeting-transcripts-to-delivery-documents"
+    },
+    {
+      "type": "prompt",
+      "slug": "meeting-qa-direct-answer-prompt"
+    },
+    {
+      "type": "experiment",
+      "slug": "fast-vs-two-stage-vs-chained-document-generation"
+    }
+  ],
+  "fields": {
+    "title": "Meeting Intelligence Chatbot",
+    "category": "RAG · Conversational AI · Document Generation",
+    "visibility": "generalized",
+    "confidentialityNote": "Built as employer work. The company, its product name, client project names, domains, servers and the Drive folder are withheld; the system is called the Meeting Intelligence Chatbot throughout. Prompts are described rather than reproduced, except the meeting Q&A prompt, which has its own entry in this series.",
+    "summary": "A web chat assistant that syncs meeting transcripts from a shared Google Drive folder, answers questions about them with hybrid-search RAG, and drafts delivery documents (Executive Summary, HLRD, User Stories, Timeline Matrix) through multi-stage LLM pipelines. It is a live project, deployed through a GitHub Actions workflow.",
+    "stats": [
+      "4 delivery documents drafted from meeting talk",
+      "3 document-generation modes (fast, two-stage, chained)",
+      "5 role-based personas guiding users",
+      "44 automated test functions"
+    ],
+    "tech": [
+      "Python",
+      "FastAPI",
+      "Pydantic",
+      "FAISS",
+      "Sentence-Transformers",
+      "BM25 (custom, pure Python)",
+      "PyTorch (CPU)",
+      "Google Drive API",
+      "PyPDF2",
+      "python-docx",
+      "openpyxl",
+      "python-pptx",
+      "pandas",
+      "React 18",
+      "TypeScript",
+      "Vite",
+      "Tailwind CSS",
+      "react-markdown",
+      "jsPDF",
+      "html2canvas",
+      "pytest",
+      "GitHub Actions",
+      "PM2",
+      "Nginx"
+    ],
+    "aiModels": [
+      "Groq qwen/qwen3-32b (Q&A answers)",
+      "Groq llama-3.1-8b-instant (intent, slots, query rewriting)",
+      "Groq llama-3.3-70b-versatile (document generation)",
+      "Ollama llama3.2 (local fallback)",
+      "all-MiniLM-L6-v2 (embeddings)"
+    ],
+    "overview": "The Meeting Intelligence Chatbot is a web chat assistant for teams whose meeting transcripts land in a shared Google Drive folder. People ask it about meetings, decisions, action items and project status, and it answers from the transcripts themselves rather than from the model's general knowledge.\n\nIt also drafts four delivery documents for a chosen project and time period: an Executive Summary, a High-Level Requirements Document (HLRD), User Stories with acceptance criteria, and a Timeline Matrix of phases, owners, dependencies and risks.\n\nFive built-in role personas (Product Owner, Delivery Head, Business Analyst, Scrum Master and General User) guide people who aren't sure which document they need: the bot asks for the project, then the document, then the time period. Any answer can be copied or exported as a branded PDF.",
+    "problem": "Meetings already produce plenty of text. Google Meet summaries and meeting notes, and Fireflies recordings, turn every call into a transcript with little effort. The problem is what happens next: the transcripts pile up and sit there. A project's history ends up spread across 90 to 120 days of meetings, and nobody rereads them all.\n\nSo when a project needs an executive summary or a requirements document, someone has to dig through every meeting about it, pull out the decisions, needs and actions by hand, and write the document from scratch, in a different shape each time. The same business need often comes up in several meetings and changes a little each time, so no single meeting tells the whole story.\n\nI wanted the meetings for a project to become the source for its documents directly, in the same structure every time, and for anyone to be able to ask about a project in plain language and get an answer drawn from all of its meetings.",
+    "role": "I developed the full application myself, end to end.\n\nThat covered the ingestion pipeline (the Google Drive incremental sync, the file parsers, transcript cleaning and speaker-aware chunking); the hybrid retrieval layer (embeddings, the FAISS index, the custom BM25 index and rank fusion); the conversation engine (the chat router, LLM intent detection, the four-prompt slot-state flow, the personas and the clarification, feedback and retry sessions); the prompt library and the document pipelines in their fast, two-stage and chained modes; the LLM provider layer with its fallback and retries; the input and output validators; the React chat app with option chips and PDF export; and the deployment with GitHub Actions, PM2 and Nginx.",
+    "context": "Transcripts arrive as JSON exports from a meeting-recorder tool, each with a title, the transcript lines, an overview, notes and action items. The same folder can also hold PDF, DOCX, XLSX, PPTX, CSV, TXT and Markdown files, and all of them are ingested.\n\nThree constraints shaped the build. All LLM calls go through the Groq API, and its rate limits drove many design choices. Embeddings run on CPU, so the embedding model is slow to load. And there is no database: the vector index, its metadata and the Drive sync state are files on disk, and sessions and caches live in memory. The staging server ran Python 3.10 while local development used 3.12.",
+    "solution": "I built a FastAPI backend with a separate React chat app around one idea: a prompt library that templates each document completely, so every Executive Summary, HLRD, User Story set and Timeline Matrix comes out in the same structure. Four engineering decisions carry most of the weight.\n\nHybrid retrieval. Every question is searched two ways at once: by meaning, with all-MiniLM-L6-v2 embeddings in a FAISS index, and by exact words, with a custom BM25 index written in pure Python so no extra library is needed. The two ranked lists are merged with Reciprocal Rank Fusion (k=60), weighted 0.7 to vectors and 0.3 to BM25. A config flag keeps vector-only search available as an alternative.\n\nModel tiers on Groq. Every model call goes through Groq's LLM APIs, split across three tiers. Small, frequent decisions (intent, slot extraction, query rewriting) use the fast llama-3.1-8b-instant model. Answers use qwen/qwen3-32b at temperature 0.2, which the code notes is there to prevent hallucination. Documents use llama-3.3-70b-versatile, chosen in the code for better structured JSON output. A provider layer falls back to a local Ollama model when Groq fails, though only the Q&A and unified-extraction paths use it so far.\n\nDocuments in three modes. The fast mode makes one LLM call that extracts requirements, users, decisions, actions, risks and timeline into a single JSON, then formats it into whichever document was asked for. The two-stage mode runs an extraction prompt and then a synthesis prompt per document. The chained mode runs Executive Summary, then HLRD, then User Stories, then Timeline Matrix, passing a compressed hand-off of about 800 tokens from each to the next. Fast mode became the default because, in the code's words, it is faster and avoids rate limits. The prompts live in JSON files with their stage, temperature and token settings.\n\nMulti-turn context through slots. Each conversation keeps a small set of typed slots (project, time range, speaker and others). Four prompts run per turn: extract the intent and slots, merge them with the previous turn's slots, rebuild a standalone search query, then answer. Each turn is labelled as new, a follow-up, a refinement, a topic switch or a clarification, and that label decides which slots survive, so a short follow-up like \"only last week\" still makes sense.\n\nAround the models sit validators: spell-correction with protected domain terms and query reformulation on the way in, and JSON repair and empty-answer checks on the way out.",
+    "architecture": "Frontend: a React 18, TypeScript and Vite single-page app styled with Tailwind. It renders the bot's Markdown and tables, turns the bot's numbered lists into clickable option chips, and exports answers to PDF in the browser with html2canvas and jsPDF. Its API wrapper waits up to 300 seconds per request and retries twice on network errors.\n\nBackend: FastAPI behind an Nginx TLS reverse proxy, run by PM2. The live app defines about 50 endpoints, including chat, document generation, Drive sync and persona routes. A performance middleware stamps each request with an ID and a timer.\n\nSearch layer: the FAISS vector index and the BM25 keyword index, fused with RRF and narrowed by metadata filters such as project and date.\n\nIngestion: a Google Drive service syncs the shared folder with a service account, a file processor parses each format, and a transcript processor cleans filler words and chunks meetings by speaker.\n\nLLM layer: a provider factory with Groq as primary and Ollama as fallback, exponential-backoff retries and task-based model choice.\n\nData layer: files only. vector_store.faiss, metadata.pkl and gdrive_sync_state.json sit on a persistent volume; conversation sessions and caches are in memory, with sessions expiring after 60 minutes.\n\nThere are no agents in the current build: no tool calling and no agent loop. Every step is fixed in code.",
+    "workflow": "A typical question, such as \"What did the team decide about X last week?\", takes this path.\n\nThe browser sends the message and the session ID to POST /chat. If the message is a greeting, the bot clears the session, runs a silent incremental Drive sync and replies with the project list and persona options. Otherwise the input validator either reformulates the query or asks for clarification.\n\nNext the router checks for an active session (feedback, clarification, thank-you, retry or an unfinished intent) and lets it handle the message. If none is active, an LLM intent analysis decides between generating a document, asking the user questions, or answering directly.\n\nFor a direct answer, the conversation orchestrator rebuilds a standalone query from the merged slots. Hybrid search, filtered by those slots, returns the most relevant chunks. The answer model writes from those chunks only, the reasoning tags are stripped, the output is validated, and the response comes back with citations and per-step timings. The frontend reveals it with a typewriter effect and shows the copy and PDF buttons.",
+    "challenges": "Groq rate limits. This was the constraint that shaped the most code. Retries were raised to 5 with exponential backoff, a 15-second pause was added between pipeline stages, the chained HLRD step falls back to single-stage generation to avoid rate limits, and the one-call fast mode became the default.\n\nReasoning tags leaking into answers. Qwen returns its thinking inside <think> tags, and they appeared in user-facing text. A regex now strips them in four places.\n\nMalformed JSON from the model. Document parsing runs in layers: parse directly, repair, extract the JSON block, then repair again. The output validator also fixes common JSON mistakes.\n\nContext overflow and noisy citations. The number of chunks is capped, token limits are applied before each call, and the per-chunk cap was raised to 4000 characters to avoid truncation. Context is formatted without source numbers so the model stops citing them.\n\nA slow first request. The embedding model loads in a background thread at startup, and the app waits for it before going live, so the first user doesn't pay for it.\n\nLong requests timing out. The frontend timeout was raised to 5 minutes, and Nginx's read timeout set to 300s to match.\n\nMisrouted intents. \"Timeline matrix\" was being routed to User Stories, and project names were being read as meeting types. The slot prompt now carries explicit rules and a list of known project names.\n\nDeployment details. f-strings with nested quotes broke on the Python 3.10 staging server, and Nginx and FastAPI were both adding CORS headers; only FastAPI handles CORS now.",
+    "results": "The assistant is live, deployed through a GitHub Actions workflow to a PM2 and Nginx server. It answers questions across meetings with hybrid retrieval, keeps context across turns through slots, generates all four delivery documents in both the fast and two-stage modes, guides users through five personas, and exports answers to PDF.\n\nThe backend has 44 pytest test functions across 4 files: configuration (7), exceptions (11), Pydantic schemas (20) and API integration (6). The CI workflow deploys but does not run them.\n\nThe code records timings for every step of every request (intent analysis, slot orchestration, vector search and the total), but no measured latency, accuracy, cost or usage figures were saved, so none are reported here.",
+    "learnings": "Rate limits, not model quality, drove the architecture. The fast mode as default, the pauses between stages and the single-stage fallbacks all came from Groq's limits.\n\nAn abstraction only pays off where it's applied. The Ollama fallback protects Q&A, but the document services call Groq directly and have no fallback.\n\nKeeping prompts in JSON files made them versionable, but the live executive-summary prompts drifted into inline copies while three JSON prompt files went unused. Docs drifted too: chunk sizes and retry counts in the diagrams no longer match the config.\n\nA migration started is not a migration finished. A modular router app exists next to the roughly 5,100-line main.py, but most of its routes still return 501.",
+    "futureScope": "The current assistant is a hand-coded workflow that calls LLMs, not an agentic system: the code decides every step. The next phase I've designed (none of it built yet) moves the conversation and document layers onto LangGraph as a single orchestrator.\n\nOne typed conversation state per session, saved by a checkpointer on Postgres or Redis, would replace the five in-memory session stores, survive restarts and stop sessions being shared between users. The roughly 2,100-line if/else router would become one structured LLM routing decision plus explicit graph edges, and clarifying and persona questions would use LangGraph's built-in pause-and-resume.\n\nQ&A would become a tool-using agent over the existing hybrid search, able to search again or combine meetings, with a cap on tool calls to protect latency and rate limits. The document chain would gain a reviewer after each stage that checks the schema and cross-references (every requirement covered by a story, every story scheduled) and regenerates at most twice.\n\nIngestion, retrieval, formatting and validation would stay as plain, tested code that the graph calls. CrewAI was ruled out because the personas are guided question flows, not autonomous agents; LlamaIndex because the hybrid search already works; and stacking several frameworks because it would split state management.\n\nThe rollout is planned in phases behind a feature flag, starting with tracing and an evaluation set of about 50 real questions on the current app, so the new graph can be compared with the old router before it is removed. The frontend's API contract stays the same throughout."
+  },
+  "diagrams": [
+    {
+      "key": "end-to-end",
+      "title": "From a meeting to a grounded answer",
+      "kind": "flow",
+      "placement": "top",
+      "caption": "Transcripts sync from Google Drive, are cleaned, chunked, embedded and indexed; each question is searched two ways and answered only from the passages it finds.",
+      "steps": [
+        {
+          "label": "Transcript lands in Drive",
+          "detail": "Meeting-recorder JSON, PDF, DOCX, XLSX, PPTX",
+          "kind": "trigger",
+          "edgeLabel": "incremental sync"
+        },
+        {
+          "label": "Clean & chunk",
+          "detail": "Filler words removed, speaker-aware chunks",
+          "kind": "input"
+        },
+        {
+          "label": "Embed & index",
+          "detail": "MiniLM vectors → FAISS, plus BM25",
+          "kind": "store"
+        },
+        {
+          "label": "User asks in chat",
+          "detail": "Follow-ups keep context through slots",
+          "kind": "trigger"
+        },
+        {
+          "label": "Hybrid search",
+          "detail": "Meaning + keywords, fused with RRF",
+          "kind": "ai"
+        },
+        {
+          "label": "Grounded answer or document",
+          "detail": "Groq models, output validated",
+          "kind": "output"
+        }
+      ]
+    },
+    {
+      "key": "hybrid-retrieval-analogy",
+      "title": "Hybrid retrieval, explained",
+      "kind": "analogy",
+      "placement": "solution",
+      "concept": "Hybrid search with Reciprocal Rank Fusion",
+      "analogy": "Two interviewers shortlisting candidates",
+      "caption": "One search ranks passages by meaning, the other by exact words, and RRF combines the two rankings by position, so passages both searches rate highly come out on top. Unlike interviewers, the two searches never discuss a candidate.",
+      "pairs": [
+        {
+          "concept": "Vector search ranks by meaning",
+          "analogy": "One interviewer judges overall fit"
+        },
+        {
+          "concept": "BM25 ranks by exact words",
+          "analogy": "The other checks the CV for required skills"
+        },
+        {
+          "concept": "RRF scores each result by its rank in both lists",
+          "analogy": "The panel combines positions, not raw marks"
+        },
+        {
+          "concept": "Passages both searches like rise to the top",
+          "analogy": "Candidates both interviewers rank highly get shortlisted"
+        }
+      ]
+    },
+    {
+      "key": "document-modes",
+      "title": "Three ways to draft a document",
+      "kind": "advanced",
+      "placement": "solution",
+      "caption": "The pipeline mode decides the path. Fast mode, the default, makes one extraction call and formats it into any document; two-stage extracts then synthesises; chained mode passes a compressed hand-off of about 800 tokens from each document to the next.",
+      "mermaid": "flowchart TD\n  R([Document requested]) --> T[Gather project transcript chunks]\n  T --> M{Pipeline mode?}\n  M -- fast --> U[One unified extraction call]\n  U --> F[Format into target document]\n  M -- two-stage --> S1[Stage 1: extract facts]\n  S1 --> S2[Stage 2: synthesise document]\n  S2 --> J[Parse & repair JSON]\n  J --> F\n  M -- chained --> ES[Executive Summary]\n  ES -- hand-off --> HL[HLRD]\n  HL -- hand-off --> US[User Stories]\n  US -- hand-off --> TM[Timeline Matrix]\n  TM --> F\n  F --> O([Markdown document])"
+    },
+    {
+      "key": "slot-state-analogy",
+      "title": "Slot state, explained",
+      "kind": "analogy",
+      "placement": "solution",
+      "concept": "Slot state across conversation turns",
+      "analogy": "A waiter's order pad",
+      "caption": "The bot keeps a small form per chat. Each message adds to it, changes one field, or starts a new one, and the full search question is rebuilt from the form so short follow-ups still make sense.",
+      "pairs": [
+        {
+          "concept": "Slots: project, time range, speaker",
+          "analogy": "Fields on the order pad: dish, size, table"
+        },
+        {
+          "concept": "FOLLOW_UP keeps every slot",
+          "analogy": "\"Tell me more about that dish\""
+        },
+        {
+          "concept": "REFINEMENT replaces one slot",
+          "analogy": "\"Make that a small one\""
+        },
+        {
+          "concept": "SWITCH clears the slots",
+          "analogy": "A new order on a fresh page"
+        },
+        {
+          "concept": "Standalone query rebuilt from slots",
+          "analogy": "The waiter reads the full order to the kitchen"
+        }
+      ]
+    },
+    {
+      "key": "architecture",
+      "title": "How the pieces connect",
+      "kind": "advanced",
+      "placement": "architecture",
+      "caption": "The React app talks to FastAPI through Nginx. Inside the API, conversation, document and search layers share one LLM layer (Groq, with Ollama as fallback); the index and sync state live as files on disk, and Drive is the only data source.",
+      "mermaid": "flowchart TD\n  subgraph Browser\n    UI[React chat app]\n  end\n  subgraph Server\n    NGX[Nginx TLS proxy] --> API[FastAPI /chat and endpoints]\n    API --> CONV[Conversation layer]\n    API --> DOC[Document pipelines]\n    API --> ING[Ingestion]\n    CONV --> SRCH[Hybrid search]\n    CONV --> LLM[LLM layer]\n    DOC --> LLM\n    ING --> SRCH\n  end\n  UI --> NGX\n  SRCH --> IDX[(FAISS + BM25 index)]\n  ING --> SYNC[(Drive sync state)]\n  ING --> GD[Google Drive folder]\n  LLM --> GROQ[Groq API]\n  LLM -. fallback .-> OLL[Ollama local]"
+    },
+    {
+      "key": "pipeline-settings",
+      "title": "The retrieval pipeline and its settings",
+      "kind": "flow",
+      "placement": "architecture",
+      "caption": "The numbers on each step are the configured settings, not measured results: the sync window, chunk sizes, embedding size and batch, fusion weights, and how many passages reach the model.",
+      "steps": [
+        {
+          "label": "Sync recent files",
+          "detail": "Only new or updated files",
+          "kind": "trigger",
+          "metric": "90-day window"
+        },
+        {
+          "label": "Chunk",
+          "detail": "Meetings vs other documents",
+          "kind": "input",
+          "metric": "800/150 and 600/100 words"
+        },
+        {
+          "label": "Embed",
+          "detail": "all-MiniLM-L6-v2 on CPU",
+          "kind": "ai",
+          "metric": "384-d, batches of 32"
+        },
+        {
+          "label": "Hybrid search",
+          "detail": "FAISS + BM25, fused with RRF",
+          "kind": "store",
+          "metric": "0.7 / 0.3, k=60"
+        },
+        {
+          "label": "Top passages to the model",
+          "detail": "Minimum similarity 0.25",
+          "kind": "output",
+          "metric": "top-15"
+        }
+      ]
+    },
+    {
+      "key": "chat-routing",
+      "title": "How /chat decides what to do",
+      "kind": "advanced",
+      "placement": "workflow",
+      "caption": "The first matching check wins: greetings trigger a sync, an active session handles its own reply, and otherwise an LLM intent call sends the message to Q&A, a document pipeline or a clarifying question.",
+      "mermaid": "flowchart TD\n  A([Message + session ID]) --> G{Greeting?}\n  G -- yes --> S[Silent Drive sync + project list]\n  G -- no --> V{Input valid?}\n  V -- unclear --> C[Ask for clarification]\n  V -- yes --> AS{Active session?}\n  AS -- yes --> H[Session handles reply]\n  AS -- no --> I{LLM intent}\n  I -- document --> D[Document pipeline]\n  I -- ask questions --> Q[Ask for missing details]\n  I -- direct answer --> O[Rebuild query from slots]\n  O --> HS[Hybrid search]\n  HS --> L[Answer from chunks]\n  L --> OV[Validate output]\n  OV --> Z([Answer + citations])"
+    },
+    {
+      "key": "rate-limit-retry",
+      "title": "Retrying through Groq rate limits",
+      "kind": "loop",
+      "placement": "challenges",
+      "caption": "A failed Groq call waits and tries again, doubling the delay each time, until it succeeds or reaches the retry limit; Q&A calls can then fall back to a local Ollama model.",
+      "loopBackTo": 1,
+      "loopLabel": "until success or 5 retries",
+      "steps": [
+        {
+          "label": "Call Groq",
+          "kind": "ai"
+        },
+        {
+          "label": "Rate limited or failed?",
+          "kind": "decision"
+        },
+        {
+          "label": "Wait, doubling the delay",
+          "detail": "retry_delay × 2^attempt",
+          "kind": "action"
+        }
+      ]
+    },
+    {
+      "key": "proposed-graph",
+      "title": "Proposed: one graph instead of the router",
+      "kind": "advanced",
+      "placement": "futureScope",
+      "caption": "Planned, not built. One routing decision sends each message to a node; missing details pause the graph to ask the user, and every path ends in the existing output validator.",
+      "mermaid": "flowchart TD\n  START([New message]) --> VIN[Validate input]\n  VIN --> RT{Route: intent + slots}\n  RT -- greeting --> GR[Greet]\n  RT -- qa --> QA[Q&A agent with tools]\n  RT -- document --> SL{Slots complete?}\n  SL -- no --> COL[Pause and ask user]\n  COL --> SL\n  SL -- yes --> DOC[Document subgraph]\n  RT -- persona --> PER[Persona questions]\n  RT -- unclear --> CL[Ask one question]\n  CL --> RT\n  GR --> OUT[Validate output]\n  QA --> OUT\n  DOC --> OUT\n  PER --> OUT\n  OUT --> END([Response])"
+    },
+    {
+      "key": "reviewer-loop",
+      "title": "Proposed: a reviewer after each document stage",
+      "kind": "loop",
+      "placement": "futureScope",
+      "caption": "Planned, not built. Each stage's output is checked against its schema and the previous document; a failed check regenerates the stage with the critique added, at most twice.",
+      "loopBackTo": 1,
+      "loopLabel": "on failure, at most twice",
+      "steps": [
+        {
+          "label": "Generate stage",
+          "detail": "e.g. User Stories from the HLRD",
+          "kind": "ai"
+        },
+        {
+          "label": "Deterministic checks",
+          "detail": "Schema, counts, ID references",
+          "kind": "action"
+        },
+        {
+          "label": "Review passes?",
+          "detail": "Every requirement covered?",
+          "kind": "decision"
+        }
+      ]
+    },
+    {
+      "key": "roadmap",
+      "title": "Proposed migration roadmap",
+      "kind": "flow",
+      "placement": "futureScope",
+      "caption": "Planned, not built. Each phase can ship alone behind a feature flag, and the frontend needs no changes.",
+      "steps": [
+        {
+          "label": "Baseline",
+          "detail": "Tracing + evaluation set on today's app",
+          "kind": "action"
+        },
+        {
+          "label": "One saved state",
+          "detail": "Checkpointer replaces 5 session stores",
+          "kind": "store"
+        },
+        {
+          "label": "Router → graph",
+          "detail": "Route node + conditional edges",
+          "kind": "action"
+        },
+        {
+          "label": "Q&A agent",
+          "detail": "Hybrid search as tools",
+          "kind": "ai"
+        },
+        {
+          "label": "Document subgraph",
+          "detail": "Reviewer loop, cache-aware nodes",
+          "kind": "ai"
+        },
+        {
+          "label": "Cleanup",
+          "detail": "Remove legacy router, sync as a job",
+          "kind": "output"
+        }
+      ]
+    }
+  ],
+  "engineeringAreas": [
+    "full-stack-ai",
+    "rag-retrieval"
+  ],
+  "relatedContent": [],
+  "numberAllowlist": [],
+  "openQuestions": []
+}

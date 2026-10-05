@@ -2,72 +2,66 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import PageTransition from "../../components/PageTransition";
 import DocsArticle from "../../components/docs/DocsArticle";
-import LabLoopDiagram from "../../components/docs/LabLoopDiagram";
 import Callout, { InlineCode } from "../../components/docs/Callout";
 import WordReveal from "../../components/motion/WordReveal";
 import IntroFade from "../../components/motion/IntroFade";
 import Reveal from "../../components/motion/Reveal";
-import { process } from "../../../data/homeContent";
 import { buildMetadata } from "../../lib/site";
+import { client } from "../../sanity/lib/client";
+import { aiLabOverviewQuery } from "../../sanity/lib/queries";
+
+// Interim revalidation strategy until the Sanity webhook is wired up.
+export const revalidate = 60;
 
 export const metadata: Metadata = buildMetadata({
-  title: "AI Lab — Prompt Engineering & Generative AI Projects by Niharika Dhande | PromptAtWork",
+  title: "AI Lab — Generative & Agentic AI Projects by Niharika Dhande | PromptAtWork",
   description:
-    "Prompt engineering and Generative AI work by Niharika Dhande: projects, case studies, RAG and LLM engineering, AI tool reviews, experiments, prompts and automations — in one place.",
+    "Generative AI and agentic AI work by Niharika Dhande: case studies, engineering capabilities and automations, each explained step by step with process diagrams — in one place.",
   path: "/ai-lab",
 });
 
-const headline = "Everything I build, test and learn. In one place.";
+type Part = { _type: string; slug: string; title: string };
+type Overview = {
+  projects: { slug: string; title: string; category?: string; summary: string; parts?: (Part | null)[] | null }[];
+  counts: Record<"tools" | "experiments" | "prompts" | "automations", number>;
+};
 
-// "You want X → go here" routing, docs-style: bold lead-in, then the link.
-const routes = [
-  {
-    lead: "You want to see shipped work.",
-    body: (
-      <>
-        Start with <Link href="/ai-lab/work">Work &amp; Case Studies</Link> — problem, architecture, results and
-        learnings for each project.
-      </>
-    ),
-  },
-  {
-    lead: "You want to know what I can build.",
-    body: (
-      <>
-        <Link href="/ai-lab/engineering">Engineering</Link> lists each capability with the project that proves it.
-      </>
-    ),
-  },
-  {
-    lead: "You are evaluating an AI tool.",
-    body: (
-      <>
-        <Link href="/ai-lab/tools">Tools &amp; Research</Link> has hands-on reviews, best use cases and where each
-        tool falls short.
-      </>
-    ),
-  },
-  {
-    lead: "You want something you can use today.",
-    body: (
-      <>
-        Copy a template from the <Link href="/ai-lab/prompts">Prompt Library</Link>, or follow an end-to-end
-        workflow in <Link href="/ai-lab/automations">Automations</Link>.
-      </>
-    ),
-  },
-  {
-    lead: "You want the honest version.",
-    body: (
-      <>
-        <Link href="/ai-lab/experiments">Experiments</Link> record what worked, what failed and what I decided
-        next.
-      </>
-    ),
-  },
-];
+const partHref: Record<string, string> = {
+  automation: "/ai-lab/automations",
+  tool: "/ai-lab/tools",
+  prompt: "/ai-lab/prompts",
+  experiment: "/ai-lab/experiments",
+};
+const partLabel: Record<string, string> = {
+  automation: "Automation",
+  tool: "Tool",
+  prompt: "Prompt",
+  experiment: "Experiment",
+};
 
-export default function AiLabPage() {
+const headline = "Real projects, documented end to end.";
+
+export default async function AiLabPage() {
+  const { projects, counts }: Overview = await client.fetch(aiLabOverviewQuery);
+
+  // Sections with nothing published yet are left out, like in the sidebar.
+  const sections = [
+    { href: "/ai-lab/work", label: "Work & Case Studies", body: "The problem, how it was solved, and the future scope." },
+    { href: "/ai-lab/engineering", label: "Engineering", body: "Each capability, linked to the project that proves it." },
+    counts.automations > 0 && {
+      href: "/ai-lab/automations",
+      label: "Automations",
+      body: "Pipelines and connectors from those projects, laid out step by step.",
+    },
+    counts.tools > 0 && { href: "/ai-lab/tools", label: "Tools & Research", body: "Hands-on reviews of the tools used." },
+    counts.prompts > 0 && { href: "/ai-lab/prompts", label: "Prompt Library", body: "Reusable prompt templates." },
+    counts.experiments > 0 && {
+      href: "/ai-lab/experiments",
+      label: "Experiments",
+      body: "What worked, what failed and what was decided.",
+    },
+  ].filter((s): s is { href: string; label: string; body: string } => Boolean(s));
+
   return (
     <PageTransition>
       <DocsArticle>
@@ -82,8 +76,8 @@ export default function AiLabPage() {
             {headline}
           </WordReveal>
           <IntroFade as="p" after={headline} step={1} className="mt-6 text-[18px] leading-relaxed text-neutral-600 max-w-[560px]">
-            Projects, case studies, engineering notes, tool research, experiments, prompts and automations — documented
-            as I build, so you can read the whole picture without hopping between pages.
+            Each project is written up as a case study and split into pages for its parts. Every page explains the
+            process in text and diagrams and links to the rest of the same project.
           </IntroFade>
           <IntroFade after={headline} step={2} className="mt-8 flex flex-wrap gap-3">
             <Link
@@ -92,55 +86,62 @@ export default function AiLabPage() {
             >
               Read the case studies
             </Link>
-            <Link
-              href="/ai-lab/tools"
-              className="motion-btn inline-flex items-center rounded-md border border-neutral-300 bg-white px-5 py-3 text-[14.5px] font-semibold text-neutral-900 hover:border-neutral-900 hover:text-neutral-900"
-            >
-              Browse tools &amp; research
-            </Link>
           </IntroFade>
         </header>
 
         <div className="mt-10">
-          <Reveal>
-            <p className="text-[17px] leading-[1.75] text-neutral-700">
-              The lab is organised the way the work actually happens. A tool gets explored, an idea gets tested, the
-              useful parts get built into something real, and what I learned gets written down — as a case study, a
-              reusable prompt or a workflow someone else can follow.
-            </p>
-          </Reveal>
-
-          <h2 id="find-your-starting-point" className="mt-14 font-sans text-[26px] font-semibold tracking-tight text-neutral-900 scroll-mt-28">
-            Find your starting point
+          <h2 id="projects" className="font-sans text-[26px] font-semibold tracking-tight text-neutral-900 scroll-mt-28">
+            Projects
           </h2>
-          <LabLoopDiagram />
-          <p className="text-[15.5px] leading-[1.75] text-neutral-700">
-            Every section runs on the same loop. Bigger work enters earlier and goes round more often; it doesn&apos;t
-            become a different way of working.
-          </p>
+          <div className="mt-5 flex flex-col gap-5">
+            {projects.map((p) => {
+              const parts = (p.parts ?? []).filter((r): r is Part => Boolean(r?.slug && partHref[r._type]));
+              return (
+                <Reveal key={p.slug} className="rounded-xl border border-neutral-200 bg-white p-5 sm:p-6">
+                  {p.category && (
+                    <p className="font-mono text-[11px] tracking-[0.1em] uppercase text-cyan-700 font-semibold">{p.category}</p>
+                  )}
+                  <h3 className="mt-1.5 text-[20px] font-semibold tracking-tight text-neutral-900">
+                    <Link href={`/ai-lab/work/${p.slug}`} className="hover:text-cyan-700">
+                      {p.title}
+                    </Link>
+                  </h3>
+                  <p className="mt-2 text-[15.5px] leading-[1.7] text-neutral-700">{p.summary}</p>
+                  <ol className="mt-4 flex flex-col gap-1.5 border-t border-neutral-100 pt-4">
+                    {[{ label: "Case study", title: p.title, href: `/ai-lab/work/${p.slug}` }, ...parts.map((r) => ({
+                      label: partLabel[r._type],
+                      title: r.title,
+                      href: `${partHref[r._type]}/${r.slug}`,
+                    }))].map((page, i) => (
+                      <li key={page.href} className="flex gap-3 text-[14.5px]">
+                        <span className="font-mono text-[11px] text-neutral-400 pt-1">{String(i + 1).padStart(2, "0")}</span>
+                        <span>
+                          <span className="font-mono text-[10.5px] tracking-[0.08em] uppercase text-neutral-500 mr-2">{page.label}</span>
+                          <Link href={page.href} className="text-neutral-900 underline decoration-neutral-300 underline-offset-4 hover:decoration-cyan-600">
+                            {page.title}
+                          </Link>
+                        </span>
+                      </li>
+                    ))}
+                  </ol>
+                </Reveal>
+              );
+            })}
+          </div>
 
-          <ul className="mt-6 flex flex-col gap-4">
-            {routes.map((r) => (
-              <li key={r.lead} className="text-[15.5px] leading-[1.75] text-neutral-700">
-                <strong className="font-semibold text-neutral-900">{r.lead}</strong> {r.body}
+          <h2 id="sections" className="mt-14 font-sans text-[26px] font-semibold tracking-tight text-neutral-900 scroll-mt-28">
+            Sections
+          </h2>
+          <ul className="mt-5 flex flex-col gap-4">
+            {sections.map((s) => (
+              <li key={s.href} className="text-[15.5px] leading-[1.75] text-neutral-700">
+                <Link href={s.href} className="font-semibold">
+                  {s.label}
+                </Link>{" "}
+                — {s.body}
               </li>
             ))}
           </ul>
-
-          <h2 id="how-i-work" className="mt-14 font-sans text-[26px] font-semibold tracking-tight text-neutral-900 scroll-mt-28">
-            How I work
-          </h2>
-          <ol className="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-5">
-            {process.map((p) => (
-              <li key={p.step} className="flex gap-4">
-                <span className="font-mono text-[12px] font-semibold text-cyan-700 pt-1">{p.step}</span>
-                <div>
-                  <p className="text-[15.5px] font-semibold text-neutral-900">{p.title}</p>
-                  <p className="text-[14.5px] leading-relaxed text-neutral-600">{p.description}</p>
-                </div>
-              </li>
-            ))}
-          </ol>
 
           <div className="mt-12">
             <Callout title="Unsure where to start?">

@@ -44,6 +44,14 @@ export type Draft = {
   fields: Record<string, unknown>;
   diagrams: DraftDiagram[];
   relatedContent?: { type: string; slug: string }[];
+  /** project only: other entries documenting parts of the same project, in reading order. */
+  parts?: { type: string; slug: string }[];
+  /**
+   * Not blog: slugs of the Engineering areas this entry proves (Sanity
+   * `engineeringArea`, e.g. "rag-retrieval"). Once published, the entry is
+   * listed as evidence under each area on /ai-lab/engineering.
+   */
+  engineeringAreas?: string[];
   /** Numbers that legitimately don't appear in the source (e.g. a year the author confirmed in chat), with why. */
   numberAllowlist?: { value: string; reason: string }[];
   /** Gaps the skill had to ask about. Must be empty before a push. */
@@ -124,6 +132,14 @@ export function checkDraft(draft: Draft, sourceText: string | null): Report {
     if (vis !== "public" && !draft.fields.confidentialityNote)
       errors.push('A "generalized" or "private" case study needs a "confidentialityNote".');
   }
+  if (type === "blog" && draft.engineeringAreas?.length)
+    errors.push('Blog posts can\'t carry "engineeringAreas"; tag the AI Lab entries the post is about instead.');
+  if (type !== "blog" && !draft.engineeringAreas?.length)
+    warnings.push(
+      'No "engineeringAreas": this entry won\'t appear as evidence on /ai-lab/engineering. Tag the areas the work proves (e.g. ["rag-retrieval"]), or leave it empty on purpose.',
+    );
+  for (const slug of draft.engineeringAreas ?? [])
+    if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug)) errors.push(`Engineering area "${slug}" must be a lowercase-kebab-case slug.`);
   for (const s of allStrings(draft.fields))
     if (placeholder.test(s)) errors.push(`Placeholder text left in: "${s.slice(0, 60)}…"`);
 

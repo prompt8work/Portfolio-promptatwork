@@ -1,6 +1,5 @@
 import SectionHeading from "../ui/SectionHeading";
 import Button from "../ui/Button";
-import ArrowLink from "../ui/ArrowLink";
 import Tag from "../ui/Tag";
 import { StaggerGrid, StaggerItem } from "../motion/StaggerGrid";
 import { aiTools } from "../../lib/seo";
@@ -58,10 +57,6 @@ export default function AiToolsSection() {
             </StaggerItem>
           ))}
         </StaggerGrid>
-
-        <div className="mt-10">
-          <ArrowLink href="/ai-lab/tools">Read the AI tool reviews in the AI Lab</ArrowLink>
-        </div>
       </div>
     </section>
   );

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import PageTransition from "../../../components/PageTransition";
 import DocsArticle from "../../../components/docs/DocsArticle";
+import Callout from "../../../components/docs/Callout";
 import DocsHeader from "../../../components/docs/DocsHeader";
 import ToolsFilterGrid, { type ToolListItem } from "../../../components/ai-lab/ToolsFilterGrid";
 import { client } from "../../../sanity/lib/client";
@@ -27,7 +28,11 @@ export default async function ToolsPage() {
           title="Tools & Research"
           description="Research, practical use cases, tutorials and learning resources for AI tools, features and concepts explored hands-on — not a generic feature comparison."
         />
-        <ToolsFilterGrid tools={tools} />
+        {tools.length > 0 ? (
+          <ToolsFilterGrid tools={tools} />
+        ) : (
+          <Callout title="Nothing published yet">No tool reviews are published yet. New entries appear here as they&apos;re written up.</Callout>
+        )}
       </DocsArticle>
     </PageTransition>
   );

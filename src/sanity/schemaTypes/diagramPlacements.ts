@@ -17,6 +17,7 @@ export const diagramPlacements: Record<string, Placement[]> = {
     { title: "After: Challenges", value: "challenges" },
     { title: "After: Results", value: "results" },
     { title: "After: Learnings", value: "learnings" },
+    { title: "After: Future Scope", value: "futureScope" },
   ],
   tool: [
     { title: "After: Overview", value: "overview" },

@@ -80,7 +80,7 @@ export default function Hero() {
 
           <IntroFade after={hero.heading} step={2} className="flex items-center gap-3.5 flex-wrap mt-1.5">
             <Button
-              href="/ai-lab"
+              href={hero.ctaPrimary.href}
               icon={
                 <svg
                   width="15"
@@ -97,12 +97,12 @@ export default function Hero() {
               }
               arrow
             >
-              {hero.ctaPrimary}
+              {hero.ctaPrimary.label}
             </Button>
-            <Button href="/resume" variant="secondary">
-              {hero.ctaSecondary}
+            <Button href={hero.ctaSecondary.href} variant="secondary">
+              {hero.ctaSecondary.label}
             </Button>
-            <ArrowLink href="#contact">{hero.ctaTertiary}</ArrowLink>
+            <ArrowLink href={hero.ctaTertiary.href}>{hero.ctaTertiary.label}</ArrowLink>
           </IntroFade>
 
           <IntroFade after={hero.heading} step={3} className="flex items-center gap-3 mt-2">

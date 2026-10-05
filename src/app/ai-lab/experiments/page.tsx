@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import PageTransition from "../../../components/PageTransition";
 import DocsArticle from "../../../components/docs/DocsArticle";
+import Callout from "../../../components/docs/Callout";
 import DocsHeader, { DocsEntry } from "../../../components/docs/DocsHeader";
 import { client } from "../../../sanity/lib/client";
 import { experimentsQuery } from "../../../sanity/lib/queries";
@@ -32,6 +33,9 @@ export default async function ExperimentsPage() {
           title="Experiments"
           description="Objective → setup → what worked, what failed, what was learned — documented as I build, not written up after the fact."
         />
+        {experiments.length === 0 && (
+          <Callout title="Nothing published yet">No experiments are published yet. New entries appear here as they&apos;re written up.</Callout>
+        )}
         <div>
           {experiments.map((e) => (
             <DocsEntry

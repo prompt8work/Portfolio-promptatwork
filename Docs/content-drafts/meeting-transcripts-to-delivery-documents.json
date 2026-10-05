@@ -1,0 +1,160 @@
+{
+  "type": "automation",
+  "slug": "meeting-transcripts-to-delivery-documents",
+  "source": "Docs/content-drafts/meeting-intelligence-chatbot.source.md",
+  "fields": {
+    "title": "Meeting Transcripts → Delivery Documents",
+    "category": "Automation",
+    "description": "Turns a project's meetings into an Executive Summary, a High-Level Requirements Document, User Stories or a Timeline Matrix, in the same templated structure every time, through a one-call fast pipeline or a two-stage or chained one.",
+    "problem": "A project's decisions, needs and actions are spread across 90 to 120 days of meeting transcripts. Writing an executive summary or a requirements document meant digging through all of them by hand and writing the document from scratch, in a different shape each time.\n\nThis automation extracts everything a project's meetings say and writes it into fixed document templates, so the same document always comes out in the same structure.",
+    "trigger": "A document request in chat, or a persona's guided questions",
+    "steps": [
+      {
+        "label": "Document requested",
+        "description": "Intent detection spots a document request in chat, or a persona flow collects the project, the document type and the time period."
+      },
+      {
+        "label": "Gather the project's meetings",
+        "description": "Chunks that mention the project are kept, and up to 30 of them are joined into one transcript."
+      },
+      {
+        "label": "Unified extraction",
+        "description": "One LLM call returns a single JSON with the requirements, users, decisions, actions, risks and timeline the four documents need."
+      },
+      {
+        "label": "Format to the template",
+        "description": "Deterministic code formats that JSON into the requested document: Executive Summary, HLRD, User Stories or Timeline Matrix."
+      },
+      {
+        "label": "Render Markdown",
+        "description": "A document formatter turns the structured result into Markdown for the chat."
+      },
+      {
+        "label": "Document delivered",
+        "description": "The document appears in chat, where it can be copied or exported as a branded PDF."
+      }
+    ],
+    "integrations": [
+      "Groq API (llama-3.3-70b-versatile for documents)",
+      "Ollama (local fallback for unified extraction)"
+    ],
+    "architecture": "The steps above are the fast mode, the default: one LLM call, then formatting in code. Two other modes share the same four document types and formatters.\n\nThe two-stage mode makes two calls per document. Stage 1 runs an \"extract everything, over-extract\" prompt at temperature 0.2 with up to 4000 tokens; after a pause to respect rate limits, Stage 2 synthesises the structured document at temperature 0.25–0.3 with 6000–8000 tokens, and the JSON is parsed and repaired.\n\nThe chained mode runs the documents in order: Executive Summary, then HLRD, then User Stories, then Timeline Matrix. The requested document decides how far the chain goes. Each stage produces a full output for display and a compressed chain output of about 800 tokens, at most 10 items per list and 20 words per item, which the next stage reads. HLRD results are cached for an hour.\n\nThe prompt library is a set of JSON files, one per stage and document, each holding its stage, temperature and token settings, system prompt, extraction categories and user prompt template. For meeting summaries, a template selector scores keywords in the request: 8 or more points picks the detailed template, 4 or more the simplified one, and anything lower the minimal one.\n\nFive personas (Product Owner, Delivery Head, Business Analyst, Scrum Master and General User) wrap the pipeline in a guided flow, and each one leads to its own primary document.",
+    "input": "A project name, a time range, and that project's meeting chunks from the search index.",
+    "output": "A Markdown document in one of four fixed structures (Executive Summary, HLRD with IDs such as BG-001 and FR-001, User Stories in As a / I want / so that form with acceptance criteria, epics and story points, or a Timeline Matrix with phases, owners, dependencies and risks), ready to copy or export as a PDF.",
+    "limitations": "On Groq, the multi-call modes ran into rate limits, which needed 15-second pauses between stages and single-stage fallbacks. The two-stage document services call Groq directly, so they don't get the Ollama fallback.\n\nNothing reviews a stage's output before the next stage reads it, so a weak Executive Summary weakens everything after it in the chain. Three of the executive-summary prompt files are no longer loaded: the live prompts are inline copies. Persona sessions are shared across the process rather than kept per user.",
+    "securityNotes": "Model API keys are read from git-ignored .env files. The API itself has no authentication yet; per-user access is part of the planned redesign.",
+    "learnings": "Rate limits, not model quality, drove the design. The one-call fast mode became the default because it is faster and avoids rate limits, and the richer two-stage mode is kept for when the extra depth is worth the extra calls.\n\nThe two-stage design splits extraction from writing: the model lists every relevant fact first, then writes the document from that list. Templating each document completely is what keeps the output in the same structure every time."
+  },
+  "diagrams": [
+    {
+      "key": "two-stage",
+      "title": "Two-stage: extract first, then write",
+      "kind": "flow",
+      "placement": "architecture",
+      "caption": "In two-stage mode the model first lists every relevant fact at a low temperature, then writes the document from that list; the settings on each step are the configured values.",
+      "steps": [
+        {
+          "label": "Project transcript",
+          "kind": "input"
+        },
+        {
+          "label": "Stage 1: extract facts",
+          "detail": "Over-extract everything relevant",
+          "kind": "ai",
+          "metric": "temp 0.2, max 4000 tokens"
+        },
+        {
+          "label": "Pause",
+          "detail": "Respect rate limits",
+          "kind": "action"
+        },
+        {
+          "label": "Stage 2: write document",
+          "detail": "Structured synthesis prompt",
+          "kind": "ai",
+          "metric": "temp 0.25–0.3, 6000–8000 tokens"
+        },
+        {
+          "label": "Parse & repair JSON",
+          "kind": "action"
+        },
+        {
+          "label": "Templated document",
+          "kind": "output"
+        }
+      ]
+    },
+    {
+      "key": "chain-handoff",
+      "title": "The chained pipeline's hand-offs",
+      "kind": "flow",
+      "placement": "architecture",
+      "caption": "Each document reads a compressed summary of the one before it rather than its full text, which keeps later stages within the model's context and rate limits.",
+      "steps": [
+        {
+          "label": "Executive Summary",
+          "kind": "ai",
+          "edgeLabel": "≤800-token hand-off"
+        },
+        {
+          "label": "HLRD",
+          "detail": "Cached for 1 hour",
+          "kind": "ai",
+          "edgeLabel": "requirements hand-off"
+        },
+        {
+          "label": "User Stories",
+          "detail": "Acceptance criteria, epics, points",
+          "kind": "ai",
+          "edgeLabel": "stories hand-off"
+        },
+        {
+          "label": "Timeline Matrix",
+          "detail": "Phases, owners, risks",
+          "kind": "output"
+        }
+      ]
+    },
+    {
+      "key": "relay-analogy",
+      "title": "Chained generation, explained",
+      "kind": "analogy",
+      "placement": "architecture",
+      "concept": "Chained document generation",
+      "analogy": "A relay race",
+      "caption": "Each stage runs its own leg and passes a small baton, not everything it produced, to the next. Unlike a relay, a dropped baton isn't noticed: nothing checks a stage's output before the next one uses it.",
+      "pairs": [
+        {
+          "concept": "Each document is one stage",
+          "analogy": "Each runner runs one leg"
+        },
+        {
+          "concept": "The ≤800-token chain output",
+          "analogy": "The baton: small and easy to pass"
+        },
+        {
+          "concept": "The full output stays for display",
+          "analogy": "The runner keeps their own race kit"
+        },
+        {
+          "concept": "The requested document sets where the chain stops",
+          "analogy": "The race can end after any leg"
+        }
+      ]
+    },
+    {
+      "key": "persona-flow",
+      "title": "A persona's guided questions",
+      "kind": "advanced",
+      "placement": "input",
+      "caption": "A persona asks three questions (project, document, time period), repeats any it didn't understand, and then hands the answers to the pipeline.",
+      "mermaid": "stateDiagram-v2\n  [*] --> detecting: persona trigger or choice\n  detecting --> confirming: persona matched\n  confirming --> collecting: user confirms\n  confirming --> cancelled: user declines\n  collecting --> collecting: ask or repeat question\n  collecting --> ready: all answers recorded\n  ready --> processing: map to pipeline\n  processing --> completed: document returned\n  completed --> [*]\n  cancelled --> [*]"
+    }
+  ],
+  "engineeringAreas": [
+    "generative-ai"
+  ],
+  "relatedContent": [],
+  "numberAllowlist": [],
+  "openQuestions": []
+}
