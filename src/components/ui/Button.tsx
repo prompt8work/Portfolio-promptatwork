@@ -14,7 +14,8 @@ interface ButtonProps {
 }
 
 const variants: Record<Variant, string> = {
-  primary: "bg-neutral-900 text-white hover:bg-neutral-800",
+  // Luminous SaaS primary: the blue → violet gradient, white label.
+  primary: "bg-linear-to-br from-accent-blue to-accent-violet text-white hover:text-white shadow-[var(--glow-sm)]",
   secondary: "bg-transparent text-neutral-900 border-[1.5px] border-neutral-300 hover:border-neutral-400",
 };
 

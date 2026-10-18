@@ -106,7 +106,7 @@ function Hero({ p }: { p: PortfolioProfile }) {
                 ? p.heroLogos.map((l) => (
                     <div
                       key={l.url}
-                      className="grid h-16 place-items-center rounded-[14px] border border-line bg-ink px-[18px] py-2.5"
+                      className="grid h-16 place-items-center rounded-[14px] border border-line bg-white px-[18px] py-2.5"
                     >
                       <Image
                         src={l.url}
@@ -481,7 +481,7 @@ export default function PortfolioProfileView({
           {p.institutes.items.map((it) => (
             <Reveal key={it._key} className={`${card} flex flex-col p-[22px]`}>
               {it.logo?.url && (
-                <div className="mb-[18px] grid h-[84px] place-items-center rounded-[14px] border border-line bg-ink px-[18px] py-2.5">
+                <div className="mb-[18px] grid h-[84px] place-items-center rounded-[14px] border border-line bg-white px-[18px] py-2.5">
                   <Image
                     src={it.logo.url}
                     alt={it.logo.alt ?? it.name}

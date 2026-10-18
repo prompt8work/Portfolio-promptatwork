@@ -19,10 +19,10 @@ function Grid({ active }: { active: string | null }) {
   const items = trainings.filter((t) => !category || t.category === category.label);
   return (
     <>
-      <FilterPills theme="light" className="mb-7" options={options} active={category ? category.slug : null} />
+      <FilterPills className="mb-7" options={options} active={category ? category.slug : null} />
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
         {items.map((t) => (
-          <OfferingCard key={t.slug} o={trainingToOffering(t)} theme="light" linkCard />
+          <OfferingCard key={t.slug} o={trainingToOffering(t)} linkCard />
         ))}
       </div>
     </>

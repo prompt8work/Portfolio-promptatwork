@@ -3,13 +3,13 @@ import Reveal from "../motion/Reveal";
 import { DocsTag } from "../docs/DocsHeader";
 import type { Institute } from "../../lib/trainings";
 
-/** "Institutes I've trained for" on the light Training hub; same fields as the portfolio's dark cards. */
+/** "Institutes I've trained for" on the Training hub; same fields as the portfolio's cards. Logos sit on a white plate in both themes. */
 export default function InstituteCards({ items }: { items: Institute[] }) {
   return (
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
       {items.map((it) => (
-        <Reveal key={it.name} className="flex flex-col rounded-[20px] border border-neutral-200 bg-white p-5">
-          <div className="mb-4 grid h-[84px] place-items-center rounded-[14px] border border-neutral-200 bg-neutral-50 px-[18px] py-2.5">
+        <Reveal key={it.name} className="flex flex-col rounded-[20px] border border-neutral-200 bg-neutral-0 p-5">
+          <div className="mb-4 grid h-[84px] place-items-center rounded-[14px] border border-neutral-200 bg-white px-[18px] py-2.5">
             <Image
               src={it.logo.url}
               alt={it.logo.alt ?? it.name}

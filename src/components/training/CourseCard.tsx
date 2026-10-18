@@ -8,7 +8,7 @@ export default function CourseCard({ course: t }: { course: CourseCardData }) {
   return (
     <MotionCard
       href={`/training/${t.slug}`}
-      className="h-full bg-white border border-neutral-200 rounded-2xl p-6 flex flex-col gap-3"
+      className="h-full bg-neutral-0 border border-neutral-200 rounded-2xl p-6 flex flex-col gap-3"
     >
       <Morph name={morphName.courseTitle(t.slug)}>
         <h2 className="font-display text-xl font-semibold text-neutral-900 self-start">{t.title}</h2>

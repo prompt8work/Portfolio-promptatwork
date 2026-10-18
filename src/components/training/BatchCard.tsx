@@ -42,7 +42,7 @@ export default function BatchCard({
   const isOpen = batch.status === "OPEN" && seatsLeft > 0;
 
   return (
-    <MotionCard className="bg-white border border-neutral-200 rounded-2xl p-6 flex flex-col gap-4">
+    <MotionCard className="bg-neutral-0 border border-neutral-200 rounded-2xl p-6 flex flex-col gap-4">
       <div className="flex items-start justify-between gap-4 flex-wrap">
         <div className="flex flex-col gap-1">
           <h3 className="font-display text-lg font-semibold text-neutral-900">{batch.batchName}</h3>
@@ -75,7 +75,7 @@ export default function BatchCard({
         <button
           type="button"
           onClick={() => setOpen(true)}
-          className="motion-btn self-start inline-flex items-center gap-2 bg-plum-600 hover:bg-plum-700 text-white text-sm font-semibold px-5 py-2.5 rounded-xl"
+          className="paw-btn paw-btn--primary paw-btn--sm self-start"
         >
           Register for this batch
         </button>
@@ -141,7 +141,7 @@ export default function BatchCard({
             <button
               type="submit"
               disabled={isPending}
-              className="motion-btn inline-flex items-center gap-2 bg-plum-600 hover:bg-plum-700 text-white text-sm font-semibold px-5 py-2.5 rounded-xl disabled:opacity-60"
+              className="paw-btn paw-btn--primary paw-btn--sm"
             >
               {isPending ? "Submitting…" : "Confirm Registration"}
             </button>

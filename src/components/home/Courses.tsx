@@ -3,14 +3,16 @@ import { ArrowRight } from "lucide-react";
 import { client } from "../../sanity/lib/client";
 import { trainingsQuery } from "../../sanity/lib/queries";
 import { getBatchesForTraining, type TrainingBatch } from "../../supabase/trainingRepository";
+import { trainingPath, trainings as workshops } from "../../lib/trainings";
 import { StaggerGrid, StaggerItem } from "../motion/StaggerGrid";
 import SectionHeader from "../paw/SectionHeader";
 import Thumb, { type ThumbGlyph, type ThumbVariant } from "../paw/Thumb";
 
-// Courses (Hub-Courses board), from the live Sanity course list. The
-// board's progress bars are per-learner data the site doesn't have, so the
-// card footer shows the real batch status instead. A final card offers a
-// custom workshop, which is a real offering, rather than sample courses.
+// Courses (Hub-Courses board): the cohort courses open for registration
+// (Sanity), then the workshops from src/lib/trainings.ts, three cards in
+// all. The board's progress bars are per-learner data the site doesn't
+// have, so a course card shows its real batch status and a workshop card
+// its audience category.
 type Training = { slug: string; title: string; description?: string; duration?: string; mode?: string };
 
 const art: { variant: ThumbVariant; glyph: ThumbGlyph }[] = [
@@ -59,23 +61,26 @@ export default async function Courses() {
             );
           })}
 
-          <StaggerItem>
-            <Link href="/contact" className="paw-card h-full">
-              <Thumb variant="teal" glyph="layers" kicker="FOR TEAMS" word="Custom workshop" />
-              <div className="paw-card__body">
-                <span className="paw-card__meta">FOR COMPANIES &amp; INSTITUTES</span>
-                <h3 className="paw-card__title">Training built around your team&apos;s work</h3>
-                <p className="paw-card__desc">
-                  Tell me what your team is trying to do and I&apos;ll shape a session around it.
-                </p>
-              </div>
-              <div className="paw-card__foot">
-                <span className="label-md inline-flex items-center gap-1.5 text-primary">
-                  LET&apos;S TALK <ArrowRight className="w-3.5 h-3.5" aria-hidden="true" />
-                </span>
-              </div>
-            </Link>
-          </StaggerItem>
+          {workshops.slice(0, Math.max(0, 3 - trainings.length)).map((w, i) => {
+            const { variant, glyph } = art[(trainings.length + i) % art.length];
+            return (
+              <StaggerItem key={w.slug}>
+                <Link href={trainingPath(w.slug)} className="paw-card h-full">
+                  <Thumb variant={variant} glyph={glyph} kicker={`WORKSHOP · ${w.category.toUpperCase()}`} word={w.title} />
+                  <div className="paw-card__body">
+                    {w.tags.length > 0 && <span className="paw-card__meta">{w.tags.slice(0, 3).join(" · ").toUpperCase()}</span>}
+                    <h3 className="paw-card__title">{w.title}</h3>
+                    <p className="paw-card__desc line-clamp-3">{w.description}</p>
+                  </div>
+                  <div className="paw-card__foot">
+                    <span className="label-md inline-flex items-center gap-1.5 text-primary">
+                      ENQUIRE FOR YOUR TEAM <ArrowRight className="w-3.5 h-3.5" aria-hidden="true" />
+                    </span>
+                  </div>
+                </Link>
+              </StaggerItem>
+            );
+          })}
         </StaggerGrid>
       </div>
     </section>

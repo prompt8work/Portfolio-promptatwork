@@ -41,10 +41,12 @@ export default async function TrainingLayout({ children }: LayoutProps<"/trainin
   ].filter((g) => g.title === "Start" || g.items.length > 0);
 
   return (
-    <div className="min-h-screen flex flex-col bg-neutral-50">
+    // paw-page: rebuilt on the Luminous SaaS tokens (follows the light/dark
+    // toggle), same shell as the AI Lab.
+    <div className="paw-page min-h-screen flex flex-col">
       <Nav />
       <AiLabNavProvider groups={groups} label="Training">
-        <div className="flex-1 w-full max-w-[1440px] mx-auto lg:grid lg:grid-cols-[272px_minmax(0,1fr)]">
+        <div className="flex-1 w-full max-w-[1440px] mx-auto lg:grid lg:grid-cols-[280px_minmax(0,1fr)]">
           <DocsSidebar />
           <main className="min-w-0">{children}</main>
         </div>

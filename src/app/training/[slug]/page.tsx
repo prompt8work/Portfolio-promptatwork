@@ -156,7 +156,7 @@ function WorkshopPage({ t }: { t: Training }) {
 
         <div className="flex flex-col gap-10">
           <Reveal className="max-w-[520px]">
-            <OfferingBanner o={trainingToOffering(t)} border="border-neutral-900/10" />
+            <OfferingBanner o={trainingToOffering(t)} />
           </Reveal>
 
           <ListSection heading="Highlights" items={t.highlights} />

@@ -24,7 +24,7 @@ export default function AiToolsSection() {
       <StaggerGrid className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         {aiTools.map((group) => (
           <StaggerItem key={group.category}>
-            <div className="h-full bg-white border border-neutral-200 rounded-2xl p-5 flex flex-col gap-3">
+            <div className="h-full bg-neutral-0 border border-neutral-200 rounded-2xl p-5 flex flex-col gap-3">
               <h3 className="font-display text-lg font-semibold text-neutral-900">{group.category}</h3>
               <p className="text-sm text-neutral-600 leading-relaxed">{group.description}</p>
               <ul className="flex flex-wrap gap-2 mt-auto pt-2" aria-label={`${group.category} tools`}>
