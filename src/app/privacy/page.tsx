@@ -18,7 +18,7 @@ const body = "text-[15px] leading-relaxed text-neutral-700";
 
 export default function PrivacyPage() {
   return (
-    <PageTransition className="min-h-screen bg-neutral-50">
+    <PageTransition className="paw-page min-h-screen">
       <Nav />
       <main>
         <section className="w-full">

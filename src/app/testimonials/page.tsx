@@ -22,7 +22,7 @@ export default async function TestimonialsPage() {
   const testimonials = await getPublishedTestimonials();
 
   return (
-    <PageTransition className="min-h-screen bg-neutral-50">
+    <PageTransition className="paw-page min-h-screen">
       <Nav />
       <main>
         <section className="w-full">
@@ -42,7 +42,7 @@ export default async function TestimonialsPage() {
             <StaggerGrid className="max-w-[1100px] mx-auto px-5 sm:px-10 pb-16 grid grid-cols-1 sm:grid-cols-2 gap-6">
               {testimonials.map((t) => (
                 <StaggerItem key={t.id}>
-                  <MotionCard className="h-full bg-white border border-neutral-200 rounded-2xl p-6 flex flex-col gap-4">
+                  <MotionCard className="h-full bg-neutral-0 border border-neutral-200 rounded-2xl p-6 flex flex-col gap-4">
                     <p className="font-display text-lg italic text-neutral-900 leading-relaxed">
                       &ldquo;{t.quote}&rdquo;
                     </p>

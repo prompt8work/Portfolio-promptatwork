@@ -15,7 +15,7 @@ export default function ErrorPage({ error, retry }: { error: Error & { digest?: 
   }, [error]);
 
   return (
-    <div className="min-h-screen bg-neutral-50 flex flex-col">
+    <div className="paw-page min-h-screen flex flex-col">
       <Nav />
       <main className="flex-1">
         <div className="max-w-[760px] mx-auto px-5 sm:px-10 pt-16 sm:pt-20 pb-24">
@@ -30,7 +30,7 @@ export default function ErrorPage({ error, retry }: { error: Error & { digest?: 
             <button
               type="button"
               onClick={() => retry()}
-              className="motion-btn inline-flex items-center gap-2.5 text-[15px] font-semibold px-6 py-3.5 rounded-xl bg-neutral-900 text-white hover:bg-neutral-800"
+              className="paw-btn paw-btn--primary"
             >
               Try again
             </button>

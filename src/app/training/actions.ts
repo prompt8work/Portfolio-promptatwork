@@ -24,6 +24,9 @@ export type RegistrationFormState = {
   status: "idle" | "success" | "error";
   message: string;
   fieldErrors?: Partial<Record<keyof z.infer<typeof registrationSchema>, string>>;
+  /** Echoed back on a validation error so the fields survive React's
+   *  post-action form reset (same as the Contact form). */
+  values?: Partial<Record<"name" | "email" | "phone" | "organization" | "experienceLevel", string>>;
 };
 
 const resultMessages: Record<RegistrationResult, { status: "success" | "error"; message: string }> = {
@@ -58,7 +61,19 @@ export async function submitRegistration(
       const key = issue.path[0] as keyof z.infer<typeof registrationSchema>;
       if (key && key !== "website") fieldErrors[key] = issue.message;
     }
-    return { status: "error", message: "Please check the form and try again.", fieldErrors };
+    const text = (v: FormDataEntryValue | null | undefined) => (typeof v === "string" ? v : "");
+    return {
+      status: "error",
+      message: "Please check the form and try again.",
+      fieldErrors,
+      values: {
+        name: text(raw.name),
+        email: text(raw.email),
+        phone: text(raw.phone),
+        organization: text(raw.organization),
+        experienceLevel: text(raw.experienceLevel),
+      },
+    };
   }
 
   if (parsed.data.website) {

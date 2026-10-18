@@ -9,10 +9,11 @@ const initialState: TestimonialFormState = { status: "idle", message: "" };
 
 export default function TestimonialForm() {
   const [state, formAction, isPending] = useActionState(submitTestimonial, initialState);
+  const values = state.values ?? {};
 
   if (state.status === "success") {
     return (
-      <div className="bg-white border border-neutral-200 rounded-2xl p-8">
+      <div className="bg-neutral-0 border border-neutral-200 rounded-2xl p-8">
         <FormSuccess message={state.message} />
       </div>
     );
@@ -21,7 +22,7 @@ export default function TestimonialForm() {
   return (
     <form
       action={formAction}
-      className="bg-white border border-neutral-200 rounded-2xl p-8 flex flex-col gap-[18px]"
+      className="bg-neutral-0 border border-neutral-200 rounded-2xl p-8 flex flex-col gap-[18px]"
       noValidate
     >
       {/* Honeypot — same pattern as CommentForm/Contact/BatchCard. */}
@@ -36,6 +37,7 @@ export default function TestimonialForm() {
           name="name"
           label="Your Name"
           autoComplete="name"
+          defaultValue={values.name}
           disabled={isPending}
           error={state.fieldErrors?.name}
         />
@@ -44,6 +46,7 @@ export default function TestimonialForm() {
           name="role"
           label="Role (optional)"
           autoComplete="organization-title"
+          defaultValue={values.role}
           disabled={isPending}
         />
       </div>
@@ -54,14 +57,18 @@ export default function TestimonialForm() {
           name="organization"
           label="Organization (optional)"
           autoComplete="organization"
+          defaultValue={values.organization}
           disabled={isPending}
         />
+        {/* Keyed on the echoed value: a <select> doesn't take a new
+            defaultValue on React's form reset, so it remounts instead. */}
         <Field
+          key={values.sourceContext || "general"}
           id="ts-context"
           name="sourceContext"
           as="select"
           label="Where does this relate to?"
-          defaultValue="general"
+          defaultValue={values.sourceContext || "general"}
           disabled={isPending}
           options={[
             { value: "general", label: "General" },
@@ -76,6 +83,7 @@ export default function TestimonialForm() {
         name="quote"
         as="textarea"
         label="Your Testimonial"
+        defaultValue={values.quote}
         disabled={isPending}
         error={state.fieldErrors?.quote}
       />
@@ -87,7 +95,7 @@ export default function TestimonialForm() {
       <button
         type="submit"
         disabled={isPending}
-        className="motion-btn self-start inline-flex items-center gap-2.5 bg-neutral-900 text-white text-[14.5px] font-semibold px-6 py-3.5 rounded-xl hover:bg-neutral-800 disabled:opacity-60"
+        className="paw-btn paw-btn--primary self-start"
       >
         {isPending ? "Submitting…" : "Submit Testimonial"}
       </button>

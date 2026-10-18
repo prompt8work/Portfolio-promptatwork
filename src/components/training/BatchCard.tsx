@@ -37,6 +37,7 @@ export default function BatchCard({
 }) {
   const [open, setOpen] = useState(false);
   const [state, formAction, isPending] = useActionState(submitRegistration, initialState);
+  const values = state.values ?? {};
 
   const seatsLeft = batch.seats - batch.seatsFilled;
   const isOpen = batch.status === "OPEN" && seatsLeft > 0;
@@ -97,6 +98,7 @@ export default function BatchCard({
               name="name"
               label="Name"
               autoComplete="name"
+              defaultValue={values.name}
               disabled={isPending}
               error={state.fieldErrors?.name}
             />
@@ -106,6 +108,7 @@ export default function BatchCard({
               type="email"
               label="Email"
               autoComplete="email"
+              defaultValue={values.email}
               disabled={isPending}
               error={state.fieldErrors?.email}
             />
@@ -117,6 +120,7 @@ export default function BatchCard({
               type="tel"
               label="Phone (optional)"
               autoComplete="tel"
+              defaultValue={values.phone}
               disabled={isPending}
             />
             <Field
@@ -124,15 +128,19 @@ export default function BatchCard({
               name="organization"
               label="Organization (optional)"
               autoComplete="organization"
+              defaultValue={values.organization}
               disabled={isPending}
             />
           </div>
+          {/* Keyed on the echoed value: a <select> doesn't take a new
+              defaultValue on React's form reset, so it remounts instead. */}
           <Field
+            key={values.experienceLevel || "Beginner"}
             id={`tr-exp-${batch.id}`}
             name="experienceLevel"
             as="select"
             label="Experience Level"
-            defaultValue="Beginner"
+            defaultValue={values.experienceLevel || "Beginner"}
             disabled={isPending}
             options={["Beginner", "Intermediate", "Advanced"]}
           />
