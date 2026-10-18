@@ -11,6 +11,7 @@ import IntroFade from "../motion/IntroFade";
 import Reveal from "../motion/Reveal";
 import AiLabProjects from "./AiLabProjects";
 import OfferingsGrid from "./OfferingsGrid";
+import InstituteCarousel from "../training/InstituteCarousel";
 import {
   Band,
   CtaButton,
@@ -477,48 +478,7 @@ export default function PortfolioProfileView({
       p.institutes.anchorId ?? "institutes",
       <>
         <SectionHead {...p.institutes} />
-        <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
-          {p.institutes.items.map((it) => (
-            <Reveal key={it._key} className={`${card} flex flex-col p-[22px]`}>
-              {it.logo?.url && (
-                <div className="mb-[18px] grid h-[84px] place-items-center rounded-[14px] border border-line bg-white px-[18px] py-2.5">
-                  <Image
-                    src={it.logo.url}
-                    alt={it.logo.alt ?? it.name}
-                    width={it.logo.width}
-                    height={it.logo.height}
-                    className="h-auto max-h-[54px] w-auto"
-                    sizes="240px"
-                  />
-                </div>
-              )}
-              <h3 className="mb-1 text-lg font-semibold text-ink">
-                {it.name}
-              </h3>
-              {it.period && (
-                <div className="mb-2.5 font-mono text-[13px] text-primary">
-                  {it.period}
-                </div>
-              )}
-              {it.description && (
-                <p className={`mb-3.5 text-[15px] ${muted}`}>
-                  {it.description}
-                </p>
-              )}
-              {it.highlightText && (
-                <p className={`mb-3.5 text-sm ${muted}`}>
-                  {it.highlightLabel && (
-                    <b className="font-semibold text-ink">
-                      {it.highlightLabel}:{" "}
-                    </b>
-                  )}
-                  {it.highlightText}
-                </p>
-              )}
-              <Tags items={it.tags} />
-            </Reveal>
-          ))}
-        </div>
+        <InstituteCarousel items={p.institutes.items} />
       </>,
     );
   }

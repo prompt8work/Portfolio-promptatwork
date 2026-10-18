@@ -8,7 +8,7 @@ import IntroFade from "../../components/motion/IntroFade";
 import { StaggerGrid, StaggerItem } from "../../components/motion/StaggerGrid";
 import CourseCard, { type CourseCardData } from "../../components/training/CourseCard";
 import TrainingGrid from "../../components/training/TrainingGrid";
-import InstituteCards from "../../components/training/InstituteCards";
+import InstituteCarousel from "../../components/training/InstituteCarousel";
 import AiToolsSection from "../../components/training/AiToolsSection";
 import TeamsBand from "../../components/training/TeamsBand";
 import { client } from "../../sanity/lib/client";
@@ -114,7 +114,7 @@ export default async function TrainingPage() {
                 From .NET classrooms to agentic AI cohorts, teaching has run alongside my engineering work since 2010.
               </p>
             </div>
-            <InstituteCards items={institutes} />
+            <InstituteCarousel items={institutes} />
           </section>
 
           <AiToolsSection />
