@@ -15,6 +15,7 @@ import TestimonialQuote from "../../../components/testimonials/TestimonialQuote"
 import RelatedContent from "../../../components/ai-lab/RelatedContent";
 import BatchCard from "../../../components/training/BatchCard";
 import TrainingHero from "../../../components/training/TrainingHero";
+import { ModuleGroups, ProgramFormats, ProgramTimelines, SessionFormat } from "../../../components/training/CourseOutline";
 import JsonLd from "../../../components/JsonLd";
 import { client } from "../../../sanity/lib/client";
 import { trainingBySlugQuery, trainingSlugsQuery } from "../../../sanity/lib/queries";
@@ -150,22 +151,15 @@ function WorkshopPage({ t }: { t: Training }) {
           {/* Tagline, highlights, audience and tools all live in the hero card. */}
           <TrainingHero t={t} />
 
-          {/* PLACEHOLDER: module outlines go in `modules` in src/lib/trainings.ts. Until then the note below shows. */}
+          {t.sessionFormat && <SessionFormat format={t.sessionFormat} />}
+          {t.programs?.length ? <ProgramFormats programs={t.programs} /> : null}
+
+          {/* Module outlines go in `modules` in src/lib/trainings.ts. Until then the note below shows. */}
           <Reveal>
-            <section className="flex flex-col gap-3">
+            <section className="flex flex-col gap-4">
               <BlockLabel>Modules</BlockLabel>
               {t.modules?.length ? (
-                <ol className="flex flex-col gap-3">
-                  {t.modules.map((m, i) => (
-                    <li key={m.title} className="flex gap-3">
-                      <span className="font-mono text-[11px] text-muted pt-1">{String(i + 1).padStart(2, "0")}</span>
-                      <span>
-                        <span className="block text-[15.5px] font-semibold text-ink">{m.title}</span>
-                        {m.description && <span className="block text-[15px] leading-relaxed text-on-surface-variant">{m.description}</span>}
-                      </span>
-                    </li>
-                  ))}
-                </ol>
+                <ModuleGroups groups={t.modules} />
               ) : (
                 <Callout title="Module outline coming soon">
                   The module-by-module outline for this training is being written up.{" "}
@@ -174,6 +168,8 @@ function WorkshopPage({ t }: { t: Training }) {
               )}
             </section>
           </Reveal>
+
+          {t.programs?.length ? <ProgramTimelines programs={t.programs} /> : null}
 
           {more.length > 0 && (
             <Reveal>

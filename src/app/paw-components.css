@@ -88,6 +88,7 @@
   .paw-thumb__art { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: flex-end; padding: 14px 16px; }
   .paw-thumb__kicker { font-family: var(--font-mono); font-size: 10px; font-weight: 500; letter-spacing: 0.05em; color: rgba(248, 250, 252, 0.75); text-transform: uppercase; }
   .paw-thumb__word { font-size: 26px; line-height: 28px; font-weight: 600; letter-spacing: -0.02em; color: var(--text-primary); max-width: 80%; }
+  .paw-thumb__scrim { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(2, 6, 23, 0.35), transparent 35%, transparent 50%, rgba(2, 6, 23, 0.75)); }
   .paw-thumb__glyph { position: absolute; right: 14px; top: 12px; width: 44px; height: 44px; color: rgba(248, 250, 252, 0.85); }
   .paw-duration { position: absolute; right: 8px; bottom: 8px; padding: 1px 6px; border-radius: var(--rounded-sm); background: color-mix(in srgb, var(--badge-bg) 80%, transparent); color: var(--badge-ink); font-family: var(--font-mono); font-size: 11px; font-weight: 500; line-height: 16px; letter-spacing: 0.02em; }
   .paw-thumb__play { position: absolute; inset: 0; display: grid; place-items: center; opacity: 0; transition: opacity .2s; background: rgba(2, 6, 23, 0.35); }

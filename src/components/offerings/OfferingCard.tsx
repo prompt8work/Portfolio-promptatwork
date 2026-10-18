@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import type { Offering } from "../../lib/portfolio";
 import { CtaButton, Highlight, card, faint, muted } from "../portfolio/ui";
@@ -46,7 +47,14 @@ export function OfferingBanner({ o, border = t.cover }: { o: Offering; border?: 
   const bg = bannerGradient(o.thumbVariant);
   return (
     <div className={`relative flex aspect-video flex-col justify-between overflow-hidden rounded-[14px] border bg-linear-to-br p-[18px] ${border} ${bg}`}>
-      <div className={grid} />
+      {o.image ? (
+        <>
+          <Image src={o.image} alt="" fill sizes="(max-width: 768px) 100vw, 33vw" className="object-cover" />
+          <div className="pointer-events-none absolute inset-0 bg-linear-to-b from-black/55 via-transparent to-black/60" />
+        </>
+      ) : (
+        <div className={grid} />
+      )}
       <div className="relative max-w-[85%] text-2xl leading-[1.05] font-extrabold tracking-tight text-white uppercase">
         <Highlight text={o.thumbTitle ?? o.title} className="rounded bg-[#facc15] px-1.5 text-[#111]" />
       </div>
@@ -118,17 +126,23 @@ export default function OfferingCard({
   linkCard?: boolean;
 }) {
   const stretched = linkCard && !!o.href;
+  // A banner without an image would only repeat the title on a gradient, so
+  // the card's own content goes on the gradient instead (dark in both
+  // themes, like the covers).
+  const onArt = o.thumbStyle !== "terminal" && !o.image;
   const cover = o.thumbStyle === "terminal" ? <Terminal snippet={o.snippet} /> : <OfferingBanner o={o} border={t.cover} />;
 
   return (
     <article
-      className={`${t.card} ${o.href ? t.focus : ""} group relative flex flex-col p-4 transition hover:-translate-y-0.5`}
+      data-theme={onArt ? "dark" : undefined}
+      className={`${t.card} ${o.href ? t.focus : ""} group relative flex flex-col p-4 transition hover:-translate-y-0.5 ${onArt ? `isolate overflow-hidden bg-linear-to-br p-5 ${bannerGradient(o.thumbVariant)}` : ""}`}
     >
+      {onArt && <div className={`${grid} -z-10`} />}
       <span className={`mb-3 inline-flex items-center gap-1.5 self-start rounded-full border px-2.5 py-1 text-xs font-semibold ${t.badge}`}>
         <i className={`h-[7px] w-[7px] rounded-full ${t.dot[o.tone ?? "cyan"]}`} />
         {o.category}
       </span>
-      {o.href && !stretched ? (
+      {onArt ? null : o.href && !stretched ? (
         // Mouse shortcut only; the title link is the one keyboard and screen-reader users get.
         <Link href={o.href} tabIndex={-1} aria-hidden className="block">
           {cover}
@@ -136,7 +150,7 @@ export default function OfferingCard({
       ) : (
         cover
       )}
-      <h3 className={`mt-4 mb-1.5 text-lg font-semibold ${t.title}`}>
+      <h3 className={`${onArt ? "mt-2" : "mt-4"} mb-1.5 text-lg font-semibold ${t.title}`}>
         {o.href ? (
           <Link
             href={o.href}
@@ -159,6 +173,11 @@ export default function OfferingCard({
         </div>
       )}
       {o.description && <p className={`mb-4 flex-1 text-[15px] ${t.muted}`}>{o.description}</p>}
+      {onArt && !!o.thumbTools?.length && (
+        <div className="mb-4">
+          <Tools items={o.thumbTools} />
+        </div>
+      )}
       {(o.footText || o.link) && (
         <div className="flex flex-wrap items-center justify-between gap-2.5">
           {o.footText && (

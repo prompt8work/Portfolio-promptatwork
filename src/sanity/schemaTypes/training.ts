@@ -1,4 +1,5 @@
 import { defineField, defineType } from "sanity";
+import { cardImageField, cardImageMetaField } from "./cardImage";
 
 // PRD §69 fields exactly, plus relatedContent[] per the unified content
 // relationship model every other Phase 4 type already joined (Phase 4/4.1
@@ -16,6 +17,8 @@ export default defineType({
       validation: (r) => r.required(),
     }),
     defineField({ name: "description", type: "text", validation: (r) => r.required() }),
+    cardImageField,
+    cardImageMetaField,
     defineField({ name: "learningOutcomes", type: "array", of: [{ type: "string" }] }),
     defineField({ name: "topics", type: "array", of: [{ type: "string" }] }),
     defineField({ name: "audience", type: "text", rows: 2 }),

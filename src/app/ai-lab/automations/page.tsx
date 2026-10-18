@@ -3,6 +3,7 @@ import PageTransition from "../../../components/PageTransition";
 import DocsArticle from "../../../components/docs/DocsArticle";
 import Callout from "../../../components/docs/Callout";
 import DocsHeader, { DocsEntry } from "../../../components/docs/DocsHeader";
+import Thumb from "../../../components/paw/Thumb";
 import { client } from "../../../sanity/lib/client";
 import { automationsQuery } from "../../../sanity/lib/queries";
 import { buildMetadata } from "../../../lib/site";
@@ -20,6 +21,7 @@ type AutomationListItem = {
   title: string;
   description: string;
   trigger?: string;
+  cardImage?: string;
 };
 
 export default async function AutomationsPage() {
@@ -44,6 +46,7 @@ export default async function AutomationsPage() {
               eyebrow={a.trigger && `Trigger: ${a.trigger}`}
               title={a.title}
               href={`/ai-lab/automations/${a.slug}`}
+              media={a.cardImage && <Thumb image={a.cardImage} sizes="(max-width: 640px) 100vw, 220px" />}
               cta="See the workflow"
             >
               <p className="text-[15.5px] leading-[1.75] text-on-surface-variant">{a.description}</p>

@@ -1,4 +1,5 @@
 import { defineField, defineType } from "sanity";
+import { cardImageField, cardImageMetaField } from "./cardImage";
 import { diagramsField } from "./processDiagram";
 import { diagramPlacements } from "./diagramPlacements";
 import { engineeringAreasField } from "./engineeringArea";
@@ -28,6 +29,8 @@ export default defineType({
       validation: (r) => r.required(),
     }),
     defineField({ name: "logo", type: "image" }),
+    cardImageField,
+    cardImageMetaField,
     defineField({
       name: "type",
       title: "Content Type",

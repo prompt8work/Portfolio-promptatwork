@@ -4,6 +4,7 @@ import DocsArticle from "../../../components/docs/DocsArticle";
 import Callout from "../../../components/docs/Callout";
 import DocsHeader, { DocsEntry, DocsTag } from "../../../components/docs/DocsHeader";
 import CountUp from "../../../components/motion/CountUp";
+import Thumb from "../../../components/paw/Thumb";
 import { client } from "../../../sanity/lib/client";
 import { projectsQuery } from "../../../sanity/lib/queries";
 import { buildMetadata } from "../../../lib/site";
@@ -25,6 +26,7 @@ type ProjectListItem = {
   summary: string;
   stats?: string[];
   tech?: string[];
+  coverImage?: string;
 };
 
 // `visibility != "private"` is already filtered in the query itself
@@ -51,6 +53,7 @@ export default async function WorkPage() {
               eyebrow={p.category}
               title={p.title}
               href={`/ai-lab/work/${p.slug}`}
+              media={p.coverImage && <Thumb image={p.coverImage} sizes="(max-width: 640px) 100vw, 220px" />}
               cta="Read the case study"
             >
               <p className="text-[15.5px] leading-[1.75] text-on-surface-variant">{p.summary}</p>

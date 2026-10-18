@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { client } from "../../sanity/lib/client";
 import { trainingsQuery } from "../../sanity/lib/queries";
@@ -6,14 +5,16 @@ import { getBatchesForTraining, type TrainingBatch } from "../../supabase/traini
 import { trainingPath, trainings as workshops } from "../../lib/trainings";
 import { StaggerGrid, StaggerItem } from "../motion/StaggerGrid";
 import SectionHeader from "../paw/SectionHeader";
-import Thumb, { type ThumbGlyph, type ThumbVariant } from "../paw/Thumb";
+import type { ThumbGlyph, ThumbVariant } from "../paw/Thumb";
+import ThumbCard from "../paw/ThumbCard";
+import { staticCardImage, staticCardKey } from "../../lib/card-images/static";
 
 // Courses (Hub-Courses board): the cohort courses open for registration
 // (Sanity), then the workshops from src/lib/trainings.ts, three cards in
 // all. The board's progress bars are per-learner data the site doesn't
 // have, so a course card shows its real batch status and a workshop card
 // its audience category.
-type Training = { slug: string; title: string; description?: string; duration?: string; mode?: string };
+type Training = { slug: string; title: string; description?: string; duration?: string; mode?: string; cardImage?: string };
 
 const art: { variant: ThumbVariant; glyph: ThumbGlyph }[] = [
   { variant: "blue", glyph: "code" },
@@ -36,15 +37,20 @@ export default async function Courses() {
       <div className="max-w-[1280px] mx-auto px-4 sm:px-8 py-16 lg:py-[72px]">
         <SectionHeader eyebrow="COURSES" title="Latest Frameworks" link={{ href: "/training", label: "All courses" }} />
 
-        <StaggerGrid className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 items-start">
+        <StaggerGrid className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {trainings.map((t, i) => {
             const { variant, glyph } = art[i % art.length];
             const status = batchLine(batches[i]);
             const meta = [t.mode, t.duration].filter(Boolean).join(" · ").toUpperCase();
             return (
-              <StaggerItem key={t.slug}>
-                <Link href={`/training/${t.slug}`} className="paw-card h-full">
-                  <Thumb variant={variant} glyph={glyph} kicker={`COURSE${t.duration ? ` · ${t.duration.toUpperCase()}` : ""}`} word={t.title} />
+              <StaggerItem key={t.slug} className="h-full">
+                <ThumbCard
+                  href={`/training/${t.slug}`}
+                  image={t.cardImage}
+                  variant={variant}
+                  glyph={glyph}
+                  kicker="COURSE"
+                >
                   <div className="paw-card__body">
                     {meta && <span className="paw-card__meta">{meta}</span>}
                     <h3 className="paw-card__title">{t.title}</h3>
@@ -56,7 +62,7 @@ export default async function Courses() {
                       {status.text}
                     </span>
                   </div>
-                </Link>
+                </ThumbCard>
               </StaggerItem>
             );
           })}
@@ -64,9 +70,14 @@ export default async function Courses() {
           {workshops.slice(0, Math.max(0, 3 - trainings.length)).map((w, i) => {
             const { variant, glyph } = art[(trainings.length + i) % art.length];
             return (
-              <StaggerItem key={w.slug}>
-                <Link href={trainingPath(w.slug)} className="paw-card h-full">
-                  <Thumb variant={variant} glyph={glyph} kicker={`WORKSHOP · ${w.category.toUpperCase()}`} word={w.title} />
+              <StaggerItem key={w.slug} className="h-full">
+                <ThumbCard
+                  href={trainingPath(w.slug)}
+                  image={staticCardImage(staticCardKey.training(w.slug))}
+                  variant={variant}
+                  glyph={glyph}
+                  kicker={`WORKSHOP · ${w.category.toUpperCase()}`}
+                >
                   <div className="paw-card__body">
                     {w.tags.length > 0 && <span className="paw-card__meta">{w.tags.slice(0, 3).join(" · ").toUpperCase()}</span>}
                     <h3 className="paw-card__title">{w.title}</h3>
@@ -77,7 +88,7 @@ export default async function Courses() {
                       ENQUIRE FOR YOUR TEAM <ArrowRight className="w-3.5 h-3.5" aria-hidden="true" />
                     </span>
                   </div>
-                </Link>
+                </ThumbCard>
               </StaggerItem>
             );
           })}

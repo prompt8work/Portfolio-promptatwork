@@ -1,4 +1,5 @@
 import { defineField, defineType } from "sanity";
+import { cardImageField, cardImageMetaField } from "./cardImage";
 import { diagramsField } from "./processDiagram";
 import { diagramPlacements } from "./diagramPlacements";
 import { engineeringAreasField } from "./engineeringArea";
@@ -34,6 +35,8 @@ export default defineType({
     }),
     defineField({ name: "category", type: "string", options: { list: categories }, validation: (r) => r.required() }),
     defineField({ name: "purpose", type: "text", rows: 2 }),
+    cardImageField,
+    cardImageMetaField,
     defineField({ name: "prompt", type: "text", rows: 8, validation: (r) => r.required() }),
     defineField({ name: "variables", type: "array", of: [{ type: "string" }] }),
     defineField({ name: "exampleInput", type: "text" }),

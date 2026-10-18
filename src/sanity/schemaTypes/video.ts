@@ -26,12 +26,27 @@ export default defineType({
     defineField({ name: "externalId", type: "string", description: "YouTube video ID", validation: (r) => r.required() }),
     defineField({ name: "externalUrl", type: "url", validation: (r) => r.required() }),
     defineField({
+      name: "privacyStatus",
+      title: "Privacy status",
+      type: "string",
+      description: "Set by the YouTube sync. The site only shows videos that are public.",
+      options: {
+        list: [
+          { title: "Public", value: "public" },
+          { title: "Unlisted", value: "unlisted" },
+          { title: "Private", value: "private" },
+        ],
+        layout: "radio",
+      },
+      readOnly: true,
+    }),
+    defineField({
       name: "relatedContent",
       type: "array",
       of: [{ type: "reference", to: [{ type: "project" }, { type: "tool" }, { type: "prompt" }, { type: "experiment" }, { type: "automation" }] }],
     }),
   ],
   preview: {
-    select: { title: "title", subtitle: "publishedAt" },
+    select: { title: "title", subtitle: "privacyStatus" },
   },
 });

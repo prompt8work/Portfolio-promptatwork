@@ -1,4 +1,5 @@
 import { defineField, defineType } from "sanity";
+import { cardImageField, cardImageMetaField } from "./cardImage";
 import { diagramsField } from "./processDiagram";
 import { diagramPlacements } from "./diagramPlacements";
 import { engineeringAreasField } from "./engineeringArea";
@@ -40,6 +41,8 @@ export default defineType({
       description: "Master content doc §22 — matches Tool/Prompt's category list so Automations can be grouped/filtered the same way.",
     }),
     defineField({ name: "description", type: "text", rows: 2, validation: (r) => r.required() }),
+    cardImageField,
+    cardImageMetaField,
     defineField({ name: "problem", type: "text" }),
     defineField({ name: "trigger", type: "string" }),
     defineField({

@@ -3,7 +3,7 @@ import { createClient } from "next-sanity";
 import { apiVersion, dataset, projectId } from "../../../../sanity/env";
 import { YouTubeAdapter } from "../../../../lib/content-sync/adapters/youtubeAdapter";
 import { AdapterSyncStrategy } from "../../../../lib/content-sync/strategies";
-import { upsertVideo } from "../../../../lib/content-sync/upsert";
+import { refreshVideoPrivacy, upsertVideo } from "../../../../lib/content-sync/upsert";
 
 // Scheduled YouTube sync (PRD §35/§86): the same adapter and upsert as
 // scripts/sync-youtube.ts, run daily by Vercel Cron (vercel.json). Vercel
@@ -29,13 +29,15 @@ export async function GET(request: Request) {
 
   try {
     const client = createClient({ projectId, dataset, apiVersion, token, useCdn: false });
-    const items = await new AdapterSyncStrategy(new YouTubeAdapter(apiKey, channelId)).run();
+    const adapter = new YouTubeAdapter(apiKey, channelId);
+    const items = await new AdapterSyncStrategy(adapter).run();
     for (const item of items) await upsertVideo(client, item);
+    const hidden = await refreshVideoPrivacy(client, (ids) => adapter.fetchPrivacyStatuses(ids));
 
     // The TV page and the home page's "Latest Writing & Videos" read videos.
     revalidatePath("/videos");
     revalidatePath("/");
-    return Response.json({ synced: items.length });
+    return Response.json({ synced: items.length, hidden: hidden.length });
   } catch {
     // Details stay in the function logs, not in the response (PRD §97).
     return new Response("YouTube sync failed", { status: 502 });

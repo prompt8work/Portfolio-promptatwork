@@ -1,4 +1,5 @@
 import { defineField, defineType } from "sanity";
+import { cardImageMetaField, coverImageField } from "./cardImage";
 import { diagramsField } from "./processDiagram";
 import { diagramPlacements } from "./diagramPlacements";
 import { engineeringAreasField } from "./engineeringArea";
@@ -33,7 +34,8 @@ export default defineType({
       hidden: ({ document }) => document?.visibility === "public",
     }),
     defineField({ name: "summary", type: "text", rows: 2, validation: (r) => r.required() }),
-    defineField({ name: "coverImage", type: "image", options: { hotspot: true } }),
+    coverImageField,
+    cardImageMetaField,
     defineField({ name: "stats", type: "array", of: [{ type: "string" }], description: "e.g. \"100+ concurrent users\"" }),
     defineField({ name: "tech", type: "array", of: [{ type: "string" }] }),
     defineField({ name: "aiModels", type: "array", of: [{ type: "string" }] }),

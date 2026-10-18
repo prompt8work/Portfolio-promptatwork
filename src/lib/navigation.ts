@@ -38,6 +38,17 @@ export const aiLabSections: (NavLink & { description: string })[] = [
   },
 ];
 
+// The AI Lab overview's section cards, in order. Copy lives here so the
+// card images (src/lib/card-images) are generated from the same text.
+export const aiLabHubSections = [
+  { href: "/ai-lab/work", label: "Work & Case Studies", body: "Shipped projects: the problem, how it was solved, and the future scope." },
+  { href: "/ai-lab/engineering", label: "Engineering", body: "Each capability, linked to the project that proves it." },
+  { href: "/ai-lab/automations", label: "Automations", body: "Pipelines and connectors from those projects, laid out step by step." },
+  { href: "/ai-lab/tools", label: "Tools & Research", body: "Hands-on reviews of the tools used." },
+  { href: "/ai-lab/prompts", label: "Prompt Library", body: "Reusable prompt templates." },
+  { href: "/ai-lab/experiments", label: "Experiments", body: "What worked, what failed and what was decided." },
+] as const;
+
 // The two portfolio profiles (Sanity "Portfolio profile" documents). Static
 // here rather than fetched, like the AI Lab groups above.
 export const portfolioSections: (NavLink & { description: string })[] = [

@@ -14,7 +14,7 @@ import Thumb from "../paw/Thumb";
 // distribution channel for the site's own posts, not an imported source
 // (PRD 04.2), so that row is static. A card is left out when there's
 // nothing published for it, rather than showing placeholder text.
-type Post = { slug: string; title: string; excerpt: string; category?: string; tags?: string[] };
+type Post = { slug: string; title: string; excerpt: string; category?: string; tags?: string[]; coverImage?: string };
 type Video = { slug: string; title: string; description?: string; thumbnailUrl?: string; externalUrl: string; publishedAt?: string };
 
 export default async function ContentPreview() {
@@ -32,22 +32,32 @@ export default async function ContentPreview() {
             {post && (
               <StaggerItem>
                 <Link href={`/blog/${post.slug}`} className="paw-card h-full p-0 gap-0 overflow-hidden">
-                  <Thumb variant="violet" aspect="auto" className="h-[240px] rounded-none">
-                    <div className="absolute inset-0 p-6 flex flex-col justify-between">
+                  {/* With a cover: the image, then the text. Without one, the text
+                      sits on the artwork instead of an empty block above it. */}
+                  <Thumb
+                    image={post.coverImage}
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    variant="violet"
+                    aspect="auto"
+                    className={`rounded-none ${post.coverImage ? "h-[240px]" : "h-full"}`}
+                  >
+                    <div className={`${post.coverImage ? "absolute inset-0" : "relative"} p-6 sm:px-7 flex flex-col gap-4`}>
                       <span className="label-md self-start h-6 px-2.5 rounded-md inline-flex items-center bg-[color-mix(in_srgb,var(--surface-container-lowest)_70%,transparent)] border border-line text-primary">
                         BLOG{post.category ? ` · ${post.category.toUpperCase()}` : ""}
                       </span>
+                      {!post.coverImage && <PostText post={post} />}
                       {post.tags && post.tags.length > 0 && (
-                        <div className="self-start px-4 py-3 rounded-xl bg-[color-mix(in_srgb,var(--surface-container-lowest)_75%,transparent)] border border-line font-mono text-[13px] leading-5 text-[var(--on-surface)]">
+                        <div className="self-start mt-auto px-4 py-3 rounded-xl bg-[color-mix(in_srgb,var(--surface-container-lowest)_75%,transparent)] border border-line font-mono text-[13px] leading-5 text-[var(--on-surface)]">
                           {post.tags.slice(0, 3).join(" · ")}
                         </div>
                       )}
                     </div>
                   </Thumb>
-                  <div className="px-7 pt-6 pb-7 flex flex-col gap-2.5">
-                    <h3 className="m-0 text-2xl leading-[30px] font-semibold tracking-[-0.02em]">{post.title}</h3>
-                    <p className="m-0 text-[15px] leading-6 text-muted">{post.excerpt}</p>
-                  </div>
+                  {post.coverImage && (
+                    <div className="px-7 pt-6 pb-7">
+                      <PostText post={post} />
+                    </div>
+                  )}
                 </Link>
               </StaggerItem>
             )}
@@ -98,5 +108,14 @@ export default async function ContentPreview() {
         </a>
       </div>
     </section>
+  );
+}
+
+function PostText({ post }: { post: Post }) {
+  return (
+    <div className="flex flex-col gap-2.5">
+      <h3 className="m-0 text-2xl leading-[30px] font-semibold tracking-[-0.02em]">{post.title}</h3>
+      <p className="m-0 text-[15px] leading-6 text-muted">{post.excerpt}</p>
+    </div>
   );
 }
