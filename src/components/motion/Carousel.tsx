@@ -1,7 +1,8 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
-import { AnimatePresence, animate, motion, useMotionValue, useReducedMotion, type PanInfo } from "framer-motion";
+import { AnimatePresence, animate, motion, useMotionValue, type PanInfo } from "framer-motion";
+import { useReducedMotionSafe } from "./useReducedMotionSafe";
 import { DISTANCE, DRAG_ELASTIC, DURATION, LOOP_EASE, carouselSlide } from "../../lib/motion";
 
 /**
@@ -23,7 +24,7 @@ export default function Carousel({
 }) {
   const [[index, dir], setState] = useState<[number, number]>([0, 1]);
   const [paused, setPaused] = useState(false);
-  const reduce = useReducedMotion();
+  const reduce = useReducedMotionSafe();
   const progress = useMotionValue(0);
   const controls = useRef<ReturnType<typeof animate> | null>(null);
   const count = slides.length;

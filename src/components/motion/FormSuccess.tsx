@@ -1,11 +1,12 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
+import { useReducedMotionSafe } from "./useReducedMotionSafe";
 import { DURATION, EASE, fadeUp } from "../../lib/motion";
 
 /** The one success state for every form: a check that draws itself + the message. */
 export default function FormSuccess({ message, tone = "light" }: { message: string; tone?: "light" | "dark" }) {
-  const reduce = useReducedMotion();
+  const reduce = useReducedMotionSafe();
   const draw = reduce ? { duration: 0 } : { duration: DURATION.checkDraw, ease: EASE };
 
   return (

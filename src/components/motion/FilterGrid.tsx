@@ -10,7 +10,8 @@ import {
   type ReactNode,
   type Ref,
 } from "react";
-import { AnimatePresence, LayoutGroup, motion, useReducedMotion } from "framer-motion";
+import { AnimatePresence, LayoutGroup, motion } from "framer-motion";
+import { useReducedMotionSafe } from "./useReducedMotionSafe";
 import { filterItem, transition } from "../../lib/motion";
 
 const MountedCtx = createContext<{ current: boolean }>({ current: false });
@@ -51,7 +52,7 @@ export function FilterItem({
   ref?: Ref<HTMLDivElement>;
 }) {
   const mounted = useContext(MountedCtx);
-  const reduce = useReducedMotion();
+  const reduce = useReducedMotionSafe();
   // Only cards present at first paint play the CSS intro; later arrivals use the framer enter.
   const [intro] = useState(() => !mounted.current);
 

@@ -1,6 +1,7 @@
 "use client";
 
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
+import { useReducedMotionSafe } from "./useReducedMotionSafe";
 import { DISTANCE, DURATION, EASE, SCALE } from "../../lib/motion";
 
 const PARTICLES = 6;
@@ -10,7 +11,7 @@ const PARTICLES = 6;
  * time `burst` increments.
  */
 export default function BurstEmoji({ emoji, burst }: { emoji: string; burst: number }) {
-  const reduce = useReducedMotion();
+  const reduce = useReducedMotionSafe();
   const play = burst > 0 && !reduce;
 
   return (

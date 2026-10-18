@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect } from "react";
-import { useAnimate, useReducedMotion } from "framer-motion";
+import { useAnimate } from "framer-motion";
+import { useReducedMotionSafe } from "./useReducedMotionSafe";
 import { DURATION, EASE, shakeKeyframes } from "../../lib/motion";
 
 type Option = string | { value: string; label: string };
@@ -39,7 +40,7 @@ export default function Field({
   autoComplete,
 }: FieldProps) {
   const [scope, animate] = useAnimate<HTMLDivElement>();
-  const reduce = useReducedMotion();
+  const reduce = useReducedMotionSafe();
 
   useEffect(() => {
     if (!error || reduce || !scope.current) return;
