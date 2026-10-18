@@ -37,16 +37,17 @@ export default function BatchCard({
 }) {
   const [open, setOpen] = useState(false);
   const [state, formAction, isPending] = useActionState(submitRegistration, initialState);
+  const values = state.values ?? {};
 
   const seatsLeft = batch.seats - batch.seatsFilled;
   const isOpen = batch.status === "OPEN" && seatsLeft > 0;
 
   return (
-    <MotionCard className="bg-white border border-neutral-200 rounded-2xl p-6 flex flex-col gap-4">
+    <MotionCard className="bg-card border border-line rounded-2xl p-6 flex flex-col gap-4">
       <div className="flex items-start justify-between gap-4 flex-wrap">
         <div className="flex flex-col gap-1">
-          <h3 className="font-display text-lg font-semibold text-neutral-900">{batch.batchName}</h3>
-          <span className="text-sm text-neutral-600">
+          <h3 className="text-lg font-semibold text-ink">{batch.batchName}</h3>
+          <span className="text-sm text-muted">
             {formatDate(batch.startDate)}
             {batch.endDate ? ` – ${formatDate(batch.endDate)}` : ""}
             {batch.mode ? ` · ${batch.mode}` : ""}
@@ -54,7 +55,7 @@ export default function BatchCard({
         </div>
         <span
           className={`font-mono text-[11px] font-semibold px-2.5 py-1 rounded-full self-start ${
-            isOpen ? "bg-success/10 text-success" : "bg-neutral-100 text-neutral-600"
+            isOpen ? "bg-primary/10 text-primary" : "bg-surface-container text-muted"
           }`}
         >
           {batch.status === "OPEN" ? isOpen ? <CountUp value={`${seatsLeft} SEATS LEFT`} /> : "FULL" : batch.status}
@@ -75,14 +76,14 @@ export default function BatchCard({
         <button
           type="button"
           onClick={() => setOpen(true)}
-          className="motion-btn self-start inline-flex items-center gap-2 bg-plum-600 hover:bg-plum-700 text-white text-sm font-semibold px-5 py-2.5 rounded-xl"
+          className="paw-btn paw-btn--primary paw-btn--sm self-start"
         >
           Register for this batch
         </button>
       )}
 
       {isOpen && open && state.status !== "success" && (
-        <form action={formAction} className="flex flex-col gap-4 pt-2 border-t border-neutral-100" noValidate>
+        <form action={formAction} className="flex flex-col gap-4 pt-2 border-t border-surface-container" noValidate>
           <input type="hidden" name="batchId" value={batch.id} />
           <input type="hidden" name="trainingId" value={trainingId} />
 
@@ -97,6 +98,7 @@ export default function BatchCard({
               name="name"
               label="Name"
               autoComplete="name"
+              defaultValue={values.name}
               disabled={isPending}
               error={state.fieldErrors?.name}
             />
@@ -106,6 +108,7 @@ export default function BatchCard({
               type="email"
               label="Email"
               autoComplete="email"
+              defaultValue={values.email}
               disabled={isPending}
               error={state.fieldErrors?.email}
             />
@@ -117,6 +120,7 @@ export default function BatchCard({
               type="tel"
               label="Phone (optional)"
               autoComplete="tel"
+              defaultValue={values.phone}
               disabled={isPending}
             />
             <Field
@@ -124,15 +128,19 @@ export default function BatchCard({
               name="organization"
               label="Organization (optional)"
               autoComplete="organization"
+              defaultValue={values.organization}
               disabled={isPending}
             />
           </div>
+          {/* Keyed on the echoed value: a <select> doesn't take a new
+              defaultValue on React's form reset, so it remounts instead. */}
           <Field
+            key={values.experienceLevel || "Beginner"}
             id={`tr-exp-${batch.id}`}
             name="experienceLevel"
             as="select"
             label="Experience Level"
-            defaultValue="Beginner"
+            defaultValue={values.experienceLevel || "Beginner"}
             disabled={isPending}
             options={["Beginner", "Intermediate", "Advanced"]}
           />
@@ -141,7 +149,7 @@ export default function BatchCard({
             <button
               type="submit"
               disabled={isPending}
-              className="motion-btn inline-flex items-center gap-2 bg-plum-600 hover:bg-plum-700 text-white text-sm font-semibold px-5 py-2.5 rounded-xl disabled:opacity-60"
+              className="paw-btn paw-btn--primary paw-btn--sm"
             >
               {isPending ? "Submitting…" : "Confirm Registration"}
             </button>
@@ -149,14 +157,14 @@ export default function BatchCard({
               type="button"
               onClick={() => setOpen(false)}
               disabled={isPending}
-              className="text-sm text-neutral-600 hover:text-neutral-700"
+              className="text-sm text-muted hover:text-on-surface-variant"
             >
               Cancel
             </button>
           </div>
 
           {state.status === "error" && (
-            <p role="alert" className="text-xs text-error">
+            <p role="alert" className="text-xs text-error-token">
               {state.message}
             </p>
           )}
@@ -164,7 +172,7 @@ export default function BatchCard({
       )}
 
       {state.status === "success" && (
-        <div className="pt-2 border-t border-neutral-100">
+        <div className="pt-2 border-t border-surface-container">
           <FormSuccess message={state.message} />
         </div>
       )}

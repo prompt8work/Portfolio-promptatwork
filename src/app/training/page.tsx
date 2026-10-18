@@ -8,8 +8,9 @@ import IntroFade from "../../components/motion/IntroFade";
 import { StaggerGrid, StaggerItem } from "../../components/motion/StaggerGrid";
 import CourseCard, { type CourseCardData } from "../../components/training/CourseCard";
 import TrainingGrid from "../../components/training/TrainingGrid";
-import InstituteCards from "../../components/training/InstituteCards";
+import InstituteCarousel from "../../components/training/InstituteCarousel";
 import AiToolsSection from "../../components/training/AiToolsSection";
+import TeamsBand from "../../components/training/TeamsBand";
 import { client } from "../../sanity/lib/client";
 import { trainingsQuery } from "../../sanity/lib/queries";
 import { institutes } from "../../lib/trainings";
@@ -38,8 +39,8 @@ export const metadata: Metadata = buildMetadata({
 export const revalidate = 60;
 
 const headline = "Courses & Workshops";
-const h2 = "font-sans text-[26px] font-semibold tracking-tight text-neutral-900 scroll-mt-28";
-const lead = "text-[15.5px] leading-[1.75] text-neutral-700";
+const h2 = "font-sans text-[26px] font-semibold tracking-[-0.02em] text-ink scroll-mt-28";
+const lead = "text-[15.5px] leading-[1.75] text-muted";
 
 // Workshops and institutes come from src/lib/trainings.ts (shared with the
 // AI Enablement portfolio); cohort courses open for registration come from
@@ -50,26 +51,26 @@ export default async function TrainingPage() {
   return (
     <PageTransition>
       <DocsArticle>
-        <header className="pb-10 border-b border-neutral-200">
-          <IntroFade as="span" className="font-mono text-xs tracking-[0.14em] font-semibold text-cyan-700">
-            TRAINING
+        <header className="pb-10 border-b border-line flex flex-col gap-3.5">
+          <IntroFade className="flex flex-wrap items-center gap-2.5">
+            <span className="label-md inline-flex items-center h-[26px] px-2.5 rounded-md bg-[color-mix(in_srgb,var(--accent-blue)_14%,transparent)] text-primary">
+              COURSES · OVERVIEW
+            </span>
+            <span className="text-[13px] text-muted">Workshops, cohort courses and institutes</span>
           </IntroFade>
-          <WordReveal
-            as="h1"
-            className="mt-4 font-display text-[40px] sm:text-[56px] leading-[1.04] font-semibold tracking-tight text-neutral-900"
-          >
+          <WordReveal as="h1" className="m-0 text-[40px] leading-[44px] sm:text-[56px] sm:leading-[60px] font-semibold tracking-[-0.035em]">
             {headline}
           </WordReveal>
-          <IntroFade as="p" after={headline} step={1} className="mt-6 text-[18px] leading-relaxed text-neutral-600 max-w-[560px]">
+          <IntroFade as="p" after={headline} step={1} className="m-0 text-[17px] leading-[27px] text-muted max-w-[600px]">
             Hands-on, cohort-based prompt engineering and Generative AI training by Niharika Dhande, an AI trainer based in
             Indore, India — taught online, using the same practices documented in the AI Lab.
           </IntroFade>
-          <IntroFade after={headline} step={2} className="mt-8 flex flex-wrap gap-3">
-            <a
-              href="#workshops"
-              className="motion-btn inline-flex items-center rounded-md bg-neutral-900 px-5 py-3 text-[14.5px] font-semibold text-white hover:bg-neutral-800 hover:text-white"
-            >
+          <IntroFade after={headline} step={2} className="mt-3 flex flex-wrap gap-3">
+            <a href="#workshops" className="paw-btn paw-btn--primary">
               Browse the workshops
+            </a>
+            <a href="#teams" className="paw-btn paw-btn--secondary">
+              Training for teams
             </a>
           </IntroFade>
         </header>
@@ -90,8 +91,8 @@ export default async function TrainingPage() {
               Cohort courses
             </h2>
             {courses.length === 0 ? (
-              <div className="border border-neutral-200 rounded-2xl p-8 text-center bg-white">
-                <p className="text-neutral-600">No courses open for registration right now — check back soon.</p>
+              <div className="border border-line rounded-2xl p-8 text-center bg-card">
+                <p className="text-muted">No courses open for registration right now — check back soon.</p>
               </div>
             ) : (
               <StaggerGrid className="grid grid-cols-1 sm:grid-cols-2 gap-5">
@@ -113,10 +114,12 @@ export default async function TrainingPage() {
                 From .NET classrooms to agentic AI cohorts, teaching has run alongside my engineering work since 2010.
               </p>
             </div>
-            <InstituteCards items={institutes} />
+            <InstituteCarousel items={institutes} />
           </section>
 
           <AiToolsSection />
+
+          <TeamsBand />
 
           <Callout title="Not sure which training fits?">
             <Link href="/contact">Get in touch</Link> and tell me about your team and the tools it uses.

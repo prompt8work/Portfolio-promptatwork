@@ -18,6 +18,10 @@ export const hero = {
   heading: "I help teams turn AI tools into everyday results.",
   description:
     "I'm Niharika Dhande. I sit between technology, product and people: I find where AI fits in a team's workflow, build the solution, and train the people who will use it.",
+  // Redesign (Luminous SaaS, Hub-Hero board): the display headline, with
+  // the accent phrase set in the primary → secondary gradient.
+  display: { lead: "Master AI Agents & ", accent: "Prompt Engineering" },
+  credential: { value: "10+ years", label: "Software engineering & training" },
   ctaPrimary: { label: "Work with me", href: "/contact" },
   ctaSecondary: { label: "See my work", href: "/portfolio" },
   ctaTertiary: { label: "Explore the AI Lab", href: "/ai-lab" },

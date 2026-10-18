@@ -95,7 +95,7 @@ export type PortfolioProfile = {
   faq?: SectionHead & { items?: { _key: string; question: string; answer: string; link?: Cta }[] };
 };
 
-export type PortfolioCard = Pick<PortfolioProfile, "title" | "slug" | "summary" | "heroEyebrow" | "heroImage">;
+export type PortfolioCard = Pick<PortfolioProfile, "title" | "slug" | "summary" | "heroEyebrow" | "heroImage" | "profileTags">;
 
 export type PortfolioSettings = {
   landingEyebrow?: string;

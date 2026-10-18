@@ -8,11 +8,11 @@ export default function manifest(): MetadataRoute.Manifest {
       "A living portfolio of practical AI engineering — built, documented and taught in the open.",
     start_url: "/",
     display: "standalone",
-    background_color: "#faf8f4",
-    theme_color: "#1e1b17",
+    background_color: "#0f172a",
+    theme_color: "#0f172a",
     icons: [
-      { src: "/icon", sizes: "32x32", type: "image/png" },
-      { src: "/apple-icon", sizes: "180x180", type: "image/png" },
+      { src: "/images/brand/promptatwork-mark.png", sizes: "256x256", type: "image/png" },
+      { src: "/apple-icon.png", sizes: "180x180", type: "image/png" },
     ],
   };
 }

@@ -2,9 +2,8 @@ import type { Metadata } from "next";
 import Nav from "../../components/Nav";
 import PageTransition from "../../components/PageTransition";
 import SiteFooter from "../../components/SiteFooter";
-import SectionHeading from "../../components/ui/SectionHeading";
-import { StaggerGrid, StaggerItem } from "../../components/motion/StaggerGrid";
-import VideoCard, { type VideoCardData } from "../../components/videos/VideoCard";
+import VideoBrowser from "../../components/videos/VideoBrowser";
+import { type VideoCardData } from "../../components/videos/VideoCard";
 import JsonLd from "../../components/JsonLd";
 import { client } from "../../sanity/lib/client";
 import { videosQuery } from "../../sanity/lib/queries";
@@ -44,36 +43,30 @@ export default async function VideosPage() {
       : null;
 
   return (
-    <PageTransition className="min-h-screen bg-neutral-50">
+    // PromptAtWork TV (TV-Header / TV-Browse boards), on the Luminous SaaS
+    // tokens. Deliberately neutral, no glows: the thumbnails are the colour.
+    // The board's bell, profile avatar and sidebar (Shorts, Playlists,
+    // Bootcamps, Library) are left out until there's something behind them.
+    <PageTransition className="min-h-screen">
       {videosJsonLd && <JsonLd data={videosJsonLd} />}
       <Nav />
       <main>
         <section className="w-full">
-          <div className="max-w-[1280px] mx-auto px-5 sm:px-10 pt-16 sm:pt-20 pb-24 sm:pb-28">
-            <SectionHeading
-              level="page"
-              eyebrow="CONTENT"
-              title="Videos"
-              description={
-                videos.length > 0
-                  ? `${videos.length} video${videos.length === 1 ? "" : "s"} so far — watch right here, or follow a title through to YouTube.`
-                  : "Synced from the PromptAtWork YouTube channel — watch right here, or follow a title through to YouTube."
-              }
-              align="start"
-            />
+          <div className="max-w-[1440px] mx-auto px-4 sm:px-8 pt-10 sm:pt-12 pb-20">
+            <div className="flex flex-col items-center text-center gap-2 mb-8">
+              <span className="paw-tvtag">TV</span>
+              <h1 className="m-0 text-[32px] leading-10 font-semibold tracking-[-0.02em]">PromptAtWork TV</h1>
+              <p className="m-0 text-sm text-muted">
+                {videos.length > 0
+                  ? `${videos.length} video${videos.length === 1 ? "" : "s"} from the YouTube channel. Play one right here, or open it on YouTube.`
+                  : "Synced from the PromptAtWork YouTube channel."}
+              </p>
+            </div>
 
             {videos.length === 0 ? (
-              <div className="border border-neutral-200 rounded-2xl p-10 text-center">
-                <p className="text-neutral-600">No videos synced yet — check back soon.</p>
-              </div>
+              <div className="rounded-2xl border border-line p-10 text-center text-muted">No videos synced yet. Check back soon.</div>
             ) : (
-              <StaggerGrid className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {videos.map((v) => (
-                  <StaggerItem key={v.slug}>
-                    <VideoCard video={v} />
-                  </StaggerItem>
-                ))}
-              </StaggerGrid>
+              <VideoBrowser videos={videos} />
             )}
           </div>
         </section>

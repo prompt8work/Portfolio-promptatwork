@@ -21,7 +21,7 @@ export default function FormSuccess({ message, tone = "light" }: { message: stri
           cx="28"
           cy="28"
           r="26"
-          stroke="var(--color-success)"
+          stroke="var(--primary)"
           strokeWidth="2"
           initial={{ pathLength: reduce ? 1 : 0 }}
           animate={{ pathLength: 1 }}
@@ -29,7 +29,7 @@ export default function FormSuccess({ message, tone = "light" }: { message: stri
         />
         <motion.path
           d="M17 29l7 7 15-16"
-          stroke="var(--color-success)"
+          stroke="var(--primary)"
           strokeWidth="2.5"
           strokeLinecap="round"
           strokeLinejoin="round"
@@ -38,7 +38,7 @@ export default function FormSuccess({ message, tone = "light" }: { message: stri
           transition={{ ...draw, delay: reduce ? 0 : DURATION.checkDraw * 0.6 }}
         />
       </svg>
-      <p className={`text-sm font-medium max-w-[420px] ${tone === "dark" ? "text-white" : "text-neutral-900"}`}>
+      <p className={`text-sm font-medium max-w-[420px] ${tone === "dark" ? "text-white" : "text-ink"}`}>
         {message}
       </p>
     </motion.div>

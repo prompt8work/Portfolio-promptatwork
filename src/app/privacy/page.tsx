@@ -13,12 +13,12 @@ export const metadata: Metadata = buildMetadata({
   path: "/privacy",
 });
 
-const heading = "font-display text-xl font-semibold text-neutral-900 mt-10 mb-3";
-const body = "text-[15px] leading-relaxed text-neutral-700";
+const heading = "text-xl font-semibold text-ink mt-10 mb-3";
+const body = "text-[15px] leading-relaxed text-on-surface-variant";
 
 export default function PrivacyPage() {
   return (
-    <PageTransition className="min-h-screen bg-neutral-50">
+    <PageTransition className="min-h-screen">
       <Nav />
       <main>
         <section className="w-full">
@@ -32,21 +32,21 @@ export default function PrivacyPage() {
             <Reveal>
               <h2 className={heading}>What&apos;s collected, and why</h2>
               <p className={body}>
-                <strong className="text-neutral-900">Contact form</strong> — your name, email, organization (optional),
+                <strong className="text-ink">Contact form</strong> — your name, email, organization (optional),
                 purpose of contact, and your message. Used only to respond to you.
               </p>
               <p className={body}>
-                <strong className="text-neutral-900">Training registration</strong> — your name, email, phone
+                <strong className="text-ink">Training registration</strong> — your name, email, phone
                 (optional), organization (optional), and experience level. Used only to manage your registration for
                 that training batch.
               </p>
               <p className={body}>
-                <strong className="text-neutral-900">Blog comments</strong> — your name, email, and comment text. Held
+                <strong className="text-ink">Blog comments</strong> — your name, email, and comment text. Held
                 for review before it becomes visible to other visitors — nothing you submit here is shown publicly until
                 approved.
               </p>
               <p className={body}>
-                <strong className="text-neutral-900">Blog reactions</strong> — no personal information at all. A
+                <strong className="text-ink">Blog reactions</strong> — no personal information at all. A
                 reaction is tied to an anonymized identifier generated in your browser, used only to prevent the same
                 visitor from reacting to the same post twice.
               </p>
@@ -71,11 +71,11 @@ export default function PrivacyPage() {
               <h2 className={heading}>Questions</h2>
               <p className={body}>
                 Reach out through the{" "}
-                <a href="/contact" className="text-plum-600 hover:text-plum-700 underline">
+                <a href="/contact" className="text-primary hover:text-primary underline">
                   contact form
                 </a>{" "}
                 or email{" "}
-                <a href={`mailto:${personalInfo.email}`} className="text-plum-600 hover:text-plum-700 underline">
+                <a href={`mailto:${personalInfo.email}`} className="text-primary hover:text-primary underline">
                   {personalInfo.email}
                 </a>
                 .

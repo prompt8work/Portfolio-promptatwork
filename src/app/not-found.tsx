@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 
 export default function NotFound() {
   return (
-    <PageTransition className="min-h-screen bg-neutral-50 flex flex-col">
+    <PageTransition className="min-h-screen flex flex-col">
       <Nav />
       <main className="flex-1">
         <section className="w-full">

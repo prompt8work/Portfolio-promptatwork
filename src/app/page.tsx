@@ -2,21 +2,19 @@ import type { Metadata } from "next";
 import Nav from "../components/Nav";
 import PageTransition from "../components/PageTransition";
 import Hero from "../components/home/Hero";
-import AboutMe from "../components/home/AboutMe";
-import AILabBand from "../components/home/AILabBand";
-import ContentPreview from "../components/home/ContentPreview";
-import TrainingPreview from "../components/home/TrainingPreview";
+import Courses from "../components/home/Courses";
+import AILabSections from "../components/home/AILabSections";
+import Instructor from "../components/home/Instructor";
 import Testimonial from "../components/home/Testimonial";
-import PortfolioCTA from "../components/home/PortfolioCTA";
-import Contact from "../components/home/Contact";
+import ContentPreview from "../components/home/ContentPreview";
 import SiteFooter from "../components/SiteFooter";
 import JsonLd from "../components/JsonLd";
 import { buildMetadata } from "../lib/site";
 import { homeJsonLd } from "../lib/seo";
 
 // Interim revalidation strategy until the Sanity webhook is wired up
-// (needs a deployed URL first — see Phase 2 doc). ContentPreview and
-// TrainingPreview fetch Sanity data inside this page's tree.
+// (needs a deployed URL first — see Phase 2 doc). Hero, Courses and
+// ContentPreview fetch Sanity data inside this page's tree.
 export const revalidate = 60;
 
 export const metadata: Metadata = buildMetadata({
@@ -28,18 +26,18 @@ export const metadata: Metadata = buildMetadata({
 
 export default function Home() {
   return (
-    <PageTransition className="min-h-screen bg-neutral-50">
+    // Section order follows the redesign's Hub boards; the Downloadable Notes and Newsletter boards are left out
+    // until real notes and a newsletter provider exist.
+    <PageTransition className="min-h-screen">
       <JsonLd data={homeJsonLd} />
       <Nav />
       <main>
         <Hero />
-        <AboutMe />
-        <AILabBand />
-        <ContentPreview />
-        <TrainingPreview />
+        <Courses />
+        <AILabSections />
+        <Instructor />
         <Testimonial />
-        <PortfolioCTA />
-        <Contact />
+        <ContentPreview />
       </main>
       <SiteFooter />
     </PageTransition>

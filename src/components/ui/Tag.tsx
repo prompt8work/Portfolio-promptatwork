@@ -3,10 +3,10 @@ import { ReactNode } from "react";
 type Variant = "neutral" | "plum" | "cyan" | "gold";
 
 const variants: Record<Variant, string> = {
-  neutral: "bg-neutral-100 text-neutral-600",
-  plum: "bg-plum-100 text-plum-700",
-  cyan: "bg-neutral-100 text-cyan-700",
-  gold: "bg-gold-400 text-neutral-900",
+  neutral: "bg-surface-container text-muted",
+  plum: "bg-accent-blue/14 text-primary",
+  cyan: "bg-surface-container text-primary",
+  gold: "bg-tertiary text-ink",
 };
 
 export default function Tag({ children, variant = "neutral" }: { children: ReactNode; variant?: Variant }) {

@@ -35,6 +35,10 @@ export type ContactFormState = {
   status: "idle" | "success" | "error";
   message: string;
   fieldErrors?: Partial<Record<keyof z.infer<typeof contactSchema>, string>>;
+  /** What was submitted, echoed back on a validation error: React resets
+   *  the form after every action, and the fields use these as their
+   *  defaults so the visitor's input survives the reset. */
+  values?: Partial<Record<"name" | "email" | "organization" | "purpose" | "message", string>>;
 };
 
 export async function submitContactForm(
@@ -58,10 +62,18 @@ export async function submitContactForm(
       const key = issue.path[0] as keyof z.infer<typeof contactSchema>;
       if (key && key !== "company_website") fieldErrors[key] = issue.message;
     }
+    const text = (v: FormDataEntryValue | null) => (typeof v === "string" ? v : "");
     return {
       status: "error",
       message: "Please check the form and try again.",
       fieldErrors,
+      values: {
+        name: text(raw.name),
+        email: text(raw.email),
+        organization: text(raw.organization),
+        purpose: text(raw.purpose),
+        message: text(raw.message),
+      },
     };
   }
 

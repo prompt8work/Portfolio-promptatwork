@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>AI Lab tools — light mode</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#0f172a;text-decoration:none}a:hover{color:#1d4ed8}
+</style>
+</helmet>
+<div style="width: 1440px; height: 760px; box-sizing: border-box; padding: 72px 80px; background: #f8fafc; color: #0f172a; font-family: Geist, system-ui, sans-serif; display: flex; flex-direction: column; gap: 32px">
+<div style="display: flex; justify-content: space-between; align-items: flex-end">
+<div>
+<p style="margin: 0 0 8px; font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 0.05em; color: #1d4ed8">AI LAB · TOOLS</p>
+<h2 style="margin: 0; font-size: 40px; line-height: 44px; font-weight: 600; letter-spacing: -0.03em">Free tools from the lab.</h2>
+</div>
+<a href="#" style="color: #475569; font-size: 14px; font-weight: 500">Open the AI Lab →</a>
+</div>
+<div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); grid-template-rows: repeat(2, minmax(0, 1fr)); gap: 24px; flex-grow: 1">
+
+<div style="grid-column: span 2; grid-row: span 2; padding: 28px; border-radius: 16px; background: #ffffff; border: 1px solid #e2e8f0; box-shadow: 0 8px 24px rgba(15,23,42,0.05); display: flex; flex-direction: column; gap: 16px">
+<div style="display: flex; justify-content: space-between; align-items: center">
+<div><h3 style="margin: 0; font-size: 20px; line-height: 28px; font-weight: 600">Prompt Playground</h3><p style="margin: 0; font-size: 14px; color: #475569">Rewrite a prompt with the patterns from the course.</p></div>
+<span style="height: 24px; padding: 0 10px; border-radius: 9999px; display: inline-flex; align-items: center; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.05em; color: #9a3412; background: #ffedd5">FEATURED</span>
+</div>
+<label style="display: flex; flex-direction: column; gap: 6px; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.05em; color: #475569">YOUR PROMPT
+<textarea style="height: 80px; resize: none; padding: 12px 14px; border-radius: 8px; background: #f8fafc; border: 1px solid #cbd5e1; color: #0f172a; font: 14px/20px Geist, sans-serif">Write an email declining the meeting.</textarea>
+</label>
+<div style="flex-grow: 1; padding: 14px 16px; border-radius: 8px; background: #0f172a; font-family: 'JetBrains Mono', monospace; font-size: 13px; line-height: 20px; color: #dae2fd">
+<span style="color: #94a3b8"># improved · role + context + format</span><br>
+<span style="color: #d0bcff">Role:</span> You are my executive assistant.<br>
+<span style="color: #d0bcff">Context:</span> A vendor invited me to a meeting on [DATE]; I can't attend.<br>
+<span style="color: #d0bcff">Task:</span> Draft a warm, 3-sentence decline that offers an async alternative.<br>
+<span style="color: #d0bcff">Format:</span> <span style="color: #ffb786">"Subject line, then body"</span>
+</div>
+<div style="display: flex; gap: 12px">
+<button style="height: 44px; padding: 0 20px; border-radius: 8px; border: 0; background: linear-gradient(135deg, #2563eb, #7c3aed); color: #ffffff; font: 600 15px Geist, sans-serif">Improve Prompt</button>
+<button style="height: 44px; padding: 0 20px; border-radius: 8px; border: 1px solid #cbd5e1; background: #ffffff; color: #0f172a; font: 600 15px Geist, sans-serif">Copy</button>
+</div>
+</div>
+
+<a href="#" style="padding: 24px; border-radius: 16px; background: #ffffff; border: 1px solid #e2e8f0; display: flex; flex-direction: column; gap: 10px">
+<span style="width: 40px; height: 40px; border-radius: 8px; display: grid; place-items: center; background: #dbeafe; color: #1d4ed8"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m16 6 4 14"></path><path d="M12 6v14"></path><path d="M8 8v12"></path><path d="M4 4v16"></path></svg></span>
+<h3 style="margin: 8px 0 0; font-size: 18px; font-weight: 600">Prompt Library</h3>
+<p style="margin: 0; font-size: 14px; line-height: 20px; color: #475569">Reusable prompts by business function.</p>
+</a>
+<a href="#" style="padding: 24px; border-radius: 16px; background: #ffffff; border: 1px solid #e2e8f0; display: flex; flex-direction: column; gap: 10px">
+<span style="width: 40px; height: 40px; border-radius: 8px; display: grid; place-items: center; background: #ede9fe; color: #6d28d9"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2 3 7l9 5 9-5z"></path><path d="m3 12 9 5 9-5"></path><path d="m3 17 9 5 9-5"></path></svg></span>
+<h3 style="margin: 8px 0 0; font-size: 18px; font-weight: 600">Chunk Visualiser</h3>
+<p style="margin: 0; font-size: 14px; line-height: 20px; color: #475569">See how a document splits for RAG.</p>
+</a>
+<a href="#" style="padding: 24px; border-radius: 16px; background: #ffffff; border: 1px solid #e2e8f0; display: flex; flex-direction: column; gap: 10px">
+<span style="width: 40px; height: 40px; border-radius: 8px; display: grid; place-items: center; background: #ffedd5; color: #c2410c"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="9" width="6" height="6" rx="1.5"></rect><rect x="15" y="3" width="6" height="6" rx="1.5"></rect><rect x="15" y="15" width="6" height="6" rx="1.5"></rect><path d="M9 12h3m0 0V6h3M12 12v6h3"></path></svg></span>
+<h3 style="margin: 8px 0 0; font-size: 18px; font-weight: 600">Automation Templates</h3>
+<p style="margin: 0; font-size: 14px; line-height: 20px; color: #475569">n8n flows: trigger → AI → action.</p>
+</a>
+<a href="#" style="padding: 24px; border-radius: 16px; background: #ffffff; border: 1px solid #e2e8f0; display: flex; flex-direction: column; gap: 10px">
+<span style="width: 40px; height: 40px; border-radius: 8px; display: grid; place-items: center; background: #f1f5f9; color: #475569"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 3h6"></path><path d="M10 3v6l-5 9a2 2 0 0 0 1.7 3h10.6a2 2 0 0 0 1.7-3l-5-9V3"></path></svg></span>
+<h3 style="margin: 8px 0 0; font-size: 18px; font-weight: 600">Experiments</h3>
+<p style="margin: 0; font-size: 14px; line-height: 20px; color: #475569">Work in progress, shown openly.</p>
+</a>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":760}}'>
+class Component extends DCLogic {
+renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

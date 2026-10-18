@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import Reveal from "../motion/Reveal";
 import { slugify } from "../../lib/slugify";
 
-const headingClass = "font-sans text-[21px] sm:text-[23px] font-semibold tracking-tight text-neutral-900 scroll-mt-28";
+const headingClass = "font-sans text-[21px] sm:text-[23px] font-semibold tracking-tight text-ink scroll-mt-28";
 
 /**
  * Headed prose block used by every detail page (case studies, AI Lab
@@ -18,7 +18,7 @@ export default function ContentSection({ heading, body, id }: { heading: string;
         <h2 id={id ?? slugify(heading)} className={headingClass}>
           {heading}
         </h2>
-        <p className="text-[15.5px] leading-[1.75] text-neutral-700 whitespace-pre-line">{body}</p>
+        <p className="text-[15.5px] leading-[1.75] text-on-surface-variant whitespace-pre-line">{body}</p>
       </section>
     </Reveal>
   );
@@ -52,8 +52,8 @@ export function ListSection({
         <BlockLabel id={id}>{heading}</BlockLabel>
         <ul className="flex flex-col gap-2">
           {items.map((item) => (
-            <li key={item} className="flex items-start gap-2.5 text-[15px] leading-relaxed text-neutral-700">
-              <span className="text-cyan-700 mt-[1px] shrink-0">{marker}</span>
+            <li key={item} className="flex items-start gap-2.5 text-[15px] leading-relaxed text-on-surface-variant">
+              <span className="text-primary mt-[1px] shrink-0">{marker}</span>
               <span>{item}</span>
             </li>
           ))}

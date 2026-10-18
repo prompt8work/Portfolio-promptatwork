@@ -95,8 +95,8 @@ export default function ReactionBar({
           disabled={reacted.has(r.type)}
           className={`motion-btn inline-flex items-center gap-1.5 text-sm px-3.5 py-2 rounded-full border ${
             reacted.has(r.type)
-              ? "border-plum-300 bg-plum-100 text-plum-700"
-              : "border-neutral-300 text-neutral-600 hover:border-plum-400 hover:text-plum-700"
+              ? "border-primary/45 bg-accent-blue/14 text-primary"
+              : "border-outline-variant text-muted hover:border-primary/70 hover:text-primary"
           }`}
         >
           <BurstEmoji emoji={r.emoji} burst={bursts[r.type] ?? 0} />

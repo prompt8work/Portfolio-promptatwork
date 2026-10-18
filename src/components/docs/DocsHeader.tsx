@@ -20,18 +20,18 @@ export default function DocsHeader({
   children?: ReactNode;
 }) {
   return (
-    <header className="pb-8 mb-10 border-b border-neutral-200 flex flex-col gap-4">
-      <IntroFade as="span" className="font-mono text-[11.5px] tracking-[0.14em] font-semibold text-cyan-700 uppercase">
+    <header className="pb-8 mb-10 border-b border-line flex flex-col gap-4">
+      <IntroFade as="span" className="font-mono text-[11.5px] tracking-[0.14em] font-semibold text-primary uppercase">
         {eyebrow}
       </IntroFade>
       <WordReveal
         as="h1"
-        className="font-display text-[34px] sm:text-[44px] leading-[1.08] font-semibold tracking-tight text-neutral-900"
+        className="text-[34px] sm:text-[44px] leading-[1.08] font-semibold tracking-tight text-ink"
       >
         {title}
       </WordReveal>
       {description && (
-        <IntroFade as="p" after={title} step={1} className="text-[17px] leading-relaxed text-neutral-600">
+        <IntroFade as="p" after={title} step={1} className="text-[17px] leading-relaxed text-muted">
           {description}
         </IntroFade>
       )}
@@ -47,7 +47,7 @@ export default function DocsHeader({
 /** Small mono pill for tags, tech stack and variables on light docs pages. */
 export function DocsTag({ children }: { children: ReactNode }) {
   return (
-    <span className="font-mono text-[11.5px] text-neutral-700 bg-white border border-neutral-200 rounded-md px-2 py-0.5">
+    <span className="font-mono text-[11.5px] text-on-surface-variant bg-card border border-line rounded-md px-2 py-0.5">
       {children}
     </span>
   );
@@ -73,9 +73,9 @@ export function DocsEntry({
   cta?: string;
 }) {
   return (
-    <section className="py-8 first:pt-0 border-t border-neutral-200 first:border-t-0 flex flex-col gap-3">
+    <section className="py-8 first:pt-0 border-t border-line first:border-t-0 flex flex-col gap-3">
       {eyebrow && (
-        <span className="font-mono text-[10.5px] tracking-[0.14em] font-semibold text-neutral-500 uppercase">
+        <span className="font-mono text-[10.5px] tracking-[0.14em] font-semibold text-muted uppercase">
           {eyebrow}
         </span>
       )}
@@ -83,14 +83,14 @@ export function DocsEntry({
         id={id}
         className="scroll-mt-28 font-sans text-[21px] sm:text-[22px] font-semibold tracking-tight leading-snug"
       >
-        <Link href={href} className="text-neutral-900 hover:text-plum-600">
+        <Link href={href} className="text-ink hover:text-primary">
           {title}
         </Link>
       </h2>
       {children}
       <Link
         href={href}
-        className="motion-arrow self-start inline-flex items-center gap-1.5 text-[14px] font-semibold text-plum-600 hover:text-plum-700"
+        className="motion-arrow self-start inline-flex items-center gap-1.5 text-[14px] font-semibold text-primary hover:text-primary"
       >
         {cta}
         <svg

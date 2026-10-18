@@ -46,7 +46,7 @@ export default async function ExperimentsPage() {
               href={`/ai-lab/experiments/${e.slug}`}
               cta="Read the experiment"
             >
-              <p className="text-[15.5px] leading-[1.75] text-neutral-700">{e.objective}</p>
+              <p className="text-[15.5px] leading-[1.75] text-on-surface-variant">{e.objective}</p>
             </DocsEntry>
           ))}
         </div>

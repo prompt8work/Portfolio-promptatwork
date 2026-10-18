@@ -19,6 +19,9 @@ export type CommentFormState = {
   status: "idle" | "success" | "error";
   message: string;
   fieldErrors?: Partial<Record<keyof z.infer<typeof commentSchema>, string>>;
+  /** Echoed back on a validation error so the fields survive React's
+   *  post-action form reset (same as the Contact form). */
+  values?: Partial<Record<"name" | "email" | "comment", string>>;
 };
 
 export async function submitComment(
@@ -41,7 +44,13 @@ export async function submitComment(
       const key = issue.path[0] as keyof z.infer<typeof commentSchema>;
       if (key && key !== "website") fieldErrors[key] = issue.message;
     }
-    return { status: "error", message: "Please check the form and try again.", fieldErrors };
+    const text = (v: FormDataEntryValue | null) => (typeof v === "string" ? v : "");
+    return {
+      status: "error",
+      message: "Please check the form and try again.",
+      fieldErrors,
+      values: { name: text(raw.name), email: text(raw.email), comment: text(raw.comment) },
+    };
   }
 
   if (parsed.data.website) {

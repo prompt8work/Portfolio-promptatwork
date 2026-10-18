@@ -1,0 +1,55 @@
+<!-- @dsCard height=288 -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>PromptAtWork</title>
+<style>
+  html, body { margin:0; height:100%; }
+  body { background:var(--canvas); color:var(--text-primary); font-family:var(--font-sans); overflow:hidden; }
+  .cover { position:relative; width:960px; height:288px; overflow:hidden; }
+  .band { position:absolute; left:0; top:0; width:960px; height:128px; }
+  .band svg { display:block; }
+  .blue { fill:var(--accent-blue); }
+  .violet { fill:var(--accent-violet); }
+  .card { fill:var(--surface-card); stroke:var(--border-subtle); }
+  .tint { fill:var(--secondary); }
+  .warm { fill:var(--tertiary); }
+  .dot { fill:var(--primary); }
+  .blk { rx:var(--rounded-lg); }
+  .pill { rx:8px; }
+  .words { position:absolute; left:32px; bottom:32px; max-width:900px; }
+  .name { margin:0; font-size:64px; line-height:.95; font-weight:600; letter-spacing:-0.035em; color:var(--text-primary); }
+  .tag { margin:8px 0 0 3px; font-size:14px; line-height:20px; color:var(--text-secondary); }
+</style>
+</head>
+<body>
+<div class="cover">
+<div class="band" aria-hidden="true">
+<svg viewBox="0 0 960 128" width="960" height="128">
+<!--
+  blocks      accent-blue 352×128 · accent-violet 192×128 · surface-card 224×112 · secondary 128×80 bleeding off the right · tertiary 48×16 pill once (the single warm note) — all bleed off the top, ≈40% of the band
+  arrangement top-band skeleton (the name is too wide for the 440px zone at 64px): a strip of unequal bands, space-md gutters, like the hub's nav sitting over its cards
+  pattern     dot grid, from "precise, developer-facing, 8pt rhythm": primary dots at a space-md pitch on the glass (surface-card) block — 39 units
+  scales      gutters space-md (16); pitch space-md; block corners rounded-lg; pill rx half of 16
+-->
+<rect class="blue blk" x="32" y="-16" width="352" height="128" rx="16"/>
+<rect class="violet blk" x="400" y="-16" width="192" height="128" rx="16"/>
+<rect class="card blk" x="608" y="-16" width="224" height="112" rx="16"/>
+<rect class="tint blk" x="848" y="-16" width="128" height="80" rx="16"/>
+<rect class="warm pill" x="848" y="80" width="48" height="16" rx="8"/>
+<g class="dot">
+<circle cx="632" cy="24" r="2"/><circle cx="648" cy="24" r="2"/><circle cx="664" cy="24" r="2"/><circle cx="680" cy="24" r="2"/><circle cx="696" cy="24" r="2"/><circle cx="712" cy="24" r="2"/><circle cx="728" cy="24" r="2"/><circle cx="744" cy="24" r="2"/><circle cx="760" cy="24" r="2"/><circle cx="776" cy="24" r="2"/><circle cx="792" cy="24" r="2"/><circle cx="808" cy="24" r="2"/><circle cx="824" cy="24" r="2"/>
+<circle cx="632" cy="48" r="2"/><circle cx="648" cy="48" r="2"/><circle cx="664" cy="48" r="2"/><circle cx="680" cy="48" r="2"/><circle cx="696" cy="48" r="2"/><circle cx="712" cy="48" r="2"/><circle cx="728" cy="48" r="2"/><circle cx="744" cy="48" r="2"/><circle cx="760" cy="48" r="2"/><circle cx="776" cy="48" r="2"/><circle cx="792" cy="48" r="2"/><circle cx="808" cy="48" r="2"/>
+<circle cx="632" cy="72" r="2"/><circle cx="648" cy="72" r="2"/><circle cx="664" cy="72" r="2"/><circle cx="680" cy="72" r="2"/><circle cx="696" cy="72" r="2"/><circle cx="712" cy="72" r="2"/><circle cx="728" cy="72" r="2"/><circle cx="744" cy="72" r="2"/><circle cx="760" cy="72" r="2"/><circle cx="776" cy="72" r="2"/>
+<circle cx="632" cy="88" r="2"/><circle cx="648" cy="88" r="2"/><circle cx="664" cy="88" r="2"/><circle cx="680" cy="88" r="2"/>
+</g>
+</svg>
+</div>
+<div class="words">
+<h1 class="name">PromptAtWork</h1>
+<p class="tag">Learn, build and ship with AI agents, in luminous dark glass.</p>
+</div>
+</div>
+</body>
+</html>

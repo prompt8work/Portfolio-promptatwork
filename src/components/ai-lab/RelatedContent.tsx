@@ -24,7 +24,7 @@ export default function RelatedContent({ items, heading = "Related content" }: {
   if (!items || items.length === 0) return null;
 
   return (
-    <div className="flex flex-col gap-3 pt-6 border-t border-neutral-200">
+    <div className="flex flex-col gap-3 pt-6 border-t border-line">
       <Reveal>
         <BlockLabel>{heading}</BlockLabel>
       </Reveal>

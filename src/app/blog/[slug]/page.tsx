@@ -95,7 +95,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
   };
 
   return (
-    <PageTransition key={slug} className="min-h-screen bg-neutral-50">
+    <PageTransition key={slug} className="min-h-screen">
       <JsonLd data={articleJsonLd} />
       <JsonLd
         data={buildBreadcrumbJsonLd([
@@ -117,8 +117,8 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
               eyebrow={
                 <span className="flex items-center gap-2 flex-wrap font-sans font-normal tracking-normal">
                   {post.category && <Tag variant="plum">{post.category}</Tag>}
-                  {post.readingTime && <span className="text-xs text-neutral-600">{post.readingTime}</span>}
-                  <span className="text-xs text-neutral-600">
+                  {post.readingTime && <span className="text-xs text-muted">{post.readingTime}</span>}
+                  <span className="text-xs text-muted">
                     {new Date(post.publishedAt).toLocaleDateString("en-US", {
                       year: "numeric",
                       month: "long",
@@ -131,7 +131,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
               titleMorph={morphName.blogTitle(post.slug)}
               description={post.excerpt}
             >
-              {post.author && <span className="text-sm text-neutral-600">By {post.author}</span>}
+              {post.author && <span className="text-sm text-muted">By {post.author}</span>}
             </PageHeader>
 
             {post.coverImage && (
@@ -149,7 +149,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
               </Morph>
             )}
 
-            <Reveal className="flex flex-wrap items-center justify-between gap-4 py-5 border-y border-neutral-200">
+            <Reveal className="flex flex-wrap items-center justify-between gap-4 py-5 border-y border-line">
               <ReactionBar contentId={contentId} initialCounts={reactionCounts} />
               <ShareActions url={canonicalUrl} title={post.title} />
             </Reveal>
@@ -168,9 +168,9 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
             <RelatedContent items={post.relatedContent} />
 
-            <div className="pt-8 border-t border-neutral-200 flex flex-col gap-6">
+            <div className="pt-8 border-t border-line flex flex-col gap-6">
               <Reveal>
-                <h2 className="font-display text-xl font-semibold text-neutral-900">
+                <h2 className="text-xl font-semibold text-ink">
                   Comments{comments.length > 0 ? ` (${comments.length})` : ""}
                 </h2>
               </Reveal>
@@ -180,8 +180,8 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                   {comments.map((c) => (
                     <StaggerItem key={c.id} className="flex flex-col gap-1">
                       <div className="flex items-center gap-2">
-                        <span className="text-sm font-semibold text-neutral-900">{c.name}</span>
-                        <span className="text-xs text-neutral-600">
+                        <span className="text-sm font-semibold text-ink">{c.name}</span>
+                        <span className="text-xs text-muted">
                           {new Date(c.createdAt).toLocaleDateString("en-US", {
                             year: "numeric",
                             month: "short",
@@ -189,14 +189,14 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                           })}
                         </span>
                       </div>
-                      <p className="text-sm text-neutral-700 leading-relaxed">{c.comment}</p>
+                      <p className="text-sm text-on-surface-variant leading-relaxed">{c.comment}</p>
                     </StaggerItem>
                   ))}
                 </StaggerGrid>
               )}
 
-              <Reveal className="bg-white border border-neutral-200 rounded-2xl p-6">
-                <p className="text-xs text-neutral-600 mb-4">Comments are reviewed before they appear publicly.</p>
+              <Reveal className="bg-card border border-line rounded-2xl p-6">
+                <p className="text-xs text-muted mb-4">Comments are reviewed before they appear publicly.</p>
                 <CommentForm contentId={contentId} />
               </Reveal>
             </div>

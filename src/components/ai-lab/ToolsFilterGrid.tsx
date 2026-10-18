@@ -58,7 +58,7 @@ export default function ToolsFilterGrid({ tools }: { tools: ToolListItem[] }) {
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Search tools & research…"
           aria-label="Search tools and research"
-          className="text-sm bg-white border border-neutral-300 text-neutral-900 placeholder:text-neutral-400 rounded-lg px-4 py-2.5 focus:border-plum-400 focus:outline-none"
+          className="text-sm bg-card border border-outline-variant text-ink placeholder:text-outline rounded-lg px-4 py-2.5 focus:border-primary/70 focus:outline-none"
         />
         {types.length > 2 && (
           <ChipRow label="Filter by type" options={types} value={type} onChange={setType} allLabel="All Types" />
@@ -75,8 +75,8 @@ export default function ToolsFilterGrid({ tools }: { tools: ToolListItem[] }) {
       </div>
 
       {filtered.length === 0 ? (
-        <div className="border border-neutral-200 rounded-xl p-10 text-center">
-          <p className="text-neutral-500 text-sm">No tools match that search.</p>
+        <div className="border border-line rounded-xl p-10 text-center">
+          <p className="text-muted text-sm">No tools match that search.</p>
         </div>
       ) : (
         <FilterGrid className="flex flex-col">
@@ -118,29 +118,29 @@ function ChipRow({
 function ToolCard({ tool: t }: { tool: ToolListItem }) {
   const href = `/ai-lab/tools/${t.slug}`;
   return (
-    <section className="py-7 border-t border-neutral-200 flex flex-col gap-2.5">
+    <section className="py-7 border-t border-line flex flex-col gap-2.5">
       <div className="flex items-center gap-2 flex-wrap">
-        <span className="font-mono text-[10.5px] tracking-[0.14em] font-semibold text-neutral-500 uppercase">
+        <span className="font-mono text-[10.5px] tracking-[0.14em] font-semibold text-muted uppercase">
           {t.category}
         </span>
         {t.type && t.type !== "Tool" && (
-          <span className="font-mono text-[10px] text-cyan-700 border border-neutral-200 bg-white rounded-md px-1.5 py-0.5">
+          <span className="font-mono text-[10px] text-primary border border-line bg-card rounded-md px-1.5 py-0.5">
             {t.type}
           </span>
         )}
       </div>
       <h2 id={t.slug} className="scroll-mt-28 font-sans text-[20px] font-semibold tracking-tight">
-        <Link href={href} className="text-neutral-900 hover:text-plum-600">
+        <Link href={href} className="text-ink hover:text-primary">
           {t.name}
         </Link>
       </h2>
-      <p className="text-[15px] leading-[1.7] text-neutral-700">{t.description}</p>
+      <p className="text-[15px] leading-[1.7] text-on-surface-variant">{t.description}</p>
       <div className="flex items-center gap-4 flex-wrap">
-        <Link href={href} className="text-[14px] font-semibold text-plum-600 hover:text-plum-700">
+        <Link href={href} className="text-[14px] font-semibold text-primary hover:text-primary">
           Read the research →
         </Link>
         {(t.hasResearch || !!t.videoCount || !!t.resourceCount) && (
-          <span className="flex gap-3 text-[11.5px] text-neutral-500 font-mono">
+          <span className="flex gap-3 text-[11.5px] text-muted font-mono">
             {t.hasResearch && <span>Research</span>}
             {!!t.videoCount && (
               <span>

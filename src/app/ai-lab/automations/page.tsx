@@ -46,7 +46,7 @@ export default async function AutomationsPage() {
               href={`/ai-lab/automations/${a.slug}`}
               cta="See the workflow"
             >
-              <p className="text-[15.5px] leading-[1.75] text-neutral-700">{a.description}</p>
+              <p className="text-[15.5px] leading-[1.75] text-on-surface-variant">{a.description}</p>
             </DocsEntry>
           ))}
         </div>

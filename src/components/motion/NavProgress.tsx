@@ -47,7 +47,7 @@ export default function NavProgress() {
     <motion.div
       aria-hidden="true"
       style={{ scaleX, opacity }}
-      className="fixed top-0 left-0 right-0 z-[100] h-[2px] origin-left bg-plum-600 pointer-events-none"
+      className="fixed top-0 left-0 right-0 z-[100] h-[2px] origin-left bg-primary pointer-events-none"
     />
   );
 }

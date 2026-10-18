@@ -10,7 +10,9 @@ import { personalInfo } from "../../data";
 
 export type NavLink = { href: string; label: string; external?: boolean };
 
-export const brand = { mark: "P/", name: "PromptAtWork" };
+// The chevron-network mark (design/promptatwork-redesign/assets/logos). The
+// old "P/" text mark is retired.
+export const brand = { name: "PromptAtWork", logo: "/images/brand/promptatwork-mark.png" };
 
 // The AI Lab hub's groups, in reading order, for Nav's dropdown. Only
 // sections with published entries are listed: add Tools & Research
@@ -52,11 +54,13 @@ export const portfolioSections: (NavLink & { description: string })[] = [
   },
 ];
 
+// Labels follow the redesign (Courses = /training, TV = /videos); the URLs
+// are unchanged. The logo links home, so there's no Home item.
 export const mainNav: (NavLink & { children?: typeof aiLabSections })[] = [
-  { href: "/", label: "Home" },
   { href: "/ai-lab", label: "AI Lab", children: aiLabSections },
+  { href: "/training", label: "Courses" },
+  { href: "/videos", label: "TV" },
   { href: "/blog", label: "Blog" },
-  { href: "/training", label: "Training" },
   { href: "/portfolio", label: "Portfolio", children: portfolioSections },
 ];
 
@@ -74,9 +78,9 @@ export const footerColumns: { title: string; links: NavLink[] }[] = [
   {
     title: "Learn",
     links: [
+      { href: "/training", label: "Courses" },
+      { href: "/videos", label: "TV" },
       { href: "/blog", label: "Blog" },
-      { href: "/videos", label: "Videos" },
-      { href: "/training", label: "Training" },
     ],
   },
   {

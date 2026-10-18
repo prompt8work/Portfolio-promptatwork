@@ -26,13 +26,14 @@ type BlogListItem = {
   readingTime?: string;
   publishedAt: string;
   coverImage?: string;
+  tags?: string[];
 };
 
 export default async function BlogPage() {
   const posts: BlogListItem[] = await client.fetch(blogPostsQuery);
 
   return (
-    <PageTransition className="min-h-screen bg-neutral-50">
+    <PageTransition className="min-h-screen">
       <Nav />
       <main>
         <section className="w-full">
@@ -46,8 +47,8 @@ export default async function BlogPage() {
             />
 
             {posts.length === 0 ? (
-              <div className="border border-neutral-200 rounded-2xl p-10 text-center">
-                <p className="text-neutral-600">No posts published yet — check back soon.</p>
+              <div className="border border-line rounded-2xl p-10 text-center">
+                <p className="text-muted">No posts published yet — check back soon.</p>
               </div>
             ) : (
               <StaggerGrid className="grid grid-cols-1 md:grid-cols-2 gap-6">

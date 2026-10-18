@@ -10,7 +10,7 @@ import CopyButton from "../motion/CopyButton";
 export default function ShareActions({ url, title }: { url: string; title: string }) {
   const shareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`;
   const pill =
-    "border border-neutral-300 text-neutral-700 text-sm font-semibold px-4 py-2.5 rounded-full hover:border-plum-400 hover:text-plum-700";
+    "border border-outline-variant text-on-surface-variant text-sm font-semibold px-4 py-2.5 rounded-full hover:border-primary/70 hover:text-primary";
 
   return (
     <div className="flex flex-wrap items-center gap-2.5">

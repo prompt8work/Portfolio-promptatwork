@@ -53,11 +53,11 @@ export default async function WorkPage() {
               href={`/ai-lab/work/${p.slug}`}
               cta="Read the case study"
             >
-              <p className="text-[15.5px] leading-[1.75] text-neutral-700">{p.summary}</p>
+              <p className="text-[15.5px] leading-[1.75] text-on-surface-variant">{p.summary}</p>
               {p.stats && p.stats.length > 0 && (
                 <div className="flex flex-wrap gap-x-5 gap-y-1">
                   {p.stats.map((s) => (
-                    <CountUp key={s} value={s} className="font-mono text-[12.5px] font-semibold text-cyan-700" />
+                    <CountUp key={s} value={s} className="font-mono text-[12.5px] font-semibold text-primary" />
                   ))}
                 </div>
               )}

@@ -3,8 +3,8 @@ import type { ReactNode } from "react";
 type Tone = "light" | "muted";
 
 const tones: Record<Tone, string> = {
-  light: "bg-white border-neutral-200 text-neutral-700",
-  muted: "bg-neutral-100 border-neutral-200 text-neutral-700",
+  light: "bg-card border-line text-on-surface-variant",
+  muted: "bg-surface-container border-line text-on-surface-variant",
 };
 
 /**
@@ -29,7 +29,7 @@ export default function Chip({
   const sizing = size === "sm" ? "text-xs px-3 py-1.5" : "text-sm px-4 py-2";
   const cls = `motion-chip inline-flex items-center rounded-full border ${sizing} ${
     // Active filter: ink fill.
-    active ? "bg-neutral-900 border-neutral-900" : tones[tone]
+    active ? "bg-ink border-ink" : tones[tone]
   }`;
 
   if (button) {

@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Newsletter call to action — light mode</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#1d4ed8}a:hover{color:#6d28d9}
+input::placeholder{color:#64748b}
+</style>
+</helmet>
+<div style="width: 1440px; height: 440px; box-sizing: border-box; padding: 56px 80px; background: #f8fafc; font-family: Geist, system-ui, sans-serif; color: #0f172a">
+<div style="position: relative; height: 100%; box-sizing: border-box; border-radius: 24px; overflow: hidden; background: radial-gradient(60% 120% at 100% 0%, #ede9fe, transparent 70%), radial-gradient(50% 120% at 0% 100%, #dbeafe, transparent 70%), #ffffff; border: 1px solid #e2e8f0; padding: 56px 64px; display: grid; grid-template-columns: 1fr 520px; gap: 64px; align-items: center">
+<svg viewBox="0 0 400 328" width="400" height="328" aria-hidden="true" style="position: absolute; right: -40px; top: 0; opacity: 0.35"><circle cx="300" cy="164" r="150" fill="none" stroke="#a78bfa"></circle><circle cx="300" cy="164" r="100" fill="none" stroke="#a78bfa" stroke-dasharray="2 6"></circle><circle cx="300" cy="164" r="50" fill="none" stroke="#a78bfa"></circle></svg>
+<div style="position: relative; display: flex; flex-direction: column; gap: 14px">
+<p style="margin: 0; font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 0.05em; color: #6d28d9">THE PROMPTATWORK LETTER</p>
+<h2 style="margin: 0; font-size: 40px; line-height: 44px; font-weight: 600; letter-spacing: -0.03em">One working AI technique, every other week.</h2>
+<p style="margin: 0; font-size: 17px; line-height: 26px; color: #475569">New videos, notes and templates before they hit the hub. No hype, unsubscribe anytime.</p>
+</div>
+<form style="position: relative; display: flex; flex-direction: column; gap: 12px; padding: 24px; border-radius: 16px; background: rgba(255,255,255,0.85); backdrop-filter: blur(12px); border: 1px solid #e2e8f0; box-shadow: 0 12px 32px rgba(15,23,42,0.08)">
+<label for="nl-email-l" style="font-size: 14px; font-weight: 500">Work email</label>
+<div style="display: flex; gap: 8px">
+<input id="nl-email-l" type="email" placeholder="you@company.com" style="flex-grow: 1; min-width: 0; height: 48px; padding: 0 16px; border-radius: 8px; background: #ffffff; border: 1px solid #cbd5e1; color: #0f172a; font: 15px Geist, sans-serif; outline: none">
+<button type="button" style="height: 48px; padding: 0 22px; border-radius: 8px; border: 0; background: linear-gradient(135deg, #2563eb, #7c3aed); color: #ffffff; font: 600 15px Geist, sans-serif; cursor: pointer">Subscribe</button>
+</div>
+<label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: #475569"><input type="checkbox" checked style="width: 16px; height: 16px; accent-color: #7c3aed"> Also tell me about new bootcamp cohorts</label>
+</form>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":440}}'>
+class Component extends DCLogic {
+renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

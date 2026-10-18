@@ -96,15 +96,15 @@ export default async function ExperimentDetailPage({ params }: { params: Promise
           {(experiment.whatWorked || experiment.whatFailed) && (
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {experiment.whatWorked && (
-                <Reveal className="rounded-xl border border-neutral-200 bg-white p-5 flex flex-col gap-2">
+                <Reveal className="rounded-xl border border-line bg-card p-5 flex flex-col gap-2">
                   <BlockLabel>What worked</BlockLabel>
-                  <p className="text-[15px] leading-relaxed text-neutral-700 whitespace-pre-line">{experiment.whatWorked}</p>
+                  <p className="text-[15px] leading-relaxed text-on-surface-variant whitespace-pre-line">{experiment.whatWorked}</p>
                 </Reveal>
               )}
               {experiment.whatFailed && (
-                <Reveal className="rounded-xl border border-neutral-200 bg-neutral-100 p-5 flex flex-col gap-2">
+                <Reveal className="rounded-xl border border-line bg-surface-container p-5 flex flex-col gap-2">
                   <BlockLabel>What failed</BlockLabel>
-                  <p className="text-[15px] leading-relaxed text-neutral-700 whitespace-pre-line">{experiment.whatFailed}</p>
+                  <p className="text-[15px] leading-relaxed text-on-surface-variant whitespace-pre-line">{experiment.whatFailed}</p>
                 </Reveal>
               )}
             </div>

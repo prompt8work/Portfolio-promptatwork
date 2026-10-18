@@ -1,0 +1,66 @@
+{
+  "v": 3,
+  "assetGroups": {
+    "Photos": {
+      "files": {
+        "niharika-headshot.jpg": {
+          "blob": "96c804a1e9b82642c1e2f53044982a81",
+          "name": "niharika-headshot.jpg",
+          "size": 12731,
+          "type": "image/jpeg"
+        }
+      },
+      "name": "Photos",
+      "order": [
+        "niharika-headshot.jpg"
+      ],
+      "tile": "s"
+    },
+    "Logos": {
+      "name": "Logos",
+      "tile": "l",
+      "order": [
+        "promptatwork-mark.png",
+        "promptatwork-lockup.png"
+      ],
+      "files": {
+        "promptatwork-mark.png": {
+          "name": "promptatwork-mark.png",
+          "blob": "851725d8fbfdbad194fbd9cb23a5d7fe",
+          "size": 86765,
+          "type": "image/png"
+        },
+        "promptatwork-lockup.png": {
+          "name": "promptatwork-lockup.png",
+          "blob": "99d611041957afd2db904f1b759531fb",
+          "size": 408626,
+          "type": "image/png"
+        }
+      }
+    }
+  },
+  "blobs": {},
+  "createdOnFiles": {
+    "at": "2026-10-17T21:16:55Z",
+    "v": 1
+  },
+  "docs": {
+    "readme": "project/README.md",
+    "sections": []
+  },
+  "groups": [
+    "Logos",
+    "Photos"
+  ],
+  "lastChange": {
+    "by": "Niharika Saxena Dhande",
+    "at": "2026-10-18T05:38:04Z",
+    "via": "Claude Code",
+    "note": "Added the real chevron-network logo and a Light theme."
+  },
+  "layout": "files",
+  "libraries": [],
+  "namespace": "PromptAtWork",
+  "sections": {},
+  "title": "PromptAtWork"
+}

@@ -1,5 +1,4 @@
 import Image from "next/image";
-import Link from "next/link";
 import type { ReactNode } from "react";
 import {
   CodeXml,
@@ -12,6 +11,7 @@ import IntroFade from "../motion/IntroFade";
 import Reveal from "../motion/Reveal";
 import AiLabProjects from "./AiLabProjects";
 import OfferingsGrid from "./OfferingsGrid";
+import InstituteCarousel from "../training/InstituteCarousel";
 import {
   Band,
   CtaButton,
@@ -47,10 +47,10 @@ const whyIcons = {
 };
 
 const nodeTone = {
-  plain: "border-cyan-300/30 bg-[#050c17]/70",
-  source: "border-[#a78bfa]/45 bg-[#050c17]/70",
-  core: "border-[#38c8e6]/55 bg-[#38c8e6]/[0.07]",
-  output: "border-[#2fd39a]/55 bg-[#2fd39a]/[0.07]",
+  plain: "border-outline-variant bg-surface-container-lowest/70",
+  source: "border-accent-violet/45 bg-surface-container-lowest/70",
+  core: "border-primary/55 bg-primary/[0.07]",
+  output: "border-secondary/55 bg-secondary/[0.07]",
 };
 
 function Hero({ p }: { p: PortfolioProfile }) {
@@ -70,13 +70,13 @@ function Hero({ p }: { p: PortfolioProfile }) {
         {p.heroEyebrow && (
           <IntroFade
             as="span"
-            className={`inline-flex items-center gap-2 rounded-full border border-cyan-300/30 bg-[#38c8e6]/[0.06] px-3.5 py-1.5 text-[13px] ${muted}`}
+            className={`inline-flex items-center gap-2 rounded-full border border-outline-variant bg-primary/[0.06] px-3.5 py-1.5 text-[13px] ${muted}`}
           >
-            <span className="h-2 w-2 rounded-full bg-[#38c8e6] shadow-[0_0_12px_#38c8e6]" />
+            <span className="h-2 w-2 rounded-full bg-primary shadow-[0_0_12px_var(--primary)]" />
             {p.heroEyebrow}
           </IntroFade>
         )}
-        <h1 className="mt-[18px] mb-4 text-[clamp(34px,5.2vw,56px)] leading-[1.08] font-extrabold tracking-tight text-[#eaf2f8]">
+        <h1 className="mt-[18px] mb-4 text-[clamp(34px,5.2vw,56px)] leading-[1.08] font-extrabold tracking-tight text-ink">
           <Highlight text={p.heroHeadline} />
         </h1>
         {p.heroLead && (
@@ -91,7 +91,7 @@ function Hero({ p }: { p: PortfolioProfile }) {
           >
             {p.heroChecks.map((c) => (
               <li key={c}>
-                <span className="mr-1.5 font-bold text-[#2fd39a]">✓</span>
+                <span className="mr-1.5 font-bold text-secondary">✓</span>
                 {c}
               </li>
             ))}
@@ -107,7 +107,7 @@ function Hero({ p }: { p: PortfolioProfile }) {
                 ? p.heroLogos.map((l) => (
                     <div
                       key={l.url}
-                      className="grid h-16 place-items-center rounded-[14px] border border-cyan-300/15 bg-[#f5f8fb] px-[18px] py-2.5"
+                      className="grid h-16 place-items-center rounded-[14px] border border-line bg-white px-[18px] py-2.5"
                     >
                       <Image
                         src={l.url}
@@ -122,7 +122,7 @@ function Hero({ p }: { p: PortfolioProfile }) {
                 : p.heroChips?.map((c) => (
                     <span
                       key={c}
-                      className="rounded-[10px] border border-cyan-300/30 bg-[#38c8e6]/[0.06] px-3.5 py-2 font-mono text-[13px] text-[#eaf2f8]"
+                      className="rounded-[10px] border border-outline-variant bg-primary/[0.06] px-3.5 py-2 font-mono text-[13px] text-ink"
                     >
                       {c}
                     </span>
@@ -133,10 +133,10 @@ function Hero({ p }: { p: PortfolioProfile }) {
       </div>
 
       <aside
-        className={`${cardStrong} w-full justify-self-center p-[18px] shadow-[0_30px_80px_rgba(0,0,0,0.45)] ${shape === "landscape" ? "" : "max-w-[460px]"}`}
+        className={`${cardStrong} w-full justify-self-center p-[18px] shadow-[var(--elevation-glass)] ${shape === "landscape" ? "" : "max-w-[460px]"}`}
       >
         <div
-          className={`relative overflow-hidden rounded-2xl bg-[#0f2036] ${frame}`}
+          className={`relative overflow-hidden rounded-2xl bg-surface-container ${frame}`}
         >
           <Image
             src={p.heroImage.url}
@@ -147,7 +147,7 @@ function Hero({ p }: { p: PortfolioProfile }) {
             className={`object-cover ${shape === "portrait" ? "object-[50%_15%]" : ""}`}
           />
         </div>
-        <h2 className="mt-4 mb-0.5 text-xl font-semibold text-[#eaf2f8]">
+        <h2 className="mt-4 mb-0.5 text-xl font-semibold text-ink">
           Niharika Dhande
         </h2>
         {p.profileRole && (
@@ -174,7 +174,7 @@ function FeaturedProject({
           key={n._key}
           className={`rounded-xl border px-3.5 py-3 ${nodeTone[n.tone ?? "plain"]}`}
         >
-          <b className="block text-sm text-[#eaf2f8]">{n.title}</b>
+          <b className="block text-sm text-ink">{n.title}</b>
           {n.detail && (
             <span className={`block font-mono text-[12.5px] ${muted}`}>
               {n.detail}
@@ -191,7 +191,7 @@ function FeaturedProject({
       <div>
         {f.eyebrow && <span className={eyebrow}>{f.eyebrow}</span>}
         {f.title && (
-          <h3 className="mt-1.5 mb-2.5 text-[26px] leading-tight font-bold text-[#eaf2f8]">
+          <h3 className="mt-1.5 mb-2.5 text-[26px] leading-tight font-bold text-ink">
             {f.title}
           </h3>
         )}
@@ -207,7 +207,7 @@ function FeaturedProject({
           {f.diagramRows.map((r, i) => (
             <div key={r._key} className="grid gap-2.5">
               {i > 0 && (
-                <div className="text-center leading-none font-bold text-[#38c8e6]">
+                <div className="text-center leading-none font-bold text-primary">
                   ↓
                 </div>
               )}
@@ -247,10 +247,10 @@ function ProcessFlow({
             key={s._key}
             className={`${card} relative rounded-2xl px-[18px] py-5`}
           >
-            <span className="font-mono text-xs text-[#38c8e6]">
+            <span className="font-mono text-xs text-primary">
               {String(i + 1).padStart(2, "0")}
             </span>
-            <h4 className="mt-1.5 mb-1.5 text-[17px] font-semibold text-[#eaf2f8]">
+            <h4 className="mt-1.5 mb-1.5 text-[17px] font-semibold text-ink">
               {s.title}
             </h4>
             {s.description && (
@@ -259,7 +259,7 @@ function ProcessFlow({
             {i < steps.length - 1 && (
               <span
                 aria-hidden
-                className="absolute -bottom-3.5 left-1/2 z-10 -translate-x-1/2 bg-[#07111f] px-1 font-bold text-[#38c8e6] lg:top-1/2 lg:-right-3.5 lg:bottom-auto lg:left-auto lg:translate-x-0 lg:-translate-y-1/2 lg:px-0.5"
+                className="absolute -bottom-3.5 left-1/2 z-10 -translate-x-1/2 bg-canvas px-1 font-bold text-primary lg:top-1/2 lg:-right-3.5 lg:bottom-auto lg:left-auto lg:translate-x-0 lg:-translate-y-1/2 lg:px-0.5"
               >
                 <span className="lg:hidden">↓</span>
                 <span className="hidden lg:inline">→</span>
@@ -282,13 +282,13 @@ function ProcessFlow({
           >
             <path
               d="M30 4H10a6 6 0 0 0 0 12h18"
-              stroke="#38c8e6"
+              stroke="var(--primary)"
               strokeWidth="2"
               strokeLinecap="round"
             />
             <path
               d="M24 8l4 4-4 4"
-              stroke="#38c8e6"
+              stroke="var(--primary)"
               strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -350,11 +350,11 @@ export default function PortfolioProfileView({
                   className={`${card} flex flex-col p-[22px]`}
                 >
                   {pr.kind && (
-                    <div className="mb-2 font-mono text-xs text-[#38c8e6]">
+                    <div className="mb-2 font-mono text-xs text-primary">
                       {pr.kind}
                     </div>
                   )}
-                  <h3 className="mb-2 text-lg font-semibold text-[#eaf2f8]">
+                  <h3 className="mb-2 text-lg font-semibold text-ink">
                     {pr.title}
                   </h3>
                   {pr.description && (
@@ -371,11 +371,11 @@ export default function PortfolioProfileView({
                   className={`${card} flex flex-col items-start justify-center border-dashed p-[22px]`}
                 >
                   {cc.kind && (
-                    <div className="mb-2 font-mono text-xs text-[#38c8e6]">
+                    <div className="mb-2 font-mono text-xs text-primary">
                       {cc.kind}
                     </div>
                   )}
-                  <h3 className="mb-2 text-lg font-semibold text-[#eaf2f8]">
+                  <h3 className="mb-2 text-lg font-semibold text-ink">
                     {cc.title}
                   </h3>
                   {cc.description && (
@@ -402,7 +402,7 @@ export default function PortfolioProfileView({
           {p.audience.panels.map((pa) => (
             <Reveal key={pa._key} className={`${card} p-[26px]`}>
               {pa.eyebrow && <span className={eyebrow}>{pa.eyebrow}</span>}
-              <h3 className="mt-1.5 mb-2 text-[22px] font-semibold text-[#eaf2f8]">
+              <h3 className="mt-1.5 mb-2 text-[22px] font-semibold text-ink">
                 {pa.title}
               </h3>
               {pa.intro && <p className={`mb-[18px] ${muted}`}>{pa.intro}</p>}
@@ -432,9 +432,9 @@ export default function PortfolioProfileView({
         <SectionHead {...p.stack} />
         <div className="grid gap-4 md:grid-cols-2">
           {f?.title && (
-            <Reveal className="rounded-[20px] border border-[#38c8e6] bg-linear-to-br from-[#38c8e6]/[0.08] to-[#a78bfa]/[0.06] p-[26px] md:col-span-2">
+            <Reveal className="rounded-[20px] border border-primary bg-linear-to-br from-primary/[0.08] to-accent-violet/[0.06] p-[26px] md:col-span-2">
               {f.eyebrow && <span className={eyebrow}>{f.eyebrow}</span>}
-              <h3 className="mt-1.5 mb-1.5 text-[21px] font-semibold text-[#eaf2f8]">
+              <h3 className="mt-1.5 mb-1.5 text-[21px] font-semibold text-ink">
                 {f.title}
               </h3>
               {f.intro && (
@@ -444,9 +444,9 @@ export default function PortfolioProfileView({
                 {f.items?.map((it) => (
                   <div
                     key={it._key}
-                    className="rounded-xl border border-cyan-300/30 bg-[#050c17]/60 px-3.5 py-3"
+                    className="rounded-xl border border-outline-variant bg-surface-container-lowest/60 px-3.5 py-3"
                   >
-                    <b className="block text-[15px] text-[#eaf2f8]">
+                    <b className="block text-[15px] text-ink">
                       {it.name}
                     </b>
                     {it.detail && (
@@ -462,7 +462,7 @@ export default function PortfolioProfileView({
           )}
           {p.stack.groups?.map((g) => (
             <Reveal key={g._key} className={`${card} p-[26px]`}>
-              <h3 className="mb-3 text-[17px] font-semibold text-[#eaf2f8]">
+              <h3 className="mb-3 text-[17px] font-semibold text-ink">
                 {g.title}
               </h3>
               <Tags items={g.items} />
@@ -478,48 +478,7 @@ export default function PortfolioProfileView({
       p.institutes.anchorId ?? "institutes",
       <>
         <SectionHead {...p.institutes} />
-        <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
-          {p.institutes.items.map((it) => (
-            <Reveal key={it._key} className={`${card} flex flex-col p-[22px]`}>
-              {it.logo?.url && (
-                <div className="mb-[18px] grid h-[84px] place-items-center rounded-[14px] border border-cyan-300/15 bg-[#f5f8fb] px-[18px] py-2.5">
-                  <Image
-                    src={it.logo.url}
-                    alt={it.logo.alt ?? it.name}
-                    width={it.logo.width}
-                    height={it.logo.height}
-                    className="h-auto max-h-[54px] w-auto"
-                    sizes="240px"
-                  />
-                </div>
-              )}
-              <h3 className="mb-1 text-lg font-semibold text-[#eaf2f8]">
-                {it.name}
-              </h3>
-              {it.period && (
-                <div className="mb-2.5 font-mono text-[13px] text-[#38c8e6]">
-                  {it.period}
-                </div>
-              )}
-              {it.description && (
-                <p className={`mb-3.5 text-[15px] ${muted}`}>
-                  {it.description}
-                </p>
-              )}
-              {it.highlightText && (
-                <p className={`mb-3.5 text-sm ${muted}`}>
-                  {it.highlightLabel && (
-                    <b className="font-semibold text-[#eaf2f8]">
-                      {it.highlightLabel}:{" "}
-                    </b>
-                  )}
-                  {it.highlightText}
-                </p>
-              )}
-              <Tags items={it.tags} />
-            </Reveal>
-          ))}
-        </div>
+        <InstituteCarousel items={p.institutes.items} />
       </>,
     );
   }
@@ -527,21 +486,21 @@ export default function PortfolioProfileView({
   if (p.experience?.roles?.length) {
     const earlier = settings?.earlierRoles ?? [];
     const dotBase =
-      "absolute top-1.5 -left-[27px] h-3 w-3 rounded-full border-2 border-[#38c8e6]";
+      "absolute top-1.5 -left-[27px] h-3 w-3 rounded-full border-2 border-primary";
     add(
       p.experience.anchorId ?? "experience",
       <>
         <SectionHead {...p.experience} />
-        <div className="relative mx-auto max-w-[880px] pl-7 before:absolute before:top-1.5 before:bottom-1.5 before:left-[7px] before:w-0.5 before:bg-linear-to-b before:from-[#38c8e6] before:to-[#38c8e6]/10">
+        <div className="relative mx-auto max-w-[880px] pl-7 before:absolute before:top-1.5 before:bottom-1.5 before:left-[7px] before:w-0.5 before:bg-linear-to-b before:from-primary before:to-primary/10">
           {p.experience.roles.map((r) => (
             <Reveal key={r._key} className="relative pb-[26px]">
               <span
-                className={`${dotBase} ${r.major ? "bg-[#38c8e6] shadow-[0_0_12px_#38c8e6]" : "bg-[#07111f]"}`}
+                className={`${dotBase} ${r.major ? "bg-primary shadow-[0_0_12px_var(--primary)]" : "bg-canvas"}`}
               />
-              <div className="font-mono text-[12.5px] text-[#38c8e6]">
+              <div className="font-mono text-[12.5px] text-primary">
                 {r.period}
               </div>
-              <h3 className="mt-0.5 mb-0.5 text-lg font-semibold text-[#eaf2f8]">
+              <h3 className="mt-0.5 mb-0.5 text-lg font-semibold text-ink">
                 {r.role}
               </h3>
               <div className={`mb-2 text-[15px] ${muted}`}>{r.company}</div>
@@ -558,17 +517,17 @@ export default function PortfolioProfileView({
           ))}
           {!!earlier.length && (
             <Reveal className="relative pb-2">
-              <span className={`${dotBase} bg-[#07111f]`} />
-              <div className="font-mono text-[12.5px] text-[#38c8e6]">
+              <span className={`${dotBase} bg-canvas`} />
+              <div className="font-mono text-[12.5px] text-primary">
                 Earlier roles
               </div>
               <div className="mt-1 grid gap-2">
                 {earlier.map((e) => (
                   <div
                     key={e._key}
-                    className="flex flex-wrap justify-between gap-x-4 gap-y-1 rounded-[10px] border border-cyan-300/15 bg-white/[0.02] px-3.5 py-2.5 text-[14.5px]"
+                    className="flex flex-wrap justify-between gap-x-4 gap-y-1 rounded-[10px] border border-line bg-ink/[0.02] px-3.5 py-2.5 text-[14.5px]"
                   >
-                    <b className="text-[#eaf2f8]">
+                    <b className="text-ink">
                       {e.role} · {e.company}
                     </b>
                     {e.period && (
@@ -611,14 +570,14 @@ export default function PortfolioProfileView({
             return (
               <Reveal
                 key={s.title}
-                className={`${card} flex flex-col p-[26px] ${here ? "border-[#38c8e6] shadow-[inset_0_0_0_1px_rgba(56,200,230,0.25)]" : ""}`}
+                className={`${card} flex flex-col p-[26px] ${here ? "border-primary shadow-[inset_0_0_0_1px_color-mix(in_srgb,var(--primary)_25%,transparent)]" : ""}`}
               >
                 {here && (
-                  <span className="mb-2 self-start rounded-md bg-[#38c8e6]/[0.12] px-2 py-0.5 text-xs font-semibold text-[#38c8e6]">
+                  <span className="mb-2 self-start rounded-md bg-primary/[0.12] px-2 py-0.5 text-xs font-semibold text-primary">
                     You are here
                   </span>
                 )}
-                <h3 className="mb-2 text-[19px] font-semibold text-[#eaf2f8]">
+                <h3 className="mb-2 text-[19px] font-semibold text-ink">
                   {s.title}
                 </h3>
                 {s.description && (
@@ -651,10 +610,10 @@ export default function PortfolioProfileView({
             const Icon = whyIcons[w.icon ?? "code"];
             return (
               <Reveal key={w._key} className={`${card} p-[26px]`}>
-                <div className="grid h-[42px] w-[42px] place-items-center rounded-xl border border-cyan-300/30 bg-[#38c8e6]/10 text-[#38c8e6]">
+                <div className="grid h-[42px] w-[42px] place-items-center rounded-xl border border-outline-variant bg-primary/10 text-primary">
                   <Icon className="h-5 w-5" />
                 </div>
-                <h3 className="mt-4 mb-2 text-lg font-semibold text-[#eaf2f8]">
+                <h3 className="mt-4 mb-2 text-lg font-semibold text-ink">
                   {w.title}
                 </h3>
                 {w.description && (
@@ -671,9 +630,9 @@ export default function PortfolioProfileView({
   if (p.ctaBand?.title) {
     add(
       "contact",
-      <Reveal className="grid items-center gap-5 rounded-3xl border border-cyan-300/30 bg-linear-to-r from-[#0e7490]/35 to-[#064e3b]/35 p-[30px] md:grid-cols-[1fr_auto] md:px-10 md:py-9">
+      <Reveal className="grid items-center gap-5 rounded-3xl border border-outline-variant bg-linear-to-r from-accent-blue/20 to-accent-violet/20 p-[30px] md:grid-cols-[1fr_auto] md:px-10 md:py-9">
         <div>
-          <h3 className="mb-1.5 text-2xl font-semibold text-[#eaf2f8]">
+          <h3 className="mb-1.5 text-2xl font-semibold text-ink">
             {p.ctaBand.title}
           </h3>
           {p.ctaBand.text && <p className={muted}>{p.ctaBand.text}</p>}
@@ -689,14 +648,14 @@ export default function PortfolioProfileView({
       p.faq.anchorId ?? "faq",
       <>
         {p.faq.title && (
-          <h2 className="mb-7 text-[clamp(26px,3.4vw,38px)] font-bold tracking-tight text-[#eaf2f8]">
+          <h2 className="mb-7 text-[clamp(26px,3.4vw,38px)] font-bold tracking-tight text-ink">
             {p.faq.title}
           </h2>
         )}
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {p.faq.items.map((q) => (
             <Reveal key={q._key} className={`${card} flex flex-col p-[26px]`}>
-              <h3 className="mb-2 text-[17px] font-semibold text-[#eaf2f8]">
+              <h3 className="mb-2 text-[17px] font-semibold text-ink">
                 {q.question}
               </h3>
               <p className={`text-[15px] ${muted} ${q.link ? "mb-3.5" : ""}`}>
@@ -728,40 +687,5 @@ export default function PortfolioProfileView({
         );
       })}
     </>
-  );
-}
-
-export function PortfolioFooter() {
-  return (
-    <footer
-      className="border-t border-cyan-300/15"
-      style={{ viewTransitionName: "site-footer" }}
-    >
-      <div
-        className={`mx-auto flex max-w-[1200px] flex-wrap items-center justify-between gap-4 px-4 py-8 text-sm md:px-8 ${muted}`}
-      >
-        <div>
-          <b className="text-[#eaf2f8]">Niharika Dhande</b> · Prompt at Work · ©{" "}
-          {new Date().getFullYear()}
-        </div>
-        <nav className="flex flex-wrap gap-[18px]">
-          {[
-            ["/portfolio", "Portfolio"],
-            ["/ai-lab", "AI Lab"],
-            ["/training", "Training"],
-            ["/blog", "Blog"],
-            ["/contact", "Contact"],
-          ].map(([href, label]) => (
-            <Link
-              key={href}
-              href={href}
-              className="text-[#9fb3c6] hover:text-[#eaf2f8]"
-            >
-              {label}
-            </Link>
-          ))}
-        </nav>
-      </div>
-    </footer>
   );
 }

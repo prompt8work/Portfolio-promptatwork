@@ -23,9 +23,9 @@ export default function DocsProjectParts({ className = "" }: { className?: strin
   if (!series) return null;
 
   return (
-    <nav aria-label={`${series.project} documentation`} className={`rounded-xl border border-neutral-200 bg-white p-4 ${className}`}>
-      <p className="font-mono text-[10.5px] tracking-[0.12em] text-cyan-700 font-semibold">THIS PROJECT&apos;S DOCUMENTATION</p>
-      <p className="mt-1 text-[14px] font-semibold text-neutral-900">{series.project}</p>
+    <nav aria-label={`${series.project} documentation`} className={`rounded-xl border border-line bg-card p-4 ${className}`}>
+      <p className="font-mono text-[10.5px] tracking-[0.12em] text-primary font-semibold">THIS PROJECT&apos;S DOCUMENTATION</p>
+      <p className="mt-1 text-[14px] font-semibold text-ink">{series.project}</p>
       <ol className="mt-3 flex flex-col gap-1">
         {series.pages.map((p, i) => {
           const current = p.href === pathname;
@@ -35,12 +35,12 @@ export default function DocsProjectParts({ className = "" }: { className?: strin
                 href={p.href}
                 aria-current={current ? "page" : undefined}
                 className={`flex gap-2.5 rounded-md px-2 py-1.5 text-[13.5px] leading-snug ${
-                  current ? "bg-cyan-50 text-cyan-800 font-semibold" : "text-neutral-700 hover:bg-neutral-100 hover:text-neutral-900"
+                  current ? "bg-accent-blue/10 text-primary font-semibold" : "text-on-surface-variant hover:bg-surface-container hover:text-ink"
                 }`}
               >
-                <span className="font-mono text-[11px] text-neutral-400 pt-0.5">{String(i + 1).padStart(2, "0")}</span>
+                <span className="font-mono text-[11px] text-outline pt-0.5">{String(i + 1).padStart(2, "0")}</span>
                 <span>
-                  <span className="block font-mono text-[10px] tracking-[0.08em] uppercase text-neutral-500">{kindLabel[p.kind] ?? p.kind}</span>
+                  <span className="block font-mono text-[10px] tracking-[0.08em] uppercase text-muted">{kindLabel[p.kind] ?? p.kind}</span>
                   {p.title}
                 </span>
               </Link>

@@ -18,6 +18,9 @@ export type TestimonialFormState = {
   status: "idle" | "success" | "error";
   message: string;
   fieldErrors?: Partial<Record<keyof z.infer<typeof testimonialSchema>, string>>;
+  /** Echoed back on a validation error so the fields survive React's
+   *  post-action form reset (same as the Contact form). */
+  values?: Partial<Record<"name" | "role" | "organization" | "quote" | "sourceContext", string>>;
 };
 
 export async function submitTestimonial(
@@ -41,7 +44,19 @@ export async function submitTestimonial(
       const key = issue.path[0] as keyof z.infer<typeof testimonialSchema>;
       if (key && key !== "website") fieldErrors[key] = issue.message;
     }
-    return { status: "error", message: "Please check the form and try again.", fieldErrors };
+    const text = (v: FormDataEntryValue | null) => (typeof v === "string" ? v : "");
+    return {
+      status: "error",
+      message: "Please check the form and try again.",
+      fieldErrors,
+      values: {
+        name: text(raw.name),
+        role: text(raw.role),
+        organization: text(raw.organization),
+        quote: text(raw.quote),
+        sourceContext: text(raw.sourceContext),
+      },
+    };
   }
 
   // Honeypot tripped: pretend success, same as every other public form.

@@ -73,10 +73,10 @@ export default async function AiLabLayout({ children }: LayoutProps<"/ai-lab">) 
     }));
 
   return (
-    <div className="min-h-screen flex flex-col bg-neutral-50">
+    <div className="min-h-screen flex flex-col">
       <Nav />
       <AiLabNavProvider groups={groups} series={series}>
-        <div className="flex-1 w-full max-w-[1440px] mx-auto lg:grid lg:grid-cols-[272px_minmax(0,1fr)]">
+        <div className="flex-1 w-full max-w-[1440px] mx-auto lg:grid lg:grid-cols-[280px_minmax(0,1fr)]">
           <DocsSidebar />
           <main className="min-w-0">{children}</main>
         </div>

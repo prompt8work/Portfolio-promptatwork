@@ -128,7 +128,7 @@ export default async function ToolDetailPage({ params }: { params: Promise<{ slu
                   Official site
                 </ArrowLink>
               )}
-              {tool.pricing && <span className="text-sm text-neutral-500">{tool.pricing}</span>}
+              {tool.pricing && <span className="text-sm text-muted">{tool.pricing}</span>}
             </div>
           )}
           {tool.tags && tool.tags.length > 0 && (
@@ -139,7 +139,7 @@ export default async function ToolDetailPage({ params }: { params: Promise<{ slu
             </div>
           )}
           {(tool.lastUpdated || tool.reviewedVersion || tool.lastReviewed) && (
-            <div className="flex gap-4 flex-wrap text-xs text-neutral-500">
+            <div className="flex gap-4 flex-wrap text-xs text-muted">
               {tool.lastUpdated && (
                 <span>
                   Last updated{" "}
@@ -192,13 +192,13 @@ export default async function ToolDetailPage({ params }: { params: Promise<{ slu
               <StaggerGrid className="flex flex-col gap-2">
                 {tool.resources.map((r) => (
                   <StaggerItem key={r.title}>
-                    <MotionCard className="bg-white border border-neutral-200 rounded-xl p-4 flex items-center justify-between gap-4 flex-wrap">
+                    <MotionCard className="bg-card border border-line rounded-xl p-4 flex items-center justify-between gap-4 flex-wrap">
                       <div className="flex flex-col gap-0.5">
-                        <span className="font-mono text-[10px] tracking-[0.12em] text-cyan-700">
+                        <span className="font-mono text-[10px] tracking-[0.12em] text-primary">
                           {r.resourceType.toUpperCase()}
                         </span>
-                        <span className="text-sm font-semibold text-neutral-900">{r.title}</span>
-                        {r.description && <span className="text-xs text-neutral-500">{r.description}</span>}
+                        <span className="text-sm font-semibold text-ink">{r.title}</span>
+                        {r.description && <span className="text-xs text-muted">{r.description}</span>}
                       </div>
                       {r.fileUrl && (
                         <ArrowLink href={r.fileUrl} external size="sm">
@@ -250,7 +250,7 @@ export default async function ToolDetailPage({ params }: { params: Promise<{ slu
                   href={s.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-[14px] text-neutral-600 hover:text-plum-600"
+                  className="text-[14px] text-muted hover:text-primary"
                 >
                   {s.label} ↗
                 </a>

@@ -4,36 +4,21 @@ import { CtaButton, Highlight, card, faint, muted } from "../portfolio/ui";
 
 // The workshop / solution card: category badge, cover, title, highlights,
 // description, "Ideal for" line and an optional button. Shared by the
-// portfolio's dark offerings grid and the light /training hub, which use
-// the same layout with colours adapted to each theme.
+// portfolio's offerings grid and the /training hub. Covers keep their own
+// colours: thumbnails stay dark in both themes.
 
-export type OfferingTheme = "dark" | "light";
-
-const themes = {
-  dark: {
-    card: `${card} hover:border-cyan-300/30`,
-    badge: `border-cyan-300/30 ${muted}`,
-    dot: { cyan: "bg-[#38c8e6]", green: "bg-[#2fd39a]", violet: "bg-[#a78bfa]" },
-    title: "text-[#eaf2f8]",
-    titleLink: "hover:text-[#38c8e6]",
-    faint,
-    muted,
-    strong: muted,
-    cover: "border-white/10",
-    focus: "has-[a:focus-visible]:ring-2 has-[a:focus-visible]:ring-[#38c8e6]",
-  },
-  light: {
-    card: "rounded-[20px] border border-neutral-200 bg-white hover:border-cyan-600/40 hover:shadow-[0_12px_32px_rgba(15,23,42,0.08)]",
-    badge: "border-neutral-300 text-neutral-700",
-    dot: { cyan: "bg-cyan-600", green: "bg-emerald-600", violet: "bg-violet-600" },
-    title: "text-neutral-900",
-    titleLink: "hover:text-cyan-700 group-hover:text-cyan-700",
-    faint: "text-neutral-500",
-    muted: "text-neutral-600",
-    strong: "text-neutral-800",
-    cover: "border-neutral-900/10",
-    focus: "has-[a:focus-visible]:ring-2 has-[a:focus-visible]:ring-cyan-600 has-[a:focus-visible]:ring-offset-2",
-  },
+// Luminous SaaS tokens, so the card follows the light/dark toggle.
+const t = {
+  card: `${card} hover:border-[color-mix(in_srgb,var(--accent-violet)_60%,transparent)]`,
+  badge: `border-outline-variant ${muted}`,
+  dot: { cyan: "bg-primary", green: "bg-secondary", violet: "bg-accent-violet" },
+  title: "text-ink",
+  titleLink: "hover:text-primary",
+  faint,
+  muted,
+  strong: muted,
+  cover: "border-white/10",
+  focus: "has-[a:focus-visible]:ring-2 has-[a:focus-visible]:ring-primary",
 };
 
 // Cover gradients stand in for designed workshop artwork (thumbVariant 1–9).
@@ -52,7 +37,7 @@ const banners = [
 const grid =
   "pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(255,255,255,.05)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.05)_1px,transparent_1px)] bg-[size:22px_22px]";
 
-export function OfferingBanner({ o, border = themes.dark.cover }: { o: Offering; border?: string }) {
+export function OfferingBanner({ o, border = t.cover }: { o: Offering; border?: string }) {
   const bg = banners[((o.thumbVariant ?? 1) - 1 + banners.length) % banners.length];
   return (
     <div className={`relative flex aspect-video flex-col justify-between overflow-hidden rounded-[14px] border bg-linear-to-br p-[18px] ${border} ${bg}`}>
@@ -85,9 +70,9 @@ function SnippetLine({ line }: { line: string }) {
     <>
       {line.split(/("[^"]*"|→|⇄|↺|\$|>)/g).map((part, i) =>
         part.startsWith('"') ? (
-          <span key={i} className="text-[#2fd39a]">{part}</span>
+          <span key={i} className="text-secondary">{part}</span>
         ) : /^(→|⇄|↺|\$|>)$/.test(part) ? (
-          <span key={i} className="text-[#38c8e6]">{part}</span>
+          <span key={i} className="text-primary">{part}</span>
         ) : (
           part
         )
@@ -122,14 +107,11 @@ function Terminal({ snippet }: { snippet?: string }) {
  */
 export default function OfferingCard({
   o,
-  theme = "dark",
   linkCard = false,
 }: {
   o: Offering;
-  theme?: OfferingTheme;
   linkCard?: boolean;
 }) {
-  const t = themes[theme];
   const stretched = linkCard && !!o.href;
   const cover = o.thumbStyle === "terminal" ? <Terminal snippet={o.snippet} /> : <OfferingBanner o={o} border={t.cover} />;
 
@@ -195,25 +177,17 @@ export function FilterPills({
   options,
   active,
   onSelect,
-  theme = "dark",
   className = "",
 }: {
   options: { key: string | null; label: string; href?: string }[];
   active: string | null;
   onSelect?: (key: string | null) => void;
-  theme?: OfferingTheme;
   className?: string;
 }) {
   const base = "rounded-full border px-4 py-2 text-sm transition-colors";
-  const on = "border-transparent bg-linear-to-r from-[#38c8e6] to-[#2fd39a] font-semibold text-[#04131f] hover:text-[#04131f]";
-  const off =
-    theme === "dark"
-      ? `border-cyan-300/30 ${muted} hover:text-[#eaf2f8]`
-      : "border-neutral-300 bg-white text-neutral-700 hover:border-neutral-400 hover:text-neutral-900";
-  const focus =
-    theme === "dark"
-      ? "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#38c8e6]"
-      : "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-600";
+  const on = "border-transparent bg-linear-to-r from-accent-blue to-accent-violet font-semibold text-white hover:text-white";
+  const off = `border-outline-variant ${muted} hover:text-ink`;
+  const focus = "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary";
 
   return (
     <div className={`flex flex-wrap gap-2 ${className}`} role="group" aria-label="Filter by category">

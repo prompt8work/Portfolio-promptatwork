@@ -2,17 +2,17 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import type { Cta } from "../../lib/portfolio";
 
-// Shared pieces for the dark portfolio pages (Docs/design/poc/*.html are the
-// approved designs). The portfolio is the site's one dark area — every
-// other page stays light.
+// Shared pieces for the portfolio pages. Originally the site's one dark
+// area (Docs/design/poc/*.html); now on the Luminous SaaS tokens, so they
+// follow the light/dark toggle like every rebuilt page.
 
-export const card = "rounded-[20px] border border-cyan-300/15 bg-[#102036]/60";
-export const cardStrong = "rounded-3xl border border-cyan-300/30 bg-[#102036]/60";
-export const muted = "text-[#9fb3c6]";
-export const faint = "text-[#6f8599]";
-export const eyebrow = "font-mono text-xs uppercase tracking-wider text-[#38c8e6]";
-export const tag = "rounded-full border border-cyan-300/30 px-3 py-1 text-[13px] text-[#9fb3c6]";
-export const gradientText = "bg-linear-to-r from-[#38c8e6] to-[#2fd39a] bg-clip-text text-transparent";
+export const card = "rounded-[20px] border border-line bg-card/60";
+export const cardStrong = "rounded-3xl border border-outline-variant bg-card/60";
+export const muted = "text-muted";
+export const faint = "text-outline";
+export const eyebrow = "font-mono text-xs uppercase tracking-wider text-primary";
+export const tag = "rounded-full border border-outline-variant px-3 py-1 text-[13px] text-muted";
+export const gradientText = "bg-linear-to-r from-accent-blue to-accent-violet bg-clip-text text-transparent";
 
 /** Renders "*word*" segments as gradient-highlighted text. */
 export function Highlight({ text, className = gradientText }: { text: string; className?: string }) {
@@ -33,10 +33,10 @@ export function Highlight({ text, className = gradientText }: { text: string; cl
 
 const ctaStyles = {
   primary:
-    "inline-flex items-center gap-2 rounded-xl bg-linear-to-r from-[#38c8e6] to-[#2fd39a] font-semibold text-[#04131f] shadow-[0_8px_30px_rgba(47,211,154,0.25)] motion-btn hover:brightness-110 hover:text-[#04131f]",
+    "inline-flex items-center gap-2 rounded-xl bg-linear-to-r from-accent-blue to-accent-violet font-semibold text-white shadow-[var(--glow-sm)] motion-btn hover:shadow-[var(--glow-md)] hover:text-white",
   secondary:
-    "inline-flex items-center gap-2 rounded-xl border border-cyan-300/30 bg-white/[0.03] font-semibold text-[#eaf2f8] motion-btn hover:border-[#38c8e6] hover:text-[#eaf2f8]",
-  link: "text-sm font-semibold text-[#38c8e6] hover:underline",
+    "inline-flex items-center gap-2 rounded-xl border border-outline-variant bg-ink/[0.03] font-semibold text-ink motion-btn hover:border-primary hover:text-ink",
+  link: "text-sm font-semibold text-primary hover:underline",
 };
 
 export function CtaButton({ cta, small = false }: { cta?: Cta; small?: boolean }) {
@@ -72,7 +72,7 @@ export function SectionHead({ eyebrow: label, title, intro }: { eyebrow?: string
   return (
     <div className="mx-auto mb-10 max-w-[740px] text-center">
       {label && <span className={eyebrow}>{label}</span>}
-      {title && <h2 className="mt-2.5 mb-3 text-[clamp(26px,3.4vw,38px)] leading-tight font-bold tracking-tight text-[#eaf2f8]">{title}</h2>}
+      {title && <h2 className="mt-2.5 mb-3 text-[clamp(26px,3.4vw,38px)] leading-tight font-bold tracking-tight text-ink">{title}</h2>}
       {intro && <p className={`text-[17px] ${muted}`}>{intro}</p>}
     </div>
   );
@@ -83,7 +83,7 @@ export function Band({ id, alt, children, className = "" }: { id?: string; alt?:
   return (
     <section
       id={id}
-      className={`scroll-mt-20 py-[72px] ${alt ? "border-y border-cyan-300/15 bg-linear-to-b from-[#0a1a2e]/70 to-[#0a1a2e]/20" : ""} ${className}`}
+      className={`scroll-mt-20 py-[72px] ${alt ? "border-y border-line bg-linear-to-b from-surface-container-low/70 to-surface-container-low/20" : ""} ${className}`}
     >
       <div className="mx-auto max-w-[1200px] px-4 md:px-8">{children}</div>
     </section>
@@ -108,8 +108,8 @@ export function TickList({ items }: { items?: string[] }) {
   return (
     <ul className="grid gap-2.5">
       {items.map((p) => (
-        <li key={p} className="flex items-start gap-3 rounded-xl border border-cyan-300/15 bg-white/[0.02] px-3.5 py-3 text-[15px] text-[#eaf2f8]">
-          <span className="grid h-[22px] w-[22px] flex-none place-items-center rounded-full border border-[#2fd39a]/50 bg-[#2fd39a]/10 text-xs text-[#2fd39a]">
+        <li key={p} className="flex items-start gap-3 rounded-xl border border-line bg-ink/[0.02] px-3.5 py-3 text-[15px] text-ink">
+          <span className="grid h-[22px] w-[22px] flex-none place-items-center rounded-full border border-secondary/50 bg-secondary/10 text-xs text-secondary">
             ✓
           </span>
           {p}

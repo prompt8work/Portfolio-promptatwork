@@ -5,17 +5,20 @@ import { AnimatePresence, animate, motion, useMotionValue, useReducedMotion, typ
 import { DISTANCE, DRAG_ELASTIC, DURATION, LOOP_EASE, carouselSlide } from "../../lib/motion";
 
 /**
- * Testimonials, anywhere. Crossfade + 28px slide, auto-advances every 5s
+ * Testimonials and institutes. Crossfade + 28px slide, auto-advances every 5s
  * (paused on hover/focus, off with reduced motion), drag/swipe, and dots
  * whose active one fills to show time until the next slide.
  */
 export default function Carousel({
   slides,
   label,
+  itemLabel = "testimonial",
   tone = "light",
 }: {
   slides: ReactNode[];
   label: string;
+  /** Names one slide in the dots' labels ("Show testimonial 2"). */
+  itemLabel?: string;
   tone?: "light" | "dark";
 }) {
   const [[index, dir], setState] = useState<[number, number]>([0, 1]);
@@ -53,7 +56,7 @@ export default function Carousel({
 
   if (count === 0) return null;
 
-  const dotBase = tone === "dark" ? "bg-white/20" : "bg-neutral-300";
+  const dotBase = tone === "dark" ? "bg-white/20" : "bg-outline-variant";
 
   return (
     <div
@@ -106,14 +109,14 @@ export default function Carousel({
               key={i}
               type="button"
               onClick={() => go(i, i > index ? 1 : -1)}
-              aria-label={`Show testimonial ${i + 1}`}
+              aria-label={`Show ${itemLabel} ${i + 1}`}
               aria-current={i === index}
               className={`relative h-1.5 overflow-hidden rounded-full ${i === index ? "w-8" : "w-1.5"} ${dotBase}`}
             >
               {i === index && (
                 <motion.span
                   style={{ scaleX: auto ? progress : 1 }}
-                  className="absolute inset-0 origin-left rounded-full bg-plum-600"
+                  className="absolute inset-0 origin-left rounded-full bg-primary"
                 />
               )}
             </button>

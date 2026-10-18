@@ -39,7 +39,7 @@ export default function BurstEmoji({ emoji, burst }: { emoji: string; burst: num
                   scale: 0.4,
                 }}
                 transition={{ duration: DURATION.reveal, ease: EASE }}
-                className="absolute left-1/2 top-1/2 -ml-[3px] -mt-[3px] w-1.5 h-1.5 rounded-full bg-plum-400 pointer-events-none"
+                className="absolute left-1/2 top-1/2 -ml-[3px] -mt-[3px] w-1.5 h-1.5 rounded-full bg-primary/70 pointer-events-none"
               />
             );
           })}

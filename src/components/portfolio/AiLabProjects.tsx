@@ -14,12 +14,12 @@ function ProjectCard({ project, featured }: { project: AiLabProject; featured: b
   return (
     <Reveal className={`${featured ? cardStrong : card} flex flex-col p-6 lg:p-[30px]`}>
       <span className={eyebrow}>{[featured && "Featured", kind].filter(Boolean).join(" · ")}</span>
-      <h3 className="mt-1.5 mb-2.5 text-[24px] leading-tight font-bold text-[#eaf2f8]">{project.title}</h3>
+      <h3 className="mt-1.5 mb-2.5 text-[24px] leading-tight font-bold text-ink">{project.title}</h3>
       <p className={`mb-4 flex-1 ${muted}`}>{project.summary}</p>
       {!!project.stats?.length && (
         <ul className="mb-4 grid gap-2 sm:grid-cols-2">
           {project.stats.map((s) => (
-            <li key={s} className="rounded-xl border border-cyan-300/15 bg-white/[0.02] px-3 py-2 text-[13.5px] text-[#eaf2f8]">
+            <li key={s} className="rounded-xl border border-line bg-ink/[0.02] px-3 py-2 text-[13.5px] text-ink">
               {s}
             </li>
           ))}

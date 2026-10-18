@@ -1,21 +1,15 @@
 import type { Metadata } from "next";
-import { Geist, Playfair_Display, JetBrains_Mono } from "next/font/google";
+import { Geist, JetBrains_Mono } from "next/font/google";
 import { siteUrl } from "../lib/site";
 import { siteKeywords, personName } from "../lib/seo";
 import { motionCssVars } from "../lib/motion";
+import { themeScript } from "../lib/theme";
 import MotionProvider from "../components/motion/MotionProvider";
 import "./globals.css";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
-});
-
-const playfairDisplay = Playfair_Display({
-  variable: "--font-playfair",
-  subsets: ["latin"],
-  weight: ["500", "600", "700"],
-  style: ["normal", "italic"],
 });
 
 const jetbrainsMono = JetBrains_Mono({
@@ -69,11 +63,26 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
+    // data-theme is a server default; themeScript swaps it for the visitor's
+    // stored or system theme before first paint, so <html> needs
+    // suppressHydrationWarning (Next guide: preventing-flash-before-hydration).
     <html
       lang="en-IN"
-      className={`${geistSans.variable} ${playfairDisplay.variable} ${jetbrainsMono.variable} h-full antialiased`}
+      data-theme="dark"
+      className={`${geistSans.variable} ${jetbrainsMono.variable} h-full antialiased`}
       style={motionCssVars}
+      suppressHydrationWarning
     >
+      <head>
+        {/* text/plain on the client: the script has already run during
+            parsing, and React warns about rendering an executable <script>
+            on the client (the 404 page renders this tree client-side). */}
+        <script
+          type={typeof window === "undefined" ? "text/javascript" : "text/plain"}
+          suppressHydrationWarning
+          dangerouslySetInnerHTML={{ __html: themeScript }}
+        />
+      </head>
       {/* suppressHydrationWarning: browser extensions (e.g. ColorZilla's
           cz-shortcut-listen) inject attributes onto <body> before React
           hydrates — a client-only mismatch, not a real SSR bug. */}

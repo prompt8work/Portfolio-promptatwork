@@ -45,14 +45,14 @@ export default function DocsToc() {
 
   return (
     <nav aria-label="On this page" className="flex flex-col gap-3">
-      <span className="font-mono text-[10.5px] font-semibold tracking-[0.14em] text-neutral-500">ON THIS PAGE</span>
+      <span className="font-mono text-[10.5px] font-semibold tracking-[0.14em] text-muted">ON THIS PAGE</span>
       <ul className="flex flex-col gap-2">
         {headings.map((h) => (
           <li key={h.id} className={h.level === 3 ? "pl-3" : ""}>
             <a
               href={`#${h.id}`}
               className={`block text-[13px] leading-snug ${
-                activeId === h.id ? "text-plum-600 font-medium" : "text-neutral-600 hover:text-neutral-900"
+                activeId === h.id ? "text-primary font-medium" : "text-muted hover:text-ink"
               }`}
             >
               {h.text}
