@@ -27,7 +27,7 @@ function Tree({ onNavigate }: { onNavigate?: () => void }) {
   const isOpen = (g: DocsGroup, i: number) => open[g.href] ?? (i !== 0 && groupContains(pathname, g));
 
   return (
-    <nav aria-label={label} className="flex flex-col gap-1">
+    <nav aria-label={`${label} sections`} className="flex flex-col gap-1">
       <span className="font-mono text-[10px] tracking-[0.05em] uppercase text-muted px-3 pt-1 pb-2">{label}</span>
       {groups.map((g, i) => {
         const expanded = isOpen(g, i);
@@ -143,7 +143,7 @@ export default function DocsSidebar() {
 
   return (
     <>
-      <aside className="hidden lg:block border-r border-line bg-canvas">
+      <aside aria-label={`${label} sidebar`} className="hidden lg:block border-r border-line bg-canvas">
         <div className="sticky top-[68px] h-[calc(100vh-68px)] overflow-y-auto px-4 py-6 flex flex-col gap-4">
           <DocsSearch />
           <Tree />

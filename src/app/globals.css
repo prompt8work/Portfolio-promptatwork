@@ -397,6 +397,12 @@
   .field-label {
     transition-duration: 0s !important;
   }
+  .motion-intro,
+  .motion-word,
+  .motion-curtain,
+  .motion-blob {
+    animation: none !important;
+  }
   .motion-card:hover,
   .motion-card:active,
   .motion-btn:hover:not(:disabled),

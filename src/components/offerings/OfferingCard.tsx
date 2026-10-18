@@ -70,7 +70,7 @@ export function Tools({ items }: { items?: string[] }) {
 
 /** Colours a pipeline sketch: # comments dim, arrows and prompts cyan, quotes green. */
 function SnippetLine({ line }: { line: string }) {
-  if (line.trimStart().startsWith("#")) return <span className="text-slate-500">{line}</span>;
+  if (line.trimStart().startsWith("#")) return <span className="text-slate-400">{line}</span>;
   return (
     <>
       {line.split(/("[^"]*"|→|⇄|↺|\$|>)/g).map((part, i) =>
@@ -88,7 +88,7 @@ function SnippetLine({ line }: { line: string }) {
 
 function Terminal({ snippet }: { snippet?: string }) {
   return (
-    <div className="overflow-hidden rounded-[14px] border border-white/10 bg-[#050c17]">
+    <div data-theme="dark" className="overflow-hidden rounded-[14px] border border-white/10 bg-[#050c17]">
       <div className="flex gap-1.5 border-b border-white/[0.06] bg-white/[0.04] px-3 py-2.5">
         <i className="h-2.5 w-2.5 rounded-full bg-[#f87171]" />
         <i className="h-2.5 w-2.5 rounded-full bg-[#fbbf24]" />

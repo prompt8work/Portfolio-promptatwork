@@ -33,7 +33,13 @@
   .paw-tag { display: inline-flex; align-items: center; height: 24px; padding: 0 10px; border-radius: var(--rounded-full); font-family: var(--font-mono); font-size: 11px; font-weight: 500; letter-spacing: 0.05em; line-height: 16px; white-space: nowrap; color: var(--primary); background: rgba(59, 130, 246, 0.14); border: 1px solid rgba(173, 198, 255, 0.18); }
   .paw-tag--violet { color: var(--secondary); background: rgba(139, 92, 246, 0.16); border-color: rgba(208, 188, 255, 0.2); }
   .paw-tag--warm { color: var(--tertiary); background: rgba(223, 116, 18, 0.14); border-color: rgba(255, 183, 134, 0.2); }
-  .paw-tag--neutral { color: var(--text-secondary); background: rgba(148, 163, 184, 0.1); border-color: var(--border-subtle); }
+  .paw-tag--neutral { color: var(--on-surface-variant); background: rgba(148, 163, 184, 0.1); border-color: var(--border-subtle); }
+  /* Light theme: tags sit on the pale role containers with the dark role
+     colour as text (design-system README, "Light theme"). */
+  [data-theme="light"] .paw-tag { color: var(--on-primary-container); background: var(--primary-container); border-color: transparent; }
+  [data-theme="light"] .paw-tag--violet { color: var(--on-secondary-container); background: var(--secondary-container); }
+  [data-theme="light"] .paw-tag--warm { color: var(--on-tertiary-container); background: var(--tertiary-container); }
+  [data-theme="light"] .paw-tag--neutral { color: var(--on-surface-variant); background: var(--surface-container); }
   .paw-tags { display: flex; flex-wrap: wrap; gap: var(--space-sm); }
   
   /* Filter chip */

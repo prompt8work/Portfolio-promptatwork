@@ -101,7 +101,7 @@ function StepCard({ step, n }: { step: DiagramStep; n: number }) {
               {step.before && (
                 <span className="text-muted line-through decoration-outline">{step.before}</span>
               )}
-              {step.before && <span className="text-outline"> → </span>}
+              {step.before && <span className="text-muted"> → </span>}
               <span className="font-semibold text-primary">{step.after}</span>
             </span>
           )}
@@ -127,7 +127,7 @@ function Connector({ label, row }: { label?: string; row: boolean }) {
           {label}
         </span>
       )}
-      <span className={`flex flex-col items-center text-outline ${row ? "md:flex-row" : ""}`}>
+      <span className={`flex flex-col items-center text-muted ${row ? "md:flex-row" : ""}`}>
         <span className={`block w-px h-5 bg-current ${row ? "md:w-6 md:h-px" : ""}`} />
         <svg className={row ? "md:-rotate-90" : ""} width="10" height="10" viewBox="0 0 10 10" fill="currentColor">
           <path d="M0 2h10L5 9z" />

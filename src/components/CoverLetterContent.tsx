@@ -32,7 +32,7 @@ export default function CoverLetterContent() {
     <PageTransition>
       {/* A printable document, so it's pinned to the light theme: it reads
           like paper on screen whatever the visitor's toggle is set to. */}
-      <div data-theme="light" className="min-h-screen bg-surface-container text-ink py-8 px-4">
+      <main data-theme="light" className="min-h-screen bg-surface-container text-ink py-8 px-4">
         {/* PDF Export Button - Hidden on Print */}
         <div className="fixed top-4 right-4 z-50 no-print">
           <button
@@ -152,7 +152,7 @@ export default function CoverLetterContent() {
           </div>
         </div>
         </IntroFade>
-      </div>
+      </main>
     </PageTransition>
   );
 }

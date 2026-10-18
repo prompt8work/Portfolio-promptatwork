@@ -5,11 +5,11 @@ const nextConfig: NextConfig = {
   turbopack: {
     root: path.join(__dirname),
   },
-  // /og reads the headshot and the logo mark from disk at runtime to
+  // /og reads the headshot, the logo mark and the Geist fonts from disk at runtime to
   // compose the social share image; make sure they're traced into that
   // function's bundle.
   outputFileTracingIncludes: {
-    "/og": ["./public/images/headshot.png", "./public/images/brand/promptatwork-mark.png"],
+    "/og": ["./public/images/headshot.png", "./public/images/brand/promptatwork-mark.png", "./src/app/og/fonts/*.ttf"],
   },
   // Work, Engineering and About were folded into the AI Lab hub and the
   // homepage (Docs/development-plan/11-ai-lab-docs-hub.md). Permanent so

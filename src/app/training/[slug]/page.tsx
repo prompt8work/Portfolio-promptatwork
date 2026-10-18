@@ -158,7 +158,7 @@ function WorkshopPage({ t }: { t: Training }) {
                 <ol className="flex flex-col gap-3">
                   {t.modules.map((m, i) => (
                     <li key={m.title} className="flex gap-3">
-                      <span className="font-mono text-[11px] text-outline pt-1">{String(i + 1).padStart(2, "0")}</span>
+                      <span className="font-mono text-[11px] text-muted pt-1">{String(i + 1).padStart(2, "0")}</span>
                       <span>
                         <span className="block text-[15.5px] font-semibold text-ink">{m.title}</span>
                         {m.description && <span className="block text-[15px] leading-relaxed text-on-surface-variant">{m.description}</span>}
@@ -182,7 +182,7 @@ function WorkshopPage({ t }: { t: Training }) {
                 <ol className="flex flex-col gap-1.5">
                   {more.map((o, i) => (
                     <li key={o.slug} className="flex gap-3 text-[15px]">
-                      <span className="font-mono text-[11px] text-outline pt-1">{String(i + 1).padStart(2, "0")}</span>
+                      <span className="font-mono text-[11px] text-muted pt-1">{String(i + 1).padStart(2, "0")}</span>
                       <Link
                         href={trainingPath(o.slug)}
                         className="text-ink underline decoration-outline-variant underline-offset-4 hover:decoration-primary"

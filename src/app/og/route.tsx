@@ -23,6 +23,21 @@ const VARIANTS = {
 
 export type OgVariant = keyof typeof VARIANTS;
 
+// Geist (SIL Open Font License, from Google Fonts) so the share image uses
+// the site's typeface. The two-tone wordmark is two text runs, which the
+// renderer doesn't kern across, so "AtWork" is pulled 2px left to close the
+// "t|A" gap the browser closes on the site.
+let fonts: { name: string; data: Buffer; weight: 400 | 600; style: "normal" }[] | null = null;
+function geist() {
+  fonts ??= ([400, 600] as const).map((weight) => ({
+    name: "Geist",
+    data: readFileSync(path.join(process.cwd(), `src/app/og/fonts/Geist-${weight}.ttf`)),
+    weight,
+    style: "normal" as const,
+  }));
+  return fonts;
+}
+
 const dataUris = new Map<string, string>();
 function dataUri(file: string): string {
   let uri = dataUris.get(file);
@@ -53,6 +68,7 @@ export async function GET(request: Request) {
         width: "1200px",
         height: "630px",
         position: "relative",
+        fontFamily: "Geist",
         background: `radial-gradient(60% 80% at 85% 20%, ${v.glow}, transparent 70%), radial-gradient(45% 60% at 0% 100%, ${v.glow2}, transparent 70%), ${BASE.bg}`,
       }}
     >
@@ -61,8 +77,8 @@ export async function GET(request: Request) {
           {/* eslint-disable-next-line @next/next/no-img-element -- next/image doesn't work inside ImageResponse */}
           <img src={dataUri("public/images/brand/promptatwork-mark.png")} width={56} height={56} style={{ borderRadius: 14 }} alt="" />
           <div style={{ display: "flex", fontSize: 28, fontWeight: 600, color: BASE.text }}>
-            <span>Prompt</span>
-            <span style={{ color: BASE.word }}>AtWork</span>
+            <div style={{ display: "flex" }}>Prompt</div>
+            <div style={{ display: "flex", color: BASE.word, marginLeft: -2 }}>AtWork</div>
           </div>
         </div>
         <div style={{ display: "flex", fontSize: titleFontSize, fontWeight: 600, color: BASE.text, lineHeight: 1.18, maxWidth: 580, letterSpacing: "-0.02em" }}>
@@ -88,6 +104,6 @@ export async function GET(request: Request) {
         <img src={dataUri("public/images/headshot.png")} width={488} height={488} style={{ objectFit: "cover", borderRadius: "50%" }} alt="" />
       </div>
     </div>,
-    { width: 1200, height: 630 },
+    { width: 1200, height: 630, fonts: geist() },
   );
 }

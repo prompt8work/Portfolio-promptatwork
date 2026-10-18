@@ -38,7 +38,7 @@ export default function DocsProjectParts({ className = "" }: { className?: strin
                   current ? "bg-accent-blue/10 text-primary font-semibold" : "text-on-surface-variant hover:bg-surface-container hover:text-ink"
                 }`}
               >
-                <span className="font-mono text-[11px] text-outline pt-0.5">{String(i + 1).padStart(2, "0")}</span>
+                <span className="font-mono text-[11px] text-muted pt-0.5">{String(i + 1).padStart(2, "0")}</span>
                 <span>
                   <span className="block font-mono text-[10px] tracking-[0.08em] uppercase text-muted">{kindLabel[p.kind] ?? p.kind}</span>
                   {p.title}
