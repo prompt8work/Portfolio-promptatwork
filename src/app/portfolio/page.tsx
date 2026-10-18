@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { ArrowRight, Code, GraduationCap } from "lucide-react";
 import Nav from "../../components/Nav";
 import PageTransition from "../../components/PageTransition";
+import SiteFooter from "../../components/SiteFooter";
 import IntroFade from "../../components/motion/IntroFade";
-import Reveal from "../../components/motion/Reveal";
-import { PortfolioFooter } from "../../components/portfolio/PortfolioProfileView";
-import { cardStrong, eyebrow, muted } from "../../components/portfolio/ui";
+import { StaggerGrid, StaggerItem } from "../../components/motion/StaggerGrid";
+import { TagList } from "../../components/paw/Tag";
 import { getPortfolioProfiles, getPortfolioSettings, portfolioPath } from "../../lib/portfolio";
 import { buildMetadata } from "../../lib/site";
 
@@ -19,52 +20,81 @@ export const metadata: Metadata = buildMetadata({
   path: "/portfolio",
 });
 
-// Landing page that points to the two Sanity portfolio profiles.
+const icons = [Code, GraduationCap];
+
+// Portfolio overview (Page-Portfolio board, header): the two Sanity
+// portfolio profiles side by side, the first one highlighted. The board's
+// featured case study, projects, process, stack and institutes sections
+// already live on each profile page, so they aren't repeated here.
 export default async function PortfolioPage() {
   const [profiles, settings] = await Promise.all([getPortfolioProfiles(), getPortfolioSettings()]);
 
   return (
-    <PageTransition className="relative min-h-screen overflow-x-hidden bg-[#07111f] bg-[radial-gradient(900px_500px_at_10%_-10%,rgba(56,200,230,0.12),transparent_60%),radial-gradient(900px_600px_at_95%_5%,rgba(47,211,154,0.08),transparent_60%)] text-[#eaf2f8]">
+    <PageTransition className="paw-page relative min-h-screen overflow-x-hidden">
       <Nav />
-      <main className="mx-auto max-w-[1200px] px-4 pt-14 pb-20 md:px-8 lg:pt-[72px]">
-        <div className="mx-auto mb-12 max-w-[740px] text-center">
-          {settings?.landingEyebrow && (
-            <IntroFade as="span" className={eyebrow}>
-              {settings.landingEyebrow}
+      <main
+        style={{
+          background:
+            "radial-gradient(45% 60% at 85% 0%, color-mix(in srgb, var(--accent-violet) 18%, transparent), transparent 70%), radial-gradient(35% 50% at 0% 10%, color-mix(in srgb, var(--accent-blue) 14%, transparent), transparent 70%)",
+        }}
+      >
+        <div className="mx-auto max-w-[1280px] px-4 sm:px-8 pt-14 pb-20 lg:pt-20 grid grid-cols-1 lg:grid-cols-[1fr_1.25fr] gap-12 lg:gap-16 items-start">
+          <div className="flex flex-col gap-5 lg:sticky lg:top-28">
+            <IntroFade as="p" className="paw-section-head__eyebrow m-0">
+              {(settings?.landingEyebrow ?? "Portfolio").toUpperCase()} · NIHARIKA DHANDE
             </IntroFade>
-          )}
-          <h1 className="mt-3 mb-4 text-[clamp(32px,4.6vw,50px)] leading-[1.1] font-extrabold tracking-tight">
-            {settings?.landingTitle ?? "Portfolio"}
-          </h1>
-          {settings?.landingIntro && <p className={`text-lg ${muted}`}>{settings.landingIntro}</p>}
-        </div>
+            <IntroFade step={1}>
+              <h1 className="m-0 text-[40px] leading-[44px] sm:text-[56px] sm:leading-[60px] font-semibold tracking-[-0.035em]">
+                {settings?.landingTitle ?? "Portfolio"}
+              </h1>
+            </IntroFade>
+            {settings?.landingIntro && (
+              <IntroFade as="p" step={2} className="m-0 text-lg leading-7 text-muted max-w-[520px]">
+                {settings.landingIntro}
+              </IntroFade>
+            )}
+          </div>
 
-        <div className="grid gap-6 md:grid-cols-2">
-          {profiles.map((p, i) => (
-            <Reveal key={p.slug} index={i}>
-              <Link
-                href={portfolioPath(p.slug)}
-                className={`${cardStrong} group flex h-full flex-col overflow-hidden p-[18px] transition hover:-translate-y-1 hover:border-[#38c8e6]`}
-              >
-                <div className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-[#0f2036]">
-                  <Image
-                    src={p.heroImage.url}
-                    alt={p.heroImage.alt ?? p.title}
-                    fill
-                    sizes="(min-width: 768px) 560px, 100vw"
-                    className="object-cover object-[50%_20%] transition duration-500 group-hover:scale-[1.03]"
-                  />
-                </div>
-                {p.heroEyebrow && <span className={`${eyebrow} mt-5`}>{p.heroEyebrow}</span>}
-                <h2 className="mt-2 text-2xl font-bold text-[#eaf2f8]">{p.title}</h2>
-                <p className={`mt-2 mb-5 flex-1 ${muted}`}>{p.summary}</p>
-                <span className="font-semibold text-[#38c8e6]">View profile →</span>
-              </Link>
-            </Reveal>
-          ))}
+          <StaggerGrid className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            {profiles.map((p, i) => {
+              const Icon = icons[i % icons.length];
+              return (
+                <StaggerItem key={p.slug} className="h-full">
+                  <Link
+                    href={portfolioPath(p.slug)}
+                    className={`paw-card group h-full p-3 pb-6 gap-5 ${i === 0 ? "border-[color-mix(in_srgb,var(--accent-violet)_60%,transparent)] shadow-[var(--glow-sm)]" : ""}`}
+                  >
+                    <div className="relative aspect-[4/3] overflow-hidden rounded-xl bg-surface-container">
+                      <Image
+                        src={p.heroImage.url}
+                        alt={p.heroImage.alt ?? p.title}
+                        fill
+                        sizes="(min-width: 1024px) 380px, (min-width: 768px) 50vw, 100vw"
+                        className="object-cover object-[50%_20%] transition duration-500 group-hover:scale-[1.03] motion-reduce:transition-none"
+                      />
+                    </div>
+                    <div className="px-3 flex flex-col gap-3 flex-1">
+                      <div className="flex items-center gap-2.5">
+                        <span className="w-9 h-9 rounded-[10px] grid place-items-center bg-canvas border border-line text-primary">
+                          <Icon className="paw-icon" aria-hidden="true" />
+                        </span>
+                        <span className="label-md text-muted">PROFILE {String(i + 1).padStart(2, "0")}</span>
+                      </div>
+                      <h2 className="m-0 text-[22px] leading-7 font-semibold tracking-[-0.01em]">{p.title}</h2>
+                      <p className="m-0 text-sm leading-[22px] text-muted flex-1">{p.summary}</p>
+                      {p.profileTags && p.profileTags.length > 0 && <TagList items={p.profileTags} />}
+                      <span className="mt-1 inline-flex items-center gap-1 text-sm font-semibold text-primary">
+                        View profile <ArrowRight className="w-4 h-4" aria-hidden="true" />
+                      </span>
+                    </div>
+                  </Link>
+                </StaggerItem>
+              );
+            })}
+          </StaggerGrid>
         </div>
       </main>
-      <PortfolioFooter />
+      <SiteFooter />
     </PageTransition>
   );
 }

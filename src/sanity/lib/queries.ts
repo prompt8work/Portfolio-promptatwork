@@ -79,7 +79,7 @@ const portfolioImage = `{ alt, "url": asset->url, "width": asset->metadata.dimen
 
 export const portfolioProfilesQuery = groq`
   *[_type == "portfolioProfile" && defined(slug.current)] | order(order asc) {
-    title, "slug": slug.current, summary, heroEyebrow, "heroImage": heroImage ${portfolioImage}
+    title, "slug": slug.current, summary, heroEyebrow, profileTags, "heroImage": heroImage ${portfolioImage}
   }
 `;
 

@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Nav from "../../../components/Nav";
 import PageTransition from "../../../components/PageTransition";
-import PortfolioProfileView, { PortfolioFooter } from "../../../components/portfolio/PortfolioProfileView";
+import PortfolioProfileView from "../../../components/portfolio/PortfolioProfileView";
+import SiteFooter from "../../../components/SiteFooter";
 import { getAiLabProjects, getPortfolioProfile, getPortfolioSettings, getPortfolioSlugs, portfolioPath } from "../../../lib/portfolio";
 import { buildMetadata } from "../../../lib/site";
 import { buildFaqJsonLd } from "../../../lib/seo";
@@ -61,14 +62,14 @@ export default async function PortfolioProfilePage({ params }: { params: Promise
   return (
     <PageTransition
       key={slug}
-      className="relative min-h-screen overflow-x-hidden bg-[#07111f] bg-[radial-gradient(900px_500px_at_10%_-10%,rgba(56,200,230,0.12),transparent_60%),radial-gradient(900px_600px_at_95%_5%,rgba(47,211,154,0.08),transparent_60%)] text-[#eaf2f8]"
+      className="relative min-h-screen overflow-x-hidden paw-page bg-[radial-gradient(900px_500px_at_10%_-10%,color-mix(in_srgb,var(--accent-blue)_14%,transparent),transparent_60%),radial-gradient(900px_600px_at_95%_5%,color-mix(in_srgb,var(--accent-violet)_10%,transparent),transparent_60%)]"
     >
       {profile.faq?.items?.length ? <JsonLd data={buildFaqJsonLd(profile.faq.items)} /> : null}
       <Nav />
       <main id="top">
         <PortfolioProfileView p={view} settings={settings} aiLabProjects={aiLabProjects} />
       </main>
-      <PortfolioFooter />
+      <SiteFooter />
     </PageTransition>
   );
 }
