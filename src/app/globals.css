@@ -1,13 +1,49 @@
 @import "tailwindcss";
+@import "./paw-tokens.css";
+@import "./paw-components.css";
 
+/* Redesign in progress (branch redesign-luminous-saas). Pages rebuilt on the
+   Luminous SaaS tokens wrap their content in .paw-page, which follows the
+   light/dark toggle. Pages not rebuilt yet keep the old warm-ivory palette
+   below (--legacy-*, plum, neutral, cyan) and stay light. Once every page is
+   rebuilt, move .paw-page's rules onto body and delete the legacy palette. */
 :root {
-  --background: #faf8f4;
-  --foreground: #443f36;
+  --legacy-background: #faf8f4;
+  --legacy-foreground: #443f36;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  --color-background: var(--legacy-background);
+  --color-foreground: var(--legacy-foreground);
+
+  /* Luminous SaaS tokens as Tailwind colours (bg-canvas, text-ink, border-line…).
+     Values switch with data-theme; see paw-tokens.css. */
+  --color-canvas: var(--canvas);
+  --color-card: var(--surface-card);
+  --color-line: var(--border-subtle);
+  --color-ink: var(--text-primary);
+  --color-muted: var(--text-secondary);
+  --color-accent-blue: var(--accent-blue);
+  --color-accent-violet: var(--accent-violet);
+  --color-brand-accent: var(--brand-accent);
+  --color-primary: var(--primary);
+  --color-primary-container: var(--primary-container);
+  --color-on-primary-container: var(--on-primary-container);
+  --color-secondary: var(--secondary);
+  --color-secondary-container: var(--secondary-container);
+  --color-on-secondary-container: var(--on-secondary-container);
+  --color-tertiary: var(--tertiary);
+  --color-tertiary-container: var(--tertiary-container);
+  --color-on-tertiary-container: var(--on-tertiary-container);
+  --color-surface-bright: var(--surface-bright);
+  --color-surface-container-lowest: var(--surface-container-lowest);
+  --color-surface-container-low: var(--surface-container-low);
+  --color-surface-container: var(--surface-container);
+  --color-surface-container-high: var(--surface-container-high);
+  --color-surface-container-highest: var(--surface-container-highest);
+  --color-outline: var(--outline);
+  --color-outline-variant: var(--outline-variant);
+  --color-error-token: var(--error);
 
   --font-sans: var(--font-geist-sans);
   --font-display: var(--font-playfair);
@@ -82,8 +118,8 @@
    override them. */
 @layer base {
   body {
-    background: var(--background);
-    color: var(--foreground);
+    background: var(--legacy-background);
+    color: var(--legacy-foreground);
     font-family: var(--font-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   }
 
@@ -94,6 +130,22 @@
 
   a:hover {
     color: var(--color-cyan-700);
+  }
+
+  /* Rebuilt pages: token colours, Geist, and links that inherit their colour. */
+  .paw-page {
+    background: var(--canvas);
+    color: var(--text-primary);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+  .paw-page a,
+  .paw-page a:hover {
+    color: inherit;
+  }
+  .paw-page :focus-visible {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 2px;
   }
 }
 

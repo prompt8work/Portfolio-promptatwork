@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>TV — header and search</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#f8fafc;text-decoration:none}a:hover{color:#adc6ff}
+input::placeholder{color:#94a3b8}
+</style>
+</helmet>
+<div style="width: 1440px; height: 240px; box-sizing: border-box; background: #0f172a; color: #f8fafc; font-family: Geist, system-ui, sans-serif; display: flex; flex-direction: column; gap: 20px; padding: 20px 0">
+
+<header style="height: 64px; display: grid; grid-template-columns: 240px 1fr 240px; align-items: center; padding: 0 16px; border-top: 1px solid #334155; border-bottom: 1px solid #334155">
+<div style="display: flex; align-items: center; gap: 12px">
+<button aria-label="Menu" style="width: 40px; height: 40px; border-radius: 9999px; border: 0; background: transparent; color: #94a3b8; display: grid; place-items: center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"></path></svg></button>
+<a href="#" style="display: flex; align-items: center; gap: 8px"><img src="../assets/logos/promptatwork-mark.png" alt="" style="width: 30px; height: 30px; border-radius: 8px"><span style="font-size: 16px; font-weight: 600">Prompt<span style="color: #4d8eff">AtWork</span></span></a>
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.05em; color: #d0bcff; border: 1px solid rgba(208,188,255,0.35); border-radius: 4px; padding: 0 4px; line-height: 16px">TV</span>
+</div>
+<div style="display: flex; justify-content: center">
+<label style="display: flex; align-items: center; width: 640px; height: 44px; border-radius: 9999px; background: #334155; border: 1px solid #334155">
+<input placeholder="Search tutorials, bootcamps, notes" aria-label="Search" style="flex-grow: 1; min-width: 0; height: 100%; border: 0; background: transparent; outline: none; color: #f8fafc; font: 15px Geist, sans-serif; padding: 0 16px 0 20px">
+<span style="height: 100%; width: 64px; display: grid; place-items: center; border-left: 1px solid #31394d; color: #f8fafc"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg></span>
+</label>
+</div>
+<div style="display: flex; align-items: center; justify-content: flex-end; gap: 8px">
+<button aria-label="Notifications, 3 new" style="position: relative; width: 40px; height: 40px; border-radius: 9999px; border: 0; background: transparent; color: #94a3b8; display: grid; place-items: center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"></path></svg><span style="position: absolute; top: 4px; right: 2px; min-width: 16px; height: 16px; padding: 0 4px; box-sizing: border-box; border-radius: 9999px; background: #df7412; color: #311400; font: 500 10px/16px 'JetBrains Mono', monospace">3</span></button>
+<img src="../assets/photos/niharika-headshot.jpg" alt="Your profile" style="width: 32px; height: 32px; border-radius: 9999px; object-fit: cover">
+</div>
+</header>
+
+<header style="height: 64px; display: grid; grid-template-columns: 240px 1fr 240px; align-items: center; padding: 0 16px; background: rgba(15,23,42,0.85); border-top: 1px solid #334155; border-bottom: 1px solid #334155">
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.05em; color: #94a3b8; padding-left: 12px">SEARCH · FOCUSED</span>
+<div style="display: flex; justify-content: center">
+<label style="display: flex; align-items: center; width: 640px; height: 44px; border-radius: 9999px; background: #0f172a; border: 1px solid #3b82f6; box-shadow: 0 0 0 4px rgba(59,130,246,0.2)">
+<input value="agentic rag with langchain" aria-label="Search" style="flex-grow: 1; min-width: 0; height: 100%; border: 0; background: transparent; outline: none; color: #f8fafc; font: 15px Geist, sans-serif; padding: 0 16px 0 20px">
+<span style="height: 100%; width: 64px; display: grid; place-items: center; border-left: 1px solid #31394d; color: #f8fafc; background: rgba(248,250,252,0.04); border-radius: 0 9999px 9999px 0"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg></span>
+</label>
+</div>
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.05em; color: #94a3b8; text-align: right; padding-right: 12px">SINKS TO CANVAS · BLUE RING</span>
+</header>
+
+<p style="margin: 0; padding: 0 32px; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.05em; color: #94a3b8">64PX STICKY · 240 / FLUID / 240 GRID · BELL BADGE USES THE ONE WARM NOTE (#DF7412)</p>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":240}}'>
+class Component extends DCLogic {
+renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

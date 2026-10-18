@@ -29,6 +29,8 @@ The PRD specifies **Next.js + React + TypeScript + Sanity CMS + Supabase Postgre
 | [12](12-process-diagrams-and-content-skill.md) | Process Diagrams & Content Skill | Required diagrams on every post (flow, loop, analogy, Mermaid); `/case-study` skill turns raw notes into checked Sanity drafts | (site-owned doc, not PRD) |
 | [13](13-seo-aeo.md) | SEO & AEO | Keyword bank, AI-assistant question bank, code fixes and off-site steps so the site ranks for Niharika's roles and Indore training searches | §78 (site-owned keyword bank) |
 
+**Open work across all phases, sorted by who does it:** [remaining-tasks.md](remaining-tasks.md).
+
 Phase 4 has two follow-on change docs, both already implemented and folded into [04-ai-lab-content.md](04-ai-lab-content.md)'s own Status section — read that file first; the two below are the original change requests, kept for history:
 - [4.1](04.1-ai-lab-content-tools.md) — evolved Tools from a simple explorer into a full Tool Research & Learning Repository (research content, best-use-cases, downloadable resources, search/filter).
 - [4.2](04.2-ai-lab-content-modification.md) — replaced LinkedIn content importing with website-first blog publishing + LinkedIn share/distribution.

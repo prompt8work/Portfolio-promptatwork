@@ -1,0 +1,15 @@
+<!-- @dsCard group="Content" height=150 -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>CodeBlock — preview</title>
+<style></style>
+</head>
+<body>
+<div class="paw-stage paw-stage--col"><pre class="paw-code"><span class="c"># retrieve, then answer</span>
+<span class="k">from</span> langchain <span class="k">import</span> hub
+prompt = hub.<span class="f">pull</span>(<span class="s">"rlm/rag-prompt"</span>)
+chain = retriever | prompt | llm</pre></div>
+</body>
+</html>

@@ -64,7 +64,7 @@ export default async function PortfolioProfilePage({ params }: { params: Promise
       className="relative min-h-screen overflow-x-hidden bg-[#07111f] bg-[radial-gradient(900px_500px_at_10%_-10%,rgba(56,200,230,0.12),transparent_60%),radial-gradient(900px_600px_at_95%_5%,rgba(47,211,154,0.08),transparent_60%)] text-[#eaf2f8]"
     >
       {profile.faq?.items?.length ? <JsonLd data={buildFaqJsonLd(profile.faq.items)} /> : null}
-      <Nav tone="dark" />
+      <Nav />
       <main id="top">
         <PortfolioProfileView p={view} settings={settings} aiLabProjects={aiLabProjects} />
       </main>

@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>TV — sidebar and rail</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#94a3b8;text-decoration:none}a:hover{color:#f8fafc}
+</style>
+</helmet>
+<div style="width: 640px; height: 560px; box-sizing: border-box; padding: 32px; background: #0f172a; color: #f8fafc; font-family: Geist, system-ui, sans-serif; display: flex; gap: 48px">
+
+<div style="display: flex; flex-direction: column; gap: 12px">
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.05em; color: #94a3b8">EXPANDED · 240PX · ≥1024</span>
+<nav aria-label="TV" style="width: 240px; box-sizing: border-box; padding: 12px; display: flex; flex-direction: column; gap: 2px; border: 1px dashed #334155; border-radius: 16px">
+<a href="#" style="display: flex; align-items: center; gap: 16px; height: 44px; padding: 0 12px; border-radius: 12px; background: #1e293b; box-shadow: inset 0 0 0 1px #334155; color: #f8fafc; font-size: 14px; font-weight: 500"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#adc6ff" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><path d="M9 22V12h6v10"></path></svg>Home</a>
+<a href="#" style="display: flex; align-items: center; gap: 16px; height: 44px; padding: 0 12px; border-radius: 12px; background: #222a3d; color: #f8fafc; font-size: 14px; font-weight: 500"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"></path></svg>Shorts<span style="margin-left: auto; font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #94a3b8">HOVER</span></a>
+<a href="#" style="display: flex; align-items: center; gap: 16px; height: 44px; padding: 0 12px; border-radius: 12px; font-size: 14px; font-weight: 500"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 12H3"></path><path d="M16 6H3"></path><path d="M12 18H3"></path><path d="m16 12 5 3-5 3v-6Z"></path></svg>Playlists</a>
+<a href="#" style="display: flex; align-items: center; gap: 16px; height: 44px; padding: 0 12px; border-radius: 12px; font-size: 14px; font-weight: 500"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 10v6"></path><path d="M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c3 3 9 3 12 0v-5"></path></svg>AI Bootcamps</a>
+<a href="#" style="display: flex; align-items: center; gap: 16px; height: 44px; padding: 0 12px; border-radius: 12px; font-size: 14px; font-weight: 500"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m16 6 4 14"></path><path d="M12 6v14"></path><path d="M8 8v12"></path><path d="M4 4v16"></path></svg>Library</a>
+<div style="height: 1px; background: #334155; margin: 12px 4px"></div>
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.05em; color: #94a3b8; padding: 4px 12px 8px">YOUR LEARNING</span>
+<a href="#" style="display: flex; align-items: center; gap: 16px; height: 44px; padding: 0 12px; border-radius: 12px; font-size: 14px; font-weight: 500"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg>History</a>
+<a href="#" style="display: flex; align-items: center; gap: 16px; height: 44px; padding: 0 12px; border-radius: 12px; font-size: 14px; font-weight: 500"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21l-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>Watch later</a>
+</nav>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 12px">
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.05em; color: #94a3b8">RAIL · 72PX · 640–1023</span>
+<nav aria-label="TV collapsed" style="width: 72px; box-sizing: border-box; padding: 8px 4px; display: flex; flex-direction: column; gap: 4px; border: 1px dashed #334155; border-radius: 16px">
+<a href="#" style="display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 12px 0; border-radius: 12px; background: #1e293b; color: #f8fafc; font-size: 10px"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#adc6ff" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><path d="M9 22V12h6v10"></path></svg>Home</a>
+<a href="#" style="display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 12px 0; border-radius: 12px; font-size: 10px"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"></path></svg>Shorts</a>
+<a href="#" style="display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 12px 0; border-radius: 12px; font-size: 10px"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 12H3"></path><path d="M16 6H3"></path><path d="M12 18H3"></path><path d="m16 12 5 3-5 3v-6Z"></path></svg>Playlists</a>
+<a href="#" style="display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 12px 0; border-radius: 12px; font-size: 10px"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 10v6"></path><path d="M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c3 3 9 3 12 0v-5"></path></svg>Bootcamps</a>
+<a href="#" style="display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 12px 0; border-radius: 12px; font-size: 10px"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m16 6 4 14"></path><path d="M12 6v14"></path><path d="M8 8v12"></path><path d="M4 4v16"></path></svg>Library</a>
+</nav>
+<p style="margin: 8px 0 0; width: 200px; font-size: 13px; line-height: 20px; color: #94a3b8">Below 640px the same five items become a bottom tab bar. "Your learning" moves into Library.</p>
+</div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":640,"height":560}}'>
+class Component extends DCLogic {
+renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

@@ -4,96 +4,38 @@ import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, LayoutGroup, motion } from "framer-motion";
+import { ArrowRight, ChevronDown, Menu, X } from "lucide-react";
 import { menuItem, menuPanel, transition } from "../lib/motion";
-import { brand, contactCta, isActivePath, mainNav } from "../lib/navigation";
+import { contactCta, isActivePath, mainNav } from "../lib/navigation";
+import Brand from "./ui/Brand";
+import ThemeToggle from "./ui/ThemeToggle";
 
-// One menu for every page. `tone` only changes colours — /portfolio is the
-// site's one dark area and passes tone="dark"; options, order, dropdown and
-// mobile menu are identical everywhere (links live in lib/navigation.ts).
-const tones = {
-  light: {
-    header: "bg-neutral-50/90 border-neutral-200",
-    mark: "bg-neutral-900 text-cyan-500",
-    name: "text-neutral-900",
-    link: "text-neutral-700 hover:text-plum-600",
-    linkActive: "text-plum-600",
-    underline: "bg-plum-600",
-    panel: "bg-white border-neutral-200 shadow-lg",
-    panelItem: "hover:bg-neutral-100",
-    panelTitle: "text-neutral-900",
-    panelText: "text-neutral-500",
-    cta: "bg-plum-600 hover:bg-plum-700 text-white",
-    burger: "border-neutral-300 text-neutral-800",
-    mobile: "border-neutral-200 bg-neutral-50",
-    mobileLink: "text-neutral-800",
-    mobileSub: "text-neutral-600 border-neutral-200",
-  },
-  dark: {
-    header: "bg-[#030a18]/80 border-cyan-400/10",
-    mark: "border border-cyan-400/30 bg-cyan-400/10 text-cyan-400",
-    name: "text-white",
-    link: "text-slate-300 hover:text-cyan-400",
-    linkActive: "text-cyan-400",
-    underline: "bg-cyan-400",
-    panel: "bg-[#07142a] border-cyan-400/15 shadow-[0_20px_50px_rgba(0,0,0,0.45)]",
-    panelItem: "hover:bg-cyan-400/[0.06]",
-    panelTitle: "text-slate-100",
-    panelText: "text-slate-400",
-    cta: "bg-cyan-500 hover:bg-cyan-400 text-neutral-900",
-    burger: "border-cyan-400/25 text-slate-200",
-    mobile: "border-cyan-400/10 bg-[#030a18]",
-    mobileLink: "text-slate-100",
-    mobileSub: "text-slate-400 border-cyan-400/15",
-  },
-};
-
-function ArrowIcon() {
-  return (
-    <svg
-      className="motion-arrow-icon"
-      width="14"
-      height="14"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2.2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M5 12h14M13 6l6 6-6 6" />
-    </svg>
-  );
-}
-
-export default function Nav({ tone = "light" }: { tone?: keyof typeof tones }) {
-  const t = tones[tone];
+// One menu for every page (links live in lib/navigation.ts). Built on the
+// Luminous SaaS TopNav (design/promptatwork-redesign, Hub-Nav board): a
+// sticky glass bar, text-secondary links, and a gradient underline on the
+// bar's bottom edge under the hovered or current link. Colours come from
+// tokens, so it follows the light/dark toggle.
+export default function Nav() {
   const [open, setOpen] = useState(false);
   const [hovered, setHovered] = useState<string | null>(null);
   const [dropdown, setDropdown] = useState<string | null>(null);
   const pathname = usePathname();
   const active = mainNav.find((l) => isActivePath(pathname, l.href))?.href ?? null;
-  // The underline sits under the hovered link, falling back to the current page.
   const underlined = hovered ?? active;
 
   return (
     // Fixed view-transition-name: the header stays still while page content crossfades (globals.css).
     <header
-      className={`sticky top-0 z-40 w-full backdrop-blur-md border-b ${t.header}`}
-      style={{ viewTransitionName: "site-header" }}
+      className="paw-glass sticky top-0 z-40 w-full border-x-0 border-t-0 font-sans text-ink"
+      style={{ viewTransitionName: "site-header", boxShadow: "var(--elevation-glass)" }}
     >
-      <div className="max-w-[1280px] mx-auto px-5 sm:px-10 py-4 flex items-center justify-between gap-6">
-        <Link href="/" className="flex items-center gap-2.5">
-          <span
-            className={`w-9 h-9 rounded-[10px] font-mono font-semibold text-sm flex items-center justify-center ${t.mark}`}
-          >
-            {brand.mark}
-          </span>
-          <span className={`font-display text-lg font-semibold ${t.name}`}>{brand.name}</span>
-        </Link>
+      <div className="max-w-[1280px] mx-auto h-[68px] px-4 sm:px-8 flex items-center gap-6 lg:gap-10">
+        <Brand />
 
         <LayoutGroup id="nav">
           <nav
-            className="hidden md:flex items-center gap-7"
+            aria-label="Primary"
+            className="hidden md:flex items-center gap-1 h-full flex-1"
             onMouseLeave={() => {
               setHovered(null);
               setDropdown(null);
@@ -102,7 +44,7 @@ export default function Nav({ tone = "light" }: { tone?: keyof typeof tones }) {
             {mainNav.map((l) => (
               <div
                 key={l.href}
-                className="relative"
+                className="relative h-full flex items-center"
                 onMouseEnter={() => {
                   setHovered(l.href);
                   setDropdown(l.children ? l.href : null);
@@ -126,24 +68,20 @@ export default function Nav({ tone = "light" }: { tone?: keyof typeof tones }) {
                   aria-current={active === l.href ? "page" : undefined}
                   aria-haspopup={l.children ? "true" : undefined}
                   aria-expanded={l.children ? dropdown === l.href : undefined}
-                  className={`relative py-1 text-sm font-medium inline-flex items-center gap-1 ${
-                    active === l.href ? t.linkActive : t.link
+                  className={`relative inline-flex items-center gap-1 px-3.5 py-2 rounded-lg text-sm font-medium transition-colors ${
+                    active === l.href ? "text-ink" : "text-muted hover:text-ink"
                   }`}
                 >
                   {l.label}
-                  {l.children && (
-                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4">
-                      <path d="m6 9 6 6 6-6" />
-                    </svg>
-                  )}
-                  {underlined === l.href && (
-                    <motion.span
-                      layoutId="nav-underline"
-                      transition={transition.layout}
-                      className={`absolute left-0 right-0 -bottom-0.5 h-[2px] rounded-full ${t.underline}`}
-                    />
-                  )}
+                  {l.children && <ChevronDown className="w-3.5 h-3.5" strokeWidth={2} aria-hidden="true" />}
                 </Link>
+                {underlined === l.href && (
+                  <motion.span
+                    layoutId="nav-underline"
+                    transition={transition.layout}
+                    className="absolute left-3.5 right-3.5 -bottom-px h-[2px] rounded-full bg-gradient-to-r from-accent-blue to-accent-violet"
+                  />
+                )}
 
                 <AnimatePresence>
                   {l.children && dropdown === l.href && (
@@ -153,19 +91,24 @@ export default function Nav({ tone = "light" }: { tone?: keyof typeof tones }) {
                       initial="hidden"
                       animate="visible"
                       exit="hidden"
-                      className="absolute left-1/2 -translate-x-1/2 top-full pt-3"
+                      className="absolute left-1/2 -translate-x-1/2 top-full pt-2"
                     >
-                      <ul className={`w-[340px] rounded-xl border p-2 ${t.panel}`}>
+                      <ul
+                        className="w-[340px] rounded-2xl border border-line bg-card p-2"
+                        style={{ boxShadow: "var(--elevation-glass)" }}
+                      >
                         {l.children.map((c) => (
                           <li key={c.href}>
                             <Link
                               href={c.href}
                               onClick={() => setDropdown(null)}
                               aria-current={pathname === c.href ? "page" : undefined}
-                              className={`block rounded-lg px-3 py-2.5 ${t.panelItem}`}
+                              className="block rounded-xl px-3 py-2.5 hover:bg-surface-container-high transition-colors"
                             >
-                              <span className={`block text-sm font-medium ${t.panelTitle}`}>{c.label}</span>
-                              <span className={`block text-xs mt-0.5 ${t.panelText}`}>{c.description}</span>
+                              <span className={`block text-sm font-medium ${pathname === c.href ? "text-primary" : "text-ink"}`}>
+                                {c.label}
+                              </span>
+                              <span className="block text-xs mt-0.5 text-muted">{c.description}</span>
                             </Link>
                           </li>
                         ))}
@@ -178,36 +121,33 @@ export default function Nav({ tone = "light" }: { tone?: keyof typeof tones }) {
           </nav>
         </LayoutGroup>
 
-        <Link
-          href={contactCta.href}
-          className={`motion-btn motion-arrow hidden md:inline-flex items-center gap-2 text-sm font-semibold px-5 py-2.5 rounded-full whitespace-nowrap ${t.cta}`}
-        >
-          {contactCta.label}
-          <ArrowIcon />
-        </Link>
-
-        <button
-          type="button"
-          onClick={() => setOpen((v) => !v)}
-          aria-label={open ? "Close menu" : "Open menu"}
-          aria-expanded={open}
-          className={`motion-btn md:hidden w-10 h-10 flex items-center justify-center rounded-lg border ${t.burger}`}
-        >
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-            <path d={open ? "M6 6l12 12M18 6L6 18" : "M4 7h16M4 12h16M4 17h16"} />
-          </svg>
-        </button>
+        <div className="ml-auto md:ml-0 flex items-center gap-2">
+          <ThemeToggle />
+          <Link href={contactCta.href} className="paw-btn paw-btn--secondary paw-btn--sm hidden md:inline-flex whitespace-nowrap">
+            {contactCta.label}
+          </Link>
+          <button
+            type="button"
+            onClick={() => setOpen((v) => !v)}
+            aria-label={open ? "Close menu" : "Open menu"}
+            aria-expanded={open}
+            className="paw-btn paw-btn--icon md:hidden"
+          >
+            {open ? <X className="paw-icon" aria-hidden="true" /> : <Menu className="paw-icon" aria-hidden="true" />}
+          </button>
+        </div>
       </div>
 
       <AnimatePresence>
         {open && (
           <motion.nav
             key="mobile-menu"
+            aria-label="Primary"
             variants={menuPanel}
             initial="hidden"
             animate="visible"
             exit="hidden"
-            className={`md:hidden border-t px-5 py-4 flex flex-col gap-4 max-h-[calc(100dvh-72px)] overflow-y-auto ${t.mobile}`}
+            className="md:hidden border-t border-line bg-canvas px-4 py-4 flex flex-col gap-4 max-h-[calc(100dvh-68px)] overflow-y-auto"
           >
             {mainNav.map((l) => (
               <motion.div key={l.href} variants={menuItem}>
@@ -215,18 +155,18 @@ export default function Nav({ tone = "light" }: { tone?: keyof typeof tones }) {
                   href={l.href}
                   onClick={() => setOpen(false)}
                   aria-current={active === l.href ? "page" : undefined}
-                  className={`text-base font-medium ${active === l.href ? t.linkActive : t.mobileLink}`}
+                  className={`text-base font-medium ${active === l.href ? "text-primary" : "text-ink"}`}
                 >
                   {l.label}
                 </Link>
                 {l.children && (
-                  <ul className={`mt-2 ml-1 pl-3 border-l flex flex-col gap-2 ${t.mobileSub}`}>
+                  <ul className="mt-2 ml-1 pl-3 border-l border-line flex flex-col gap-2 text-muted">
                     {l.children.slice(1).map((c) => (
                       <li key={c.href}>
                         <Link
                           href={c.href}
                           onClick={() => setOpen(false)}
-                          className={`text-sm ${pathname === c.href ? t.linkActive : ""}`}
+                          className={`text-sm ${pathname === c.href ? "text-primary" : "hover:text-ink"}`}
                         >
                           {c.label}
                         </Link>
@@ -240,9 +180,10 @@ export default function Nav({ tone = "light" }: { tone?: keyof typeof tones }) {
               <Link
                 href={contactCta.href}
                 onClick={() => setOpen(false)}
-                className={`motion-btn flex items-center justify-center gap-2 text-sm font-semibold px-5 py-3 rounded-full mt-1 ${t.cta}`}
+                className="paw-btn paw-btn--primary w-full justify-center text-white mt-1"
               >
                 {contactCta.label}
+                <ArrowRight className="paw-icon" aria-hidden="true" />
               </Link>
             </motion.div>
           </motion.nav>

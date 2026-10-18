@@ -25,7 +25,7 @@ export default async function PortfolioPage() {
 
   return (
     <PageTransition className="relative min-h-screen overflow-x-hidden bg-[#07111f] bg-[radial-gradient(900px_500px_at_10%_-10%,rgba(56,200,230,0.12),transparent_60%),radial-gradient(900px_600px_at_95%_5%,rgba(47,211,154,0.08),transparent_60%)] text-[#eaf2f8]">
-      <Nav tone="dark" />
+      <Nav />
       <main className="mx-auto max-w-[1200px] px-4 pt-14 pb-20 md:px-8 lg:pt-[72px]">
         <div className="mx-auto mb-12 max-w-[740px] text-center">
           {settings?.landingEyebrow && (

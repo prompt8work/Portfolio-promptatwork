@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Hub — light mode</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#1d4ed8;text-decoration:none}a:hover{color:#6d28d9}
+input::placeholder{color:#64748b}
+</style>
+</helmet>
+<div style="width: 1440px; height: 2860px; box-sizing: border-box; background: radial-gradient(40% 14% at 85% 4%, rgba(139,92,246,0.12), transparent 70%), radial-gradient(30% 10% at 0% 0%, rgba(59,130,246,0.1), transparent 70%), #f8fafc; color: #0f172a; font-family: Geist, system-ui, sans-serif; display: flex; flex-direction: column">
+
+<nav aria-label="Primary" style="height: 68px; flex-shrink: 0; display: flex; align-items: center; gap: 32px; padding: 0 80px; background: rgba(255,255,255,0.8); backdrop-filter: blur(12px); border-bottom: 1px solid #e2e8f0; box-shadow: 0 4px 24px rgba(15,23,42,0.05)">
+<a href="#" style="display: flex; align-items: center; gap: 10px; color: #0f172a"><img src="../assets/logos/promptatwork-mark.png" alt="" style="width: 36px; height: 36px; border-radius: 10px"><span style="font-size: 18px; font-weight: 600; letter-spacing: -0.01em">Prompt<span style="color: #2563eb">AtWork</span></span></a>
+<div style="display: flex; gap: 4px; height: 100%; align-items: center">
+<a href="#" style="height: 100%; display: flex; align-items: center; padding: 0 14px; color: #0f172a; font-size: 14px; font-weight: 600; box-shadow: inset 0 -2px 0 #8b5cf6">Courses</a>
+<a href="#" style="padding: 8px 14px; color: #475569; font-size: 14px; font-weight: 500">Tools</a>
+<a href="#" style="padding: 8px 14px; color: #475569; font-size: 14px; font-weight: 500; display: flex; align-items: center; gap: 6px">TV <span style="width: 6px; height: 6px; border-radius: 50%; background: #ea580c"></span></a>
+<a href="#" style="padding: 8px 14px; color: #475569; font-size: 14px; font-weight: 500">Portfolio</a>
+</div>
+<label style="margin-left: auto; display: flex; align-items: center; gap: 10px; width: 300px; height: 40px; padding: 0 14px; box-sizing: border-box; border-radius: 9999px; background: #f1f5f9; border: 1px solid #e2e8f0; color: #64748b">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg>
+<input placeholder="Search courses, videos, notes" aria-label="Search" style="flex-grow: 1; min-width: 0; border: 0; background: transparent; outline: none; color: #0f172a; font: 14px Geist, sans-serif">
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; padding: 1px 6px; border-radius: 4px; border: 1px solid #cbd5e1">⌘K</span>
+</label>
+<a href="#" style="height: 36px; padding: 0 14px; border-radius: 8px; border: 1px solid #cbd5e1; color: #0f172a; display: flex; align-items: center; font-size: 14px; font-weight: 500">Let's Connect</a>
+<img src="../assets/photos/niharika-headshot.jpg" alt="Your profile" style="width: 36px; height: 36px; border-radius: 9999px; object-fit: cover; box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px #8b5cf6">
+</nav>
+
+<section style="padding: 80px 80px 88px; display: grid; grid-template-columns: 1.15fr 1fr; gap: 72px; align-items: center">
+<div style="display: flex; flex-direction: column; align-items: flex-start">
+<div style="display: flex; align-items: center; gap: 10px"><span style="height: 26px; padding: 0 10px; border-radius: 6px; display: inline-flex; align-items: center; background: #dbeafe; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.05em; color: #1d4ed8">PROMPTATWORK LMS</span><span style="font-size: 13px; color: #475569">· Agentic RAG cohort open</span></div>
+<h1 style="margin: 24px 0 20px; font-size: 64px; line-height: 68px; font-weight: 600; letter-spacing: -0.035em">Master AI Agents &amp; <span style="background: linear-gradient(90deg, #2563eb, #7c3aed); -webkit-background-clip: text; background-clip: text; color: transparent">Prompt Engineering</span></h1>
+<p style="margin: 0 0 32px; font-size: 18px; line-height: 28px; color: #475569; max-width: 560px">I help teams turn AI tools into everyday results. Hands-on courses, field-tested handbooks and real builds — for developers and teams shipping with LLMs.</p>
+<div style="display: flex; gap: 12px">
+<a href="#" style="height: 48px; padding: 0 24px; border-radius: 8px; display: inline-flex; align-items: center; gap: 10px; background: linear-gradient(135deg, #2563eb, #7c3aed); color: #ffffff; font-size: 16px; font-weight: 600; box-shadow: 0 8px 24px rgba(37,99,235,0.25)"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4v16l13-8z" fill="#ffffff"></path></svg>Start Learning</a>
+<a href="#" style="height: 48px; padding: 0 24px; border-radius: 8px; display: inline-flex; align-items: center; background: #ffffff; border: 1px solid #cbd5e1; color: #0f172a; font-size: 16px; font-weight: 600">View Portfolio</a>
+</div>
+<div style="margin-top: 40px; padding-top: 28px; border-top: 1px solid #e2e8f0; display: flex; align-items: center; gap: 24px; width: 100%">
+<img src="../assets/photos/niharika-headshot.jpg" alt="Niharika Dhande" style="width: 44px; height: 44px; border-radius: 9999px; object-fit: cover">
+<div><div style="font-size: 15px; font-weight: 600">Niharika Dhande</div><div style="font-size: 13px; color: #475569">AI Enablement Officer · Founder</div></div>
+<span style="width: 1px; height: 36px; background: #e2e8f0"></span>
+<div><div style="font-size: 20px; font-weight: 600">10+ years</div><div style="font-size: 13px; color: #475569">Software engineering &amp; training</div></div>
+</div>
+</div>
+<div style="position: relative; height: 460px">
+<div style="position: absolute; left: 0; right: 0; top: 30px; padding: 28px; border-radius: 20px; background: #ffffff; border: 1px solid #e2e8f0; box-shadow: 0 0 0 1px rgba(139,92,246,0.12), 0 24px 64px rgba(15,23,42,0.1); display: flex; flex-direction: column; gap: 20px">
+<div style="display: flex; align-items: center; gap: 14px">
+<span style="width: 40px; height: 40px; border-radius: 10px; display: grid; place-items: center; background: #eff6ff; border: 1px solid #dbeafe; color: #1d4ed8"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 17 6-6-6-6"></path><path d="M12 19h8"></path></svg></span>
+<div style="flex-grow: 1"><div style="font-size: 16px; font-weight: 600">Agent pipeline</div><div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.05em; color: #475569">RAG ASSISTANT · DEMO RUN</div></div>
+<span style="height: 24px; padding: 0 10px; border-radius: 9999px; display: inline-flex; align-items: center; gap: 6px; background: #ffedd5; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.05em; color: #9a3412"><span style="width: 6px; height: 6px; border-radius: 50%; background: #ea580c"></span>RUNNING</span>
+</div>
+<div style="padding: 18px 20px; border-radius: 12px; background: #0f172a; font-family: 'JetBrains Mono', monospace; font-size: 14px; line-height: 22px; color: #f8fafc; display: flex; flex-direction: column; gap: 14px">
+<div style="display: flex; justify-content: space-between"><span><span style="color: #a78bfa">●</span> Plan</span><span style="color: #94a3b8">done</span></div>
+<div style="display: flex; justify-content: space-between"><span><span style="color: #a78bfa">●</span> Retrieve <span style="color: #94a3b8">· top-k 5</span></span><span style="color: #94a3b8">done</span></div>
+<div style="display: flex; justify-content: space-between"><span><span style="color: #ffb786">●</span> Generate with citations</span><span style="color: #ffb786">…</span></div>
+<div style="padding-left: 16px; border-left: 1px solid #334155; color: #94a3b8; font-size: 12px">→ grounded in 3 company documents</div>
+</div>
+<div>
+<div style="display: flex; justify-content: space-between; font-size: 13px; color: #475569; margin-bottom: 8px"><span>Step 3 of 4</span><span style="font-family: 'JetBrains Mono', monospace; color: #0f172a">75%</span></div>
+<div style="height: 6px; border-radius: 9999px; background: #e2e8f0"><div style="width: 75%; height: 6px; border-radius: 9999px; background: linear-gradient(90deg, #3b82f6, #8b5cf6)"></div></div>
+</div>
+</div>
+<div style="position: absolute; left: -32px; bottom: 16px; padding: 12px 16px; border-radius: 12px; background: #ffffff; border: 1px solid #e2e8f0; display: flex; align-items: center; gap: 12px; box-shadow: 0 12px 32px rgba(15,23,42,0.1)">
+<img src="../assets/logos/promptatwork-mark.png" alt="" style="width: 36px; height: 36px; border-radius: 10px">
+<div><div style="font-size: 14px; font-weight: 600">Built on Claude &amp; Gemini</div><div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.05em; color: #475569">LANGCHAIN · N8N · MCP</div></div>
+</div>
+</div>
+</section>
+
+<section style="padding: 0 80px 80px; display: flex; flex-direction: column; gap: 24px">
+<div style="display: flex; align-items: flex-end; justify-content: space-between">
+<div><p style="margin: 0 0 4px; font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 0.05em; color: #1d4ed8">COURSES</p><h2 style="margin: 0; font-size: 24px; line-height: 32px; font-weight: 600">Latest Frameworks</h2></div>
+<a href="#" style="font-size: 14px; font-weight: 500">All courses →</a>
+</div>
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; align-items: start">
+<a href="#" style="display: flex; flex-direction: column; gap: 16px; padding: 12px 12px 24px; border-radius: 16px; background: #ffffff; border: 1px solid #e2e8f0; box-shadow: 0 1px 3px rgba(15,23,42,0.04); color: #0f172a">
+<div style="aspect-ratio: 16 / 9; border-radius: 12px; background: radial-gradient(120% 90% at 85% 10%, #3b82f6, transparent 60%), radial-gradient(90% 80% at 0% 100%, #571bc1, transparent 70%), #060e20; padding: 14px 16px; box-sizing: border-box; display: flex; flex-direction: column; justify-content: flex-end; color: #f8fafc"><span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.05em; opacity: 0.8">COURSE · 6 WEEKS</span><span style="font-size: 26px; line-height: 28px; font-weight: 600">Prompt Engineering</span></div>
+<div style="display: flex; flex-direction: column; gap: 12px; padding: 0 12px"><span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.05em; color: #475569">BEGINNER · 6 WEEKS</span><h3 style="margin: 0; font-size: 18px; line-height: 26px; font-weight: 600">Prompt Engineering Fundamentals</h3><div style="display: flex; gap: 8px"><span style="height: 24px; padding: 0 10px; border-radius: 9999px; display: inline-flex; align-items: center; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.05em; color: #1d4ed8; background: #dbeafe">GENERATIVE AI</span><span style="height: 24px; padding: 0 10px; border-radius: 9999px; display: inline-flex; align-items: center; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.05em; color: #6d28d9; background: #ede9fe">PROMPTS</span></div></div>
+<div style="padding: 4px 12px 0"><div style="display: flex; justify-content: space-between; font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #475569; margin-bottom: 6px"><span>PROGRESS</span><span>68%</span></div><div style="height: 4px; border-radius: 9999px; background: #e2e8f0"><div style="width: 68%; height: 4px; border-radius: 9999px; background: linear-gradient(90deg, #3b82f6, #8b5cf6)"></div></div></div>
+</a>
+<a href="#" style="display: flex; flex-direction: column; gap: 16px; padding: 12px 12px 24px; border-radius: 16px; background: #ffffff; border: 1px solid #a78bfa; transform: translateY(-6px); box-shadow: 0 0 0 1px rgba(139,92,246,0.35), 0 16px 40px rgba(99,102,241,0.18); color: #0f172a">
+<div style="position: relative; aspect-ratio: 16 / 9; border-radius: 12px; overflow: hidden; background: radial-gradient(110% 90% at 90% 90%, #8b5cf6, transparent 60%), radial-gradient(70% 70% at 10% 0%, #004395, transparent 70%), #060e20; padding: 14px 16px; box-sizing: border-box; display: flex; flex-direction: column; justify-content: flex-end; color: #f8fafc"><span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.05em; opacity: 0.8">BOOTCAMP</span><span style="font-size: 26px; line-height: 28px; font-weight: 600">Agents with LangChain</span><div style="position: absolute; inset: 0; display: grid; place-items: center; background: rgba(2,6,23,0.3)"><span style="width: 52px; height: 52px; border-radius: 9999px; display: grid; place-items: center; background: rgba(255,255,255,0.95)"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4v16l13-8z" fill="#0f172a"></path></svg></span></div></div>
+<div style="display: flex; flex-direction: column; gap: 12px; padding: 0 12px"><span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.05em; color: #475569">INTERMEDIATE · 8 WEEKS</span><h3 style="margin: 0; font-size: 18px; line-height: 26px; font-weight: 600">Advanced AI Tools Mastery</h3><div style="display: flex; gap: 8px"><span style="height: 24px; padding: 0 10px; border-radius: 9999px; display: inline-flex; align-items: center; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.05em; color: #1d4ed8; background: #dbeafe">LANGCHAIN</span><span style="height: 24px; padding: 0 10px; border-radius: 9999px; display: inline-flex; align-items: center; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.05em; color: #6d28d9; background: #ede9fe">AGENTS</span></div></div>
+<div style="padding: 4px 12px 0"><div style="display: flex; justify-content: space-between; font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #475569; margin-bottom: 6px"><span>PROGRESS · HOVER</span><span>24%</span></div><div style="height: 4px; border-radius: 9999px; background: #e2e8f0"><div style="width: 24%; height: 4px; border-radius: 9999px; background: linear-gradient(90deg, #3b82f6, #8b5cf6)"></div></div></div>
+</a>
+<a href="#" style="display: flex; flex-direction: column; gap: 16px; padding: 12px 12px 24px; border-radius: 16px; background: #ffffff; border: 1px solid #e2e8f0; box-shadow: 0 1px 3px rgba(15,23,42,0.04); color: #0f172a">
+<div style="aspect-ratio: 16 / 9; border-radius: 12px; background: radial-gradient(110% 100% at 100% 0%, #df7412, transparent 58%), radial-gradient(80% 80% at 0% 100%, #5516be, transparent 70%), #060e20; padding: 14px 16px; box-sizing: border-box; display: flex; flex-direction: column; justify-content: flex-end; color: #f8fafc"><span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.05em; opacity: 0.8">WORKSHOP</span><span style="font-size: 26px; line-height: 28px; font-weight: 600">Automate with n8n</span></div>
+<div style="display: flex; flex-direction: column; gap: 12px; padding: 0 12px"><span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.05em; color: #475569">ALL LEVELS · 4 WEEKS</span><h3 style="margin: 0; font-size: 18px; line-height: 26px; font-weight: 600">AI for Business &amp; Productivity</h3><div style="display: flex; gap: 8px"><span style="height: 24px; padding: 0 10px; border-radius: 9999px; display: inline-flex; align-items: center; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.05em; color: #6d28d9; background: #ede9fe">N8N</span><span style="height: 24px; padding: 0 10px; border-radius: 9999px; display: inline-flex; align-items: center; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.05em; color: #9a3412; background: #ffedd5">GENERATIVE AI</span></div></div>
+<div style="padding: 4px 12px 0"><div style="display: flex; justify-content: space-between; font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #475569; margin-bottom: 6px"><span>NOT STARTED</span><span>0%</span></div><div style="height: 4px; border-radius: 9999px; background: #e2e8f0"></div></div>
+</a>
+</div>
+</section>
+
+<section style="padding: 0 80px 80px; display: flex; flex-direction: column; gap: 24px">
+<div style="display: flex; align-items: flex-end; justify-content: space-between">
+<div><h2 style="margin: 0 0 6px; font-size: 24px; line-height: 32px; font-weight: 600">Downloadable Notes</h2><p style="margin: 0; font-size: 14px; color: #475569">Cheat sheets and references from the courses — free to keep.</p></div>
+<a href="#" style="font-size: 14px; font-weight: 500">Resource library →</a>
+</div>
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px">
+<div style="padding: 24px; border-radius: 16px; background: #ffffff; border: 1px solid #e2e8f0; display: flex; flex-direction: column; gap: 14px">
+<div style="display: flex; justify-content: space-between; align-items: center"><span style="width: 44px; height: 44px; border-radius: 10px; display: grid; place-items: center; background: #fff7ed; color: #c2410c"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 17 6-6-6-6"></path><path d="M12 19h8"></path></svg></span><span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.05em; color: #475569">PDF · [SIZE]</span></div>
+<h3 style="margin: 4px 0 0; font-size: 18px; line-height: 26px; font-weight: 600">Claude Code Quick Reference</h3>
+<p style="margin: 0; font-size: 14px; line-height: 20px; color: #475569">Commands, workflows and habits for AI-assisted development, on one sheet.</p>
+<a href="#" style="margin-top: 6px; height: 44px; border-radius: 8px; display: flex; align-items: center; justify-content: center; gap: 8px; background: #f1f5f9; border: 1px solid #e2e8f0; color: #0f172a; font-size: 14px; font-weight: 600">↓ Download PDF</a>
+</div>
+<div style="padding: 24px; border-radius: 16px; background: #ffffff; border: 1px solid #e2e8f0; display: flex; flex-direction: column; gap: 14px">
+<div style="display: flex; justify-content: space-between; align-items: center"><span style="width: 44px; height: 44px; border-radius: 10px; display: grid; place-items: center; background: #f5f3ff; color: #6d28d9"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3H7a2 2 0 0 0-2 2v5a2 2 0 0 1-2 2 2 2 0 0 1 2 2v5a2 2 0 0 0 2 2h1"></path><path d="M16 21h1a2 2 0 0 0 2-2v-5a2 2 0 0 1 2-2 2 2 0 0 1-2-2V5a2 2 0 0 0-2-2h-1"></path></svg></span><span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.05em; color: #475569">JSON · [SIZE]</span></div>
+<h3 style="margin: 4px 0 0; font-size: 18px; line-height: 26px; font-weight: 600">n8n Automation Templates</h3>
+<p style="margin: 0; font-size: 14px; line-height: 20px; color: #475569">Trigger → AI processing → action flows, ready to import and adapt.</p>
+<a href="#" style="margin-top: 6px; height: 44px; border-radius: 8px; display: flex; align-items: center; justify-content: center; gap: 8px; background: #f1f5f9; border: 1px solid #e2e8f0; color: #0f172a; font-size: 14px; font-weight: 600">↓ Download JSON</a>
+</div>
+<div style="padding: 24px; border-radius: 16px; background: #ffffff; border: 1px solid #e2e8f0; display: flex; flex-direction: column; gap: 14px">
+<div style="display: flex; justify-content: space-between; align-items: center"><span style="width: 44px; height: 44px; border-radius: 10px; display: grid; place-items: center; background: #eff6ff; color: #1d4ed8"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m16 18 6-6-6-6"></path><path d="m8 6-6 6 6 6"></path></svg></span><span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.05em; color: #475569">MD · [SIZE]</span></div>
+<h3 style="margin: 4px 0 0; font-size: 18px; line-height: 26px; font-weight: 600">Prompt Patterns Handbook</h3>
+<p style="margin: 0; font-size: 14px; line-height: 20px; color: #475569">Role, context, few-shot and chain-of-thought patterns with examples.</p>
+<a href="#" style="margin-top: 6px; height: 44px; border-radius: 8px; display: flex; align-items: center; justify-content: center; gap: 8px; background: #f1f5f9; border: 1px solid #e2e8f0; color: #0f172a; font-size: 14px; font-weight: 600">↓ Download Markdown</a>
+</div>
+</div>
+</section>
+
+<section style="padding: 0 80px 88px; display: flex; flex-direction: column; gap: 32px">
+<div style="text-align: center"><p style="margin: 0 0 8px; font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 0.05em; color: #1d4ed8">TESTIMONIAL WALL</p><h2 style="margin: 0; font-size: 36px; line-height: 42px; font-weight: 600; letter-spacing: -0.03em">Trusted by educators, engineers &amp; teams</h2></div>
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px">
+<figure style="margin: 0; padding: 28px; border-radius: 16px; background: #ffffff; border: 1px solid #c4b5fd; box-shadow: 0 12px 32px rgba(99,102,241,0.12); display: flex; flex-direction: column; gap: 16px"><div role="img" aria-label="5 out of 5 stars" style="color: #ea580c; letter-spacing: 3px">★★★★★</div><blockquote style="margin: 0; font-size: 17px; line-height: 27px">"I learn generative ai and content development from her and her teaching pattern is very innovative and good to go"</blockquote><figcaption style="padding-top: 16px; border-top: 1px solid #e2e8f0; display: flex; align-items: center; gap: 12px"><span style="width: 40px; height: 40px; border-radius: 9999px; display: grid; place-items: center; background: linear-gradient(135deg, #2563eb, #7c3aed); color: #ffffff; font-weight: 600">M</span><span><span style="display: block; font-size: 15px; font-weight: 600">Monika Rathore</span><span style="display: block; font-size: 13px; color: #475569">School Teacher, SDPS International School</span></span></figcaption></figure>
+<figure style="margin: 0; padding: 28px; border-radius: 16px; background: #ffffff; border: 1px solid #e2e8f0; display: flex; flex-direction: column; gap: 16px"><div role="img" aria-label="5 out of 5 stars" style="color: #ea580c; letter-spacing: 3px">★★★★★</div><blockquote style="margin: 0; font-size: 17px; line-height: 27px; color: #334155">"[TESTIMONIAL — a developer on Claude Code training.]"</blockquote><figcaption style="margin-top: auto; padding-top: 16px; border-top: 1px solid #e2e8f0; display: flex; align-items: center; gap: 12px"><span style="width: 40px; height: 40px; border-radius: 9999px; display: grid; place-items: center; background: #e2e8f0; font-weight: 600">?</span><span><span style="display: block; font-size: 15px; font-weight: 600">[NAME]</span><span style="display: block; font-size: 13px; color: #475569">[ROLE, COMPANY]</span></span></figcaption></figure>
+<figure style="margin: 0; padding: 28px; border-radius: 16px; background: #ffffff; border: 1px solid #e2e8f0; display: flex; flex-direction: column; gap: 16px"><div role="img" aria-label="5 out of 5 stars" style="color: #ea580c; letter-spacing: 3px">★★★★★</div><blockquote style="margin: 0; font-size: 17px; line-height: 27px; color: #334155">"[TESTIMONIAL — a team lead on a workshop.]"</blockquote><figcaption style="margin-top: auto; padding-top: 16px; border-top: 1px solid #e2e8f0; display: flex; align-items: center; gap: 12px"><span style="width: 40px; height: 40px; border-radius: 9999px; display: grid; place-items: center; background: #e2e8f0; font-weight: 600">?</span><span><span style="display: block; font-size: 15px; font-weight: 600">[NAME]</span><span style="display: block; font-size: 13px; color: #475569">[ROLE, COMPANY]</span></span></figcaption></figure>
+</div>
+</section>
+
+<footer style="margin-top: auto; padding: 56px 80px 32px; background: #ffffff; border-top: 1px solid #e2e8f0; display: flex; flex-direction: column; gap: 40px">
+<div style="display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr; gap: 48px">
+<div style="display: flex; flex-direction: column; gap: 14px; max-width: 360px"><div style="display: flex; align-items: center; gap: 10px"><img src="../assets/logos/promptatwork-mark.png" alt="" style="width: 36px; height: 36px; border-radius: 10px"><span style="font-size: 18px; font-weight: 600">Prompt<span style="color: #2563eb">AtWork</span></span></div><p style="margin: 0; font-size: 14px; line-height: 22px; color: #475569">A living portfolio of practical AI engineering — built, documented and taught in the open.</p></div>
+<nav aria-label="AI Lab" style="display: flex; flex-direction: column; gap: 12px; font-size: 14px"><span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.05em">AI LAB</span><a href="#" style="color: #475569">Work &amp; Case Studies</a><a href="#" style="color: #475569">Engineering</a><a href="#" style="color: #475569">Automations</a></nav>
+<nav aria-label="Learn" style="display: flex; flex-direction: column; gap: 12px; font-size: 14px"><span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.05em">LEARN</span><a href="#" style="color: #475569">Blog</a><a href="#" style="color: #475569">Videos</a><a href="#" style="color: #475569">Training</a></nav>
+<nav aria-label="Connect" style="display: flex; flex-direction: column; gap: 12px; font-size: 14px"><span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.05em">CONNECT</span><a href="#" style="color: #475569">Contact</a><a href="#" style="color: #475569">Testimonials</a><a href="#" style="color: #475569">LinkedIn</a></nav>
+</div>
+<div style="display: flex; justify-content: space-between; padding-top: 24px; border-top: 1px solid #e2e8f0; font-size: 13px; color: #475569"><span>© 2026 Niharika Dhande · Prompt Engineer &amp; Generative AI Trainer · Indore, India</span><a href="#" style="color: #475569">Privacy Policy</a></div>
+</footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":2860}}'>
+class Component extends DCLogic {
+renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

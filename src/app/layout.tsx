@@ -3,6 +3,7 @@ import { Geist, Playfair_Display, JetBrains_Mono } from "next/font/google";
 import { siteUrl } from "../lib/site";
 import { siteKeywords, personName } from "../lib/seo";
 import { motionCssVars } from "../lib/motion";
+import { themeScript } from "../lib/theme";
 import MotionProvider from "../components/motion/MotionProvider";
 import "./globals.css";
 
@@ -69,11 +70,19 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
+    // data-theme is a server default; themeScript swaps it for the visitor's
+    // stored or system theme before first paint, so <html> needs
+    // suppressHydrationWarning (Next guide: preventing-flash-before-hydration).
     <html
       lang="en-IN"
+      data-theme="dark"
       className={`${geistSans.variable} ${playfairDisplay.variable} ${jetbrainsMono.variable} h-full antialiased`}
       style={motionCssVars}
+      suppressHydrationWarning
     >
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
       {/* suppressHydrationWarning: browser extensions (e.g. ColorZilla's
           cz-shortcut-listen) inject attributes onto <body> before React
           hydrates — a client-only mismatch, not a real SSR bug. */}

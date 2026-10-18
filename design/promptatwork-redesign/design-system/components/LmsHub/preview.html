@@ -1,0 +1,95 @@
+<!-- @dsCard group="Screens" height=2050 width=1440 page subtitle="Screen 1 — LMS &amp; Portfolio Hub" -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>LMS & Portfolio Hub</title>
+<style>
+.hub { background: radial-gradient(50% 40% at 85% 6%, rgba(139,92,246,.22), transparent 70%), radial-gradient(40% 30% at 0% 0%, rgba(59,130,246,.16), transparent 70%), var(--canvas); min-height: 100%; }
+.wrap { max-width: 1280px; margin: 0 auto; padding: 0 var(--margin); }
+.hero { display: grid; grid-template-columns: 1.05fr 1fr; gap: 56px; align-items: center; padding: 72px 0 88px; }
+.eyebrow { display: inline-flex; align-items: center; gap: 10px; height: 32px; padding: 0 14px 0 6px; border-radius: var(--rounded-full); font-family: var(--font-mono); font-size: 12px; font-weight: 500; letter-spacing: .05em; color: var(--text-secondary); }
+.eyebrow b { font-weight: 500; color: var(--canvas); background: var(--primary); border-radius: var(--rounded-full); padding: 2px 8px; font-size: 10px; }
+h1 { font-size: 64px; line-height: 68px; font-weight: 600; letter-spacing: -0.035em; margin: 24px 0 20px; }
+h1 em { font-style: normal; background: linear-gradient(90deg, var(--primary), var(--secondary)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.lede { font-size: 18px; line-height: 28px; color: var(--text-secondary); max-width: 520px; margin: 0 0 32px; }
+.ctas { display: flex; gap: 12px; margin-bottom: 40px; }
+.stack { display: flex; align-items: center; gap: 12px; color: var(--text-secondary); font-size: 13px; }
+.art { position: relative; aspect-ratio: 520 / 460; border-radius: var(--rounded-xl); overflow: hidden; box-shadow: var(--elevation-glass); }
+.art .float { position: absolute; padding: 10px 14px; border-radius: var(--rounded-md); font-family: var(--font-mono); font-size: 12px; line-height: 18px; color: var(--on-surface); }
+.art .float span { color: var(--text-secondary); }
+.f1 { left: 24px; bottom: 24px; } .f2 { right: 24px; top: 24px; }
+.f2 i { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--tertiary); margin-right: 8px; vertical-align: 1px; }
+section.block { padding: 0 0 72px; }
+.grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--gutter); align-items: start; }
+.notes { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-md); }
+.masonry { columns: 3; column-gap: var(--gutter); }
+.masonry > * { break-inside: avoid; margin-bottom: var(--gutter); }
+</style>
+</head>
+<body>
+<div class="hub">
+<nav class="paw-topnav paw-glass"><a class="paw-brand" href="#"><img class="paw-brand__logo" src="../../../assets/logos/promptatwork-mark.png" alt=""><span>Prompt<span class="paw-brand__accent">AtWork</span></span></a>
+<div class="paw-topnav__links"><a class="paw-topnav__link is-active" href="#">Courses</a><a class="paw-topnav__link" href="#">Tools</a><a class="paw-topnav__link" href="#">TV<span class="paw-live"></span></a><a class="paw-topnav__link" href="#">Portfolio</a></div>
+<div class="paw-topnav__end"><button class="paw-btn paw-btn--icon" aria-label="Search"><svg class="paw-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></button><img class="paw-avatar paw-avatar--ring" src="../../../assets/photos/niharika-headshot.jpg" alt="Your profile"></div></nav>
+<div class="wrap">
+<header class="hero">
+<div>
+<span class="eyebrow paw-glass"><b>NEW</b>Agentic RAG bootcamp — cohort open</span>
+<h1>Master <em>AI Agents</em> &amp; Prompt Engineering</h1>
+<p class="lede">Hands-on courses, field-tested handbooks and real portfolio builds from Niharika Dhande — for developers and teams shipping with LLMs.</p>
+<div class="ctas"><button class="paw-btn paw-btn--primary">Start Learning <svg class="paw-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></button><button class="paw-btn paw-btn--secondary">View Portfolio</button></div>
+<div class="stack"><span>Built with</span><div class="paw-tags"><span class="paw-tag">LANGCHAIN</span><span class="paw-tag paw-tag--violet">N8N</span><span class="paw-tag paw-tag--neutral">MCP</span><span class="paw-tag paw-tag--neutral">CLAUDE</span></div></div>
+</div>
+<div class="art paw-glass"><svg viewBox="0 0 520 460" width="100%" height="100%" aria-hidden="true" class="hub-art">
+<defs>
+<linearGradient id="g1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="var(--accent-blue)"/><stop offset="1" stop-color="var(--accent-violet)"/></linearGradient>
+<radialGradient id="core" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="var(--secondary)" stop-opacity=".9"/><stop offset=".55" stop-color="var(--accent-violet)" stop-opacity=".55"/><stop offset="1" stop-color="var(--accent-violet)" stop-opacity="0"/></radialGradient>
+<pattern id="dots" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1" fill="var(--border-subtle)"/></pattern>
+</defs>
+<rect width="520" height="460" fill="url(#dots)"/>
+<circle cx="260" cy="230" r="190" fill="none" stroke="var(--border-subtle)"/>
+<circle cx="260" cy="230" r="130" fill="none" stroke="var(--border-subtle)" stroke-dasharray="2 6"/>
+<ellipse cx="260" cy="230" rx="200" ry="70" fill="none" stroke="url(#g1)" stroke-opacity=".7" transform="rotate(-24 260 230)"/>
+<ellipse cx="260" cy="230" rx="200" ry="70" fill="none" stroke="url(#g1)" stroke-opacity=".45" transform="rotate(36 260 230)"/>
+<circle cx="260" cy="230" r="110" fill="url(#core)"/>
+<circle cx="260" cy="230" r="34" fill="var(--canvas)" stroke="url(#g1)" stroke-width="2"/>
+<text x="260" y="236" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="16" font-weight="500" fill="var(--text-primary)">P/</text>
+<g stroke="url(#g1)" stroke-width="1.5" stroke-opacity=".8"><path d="M260 196 150 92M260 264 128 352M294 230h146M276 200l96-118M280 258l94 104"/></g>
+<g fill="var(--surface-card)" stroke="var(--border-subtle)">
+<circle cx="150" cy="92" r="10"/><circle cx="128" cy="352" r="10"/><circle cx="440" cy="230" r="10"/><circle cx="372" cy="82" r="8"/><circle cx="374" cy="362" r="8"/></g>
+<g fill="var(--primary)"><circle cx="150" cy="92" r="3"/><circle cx="440" cy="230" r="3"/></g>
+<g fill="var(--tertiary)"><circle cx="128" cy="352" r="3"/></g>
+<g fill="var(--secondary)"><circle cx="372" cy="82" r="3"/><circle cx="374" cy="362" r="3"/></g>
+</svg>
+<div class="float paw-glass f1">&gt; plan → retrieve → act<br><span>agent.run(&quot;summarise Q3 tickets&quot;)</span></div>
+<div class="float paw-glass f2"><i></i>3 tools · 1.2s</div>
+</div>
+</header>
+
+<section class="block">
+<div class="paw-section-head"><div><p class="paw-section-head__eyebrow">Courses</p><h2>Latest Frameworks</h2></div><a class="paw-section-head__link" href="#">All courses <svg class="paw-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a></div>
+<div class="grid3">
+<a class="paw-card" href="#"><div class="paw-thumb paw-thumb--blue"><svg class="paw-thumb__glyph" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M16 10 6 24l10 14M32 10l10 14-10 14M27 8l-6 32"/></svg><div class="paw-thumb__art"><span class="paw-thumb__kicker">Course · 6 weeks</span><span class="paw-thumb__word">Prompt Engineering</span></div><div class="paw-thumb__play"><span><svg class="paw-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4v16l13-8z" fill="currentColor"/></svg></span></div></div><div class="paw-card__body"><div class="paw-card__meta"><span>Beginner</span><i></i><span>6 weeks</span></div><h3 class="paw-card__title">Prompt Engineering Fundamentals</h3><div class="paw-tags"><span class="paw-tag">GENERATIVE AI</span><span class="paw-tag paw-tag--violet">PROMPTS</span></div></div><div class="paw-card__foot"><div class="paw-progress-row"><span>PROGRESS</span><span>68%</span></div><div class="paw-progress" role="progressbar" aria-valuenow="68" aria-valuemin="0" aria-valuemax="100"><div class="paw-progress__fill" style="width:68%"></div></div></div></a>
+<a class="paw-card is-hover" href="#"><div class="paw-thumb paw-thumb--violet"><svg class="paw-thumb__glyph" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2"><circle cx="10" cy="24" r="5"/><circle cx="38" cy="10" r="5"/><circle cx="38" cy="38" r="5"/><path d="M15 22 33 12M15 26l18 10M38 15v18"/></svg><div class="paw-thumb__art"><span class="paw-thumb__kicker">Bootcamp</span><span class="paw-thumb__word">Agents with LangChain</span></div><div class="paw-thumb__play"><span><svg class="paw-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4v16l13-8z" fill="currentColor"/></svg></span></div></div><div class="paw-card__body"><div class="paw-card__meta"><span>Intermediate</span><i></i><span>8 weeks</span></div><h3 class="paw-card__title">Advanced AI Tools Mastery</h3><div class="paw-tags"><span class="paw-tag">LANGCHAIN</span><span class="paw-tag paw-tag--violet">AGENTS</span><span class="paw-tag paw-tag--neutral">RAG</span></div></div><div class="paw-card__foot"><div class="paw-progress-row"><span>PROGRESS</span><span>24%</span></div><div class="paw-progress" role="progressbar" aria-valuenow="24" aria-valuemin="0" aria-valuemax="100"><div class="paw-progress__fill" style="width:24%"></div></div></div></a>
+<a class="paw-card" href="#"><div class="paw-thumb paw-thumb--warm"><svg class="paw-thumb__glyph" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="18" width="12" height="12" rx="3"/><rect x="32" y="6" width="12" height="12" rx="3"/><rect x="32" y="30" width="12" height="12" rx="3"/><path d="M16 24h8m0 0V12h8M24 24v12h8"/></svg><div class="paw-thumb__art"><span class="paw-thumb__kicker">Workshop</span><span class="paw-thumb__word">Automate with n8n</span></div><div class="paw-thumb__play"><span><svg class="paw-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4v16l13-8z" fill="currentColor"/></svg></span></div></div><div class="paw-card__body"><div class="paw-card__meta"><span>All levels</span><i></i><span>4 weeks</span></div><h3 class="paw-card__title">AI for Business &amp; Productivity</h3><div class="paw-tags"><span class="paw-tag paw-tag--violet">N8N</span><span class="paw-tag paw-tag--warm">GENERATIVE AI</span></div></div></a>
+</div></section>
+
+<section class="block">
+<div class="paw-section-head"><div><p class="paw-section-head__eyebrow">Resources</p><h2>Downloadable Notes</h2></div><a class="paw-section-head__link" href="#">Library <svg class="paw-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a></div>
+<div class="notes">
+<div class="paw-note"><span class="paw-note__icon"><svg class="paw-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M16 13H8"/><path d="M16 17H8"/><path d="M10 9H8"/></svg></span><div><div class="paw-note__title">Claude Code Quick Reference</div><div class="paw-note__meta">PDF · 12 PAGES · 1.4 MB</div></div><button class="paw-btn paw-btn--secondary paw-btn--sm"><svg class="paw-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3"/></svg>PDF</button></div>
+<div class="paw-note"><span class="paw-note__icon"><svg class="paw-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M16 13H8"/><path d="M16 17H8"/><path d="M10 9H8"/></svg></span><div><div class="paw-note__title">Prompt Patterns Handbook</div><div class="paw-note__meta">PDF · 28 PAGES · 3.1 MB</div></div><button class="paw-btn paw-btn--secondary paw-btn--sm"><svg class="paw-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3"/></svg>PDF</button></div>
+<div class="paw-note"><span class="paw-note__icon"><svg class="paw-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M16 13H8"/><path d="M16 17H8"/><path d="M10 9H8"/></svg></span><div><div class="paw-note__title">RAG Evaluation Checklist</div><div class="paw-note__meta">PDF · 6 PAGES · 0.6 MB</div></div><button class="paw-btn paw-btn--secondary paw-btn--sm"><svg class="paw-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3"/></svg>PDF</button></div>
+</div></section>
+
+<section class="block">
+<div class="paw-section-head"><div><p class="paw-section-head__eyebrow">Portfolio</p><h2>Selected Work</h2></div><a class="paw-section-head__link" href="#">View portfolio <svg class="paw-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a></div>
+<div class="grid3">
+<a class="paw-card" href="#"><div class="paw-thumb paw-thumb--teal"><svg class="paw-thumb__glyph" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2"><path d="M24 6 6 15l18 9 18-9z"/><path d="m6 24 18 9 18-9"/><path d="m6 33 18 9 18-9"/></svg><div class="paw-thumb__art"><span class="paw-thumb__kicker">Case study</span><span class="paw-thumb__word">Knowledge assistant</span></div><div class="paw-thumb__play"><span><svg class="paw-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4v16l13-8z" fill="currentColor"/></svg></span></div></div><div class="paw-card__body"><div class="paw-card__meta"><span>AI Solutions</span><i></i><span>2026</span></div><h3 class="paw-card__title">RAG Knowledge Assistant</h3><p class="paw-card__desc">Grounded answers over internal docs, with citations and evals.</p><div class="paw-tags"><span class="paw-tag">LANGCHAIN</span><span class="paw-tag paw-tag--neutral">RAG</span></div></div></a>
+<a class="paw-card" href="#"><div class="paw-thumb paw-thumb--mono"><svg class="paw-thumb__glyph" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="18" width="12" height="12" rx="3"/><rect x="32" y="6" width="12" height="12" rx="3"/><rect x="32" y="30" width="12" height="12" rx="3"/><path d="M16 24h8m0 0V12h8M24 24v12h8"/></svg><div class="paw-thumb__art"><span class="paw-thumb__kicker">Automation</span><span class="paw-thumb__word">Lead triage</span></div><div class="paw-thumb__play"><span><svg class="paw-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4v16l13-8z" fill="currentColor"/></svg></span></div></div><div class="paw-card__body"><div class="paw-card__meta"><span>Automation</span><i></i><span>2026</span></div><h3 class="paw-card__title">n8n Lead-Triage Pipeline</h3><p class="paw-card__desc">Trigger → classify → route, end to end, no manual sorting.</p><div class="paw-tags"><span class="paw-tag paw-tag--violet">N8N</span><span class="paw-tag paw-tag--warm">GENERATIVE AI</span></div></div></a>
+<a class="paw-card" href="#"><div class="paw-thumb paw-thumb--violet"><svg class="paw-thumb__glyph" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2"><circle cx="24" cy="24" r="6"/><ellipse cx="24" cy="24" rx="20" ry="8"/><ellipse cx="24" cy="24" rx="20" ry="8" transform="rotate(60 24 24)"/></svg><div class="paw-thumb__art"><span class="paw-thumb__kicker">Engineering</span><span class="paw-thumb__word">MCP tool server</span></div><div class="paw-thumb__play"><span><svg class="paw-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4v16l13-8z" fill="currentColor"/></svg></span></div></div><div class="paw-card__body"><div class="paw-card__meta"><span>AI Solutions</span><i></i><span>2026</span></div><h3 class="paw-card__title">MCP Tool Server</h3><p class="paw-card__desc">Exposes internal APIs to agents through the Model Context Protocol.</p><div class="paw-tags"><span class="paw-tag">MCP</span><span class="paw-tag paw-tag--violet">AGENTS</span></div></div></a>
+</div></section>
+</div></div>
+</body>
+</html>
