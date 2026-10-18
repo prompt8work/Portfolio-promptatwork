@@ -23,7 +23,7 @@ export default function DocsProjectParts({ className = "" }: { className?: strin
   if (!series) return null;
 
   return (
-    <nav aria-label={`${series.project} documentation`} className={`rounded-xl border border-neutral-200 bg-white p-4 ${className}`}>
+    <nav aria-label={`${series.project} documentation`} className={`rounded-xl border border-neutral-200 bg-neutral-0 p-4 ${className}`}>
       <p className="font-mono text-[10.5px] tracking-[0.12em] text-cyan-700 font-semibold">THIS PROJECT&apos;S DOCUMENTATION</p>
       <p className="mt-1 text-[14px] font-semibold text-neutral-900">{series.project}</p>
       <ol className="mt-3 flex flex-col gap-1">

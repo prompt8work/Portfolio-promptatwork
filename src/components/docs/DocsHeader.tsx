@@ -47,7 +47,7 @@ export default function DocsHeader({
 /** Small mono pill for tags, tech stack and variables on light docs pages. */
 export function DocsTag({ children }: { children: ReactNode }) {
   return (
-    <span className="font-mono text-[11.5px] text-neutral-700 bg-white border border-neutral-200 rounded-md px-2 py-0.5">
+    <span className="font-mono text-[11.5px] text-neutral-700 bg-neutral-0 border border-neutral-200 rounded-md px-2 py-0.5">
       {children}
     </span>
   );

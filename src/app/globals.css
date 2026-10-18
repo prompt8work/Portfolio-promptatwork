@@ -44,7 +44,14 @@
   --color-outline: var(--outline);
   --color-outline-variant: var(--outline-variant);
   --color-error-token: var(--error);
+}
 
+/* Fonts and the legacy palette. Not `inline`, so their utilities read
+   var(--color-…) at runtime: inside .paw-page those variables are remapped
+   to Luminous SaaS tokens (see the bridge in @layer base below), which lets
+   shared components (diagrams, ContentSection, ArrowLink…) follow the
+   light/dark toggle on rebuilt pages while legacy pages keep these values. */
+@theme {
   --font-sans: var(--font-geist-sans);
   --font-display: var(--font-playfair);
   --font-mono: var(--font-jetbrains-mono);
@@ -142,6 +149,66 @@
   .paw-page a,
   .paw-page a:hover {
     color: inherit;
+  }
+
+  /* Bridge: legacy palette → tokens, only inside rebuilt pages. Neutral
+     maps by role (surface → line → secondary text → primary text), plum and
+     cyan to the blue accent, lavender to violet, gold to the warm note.
+     Delete with the legacy palette once every page is rebuilt. */
+  .paw-page {
+    --font-display: var(--font-geist-sans);
+
+    --color-neutral-0: var(--surface-card);
+    --color-neutral-50: var(--canvas);
+    --color-neutral-100: var(--surface-container);
+    --color-neutral-200: var(--border-subtle);
+    --color-neutral-300: var(--outline-variant);
+    --color-neutral-400: var(--outline);
+    --color-neutral-500: var(--text-secondary);
+    --color-neutral-600: var(--text-secondary);
+    --color-neutral-700: var(--on-surface-variant);
+    --color-neutral-800: var(--on-surface);
+    --color-neutral-900: var(--text-primary);
+
+    --color-plum-50: color-mix(in srgb, var(--accent-blue) 8%, transparent);
+    --color-plum-100: color-mix(in srgb, var(--accent-blue) 14%, transparent);
+    --color-plum-200: color-mix(in srgb, var(--primary) 30%, transparent);
+    --color-plum-300: color-mix(in srgb, var(--primary) 45%, transparent);
+    --color-plum-400: color-mix(in srgb, var(--primary) 70%, transparent);
+    --color-plum-500: var(--primary);
+    --color-plum-600: var(--primary);
+    --color-plum-700: var(--primary);
+    --color-plum-800: var(--on-primary-container);
+    --color-plum-900: var(--on-primary-container);
+
+    --color-lavender-50: color-mix(in srgb, var(--accent-violet) 8%, transparent);
+    --color-lavender-100: color-mix(in srgb, var(--accent-violet) 14%, transparent);
+    --color-lavender-200: color-mix(in srgb, var(--secondary) 30%, transparent);
+    --color-lavender-300: color-mix(in srgb, var(--secondary) 45%, transparent);
+    --color-lavender-400: var(--secondary);
+    --color-lavender-500: var(--secondary);
+
+    --color-gold-400: var(--tertiary);
+    --color-gold-500: var(--tertiary);
+    --color-gold-600: var(--tertiary);
+    --color-gold-700: var(--tertiary);
+
+    --color-cyan-50: color-mix(in srgb, var(--accent-blue) 10%, transparent);
+    --color-cyan-400: var(--primary);
+    --color-cyan-500: var(--primary);
+    --color-cyan-600: var(--primary);
+    --color-cyan-700: var(--primary);
+    --color-cyan-800: var(--primary);
+
+    --color-success: var(--primary);
+    --color-warning: var(--tertiary);
+    --color-error: var(--error);
+
+    --shadow-xs: none;
+    --shadow-sm: none;
+    --shadow-md: var(--elevation-glass);
+    --shadow-lg: var(--glow-md);
+    --shadow-glow-cyan: var(--glow-sm);
   }
   .paw-page :focus-visible {
     outline: 2px solid var(--focus-ring);

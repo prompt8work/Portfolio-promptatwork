@@ -37,7 +37,7 @@ export function DiagramFigure({ d }: { d: Diagram }) {
 
   return (
     <Reveal>
-      <figure className="rounded-xl border border-neutral-200 bg-white overflow-hidden">
+      <figure className="rounded-xl border border-neutral-200 bg-neutral-0 overflow-hidden">
         <div className="px-4 sm:px-6 pt-4 pb-3 border-b border-neutral-100">
           <span className="font-mono text-[10px] font-semibold tracking-[0.16em] text-cyan-700">{eyebrow[d.kind]}</span>
           <h3

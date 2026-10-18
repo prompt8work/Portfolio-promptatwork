@@ -192,7 +192,7 @@ export default async function ToolDetailPage({ params }: { params: Promise<{ slu
               <StaggerGrid className="flex flex-col gap-2">
                 {tool.resources.map((r) => (
                   <StaggerItem key={r.title}>
-                    <MotionCard className="bg-white border border-neutral-200 rounded-xl p-4 flex items-center justify-between gap-4 flex-wrap">
+                    <MotionCard className="bg-neutral-0 border border-neutral-200 rounded-xl p-4 flex items-center justify-between gap-4 flex-wrap">
                       <div className="flex flex-col gap-0.5">
                         <span className="font-mono text-[10px] tracking-[0.12em] text-cyan-700">
                           {r.resourceType.toUpperCase()}

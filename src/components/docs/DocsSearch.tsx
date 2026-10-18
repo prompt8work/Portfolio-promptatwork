@@ -90,10 +90,10 @@ export default function DocsSearch({ compact = false }: { compact?: boolean }) {
         <button
           type="button"
           onClick={openSearch}
-          className="w-full flex items-center gap-2.5 rounded-lg border border-neutral-300 bg-white px-3 py-2 text-sm text-neutral-500 hover:border-neutral-400"
+          className="w-full h-10 flex items-center gap-2.5 rounded-[10px] border border-neutral-200 bg-neutral-100 px-3 text-sm text-neutral-500 hover:border-neutral-400"
         >
           <SearchIcon />
-          <span>Search {label}</span>
+          <span>Search the {label === "AI Lab" ? "lab" : label.toLowerCase()}</span>
           <kbd className="ml-auto font-mono text-[10.5px] text-neutral-400 border border-neutral-200 rounded px-1.5 py-0.5">
             ⌘K
           </kbd>
@@ -110,10 +110,10 @@ export default function DocsSearch({ compact = false }: { compact?: boolean }) {
           <button
             type="button"
             aria-label="Close search"
-            className="absolute inset-0 bg-neutral-900/30"
+            className="absolute inset-0 bg-black/40"
             onClick={() => setOpen(false)}
           />
-          <div className="relative w-full max-w-[560px] rounded-xl border border-neutral-200 bg-white shadow-lg overflow-hidden">
+          <div className="relative w-full max-w-[560px] rounded-xl border border-neutral-200 bg-neutral-0 shadow-lg overflow-hidden">
             <div className="flex items-center gap-2.5 px-4 border-b border-neutral-200 text-neutral-500">
               <SearchIcon />
               <input

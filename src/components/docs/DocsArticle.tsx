@@ -19,7 +19,7 @@ export default function DocsArticle({ children }: { children: ReactNode }) {
         <DocsPrevNext />
       </article>
       <aside className="hidden xl:block">
-        <div className="sticky top-[105px] flex flex-col gap-8">
+        <div className="sticky top-[100px] flex flex-col gap-8">
           <DocsProjectParts />
           <DocsToc />
         </div>

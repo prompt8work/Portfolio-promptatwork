@@ -386,10 +386,17 @@ export const engineeringAreasQuery = groq`
 // as the per-type list queries above.
 // AI Lab overview: every case study with the pages that document its parts,
 // plus how many entries each section has so empty sections can be left out.
+// The newest project is featured (problem, solution, future scope and the
+// steps of its first flow diagram); engineering areas carry their evidence.
 export const aiLabOverviewQuery = groq`{
   "projects": *[_type == "project" && visibility != "private"] | order(publishedAt desc) {
-    "slug": slug.current, title, category, summary,
+    "slug": slug.current, title, category, summary, tech, problem, solution, futureScope,
+    "flow": diagrams[kind == "flow"][0]{ title, "steps": steps[].label },
     "parts": parts[]->{ _type, "slug": slug.current, "title": coalesce(title, name) }
+  },
+  "engineering": *[_type == "engineeringArea"] | order(order asc) {
+    "id": slug.current, title,
+    "evidence": *[${engineeringEvidenceFilter}] | order(title asc, name asc) { "title": coalesce(title, name) }
   },
   "counts": {
     "tools": count(*[${publishedToolFilter}]),

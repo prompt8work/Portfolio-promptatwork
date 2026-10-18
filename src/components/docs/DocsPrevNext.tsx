@@ -23,7 +23,7 @@ export default function DocsPrevNext() {
   const scope = series ? " IN THIS PROJECT" : "";
 
   const card =
-    "motion-btn flex-1 min-w-[200px] rounded-xl border border-neutral-200 bg-white px-5 py-4 hover:border-plum-300";
+    "motion-btn flex-1 min-w-[200px] rounded-xl border border-neutral-200 bg-neutral-0 px-5 py-4 hover:border-plum-300";
   return (
     <nav aria-label="Previous and next" className="mt-16 pt-8 border-t border-neutral-200 flex flex-wrap gap-4">
       {prev ? (

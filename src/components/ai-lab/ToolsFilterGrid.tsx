@@ -58,7 +58,7 @@ export default function ToolsFilterGrid({ tools }: { tools: ToolListItem[] }) {
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Search tools & research…"
           aria-label="Search tools and research"
-          className="text-sm bg-white border border-neutral-300 text-neutral-900 placeholder:text-neutral-400 rounded-lg px-4 py-2.5 focus:border-plum-400 focus:outline-none"
+          className="text-sm bg-neutral-0 border border-neutral-300 text-neutral-900 placeholder:text-neutral-400 rounded-lg px-4 py-2.5 focus:border-plum-400 focus:outline-none"
         />
         {types.length > 2 && (
           <ChipRow label="Filter by type" options={types} value={type} onChange={setType} allLabel="All Types" />
@@ -124,7 +124,7 @@ function ToolCard({ tool: t }: { tool: ToolListItem }) {
           {t.category}
         </span>
         {t.type && t.type !== "Tool" && (
-          <span className="font-mono text-[10px] text-cyan-700 border border-neutral-200 bg-white rounded-md px-1.5 py-0.5">
+          <span className="font-mono text-[10px] text-cyan-700 border border-neutral-200 bg-neutral-0 rounded-md px-1.5 py-0.5">
             {t.type}
           </span>
         )}

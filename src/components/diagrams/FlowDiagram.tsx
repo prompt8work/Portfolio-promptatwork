@@ -10,7 +10,7 @@ const kinds: Record<StepKind, { label: string; card: string; icon: string; path:
   },
   input: {
     label: "Input",
-    card: "border-neutral-300 bg-white",
+    card: "border-neutral-300 bg-neutral-0",
     icon: "text-neutral-600",
     path: <path d="M12 3v12m0 0-4-4m4 4 4-4M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2" />,
   },
@@ -47,7 +47,7 @@ const kinds: Record<StepKind, { label: string; card: string; icon: string; path:
   },
   human: {
     label: "Human",
-    card: "border-gold-500/40 bg-white",
+    card: "border-gold-500/40 bg-neutral-0",
     icon: "text-gold-700",
     path: (
       <>
@@ -92,12 +92,12 @@ function StepCard({ step, n }: { step: DiagramStep; n: number }) {
       {(step.metric || step.after) && (
         <div className="mt-auto pt-1 flex flex-wrap items-center gap-1.5">
           {step.metric && (
-            <span className="font-mono text-[11.5px] font-semibold text-cyan-700 bg-white border border-neutral-200 rounded px-1.5 py-0.5 whitespace-nowrap">
+            <span className="font-mono text-[11.5px] font-semibold text-cyan-700 bg-neutral-0 border border-neutral-200 rounded px-1.5 py-0.5 whitespace-nowrap">
               {step.metric}
             </span>
           )}
           {step.after && (
-            <span className="font-mono text-[11.5px] bg-white border border-neutral-200 rounded px-1.5 py-0.5 whitespace-nowrap">
+            <span className="font-mono text-[11.5px] bg-neutral-0 border border-neutral-200 rounded px-1.5 py-0.5 whitespace-nowrap">
               {step.before && (
                 <span className="text-neutral-500 line-through decoration-neutral-400">{step.before}</span>
               )}

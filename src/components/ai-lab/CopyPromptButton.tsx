@@ -7,7 +7,7 @@ export default function CopyPromptButton({ text }: { text: string }) {
     <CopyButton
       text={text}
       label="Copy Prompt"
-      className="self-start bg-neutral-900 hover:bg-neutral-800 text-white text-sm font-semibold px-4 py-2 rounded-md"
+      className="paw-btn paw-btn--primary paw-btn--sm self-start"
     />
   );
 }
