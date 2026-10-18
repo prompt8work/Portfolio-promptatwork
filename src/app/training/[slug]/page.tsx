@@ -3,9 +3,9 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import PageTransition from "../../../components/PageTransition";
 import DocsArticle from "../../../components/docs/DocsArticle";
-import DocsHeader, { DocsTag } from "../../../components/docs/DocsHeader";
+import DocsHeader from "../../../components/docs/DocsHeader";
 import Callout from "../../../components/docs/Callout";
-import { BlockLabel, ListSection } from "../../../components/ui/ContentSection";
+import { BlockLabel } from "../../../components/ui/ContentSection";
 import Chip from "../../../components/ui/Chip";
 import Reveal from "../../../components/motion/Reveal";
 import Carousel from "../../../components/motion/Carousel";
@@ -14,7 +14,7 @@ import { Timeline, TimelineItem } from "../../../components/motion/Timeline";
 import TestimonialQuote from "../../../components/testimonials/TestimonialQuote";
 import RelatedContent from "../../../components/ai-lab/RelatedContent";
 import BatchCard from "../../../components/training/BatchCard";
-import { OfferingBanner } from "../../../components/offerings/OfferingCard";
+import TrainingHero from "../../../components/training/TrainingHero";
 import JsonLd from "../../../components/JsonLd";
 import { client } from "../../../sanity/lib/client";
 import { trainingBySlugQuery, trainingSlugsQuery } from "../../../sanity/lib/queries";
@@ -26,7 +26,6 @@ import {
   trainingCategoryPath,
   trainingPath,
   trainings,
-  trainingToOffering,
   type Training,
 } from "../../../lib/trainings";
 
@@ -145,34 +144,11 @@ function WorkshopPage({ t }: { t: Training }) {
             </>
           }
           title={t.title}
-          description={t.description}
-        >
-          <div className="flex flex-wrap gap-1.5">
-            {t.tags.map((tag) => (
-              <DocsTag key={tag}>{tag}</DocsTag>
-            ))}
-          </div>
-        </DocsHeader>
+        />
 
         <div className="flex flex-col gap-10">
-          <Reveal className="max-w-[520px]">
-            <OfferingBanner o={trainingToOffering(t)} />
-          </Reveal>
-
-          <ListSection heading="Highlights" items={t.highlights} />
-
-          <Reveal>
-            <section className="flex flex-col gap-3">
-              <BlockLabel>Ideal for</BlockLabel>
-              <div className="flex flex-wrap gap-2">
-                {t.idealFor.map((who) => (
-                  <Chip key={who} tone="muted" size="sm">
-                    {who}
-                  </Chip>
-                ))}
-              </div>
-            </section>
-          </Reveal>
+          {/* Tagline, highlights, audience and tools all live in the hero card. */}
+          <TrainingHero t={t} />
 
           {/* PLACEHOLDER: module outlines go in `modules` in src/lib/trainings.ts. Until then the note below shows. */}
           <Reveal>

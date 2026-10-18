@@ -61,3 +61,7 @@ service-account*.json
 # ---------- Local-only resume skill and generated resumes (personal data) ----------
 .claude/skills/resume/
 Docs/resumes/
+
+# Early visual references for the redesign (Stitch exports) — kept locally, not in git
+design/stitch_promptatwork_ai_hub/
+design/stitch_promptatwork_ai_hub.zip
