@@ -34,11 +34,16 @@ const banners = [
   "from-[#1e1b4b] to-[#7c2d12]",
 ];
 
-const grid =
+/** Cover gradient for an offering's thumbVariant (also used by TrainingHero). */
+export function bannerGradient(variant?: number) {
+  return banners[((variant ?? 1) - 1 + banners.length) % banners.length];
+}
+
+export const grid =
   "pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(255,255,255,.05)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.05)_1px,transparent_1px)] bg-[size:22px_22px]";
 
 export function OfferingBanner({ o, border = t.cover }: { o: Offering; border?: string }) {
-  const bg = banners[((o.thumbVariant ?? 1) - 1 + banners.length) % banners.length];
+  const bg = bannerGradient(o.thumbVariant);
   return (
     <div className={`relative flex aspect-video flex-col justify-between overflow-hidden rounded-[14px] border bg-linear-to-br p-[18px] ${border} ${bg}`}>
       <div className={grid} />
@@ -50,7 +55,7 @@ export function OfferingBanner({ o, border = t.cover }: { o: Offering; border?: 
   );
 }
 
-function Tools({ items }: { items?: string[] }) {
+export function Tools({ items }: { items?: string[] }) {
   if (!items?.length) return null;
   return (
     <div className="relative flex flex-wrap gap-1.5">
