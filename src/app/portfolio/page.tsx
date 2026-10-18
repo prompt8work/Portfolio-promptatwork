@@ -30,7 +30,7 @@ export default async function PortfolioPage() {
   const [profiles, settings] = await Promise.all([getPortfolioProfiles(), getPortfolioSettings()]);
 
   return (
-    <PageTransition className="paw-page relative min-h-screen overflow-x-hidden">
+    <PageTransition className="relative min-h-screen overflow-x-hidden">
       <Nav />
       <main
         style={{

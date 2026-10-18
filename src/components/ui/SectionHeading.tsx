@@ -25,13 +25,13 @@ export default function SectionHeading({
   align = "between",
   level = "section",
 }: SectionHeadingProps) {
-  const eyebrowColor = "text-plum-600";
-  const titleColor = "text-neutral-900";
-  const descColor = "text-neutral-600";
+  const eyebrowColor = "text-primary";
+  const titleColor = "text-ink";
+  const descColor = "text-muted";
   const layout = `flex flex-col mb-11 sm:mb-[52px] gap-6 ${
     align === "between" ? "sm:flex-row sm:items-end sm:justify-between" : ""
   }`;
-  const titleClass = `font-display text-3xl sm:text-[38px] font-semibold ${titleColor}`;
+  const titleClass = `text-3xl sm:text-[38px] font-semibold ${titleColor}`;
 
   if (level === "page") {
     return (

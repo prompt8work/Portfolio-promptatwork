@@ -73,10 +73,7 @@ export default async function AiLabLayout({ children }: LayoutProps<"/ai-lab">) 
     }));
 
   return (
-    // paw-page: rebuilt on the Luminous SaaS tokens (follows the light/dark
-    // toggle); the legacy colour classes inside the docs components are
-    // remapped to tokens by the bridge in globals.css.
-    <div className="paw-page min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col">
       <Nav />
       <AiLabNavProvider groups={groups} series={series}>
         <div className="flex-1 w-full max-w-[1440px] mx-auto lg:grid lg:grid-cols-[280px_minmax(0,1fr)]">

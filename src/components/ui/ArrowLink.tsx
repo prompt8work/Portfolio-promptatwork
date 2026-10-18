@@ -16,7 +16,7 @@ export default function ArrowLink({
   external = false,
   direction = "forward",
 }: ArrowLinkProps) {
-  const color = "text-neutral-900 hover:text-plum-600";
+  const color = "text-ink hover:text-primary";
   const textSize = size === "sm" ? "text-[13.5px]" : "text-[14.5px]";
   const iconSize = size === "sm" ? 12 : 14;
 

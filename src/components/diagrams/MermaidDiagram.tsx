@@ -2,33 +2,10 @@
 
 import { useEffect, useId, useRef, useState } from "react";
 
-// Mermaid bakes colours into its SVG, so it can't follow CSS variables.
-// Legacy pages use the old fixed palette; inside a rebuilt (.paw-page)
-// page the colours are read from the current Luminous SaaS tokens and the
+// Mermaid bakes colours into its SVG, so it can't follow CSS variables:
+// the colours are read from the current Luminous SaaS tokens and the
 // diagram redraws when the light/dark theme changes. Authors never style
 // nodes themselves.
-const legacyThemeVariables = {
-  fontSize: "14px",
-  primaryColor: "#f6f1f4", // plum-50
-  primaryBorderColor: "#be96b0", // plum-300
-  primaryTextColor: "#2e2a24", // neutral-800
-  secondaryColor: "#e9e7f8", // lavender-100
-  secondaryBorderColor: "#b6ade6",
-  tertiaryColor: "#ffffff",
-  tertiaryBorderColor: "#d2cbbb",
-  lineColor: "#7d7566", // neutral-500
-  textColor: "#2e2a24",
-  edgeLabelBackground: "#ffffff",
-  clusterBkg: "#faf8f4",
-  clusterBorder: "#d2cbbb",
-  noteBkgColor: "#f2efe9",
-  noteBorderColor: "#d2cbbb",
-  actorBkg: "#f6f1f4",
-  actorBorder: "#be96b0",
-  signalColor: "#443f36",
-  labelBoxBkgColor: "#f6f1f4",
-};
-
 function tokenThemeVariables(el: Element) {
   const css = getComputedStyle(el);
   const v = (name: string) => css.getPropertyValue(name).trim();
@@ -82,7 +59,7 @@ export default function MermaidDiagram({ code }: { code: string }) {
 
   useEffect(() => {
     let cancelled = false;
-    const host = ref.current?.closest(".paw-page");
+    const host = ref.current ?? document.documentElement;
     import("mermaid")
       .then(async ({ default: mermaid }) => {
         mermaid.initialize({
@@ -90,7 +67,7 @@ export default function MermaidDiagram({ code }: { code: string }) {
           securityLevel: "strict",
           theme: "base",
           fontFamily: getComputedStyle(document.body).fontFamily,
-          themeVariables: host ? tokenThemeVariables(host) : legacyThemeVariables,
+          themeVariables: tokenThemeVariables(host),
           flowchart: { htmlLabels: true, curve: "basis", padding: 12 },
         });
         const { svg } = await mermaid.render(`${id}-${themeVersion}`, code);
@@ -116,9 +93,9 @@ export default function MermaidDiagram({ code }: { code: string }) {
   }
   return (
     <div ref={ref} className="flex flex-col gap-2">
-      {failed && <p className="text-[13px] text-error">This diagram couldn&apos;t be drawn. Its source is below.</p>}
+      {failed && <p className="text-[13px] text-error-token">This diagram couldn&apos;t be drawn. Its source is below.</p>}
       <pre
-        className={`whitespace-pre-wrap font-mono text-[12.5px] leading-relaxed text-neutral-600 ${failed ? "" : "opacity-60"}`}
+        className={`whitespace-pre-wrap font-mono text-[12.5px] leading-relaxed text-muted ${failed ? "" : "opacity-60"}`}
         aria-busy={!failed}
       >
         {code}

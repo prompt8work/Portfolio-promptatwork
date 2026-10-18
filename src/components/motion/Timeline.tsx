@@ -71,13 +71,13 @@ export function Timeline({
       <span
         aria-hidden="true"
         className={`absolute top-0 bottom-0 left-[18px] lg:left-1/2 w-px -translate-x-1/2 ${
-          tone === "dark" ? "bg-white/10" : "bg-neutral-200"
+          tone === "dark" ? "bg-white/10" : "bg-line"
         }`}
       />
       <motion.span
         aria-hidden="true"
         style={{ scaleY: reduce ? 1 : scrollYProgress }}
-        className="absolute top-0 bottom-0 left-[18px] lg:left-1/2 w-px -translate-x-1/2 origin-top bg-plum-600"
+        className="absolute top-0 bottom-0 left-[18px] lg:left-1/2 w-px -translate-x-1/2 origin-top bg-primary"
       />
       <ol ref={listRef} className="relative flex flex-col gap-12">
         {Children.toArray(children).map((child, index) => (
@@ -150,20 +150,20 @@ export function TimelineItem({
         animate={{ scale: active ? SCALE.markerActive : 1 }}
         transition={transition.hover}
         className={`absolute left-0 top-0 lg:static lg:col-start-2 lg:row-start-1 w-9 h-9 rounded-full border-[1.5px] flex items-center justify-center ${
-          dark ? "bg-neutral-900 border-white/20 text-slate-400" : "bg-white border-neutral-300 text-neutral-500"
+          dark ? "bg-ink border-white/20 text-slate-400" : "bg-white border-outline-variant text-muted"
         }`}
       >
         {markers === "number" ? (
           <span className="font-mono text-[12px] font-bold">{String(index + 1).padStart(2, "0")}</span>
         ) : (
-          <span className={`w-2 h-2 rounded-full ${dark ? "bg-white/30" : "bg-neutral-300"}`} />
+          <span className={`w-2 h-2 rounded-full ${dark ? "bg-white/30" : "bg-outline-variant"}`} />
         )}
         {/* Filled state layered on top — opacity/transform only, no colour tweening. */}
         <motion.span
           initial={false}
           animate={{ opacity: active ? 1 : 0, scale: active ? 1 : 0.6 }}
           transition={transition.hover}
-          className="absolute -inset-[1.5px] rounded-full bg-plum-600 flex items-center justify-center text-white"
+          className="absolute -inset-[1.5px] rounded-full bg-linear-to-br from-accent-blue to-accent-violet flex items-center justify-center text-white"
         >
           {markers === "number" ? (
             <span className="font-mono text-[12px] font-bold">{String(index + 1).padStart(2, "0")}</span>
@@ -184,17 +184,17 @@ export function TimelineItem({
           left ? "lg:col-start-1" : "lg:col-start-3"
         }`}
       >
-        {eyebrow && <span className="font-mono text-[11px] font-semibold text-plum-600 tracking-wide">{eyebrow}</span>}
+        {eyebrow && <span className="font-mono text-[11px] font-semibold text-primary tracking-wide">{eyebrow}</span>}
         {/* Muted → ink is the same ink colour at lower opacity, so it's an opacity animation. */}
         <motion.h3
           initial={false}
           animate={{ opacity: active ? 1 : 0.45 }}
           transition={transition.hover}
-          className={`font-display text-lg sm:text-xl font-semibold ${dark ? "text-white" : "text-neutral-900"}`}
+          className={`text-lg sm:text-xl font-semibold ${dark ? "text-white" : "text-ink"}`}
         >
           {title}
         </motion.h3>
-        {meta && <div className={`text-sm ${dark ? "text-slate-400" : "text-neutral-600"}`}>{meta}</div>}
+        {meta && <div className={`text-sm ${dark ? "text-slate-400" : "text-muted"}`}>{meta}</div>}
         {children}
       </motion.div>
     </li>

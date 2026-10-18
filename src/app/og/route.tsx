@@ -10,26 +10,27 @@ import { ImageResponse } from "next/og";
 // already calls buildMetadata() picks this up automatically.
 export const runtime = "nodejs";
 
-// Colors match the site's real, already-shipped design tokens
-// (src/app/globals.css) — not the older plum-only OG spec, since the
-// live "P/" mark (Nav.tsx, SiteFooter.tsx) is the actual established
-// brand identity to reuse.
+// Luminous SaaS dark canvas (src/app/paw-tokens.css) with the chevron-
+// network mark. Variants only change the accent glow: blue for writing,
+// violet for builds, the warm note for training.
+const BASE = { bg: "#0f172a", text: "#f8fafc", sub: "#94a3b8", word: "#4d8eff", ring: "linear-gradient(135deg, #3b82f6, #8b5cf6)" };
 const VARIANTS = {
-  blog: { bg: "#faf8f4", accent: "#5b2a49", text: "#1e1b17", sub: "#7d7566", markBg: "#1e1b17" },
-  project: { bg: "#1e1b17", accent: "#0fb4c4", text: "#faf8f4", sub: "#a39c8e", markBg: "#faf8f4" },
-  tool: { bg: "#1e1b17", accent: "#0fb4c4", text: "#faf8f4", sub: "#a39c8e", markBg: "#faf8f4" },
-  training: { bg: "#faf8f4", accent: "#e3b563", text: "#1e1b17", sub: "#7d7566", markBg: "#1e1b17" },
+  blog: { glow: "rgba(59,130,246,0.35)", glow2: "rgba(139,92,246,0.25)" },
+  project: { glow: "rgba(139,92,246,0.38)", glow2: "rgba(59,130,246,0.22)" },
+  tool: { glow: "rgba(139,92,246,0.38)", glow2: "rgba(59,130,246,0.22)" },
+  training: { glow: "rgba(223,116,18,0.32)", glow2: "rgba(139,92,246,0.25)" },
 } as const;
 
 export type OgVariant = keyof typeof VARIANTS;
 
-let headshotDataUri: string | null = null;
-function getHeadshotDataUri(): string {
-  if (!headshotDataUri) {
-    const buf = readFileSync(path.join(process.cwd(), "public/images/headshot.png"));
-    headshotDataUri = `data:image/png;base64,${buf.toString("base64")}`;
+const dataUris = new Map<string, string>();
+function dataUri(file: string): string {
+  let uri = dataUris.get(file);
+  if (!uri) {
+    uri = `data:image/png;base64,${readFileSync(path.join(process.cwd(), file)).toString("base64")}`;
+    dataUris.set(file, uri);
   }
-  return headshotDataUri;
+  return uri;
 }
 
 function truncate(text: string, max: number): string {
@@ -46,62 +47,28 @@ export async function GET(request: Request) {
   const titleFontSize = title.length > 55 ? 38 : title.length > 38 ? 44 : 52;
 
   return new ImageResponse(
-    <div style={{ display: "flex", width: "1200px", height: "630px", background: v.bg, position: "relative" }}>
-      <div
-        style={{
-          display: "flex",
-          position: "absolute",
-          width: 560,
-          height: 560,
-          borderRadius: "50%",
-          background: v.accent,
-          opacity: 0.14,
-          top: -140,
-          left: 660,
-        }}
-      />
-
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          padding: "72px 40px 72px 72px",
-          width: 700,
-        }}
-      >
+    <div
+      style={{
+        display: "flex",
+        width: "1200px",
+        height: "630px",
+        position: "relative",
+        background: `radial-gradient(60% 80% at 85% 20%, ${v.glow}, transparent 70%), radial-gradient(45% 60% at 0% 100%, ${v.glow2}, transparent 70%), ${BASE.bg}`,
+      }}
+    >
+      <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", padding: "72px 40px 72px 72px", width: 700 }}>
         <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 44 }}>
-          <div
-            style={{
-              display: "flex",
-              width: 54,
-              height: 54,
-              borderRadius: 14,
-              background: v.markBg,
-              color: v.accent,
-              alignItems: "center",
-              justifyContent: "center",
-              fontSize: 24,
-              fontWeight: 700,
-            }}
-          >
-            P/
+          {/* eslint-disable-next-line @next/next/no-img-element -- next/image doesn't work inside ImageResponse */}
+          <img src={dataUri("public/images/brand/promptatwork-mark.png")} width={56} height={56} style={{ borderRadius: 14 }} alt="" />
+          <div style={{ display: "flex", fontSize: 28, fontWeight: 600, color: BASE.text }}>
+            <span>Prompt</span>
+            <span style={{ color: BASE.word }}>AtWork</span>
           </div>
-          <div style={{ display: "flex", fontSize: 27, fontWeight: 600, color: v.text }}>PromptAtWork</div>
         </div>
-        <div
-          style={{
-            display: "flex",
-            fontSize: titleFontSize,
-            fontWeight: 700,
-            color: v.text,
-            lineHeight: 1.2,
-            maxWidth: 580,
-          }}
-        >
+        <div style={{ display: "flex", fontSize: titleFontSize, fontWeight: 600, color: BASE.text, lineHeight: 1.18, maxWidth: 580, letterSpacing: "-0.02em" }}>
           {title}
         </div>
-        <div style={{ display: "flex", fontSize: 23, color: v.sub, marginTop: 32 }}>promptatwork.com</div>
+        <div style={{ display: "flex", fontSize: 23, color: BASE.sub, marginTop: 32 }}>promptatwork.com</div>
       </div>
 
       <div
@@ -113,12 +80,12 @@ export async function GET(request: Request) {
           width: 500,
           height: 500,
           borderRadius: "50%",
-          overflow: "hidden",
-          border: `6px solid ${v.accent}`,
+          padding: 6,
+          background: BASE.ring,
         }}
       >
         {/* eslint-disable-next-line @next/next/no-img-element -- next/image doesn't work inside ImageResponse */}
-        <img src={getHeadshotDataUri()} width={500} height={500} style={{ objectFit: "cover" }} alt="" />
+        <img src={dataUri("public/images/headshot.png")} width={488} height={488} style={{ objectFit: "cover", borderRadius: "50%" }} alt="" />
       </div>
     </div>,
     { width: 1200, height: 630 },

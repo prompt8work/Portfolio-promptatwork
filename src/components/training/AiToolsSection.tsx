@@ -12,10 +12,10 @@ export default function AiToolsSection() {
   return (
     <section className="flex flex-col gap-5">
       <div className="flex flex-col gap-2">
-        <h2 id="ai-tools" className="font-sans text-[26px] font-semibold tracking-tight text-neutral-900 scroll-mt-28">
+        <h2 id="ai-tools" className="font-sans text-[26px] font-semibold tracking-tight text-ink scroll-mt-28">
           AI tools I train teams on
         </h2>
-        <p className="text-[15.5px] leading-[1.75] text-neutral-700">
+        <p className="text-[15.5px] leading-[1.75] text-on-surface-variant">
           Hands-on training, setup and consulting for individuals and teams, in Indore or online. If you want to get more
           done with any of these tools, get in touch.
         </p>
@@ -24,9 +24,9 @@ export default function AiToolsSection() {
       <StaggerGrid className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         {aiTools.map((group) => (
           <StaggerItem key={group.category}>
-            <div className="h-full bg-neutral-0 border border-neutral-200 rounded-2xl p-5 flex flex-col gap-3">
-              <h3 className="font-display text-lg font-semibold text-neutral-900">{group.category}</h3>
-              <p className="text-sm text-neutral-600 leading-relaxed">{group.description}</p>
+            <div className="h-full bg-card border border-line rounded-2xl p-5 flex flex-col gap-3">
+              <h3 className="text-lg font-semibold text-ink">{group.category}</h3>
+              <p className="text-sm text-muted leading-relaxed">{group.description}</p>
               <ul className="flex flex-wrap gap-2 mt-auto pt-2" aria-label={`${group.category} tools`}>
                 {group.tools.map((tool) => (
                   <li key={tool}>

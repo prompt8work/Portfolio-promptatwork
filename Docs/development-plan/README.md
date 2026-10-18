@@ -47,4 +47,4 @@ Each phase file is a working checklist. As work completes, check items off in pl
 
 ## Design reference
 
-The visual direction for Phases 1 onward follows the homepage mockup built from PRD §7–12 (light ivory/charcoal base, sage-olive brand accent, cyan reserved for AI/technical zones, Playfair Display + Geist + JetBrains Mono). See the mockup artifact linked in the project conversation history, or rebuild the design tokens from PRD §10–11 if the artifact link has lapsed.
+Since October 2026 the site uses the **Luminous SaaS** redesign in [`design/promptatwork-redesign/`](../../design/promptatwork-redesign/README.md): design tokens in `src/app/paw-tokens.css` (copied from the design system's `tokens.css`), the `paw-` component classes in `src/app/paw-components.css`, Geist + JetBrains Mono, and a light/dark toggle (dark by default, following the visitor's system setting until they choose). Every colour is a token exposed to Tailwind (`bg-canvas`, `text-ink`, `border-line`, `text-primary`…); the old ivory/plum/cyan palette and Playfair Display are gone. The cover letter is the one page pinned to the light theme, since it's a printable document.

@@ -65,7 +65,7 @@ export default function CommentForm({ contentId }: { contentId: string }) {
       </button>
 
       {state.status === "error" && (
-        <p role="alert" className="text-sm text-error font-medium">
+        <p role="alert" className="text-sm text-error-token font-medium">
           {state.message}
         </p>
       )}

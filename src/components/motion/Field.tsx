@@ -81,7 +81,7 @@ export default function Field({
         </label>
       </div>
       {error && (
-        <p id={errorId} className="text-xs text-error">
+        <p id={errorId} className="text-xs text-error-token">
           {error}
         </p>
       )}

@@ -4,40 +4,40 @@ import type { DiagramStep, StepKind } from "./types";
 const kinds: Record<StepKind, { label: string; card: string; icon: string; path: ReactNode }> = {
   trigger: {
     label: "Trigger",
-    card: "border-gold-500/50 bg-gold-400/10",
-    icon: "text-gold-700",
+    card: "border-tertiary/50 bg-tertiary/10",
+    icon: "text-tertiary",
     path: <path d="M13 2 3 14h7l-1 8 10-12h-7z" />,
   },
   input: {
     label: "Input",
-    card: "border-neutral-300 bg-neutral-0",
-    icon: "text-neutral-600",
+    card: "border-outline-variant bg-card",
+    icon: "text-muted",
     path: <path d="M12 3v12m0 0-4-4m4 4 4-4M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2" />,
   },
   ai: {
     label: "AI",
-    card: "border-cyan-600/40 bg-cyan-500/[0.06]",
-    icon: "text-cyan-700",
+    card: "border-primary/40 bg-primary/[0.06]",
+    icon: "text-primary",
     path: (
       <path d="M12 3l1.8 4.7L18.5 9.5l-4.7 1.8L12 16l-1.8-4.7L5.5 9.5l4.7-1.8zM19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z" />
     ),
   },
   decision: {
     label: "Decision",
-    card: "border-lavender-300 bg-lavender-50",
-    icon: "text-plum-600",
+    card: "border-secondary/45 bg-accent-violet/8",
+    icon: "text-primary",
     path: <path d="M12 2 22 12 12 22 2 12z" />,
   },
   action: {
     label: "Action",
-    card: "border-plum-200 bg-plum-50",
-    icon: "text-plum-600",
+    card: "border-primary/30 bg-accent-blue/8",
+    icon: "text-primary",
     path: <path d="M6 4l14 8-14 8z" />,
   },
   store: {
     label: "Data store",
-    card: "border-neutral-300 bg-neutral-100",
-    icon: "text-neutral-600",
+    card: "border-outline-variant bg-surface-container",
+    icon: "text-muted",
     path: (
       <>
         <ellipse cx="12" cy="5" rx="8" ry="3" />
@@ -47,8 +47,8 @@ const kinds: Record<StepKind, { label: string; card: string; icon: string; path:
   },
   human: {
     label: "Human",
-    card: "border-gold-500/40 bg-neutral-0",
-    icon: "text-gold-700",
+    card: "border-tertiary/40 bg-card",
+    icon: "text-tertiary",
     path: (
       <>
         <circle cx="12" cy="7" r="4" />
@@ -58,8 +58,8 @@ const kinds: Record<StepKind, { label: string; card: string; icon: string; path:
   },
   output: {
     label: "Output",
-    card: "border-success/40 bg-success/[0.06]",
-    icon: "text-success",
+    card: "border-primary/40 bg-primary/[0.06]",
+    icon: "text-primary",
     path: <path d="M20 6 9 17l-5-5" />,
   },
 };
@@ -83,26 +83,26 @@ function StepCard({ step, n }: { step: DiagramStep; n: number }) {
         >
           {k.path}
         </svg>
-        <span className="font-mono text-[10px] font-semibold tracking-[0.12em] uppercase text-neutral-500 whitespace-nowrap truncate">
+        <span className="font-mono text-[10px] font-semibold tracking-[0.12em] uppercase text-muted whitespace-nowrap truncate">
           {n}. {k.label}
         </span>
       </div>
-      <p className="text-[14.5px] font-semibold leading-snug text-neutral-900">{step.label}</p>
-      {step.detail && <p className="text-[13px] leading-relaxed text-neutral-600">{step.detail}</p>}
+      <p className="text-[14.5px] font-semibold leading-snug text-ink">{step.label}</p>
+      {step.detail && <p className="text-[13px] leading-relaxed text-muted">{step.detail}</p>}
       {(step.metric || step.after) && (
         <div className="mt-auto pt-1 flex flex-wrap items-center gap-1.5">
           {step.metric && (
-            <span className="font-mono text-[11.5px] font-semibold text-cyan-700 bg-neutral-0 border border-neutral-200 rounded px-1.5 py-0.5 whitespace-nowrap">
+            <span className="font-mono text-[11.5px] font-semibold text-primary bg-card border border-line rounded px-1.5 py-0.5 whitespace-nowrap">
               {step.metric}
             </span>
           )}
           {step.after && (
-            <span className="font-mono text-[11.5px] bg-neutral-0 border border-neutral-200 rounded px-1.5 py-0.5 whitespace-nowrap">
+            <span className="font-mono text-[11.5px] bg-card border border-line rounded px-1.5 py-0.5 whitespace-nowrap">
               {step.before && (
-                <span className="text-neutral-500 line-through decoration-neutral-400">{step.before}</span>
+                <span className="text-muted line-through decoration-outline">{step.before}</span>
               )}
-              {step.before && <span className="text-neutral-400"> → </span>}
-              <span className="font-semibold text-success">{step.after}</span>
+              {step.before && <span className="text-outline"> → </span>}
+              <span className="font-semibold text-primary">{step.after}</span>
             </span>
           )}
         </div>
@@ -122,12 +122,12 @@ function Connector({ label, row }: { label?: string; row: boolean }) {
     >
       {label && (
         <span
-          className={`order-last font-mono text-[11px] leading-tight text-neutral-600 ${row ? "md:order-first md:text-center" : ""}`}
+          className={`order-last font-mono text-[11px] leading-tight text-muted ${row ? "md:order-first md:text-center" : ""}`}
         >
           {label}
         </span>
       )}
-      <span className={`flex flex-col items-center text-neutral-400 ${row ? "md:flex-row" : ""}`}>
+      <span className={`flex flex-col items-center text-outline ${row ? "md:flex-row" : ""}`}>
         <span className={`block w-px h-5 bg-current ${row ? "md:w-6 md:h-px" : ""}`} />
         <svg className={row ? "md:-rotate-90" : ""} width="10" height="10" viewBox="0 0 10 10" fill="currentColor">
           <path d="M0 2h10L5 9z" />
@@ -196,9 +196,9 @@ export default function FlowDiagram({
         </Fragment>
       ))}
       <li className="min-w-0" style={row ? { flexGrow: loop.length, flexBasis: 0 } : undefined}>
-        <div className="rounded-xl border-[1.5px] border-dashed border-plum-300 p-2.5 sm:p-3">
+        <div className="rounded-xl border-[1.5px] border-dashed border-primary/45 p-2.5 sm:p-3">
           <StepList steps={loop} offset={b - 1} row={row} />
-          <p className="mt-2.5 flex items-center gap-1.5 font-mono text-[11px] text-plum-700">
+          <p className="mt-2.5 flex items-center gap-1.5 font-mono text-[11px] text-primary">
             <svg
               width="13"
               height="13"

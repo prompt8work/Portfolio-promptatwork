@@ -47,7 +47,7 @@ export default async function VideosPage() {
     // tokens. Deliberately neutral, no glows: the thumbnails are the colour.
     // The board's bell, profile avatar and sidebar (Shorts, Playlists,
     // Bootcamps, Library) are left out until there's something behind them.
-    <PageTransition className="paw-page min-h-screen">
+    <PageTransition className="min-h-screen">
       {videosJsonLd && <JsonLd data={videosJsonLd} />}
       <Nav />
       <main>

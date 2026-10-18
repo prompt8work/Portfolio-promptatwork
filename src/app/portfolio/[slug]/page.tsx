@@ -62,7 +62,7 @@ export default async function PortfolioProfilePage({ params }: { params: Promise
   return (
     <PageTransition
       key={slug}
-      className="relative min-h-screen overflow-x-hidden paw-page bg-[radial-gradient(900px_500px_at_10%_-10%,color-mix(in_srgb,var(--accent-blue)_14%,transparent),transparent_60%),radial-gradient(900px_600px_at_95%_5%,color-mix(in_srgb,var(--accent-violet)_10%,transparent),transparent_60%)]"
+      className="relative min-h-screen overflow-x-hidden bg-[radial-gradient(900px_500px_at_10%_-10%,color-mix(in_srgb,var(--accent-blue)_14%,transparent),transparent_60%),radial-gradient(900px_600px_at_95%_5%,color-mix(in_srgb,var(--accent-violet)_10%,transparent),transparent_60%)]"
     >
       {profile.faq?.items?.length ? <JsonLd data={buildFaqJsonLd(profile.faq.items)} /> : null}
       <Nav />

@@ -2,20 +2,11 @@
 @import "./paw-tokens.css";
 @import "./paw-components.css";
 
-/* Redesign in progress (branch redesign-luminous-saas). Pages rebuilt on the
-   Luminous SaaS tokens wrap their content in .paw-page, which follows the
-   light/dark toggle. Pages not rebuilt yet keep the old warm-ivory palette
-   below (--legacy-*, plum, neutral, cyan) and stay light. Once every page is
-   rebuilt, move .paw-page's rules onto body and delete the legacy palette. */
-:root {
-  --legacy-background: #faf8f4;
-  --legacy-foreground: #443f36;
-}
-
+/* Luminous SaaS (design/promptatwork-redesign): every colour is a token
+   from paw-tokens.css, switched by <html data-theme> (dark default, light
+   via the toggle). The tokens are exposed to Tailwind below as bg-canvas,
+   text-ink, border-line, text-primary and so on. */
 @theme inline {
-  --color-background: var(--legacy-background);
-  --color-foreground: var(--legacy-foreground);
-
   /* Luminous SaaS tokens as Tailwind colours (bg-canvas, text-ink, border-line…).
      Values switch with data-theme; see paw-tokens.css. */
   --color-canvas: var(--canvas);
@@ -44,66 +35,14 @@
   --color-outline: var(--outline);
   --color-outline-variant: var(--outline-variant);
   --color-error-token: var(--error);
+  --color-on-surface: var(--on-surface);
+  --color-on-surface-variant: var(--on-surface-variant);
+  --color-on-primary-container: var(--on-primary-container);
 }
 
-/* Fonts and the legacy palette. Not `inline`, so their utilities read
-   var(--color-…) at runtime: inside .paw-page those variables are remapped
-   to Luminous SaaS tokens (see the bridge in @layer base below), which lets
-   shared components (diagrams, ContentSection, ArrowLink…) follow the
-   light/dark toggle on rebuilt pages while legacy pages keep these values. */
 @theme {
   --font-sans: var(--font-geist-sans);
-  --font-display: var(--font-playfair);
   --font-mono: var(--font-jetbrains-mono);
-
-  /* Plum — brand identity (from hero portrait) */
-  --color-plum-50: #f6f1f4;
-  --color-plum-100: #ede1e9;
-  --color-plum-200: #d8bfd0;
-  --color-plum-300: #be96b0;
-  --color-plum-400: #9c6b8c;
-  --color-plum-500: #7a4468;
-  --color-plum-600: #5b2a49;
-  --color-plum-700: #481f3a;
-  --color-plum-800: #35162a;
-  --color-plum-900: #240e1c;
-
-  /* Lavender — secondary, decorative only */
-  --color-lavender-50: #f5f4fc;
-  --color-lavender-100: #e9e7f8;
-  --color-lavender-200: #d2ccf0;
-  --color-lavender-300: #b6ade6;
-  --color-lavender-400: #9c91dc;
-  --color-lavender-500: #8b82d6;
-
-  /* Neutral — warm ivory/charcoal */
-  --color-neutral-0: #ffffff;
-  --color-neutral-50: #faf8f4;
-  --color-neutral-100: #f2efe9;
-  --color-neutral-200: #e6e1d7;
-  --color-neutral-300: #d2cbbb;
-  --color-neutral-400: #a99f8a;
-  --color-neutral-500: #7d7566;
-  --color-neutral-600: #5c5548;
-  --color-neutral-700: #443f36;
-  --color-neutral-800: #2e2a24;
-  --color-neutral-900: #1e1b17;
-
-  /* Gold — tertiary highlight, use sparingly */
-  --color-gold-400: #eac685;
-  --color-gold-500: #e3b563;
-  --color-gold-600: #c89442;
-  --color-gold-700: #a97730;
-
-  /* Cyan — AI/technical accent only, never in editorial sections */
-  --color-cyan-400: #4fd6e3;
-  --color-cyan-500: #0fb4c4;
-  --color-cyan-600: #0a8e9b;
-  --color-cyan-700: #086f79;
-
-  --color-success: #3a7d5c;
-  --color-warning: #c0862e;
-  --color-error: #b3403a;
 
   --radius-sm: 4px;
   --radius-md: 8px;
@@ -111,11 +50,11 @@
   --radius-xl: 16px;
   --radius-2xl: 20px;
 
-  --shadow-xs: 0 1px 2px rgba(30, 27, 23, 0.04);
-  --shadow-sm: 0 2px 6px rgba(30, 27, 23, 0.06);
-  --shadow-md: 0 8px 20px rgba(30, 27, 23, 0.08);
-  --shadow-lg: 0 16px 40px rgba(30, 27, 23, 0.1);
-  --shadow-glow-cyan: 0 0 24px rgba(15, 180, 196, 0.25);
+  /* Depth comes from tinted glows, not weight (design-system README). */
+  --shadow-xs: none;
+  --shadow-sm: none;
+  --shadow-md: var(--elevation-glass);
+  --shadow-lg: var(--glow-md);
 }
 
 /* @layer base: Tailwind's utilities are generated inside @layer utilities.
@@ -125,92 +64,19 @@
    override them. */
 @layer base {
   body {
-    background: var(--legacy-background);
-    color: var(--legacy-foreground);
+    background: var(--canvas);
+    color: var(--text-primary);
     font-family: var(--font-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    -webkit-font-smoothing: antialiased;
   }
 
-  a {
-    color: var(--color-plum-600);
+  a,
+  a:hover {
+    color: inherit;
     text-decoration: none;
   }
 
-  a:hover {
-    color: var(--color-cyan-700);
-  }
-
-  /* Rebuilt pages: token colours, Geist, and links that inherit their colour. */
-  .paw-page {
-    background: var(--canvas);
-    color: var(--text-primary);
-    font-family: var(--font-sans);
-    -webkit-font-smoothing: antialiased;
-  }
-  .paw-page a,
-  .paw-page a:hover {
-    color: inherit;
-  }
-
-  /* Bridge: legacy palette → tokens, only inside rebuilt pages. Neutral
-     maps by role (surface → line → secondary text → primary text), plum and
-     cyan to the blue accent, lavender to violet, gold to the warm note.
-     Delete with the legacy palette once every page is rebuilt. */
-  .paw-page {
-    --font-display: var(--font-geist-sans);
-
-    --color-neutral-0: var(--surface-card);
-    --color-neutral-50: var(--canvas);
-    --color-neutral-100: var(--surface-container);
-    --color-neutral-200: var(--border-subtle);
-    --color-neutral-300: var(--outline-variant);
-    --color-neutral-400: var(--outline);
-    --color-neutral-500: var(--text-secondary);
-    --color-neutral-600: var(--text-secondary);
-    --color-neutral-700: var(--on-surface-variant);
-    --color-neutral-800: var(--on-surface);
-    --color-neutral-900: var(--text-primary);
-
-    --color-plum-50: color-mix(in srgb, var(--accent-blue) 8%, transparent);
-    --color-plum-100: color-mix(in srgb, var(--accent-blue) 14%, transparent);
-    --color-plum-200: color-mix(in srgb, var(--primary) 30%, transparent);
-    --color-plum-300: color-mix(in srgb, var(--primary) 45%, transparent);
-    --color-plum-400: color-mix(in srgb, var(--primary) 70%, transparent);
-    --color-plum-500: var(--primary);
-    --color-plum-600: var(--primary);
-    --color-plum-700: var(--primary);
-    --color-plum-800: var(--on-primary-container);
-    --color-plum-900: var(--on-primary-container);
-
-    --color-lavender-50: color-mix(in srgb, var(--accent-violet) 8%, transparent);
-    --color-lavender-100: color-mix(in srgb, var(--accent-violet) 14%, transparent);
-    --color-lavender-200: color-mix(in srgb, var(--secondary) 30%, transparent);
-    --color-lavender-300: color-mix(in srgb, var(--secondary) 45%, transparent);
-    --color-lavender-400: var(--secondary);
-    --color-lavender-500: var(--secondary);
-
-    --color-gold-400: var(--tertiary);
-    --color-gold-500: var(--tertiary);
-    --color-gold-600: var(--tertiary);
-    --color-gold-700: var(--tertiary);
-
-    --color-cyan-50: color-mix(in srgb, var(--accent-blue) 10%, transparent);
-    --color-cyan-400: var(--primary);
-    --color-cyan-500: var(--primary);
-    --color-cyan-600: var(--primary);
-    --color-cyan-700: var(--primary);
-    --color-cyan-800: var(--primary);
-
-    --color-success: var(--primary);
-    --color-warning: var(--tertiary);
-    --color-error: var(--error);
-
-    --shadow-xs: none;
-    --shadow-sm: none;
-    --shadow-md: var(--elevation-glass);
-    --shadow-lg: var(--glow-md);
-    --shadow-glow-cyan: var(--glow-sm);
-  }
-  .paw-page :focus-visible {
+  :focus-visible {
     outline: 2px solid var(--focus-ring);
     outline-offset: 2px;
   }
@@ -320,15 +186,13 @@
     pointer-events: none;
     opacity: 0;
     box-shadow:
-      0 0 0 1px var(--color-plum-300),
-      0 0 20px -4px color-mix(in srgb, var(--color-plum-400) 45%, transparent),
-      var(--shadow-lg);
+      var(--glow-md);
     transition: opacity var(--motion-hover) var(--motion-ease);
   }
   .motion-card[data-tone="dark"]::after {
     box-shadow:
-      0 0 0 1px var(--color-plum-400),
-      0 0 24px -4px color-mix(in srgb, var(--color-plum-400) 60%, transparent),
+      0 0 0 1px color-mix(in srgb, var(--accent-violet) 60%, transparent),
+      0 0 24px -4px color-mix(in srgb, var(--accent-violet) 40%, transparent),
       0 16px 40px rgba(0, 0, 0, 0.35);
   }
   .motion-card:hover {
@@ -400,7 +264,7 @@
     position: absolute;
     inset: 0;
     z-index: -1;
-    background: var(--color-plum-100);
+    background: color-mix(in srgb, var(--accent-blue) 14%, transparent);
     transform: translateY(101%);
     transition: transform var(--motion-hover) var(--motion-ease);
   }
@@ -408,14 +272,14 @@
     transform: translateY(0);
   }
   .motion-chip:hover {
-    color: var(--color-plum-700);
+    color: var(--primary);
   }
   .motion-chip[data-active="true"]::before {
     display: none;
   }
   .motion-chip[data-active="true"],
   .motion-chip[data-active="true"]:hover {
-    color: var(--color-neutral-0);
+    color: var(--canvas);
   }
 
   /* --- Form fields (floating label) ------------------------------------ */
@@ -428,23 +292,23 @@
     line-height: 1.25rem;
     padding: 1.4rem 0.875rem 0.55rem;
     border-radius: 0.5rem;
-    border: 1px solid var(--color-neutral-300);
-    background: var(--color-neutral-50);
-    color: var(--color-neutral-900);
+    border: 1px solid var(--border-subtle);
+    background: var(--canvas);
+    color: var(--text-primary);
     outline: none;
   }
   textarea.field-control {
     resize: vertical;
   }
   .field-control:focus {
-    border-color: var(--color-plum-400);
-    box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-plum-300) 35%, transparent);
+    border-color: var(--accent-blue);
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent-blue) 20%, transparent);
   }
   .field-control:disabled {
     opacity: 0.6;
   }
   .field[data-invalid] .field-control {
-    border-color: var(--color-error);
+    border-color: var(--error);
   }
   .field-label {
     position: absolute;
@@ -452,7 +316,7 @@
     top: 0.95rem;
     font-size: 0.875rem;
     line-height: 1.25rem;
-    color: var(--color-neutral-500);
+    color: var(--text-secondary);
     pointer-events: none;
     transform-origin: left top;
     transition: transform var(--motion-hover) var(--motion-ease);
@@ -463,7 +327,7 @@
     transform: translateY(var(--motion-label-float)) scale(var(--motion-label-scale));
   }
   .field-control:focus + .field-label {
-    color: var(--color-plum-600);
+    color: var(--primary);
   }
   /* --- Home hero ---------------------------------------------------------- */
   .motion-curtain {

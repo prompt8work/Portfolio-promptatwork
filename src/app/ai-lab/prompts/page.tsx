@@ -47,7 +47,7 @@ export default async function PromptsPage() {
               href={`/ai-lab/prompts/${p.slug}`}
               cta="View and copy the prompt"
             >
-              {p.purpose && <p className="text-[15.5px] leading-[1.75] text-neutral-700">{p.purpose}</p>}
+              {p.purpose && <p className="text-[15.5px] leading-[1.75] text-on-surface-variant">{p.purpose}</p>}
             </DocsEntry>
           ))}
         </div>

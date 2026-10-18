@@ -20,7 +20,7 @@ export default function BlogCard({ post }: { post: BlogCardData }) {
   return (
     <MotionCard
       href={`/blog/${post.slug}`}
-      className="group h-full bg-neutral-0 border border-neutral-200 rounded-2xl flex flex-col overflow-hidden"
+      className="group h-full bg-card border border-line rounded-2xl flex flex-col overflow-hidden"
     >
       {post.coverImage ? (
         <Morph name={morphName.blogCover(post.slug)}>
@@ -46,15 +46,15 @@ export default function BlogCard({ post }: { post: BlogCardData }) {
       <div className="p-6 flex flex-col gap-3">
         <div className="flex items-center gap-2 flex-wrap">
           {post.category && <Tag variant="plum">{post.category}</Tag>}
-          {post.readingTime && <span className="text-xs text-neutral-600">{post.readingTime}</span>}
+          {post.readingTime && <span className="text-xs text-muted">{post.readingTime}</span>}
         </div>
         <Morph name={morphName.blogTitle(post.slug)}>
-          <h2 className="font-display text-xl font-semibold text-neutral-900 group-hover:text-plum-700 self-start">
+          <h2 className="text-xl font-semibold text-ink group-hover:text-primary self-start">
             {post.title}
           </h2>
         </Morph>
-        <p className="text-sm text-neutral-600 leading-relaxed">{post.excerpt}</p>
-        <span className="text-xs text-neutral-600">
+        <p className="text-sm text-muted leading-relaxed">{post.excerpt}</p>
+        <span className="text-xs text-muted">
           {new Date(post.publishedAt).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
         </span>
       </div>

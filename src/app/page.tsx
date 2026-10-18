@@ -26,11 +26,9 @@ export const metadata: Metadata = buildMetadata({
 
 export default function Home() {
   return (
-    // paw-page: rebuilt on the Luminous SaaS tokens, so it follows the
-    // light/dark toggle (globals.css). Section order follows the redesign's
-    // Hub boards; the Downloadable Notes and Newsletter boards are left out
+    // Section order follows the redesign's Hub boards; the Downloadable Notes and Newsletter boards are left out
     // until real notes and a newsletter provider exist.
-    <PageTransition className="paw-page min-h-screen">
+    <PageTransition className="min-h-screen">
       <JsonLd data={homeJsonLd} />
       <Nav />
       <main>

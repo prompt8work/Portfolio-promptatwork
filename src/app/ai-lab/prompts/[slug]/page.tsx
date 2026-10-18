@@ -84,7 +84,7 @@ export default async function PromptDetailPage({ params }: { params: Promise<{ s
           <Diagrams items={prompt.diagrams} at="top" />
           <Reveal className="flex flex-col gap-3">
             <BlockLabel>Prompt</BlockLabel>
-            <pre className="whitespace-pre-wrap font-mono text-[13.5px] leading-relaxed text-neutral-800 bg-neutral-0 border border-neutral-200 rounded-xl p-5">
+            <pre className="whitespace-pre-wrap font-mono text-[13.5px] leading-relaxed text-on-surface bg-card border border-line rounded-xl p-5">
               {prompt.prompt}
             </pre>
             <CopyPromptButton text={prompt.prompt} />

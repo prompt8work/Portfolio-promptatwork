@@ -23,21 +23,21 @@ export default function DocsPrevNext() {
   const scope = series ? " IN THIS PROJECT" : "";
 
   const card =
-    "motion-btn flex-1 min-w-[200px] rounded-xl border border-neutral-200 bg-neutral-0 px-5 py-4 hover:border-plum-300";
+    "motion-btn flex-1 min-w-[200px] rounded-xl border border-line bg-card px-5 py-4 hover:border-primary/45";
   return (
-    <nav aria-label="Previous and next" className="mt-16 pt-8 border-t border-neutral-200 flex flex-wrap gap-4">
+    <nav aria-label="Previous and next" className="mt-16 pt-8 border-t border-line flex flex-wrap gap-4">
       {prev ? (
         <Link href={prev.href} className={card}>
-          <span className="block font-mono text-[10.5px] tracking-[0.12em] text-neutral-500">← PREVIOUS{scope}</span>
-          <span className="block mt-1 text-[15px] font-medium text-neutral-900">{prev.title}</span>
+          <span className="block font-mono text-[10.5px] tracking-[0.12em] text-muted">← PREVIOUS{scope}</span>
+          <span className="block mt-1 text-[15px] font-medium text-ink">{prev.title}</span>
         </Link>
       ) : (
         <span className="flex-1" />
       )}
       {next && (
         <Link href={next.href} className={`${card} text-right`}>
-          <span className="block font-mono text-[10.5px] tracking-[0.12em] text-neutral-500">NEXT{scope} →</span>
-          <span className="block mt-1 text-[15px] font-medium text-neutral-900">{next.title}</span>
+          <span className="block font-mono text-[10.5px] tracking-[0.12em] text-muted">NEXT{scope} →</span>
+          <span className="block mt-1 text-[15px] font-medium text-ink">{next.title}</span>
         </Link>
       )}
     </nav>

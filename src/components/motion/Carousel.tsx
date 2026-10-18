@@ -56,7 +56,7 @@ export default function Carousel({
 
   if (count === 0) return null;
 
-  const dotBase = tone === "dark" ? "bg-white/20" : "bg-neutral-300";
+  const dotBase = tone === "dark" ? "bg-white/20" : "bg-outline-variant";
 
   return (
     <div
@@ -116,7 +116,7 @@ export default function Carousel({
               {i === index && (
                 <motion.span
                   style={{ scaleX: auto ? progress : 1 }}
-                  className="absolute inset-0 origin-left rounded-full bg-plum-600"
+                  className="absolute inset-0 origin-left rounded-full bg-primary"
                 />
               )}
             </button>

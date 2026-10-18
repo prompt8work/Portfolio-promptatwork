@@ -67,5 +67,5 @@ export default function DiagramBody({ body, diagrams: items }: { body: string; d
 }
 
 function Prose({ children }: { children: string }) {
-  return <Reveal className="text-[15.5px] leading-relaxed text-neutral-700 whitespace-pre-wrap">{children}</Reveal>;
+  return <Reveal className="text-[15.5px] leading-relaxed text-on-surface-variant whitespace-pre-wrap">{children}</Reveal>;
 }

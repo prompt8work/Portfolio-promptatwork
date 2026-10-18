@@ -13,7 +13,7 @@ export default function TestimonialForm() {
 
   if (state.status === "success") {
     return (
-      <div className="bg-neutral-0 border border-neutral-200 rounded-2xl p-8">
+      <div className="bg-card border border-line rounded-2xl p-8">
         <FormSuccess message={state.message} />
       </div>
     );
@@ -22,7 +22,7 @@ export default function TestimonialForm() {
   return (
     <form
       action={formAction}
-      className="bg-neutral-0 border border-neutral-200 rounded-2xl p-8 flex flex-col gap-[18px]"
+      className="bg-card border border-line rounded-2xl p-8 flex flex-col gap-[18px]"
       noValidate
     >
       {/* Honeypot — same pattern as CommentForm/Contact/BatchCard. */}
@@ -88,7 +88,7 @@ export default function TestimonialForm() {
         error={state.fieldErrors?.quote}
       />
 
-      <p className="text-xs text-neutral-600">
+      <p className="text-xs text-muted">
         Submitted testimonials are reviewed before they appear on the site — yours won&apos;t show up immediately.
       </p>
 
@@ -101,7 +101,7 @@ export default function TestimonialForm() {
       </button>
 
       {state.status === "error" && (
-        <p role="alert" className="text-sm text-error font-medium">
+        <p role="alert" className="text-sm text-error-token font-medium">
           {state.message}
         </p>
       )}

@@ -52,18 +52,18 @@ export default async function EngineeringPage() {
               (a, b) => evidenceRank.indexOf(a._type) - evidenceRank.indexOf(b._type),
             );
             return (
-              <Reveal key={s.id} className="py-8 first:pt-0 border-t border-neutral-200 first:border-t-0">
+              <Reveal key={s.id} className="py-8 first:pt-0 border-t border-line first:border-t-0">
                 <section className="flex flex-col gap-3">
-                  <span className="font-mono text-[10.5px] tracking-[0.14em] font-semibold text-neutral-500">
+                  <span className="font-mono text-[10.5px] tracking-[0.14em] font-semibold text-muted">
                     {`${String(i + 1).padStart(2, "0")} — ${s.title.toUpperCase()}`}
                   </span>
                   <h2
                     id={s.id}
-                    className="scroll-mt-28 font-sans text-[21px] sm:text-[22px] font-semibold tracking-tight text-neutral-900"
+                    className="scroll-mt-28 font-sans text-[21px] sm:text-[22px] font-semibold tracking-tight text-ink"
                   >
                     {s.title}
                   </h2>
-                  <p className="text-[15.5px] leading-[1.75] text-neutral-700">{s.description}</p>
+                  <p className="text-[15.5px] leading-[1.75] text-on-surface-variant">{s.description}</p>
                   {s.items && s.items.length > 0 && (
                     <div className="flex flex-wrap gap-1.5">
                       {s.items.map((item) => (

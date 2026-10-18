@@ -91,8 +91,8 @@ export default async function TrainingPage() {
               Cohort courses
             </h2>
             {courses.length === 0 ? (
-              <div className="border border-neutral-200 rounded-2xl p-8 text-center bg-neutral-0">
-                <p className="text-neutral-600">No courses open for registration right now — check back soon.</p>
+              <div className="border border-line rounded-2xl p-8 text-center bg-card">
+                <p className="text-muted">No courses open for registration right now — check back soon.</p>
               </div>
             ) : (
               <StaggerGrid className="grid grid-cols-1 sm:grid-cols-2 gap-5">

@@ -135,11 +135,11 @@ function WorkshopPage({ t }: { t: Training }) {
         <DocsHeader
           eyebrow={
             <>
-              <Link href="/training" className="text-cyan-700 hover:text-cyan-900">
+              <Link href="/training" className="text-primary hover:text-primary">
                 Training
               </Link>{" "}
               /{" "}
-              <Link href={trainingCategoryPath(t.category)} className="text-cyan-700 hover:text-cyan-900">
+              <Link href={trainingCategoryPath(t.category)} className="text-primary hover:text-primary">
                 {t.category}
               </Link>
             </>
@@ -182,10 +182,10 @@ function WorkshopPage({ t }: { t: Training }) {
                 <ol className="flex flex-col gap-3">
                   {t.modules.map((m, i) => (
                     <li key={m.title} className="flex gap-3">
-                      <span className="font-mono text-[11px] text-neutral-400 pt-1">{String(i + 1).padStart(2, "0")}</span>
+                      <span className="font-mono text-[11px] text-outline pt-1">{String(i + 1).padStart(2, "0")}</span>
                       <span>
-                        <span className="block text-[15.5px] font-semibold text-neutral-900">{m.title}</span>
-                        {m.description && <span className="block text-[15px] leading-relaxed text-neutral-700">{m.description}</span>}
+                        <span className="block text-[15.5px] font-semibold text-ink">{m.title}</span>
+                        {m.description && <span className="block text-[15px] leading-relaxed text-on-surface-variant">{m.description}</span>}
                       </span>
                     </li>
                   ))}
@@ -206,10 +206,10 @@ function WorkshopPage({ t }: { t: Training }) {
                 <ol className="flex flex-col gap-1.5">
                   {more.map((o, i) => (
                     <li key={o.slug} className="flex gap-3 text-[15px]">
-                      <span className="font-mono text-[11px] text-neutral-400 pt-1">{String(i + 1).padStart(2, "0")}</span>
+                      <span className="font-mono text-[11px] text-outline pt-1">{String(i + 1).padStart(2, "0")}</span>
                       <Link
                         href={trainingPath(o.slug)}
-                        className="text-neutral-900 underline decoration-neutral-300 underline-offset-4 hover:decoration-cyan-600"
+                        className="text-ink underline decoration-outline-variant underline-offset-4 hover:decoration-primary"
                       >
                         {o.title}
                       </Link>
@@ -269,7 +269,7 @@ async function CoursePage({ course }: { course: CourseDetail }) {
           description={course.description}
         >
           {(course.duration || course.instructor || course.audience) && (
-            <div className="flex gap-5 flex-wrap text-sm text-neutral-500">
+            <div className="flex gap-5 flex-wrap text-sm text-muted">
               {course.duration && <span>{course.duration}</span>}
               {course.instructor && <span>Instructor: {course.instructor}</span>}
               {course.audience && <span>{course.audience}</span>}
@@ -285,8 +285,8 @@ async function CoursePage({ course }: { course: CourseDetail }) {
               </Reveal>
               <StaggerGrid as="ul" className="flex flex-col gap-1.5">
                 {course.learningOutcomes.map((o) => (
-                  <StaggerItem as="li" key={o} className="flex items-start text-sm text-neutral-700">
-                    <span className="text-plum-600 mr-2 mt-0.5">▸</span>
+                  <StaggerItem as="li" key={o} className="flex items-start text-sm text-on-surface-variant">
+                    <span className="text-primary mr-2 mt-0.5">▸</span>
                     <span>{o}</span>
                   </StaggerItem>
                 ))}
@@ -317,7 +317,7 @@ async function CoursePage({ course }: { course: CourseDetail }) {
             </Reveal>
             {batches.length === 0 ? (
               <Reveal>
-                <p className="text-sm text-neutral-600">No batches scheduled right now — check back soon.</p>
+                <p className="text-sm text-muted">No batches scheduled right now — check back soon.</p>
               </Reveal>
             ) : (
               <Timeline>
@@ -343,7 +343,7 @@ async function CoursePage({ course }: { course: CourseDetail }) {
               <Reveal>
                 <BlockLabel>Testimonials</BlockLabel>
               </Reveal>
-              <Reveal className="bg-plum-100 rounded-2xl px-5 sm:px-10 py-10">
+              <Reveal className="bg-accent-blue/14 rounded-2xl px-5 sm:px-10 py-10">
                 <Carousel
                   label="Course testimonials"
                   slides={course.testimonials.map((t) => (

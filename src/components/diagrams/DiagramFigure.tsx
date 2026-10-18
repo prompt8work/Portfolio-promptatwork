@@ -13,7 +13,7 @@ const eyebrow: Record<Diagram["kind"], string> = {
 
 const grid = {
   backgroundImage:
-    "linear-gradient(var(--color-neutral-100) 1px, transparent 1px), linear-gradient(90deg, var(--color-neutral-100) 1px, transparent 1px)",
+    "linear-gradient(var(--surface-container) 1px, transparent 1px), linear-gradient(90deg, var(--surface-container) 1px, transparent 1px)",
   backgroundSize: "32px 32px",
 };
 
@@ -37,12 +37,12 @@ export function DiagramFigure({ d }: { d: Diagram }) {
 
   return (
     <Reveal>
-      <figure className="rounded-xl border border-neutral-200 bg-neutral-0 overflow-hidden">
-        <div className="px-4 sm:px-6 pt-4 pb-3 border-b border-neutral-100">
-          <span className="font-mono text-[10px] font-semibold tracking-[0.16em] text-cyan-700">{eyebrow[d.kind]}</span>
+      <figure className="rounded-xl border border-line bg-card overflow-hidden">
+        <div className="px-4 sm:px-6 pt-4 pb-3 border-b border-surface-container">
+          <span className="font-mono text-[10px] font-semibold tracking-[0.16em] text-primary">{eyebrow[d.kind]}</span>
           <h3
             id={`diagram-${d.key}`}
-            className="mt-1 scroll-mt-28 text-[16.5px] font-semibold leading-snug text-neutral-900"
+            className="mt-1 scroll-mt-28 text-[16.5px] font-semibold leading-snug text-ink"
           >
             {d.title}
           </h3>
@@ -51,7 +51,7 @@ export function DiagramFigure({ d }: { d: Diagram }) {
           {body}
         </div>
         {d.caption && (
-          <figcaption className="border-t border-neutral-200 px-4 sm:px-6 py-3 text-[14px] leading-relaxed text-neutral-600">
+          <figcaption className="border-t border-line px-4 sm:px-6 py-3 text-[14px] leading-relaxed text-muted">
             {d.caption}
           </figcaption>
         )}

@@ -81,7 +81,7 @@ export default async function ProjectDetailPage({ params }: PageProps<"/ai-lab/w
           {project.stats && project.stats.length > 0 && (
             <div className="flex gap-x-5 gap-y-1 flex-wrap">
               {project.stats.map((s) => (
-                <CountUp key={s} value={s} className="font-mono text-[13px] text-cyan-700 font-semibold" />
+                <CountUp key={s} value={s} className="font-mono text-[13px] text-primary font-semibold" />
               ))}
             </div>
           )}
@@ -130,9 +130,9 @@ export default async function ProjectDetailPage({ params }: PageProps<"/ai-lab/w
           <Diagrams items={project.diagrams} at="futureScope" />
 
           {project.confidentialityNote && (
-            <Reveal className="bg-neutral-100 border border-neutral-200 rounded-xl p-5">
-              <p className="text-[13.5px] text-neutral-600 leading-relaxed">
-                <span className="font-semibold text-neutral-800">Confidentiality note: </span>
+            <Reveal className="bg-surface-container border border-line rounded-xl p-5">
+              <p className="text-[13.5px] text-muted leading-relaxed">
+                <span className="font-semibold text-on-surface">Confidentiality note: </span>
                 {project.confidentialityNote}
               </p>
             </Reveal>

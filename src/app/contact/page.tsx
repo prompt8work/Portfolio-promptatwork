@@ -14,8 +14,7 @@ export const metadata: Metadata = buildMetadata({
 
 export default function ContactPage() {
   return (
-    // paw-page: rebuilt on the Luminous SaaS tokens (follows the light/dark toggle).
-    <PageTransition className="paw-page min-h-screen">
+    <PageTransition className="min-h-screen">
       <Nav />
       <main>
         <Contact />

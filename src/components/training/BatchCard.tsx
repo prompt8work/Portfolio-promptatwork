@@ -43,11 +43,11 @@ export default function BatchCard({
   const isOpen = batch.status === "OPEN" && seatsLeft > 0;
 
   return (
-    <MotionCard className="bg-neutral-0 border border-neutral-200 rounded-2xl p-6 flex flex-col gap-4">
+    <MotionCard className="bg-card border border-line rounded-2xl p-6 flex flex-col gap-4">
       <div className="flex items-start justify-between gap-4 flex-wrap">
         <div className="flex flex-col gap-1">
-          <h3 className="font-display text-lg font-semibold text-neutral-900">{batch.batchName}</h3>
-          <span className="text-sm text-neutral-600">
+          <h3 className="text-lg font-semibold text-ink">{batch.batchName}</h3>
+          <span className="text-sm text-muted">
             {formatDate(batch.startDate)}
             {batch.endDate ? ` – ${formatDate(batch.endDate)}` : ""}
             {batch.mode ? ` · ${batch.mode}` : ""}
@@ -55,7 +55,7 @@ export default function BatchCard({
         </div>
         <span
           className={`font-mono text-[11px] font-semibold px-2.5 py-1 rounded-full self-start ${
-            isOpen ? "bg-success/10 text-success" : "bg-neutral-100 text-neutral-600"
+            isOpen ? "bg-primary/10 text-primary" : "bg-surface-container text-muted"
           }`}
         >
           {batch.status === "OPEN" ? isOpen ? <CountUp value={`${seatsLeft} SEATS LEFT`} /> : "FULL" : batch.status}
@@ -83,7 +83,7 @@ export default function BatchCard({
       )}
 
       {isOpen && open && state.status !== "success" && (
-        <form action={formAction} className="flex flex-col gap-4 pt-2 border-t border-neutral-100" noValidate>
+        <form action={formAction} className="flex flex-col gap-4 pt-2 border-t border-surface-container" noValidate>
           <input type="hidden" name="batchId" value={batch.id} />
           <input type="hidden" name="trainingId" value={trainingId} />
 
@@ -157,14 +157,14 @@ export default function BatchCard({
               type="button"
               onClick={() => setOpen(false)}
               disabled={isPending}
-              className="text-sm text-neutral-600 hover:text-neutral-700"
+              className="text-sm text-muted hover:text-on-surface-variant"
             >
               Cancel
             </button>
           </div>
 
           {state.status === "error" && (
-            <p role="alert" className="text-xs text-error">
+            <p role="alert" className="text-xs text-error-token">
               {state.message}
             </p>
           )}
@@ -172,7 +172,7 @@ export default function BatchCard({
       )}
 
       {state.status === "success" && (
-        <div className="pt-2 border-t border-neutral-100">
+        <div className="pt-2 border-t border-surface-container">
           <FormSuccess message={state.message} />
         </div>
       )}

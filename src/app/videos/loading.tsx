@@ -2,7 +2,7 @@
 // skeleton cards in the grid's shape while the video list is fetched.
 export default function Loading() {
   return (
-    <div className="paw-page min-h-screen" aria-busy="true" aria-label="Loading videos">
+    <div className="min-h-screen" aria-busy="true" aria-label="Loading videos">
       <div className="max-w-[1440px] mx-auto px-4 sm:px-8 pt-[124px] pb-20">
         <div className="mx-auto h-11 max-w-[640px] rounded-full bg-surface-container-highest" />
         <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-4 gap-y-10" aria-hidden="true">

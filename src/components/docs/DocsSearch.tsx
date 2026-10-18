@@ -82,7 +82,7 @@ export default function DocsSearch({ compact = false }: { compact?: boolean }) {
           type="button"
           onClick={openSearch}
           aria-label={`Search ${label}`}
-          className="w-9 h-9 flex items-center justify-center rounded-lg border border-neutral-300 text-neutral-600"
+          className="w-9 h-9 flex items-center justify-center rounded-lg border border-outline-variant text-muted"
         >
           <SearchIcon />
         </button>
@@ -90,11 +90,11 @@ export default function DocsSearch({ compact = false }: { compact?: boolean }) {
         <button
           type="button"
           onClick={openSearch}
-          className="w-full h-10 flex items-center gap-2.5 rounded-[10px] border border-neutral-200 bg-neutral-100 px-3 text-sm text-neutral-500 hover:border-neutral-400"
+          className="w-full h-10 flex items-center gap-2.5 rounded-[10px] border border-line bg-surface-container px-3 text-sm text-muted hover:border-outline"
         >
           <SearchIcon />
           <span>Search the {label === "AI Lab" ? "lab" : label.toLowerCase()}</span>
-          <kbd className="ml-auto font-mono text-[10.5px] text-neutral-400 border border-neutral-200 rounded px-1.5 py-0.5">
+          <kbd className="ml-auto font-mono text-[10.5px] text-outline border border-line rounded px-1.5 py-0.5">
             ⌘K
           </kbd>
         </button>
@@ -113,8 +113,8 @@ export default function DocsSearch({ compact = false }: { compact?: boolean }) {
             className="absolute inset-0 bg-black/40"
             onClick={() => setOpen(false)}
           />
-          <div className="relative w-full max-w-[560px] rounded-xl border border-neutral-200 bg-neutral-0 shadow-lg overflow-hidden">
-            <div className="flex items-center gap-2.5 px-4 border-b border-neutral-200 text-neutral-500">
+          <div className="relative w-full max-w-[560px] rounded-xl border border-line bg-card shadow-lg overflow-hidden">
+            <div className="flex items-center gap-2.5 px-4 border-b border-line text-muted">
               <SearchIcon />
               <input
                 autoFocus
@@ -141,28 +141,28 @@ export default function DocsSearch({ compact = false }: { compact?: boolean }) {
                 aria-expanded="true"
                 aria-controls="docs-search-results"
                 aria-activedescendant={results[cursor] ? `docs-search-${cursor}` : undefined}
-                className="flex-1 py-3.5 text-[15px] text-neutral-900 placeholder:text-neutral-400 outline-none bg-transparent"
+                className="flex-1 py-3.5 text-[15px] text-ink placeholder:text-outline outline-none bg-transparent"
               />
-              <kbd className="font-mono text-[10.5px] text-neutral-400 border border-neutral-200 rounded px-1.5 py-0.5">
+              <kbd className="font-mono text-[10.5px] text-outline border border-line rounded px-1.5 py-0.5">
                 esc
               </kbd>
             </div>
             <ul id="docs-search-results" role="listbox" className="max-h-[50vh] overflow-y-auto p-2">
-              {results.length === 0 && <li className="px-3 py-6 text-center text-sm text-neutral-500">No matches.</li>}
+              {results.length === 0 && <li className="px-3 py-6 text-center text-sm text-muted">No matches.</li>}
               {results.map((r, i) => (
                 <li key={r.href} id={`docs-search-${i}`} role="option" aria-selected={i === cursor}>
                   <button
                     type="button"
                     onMouseEnter={() => setCursor(i)}
                     onClick={() => go(r.href)}
-                    className={`w-full text-left rounded-lg px-3 py-2.5 ${i === cursor ? "bg-plum-50" : ""}`}
+                    className={`w-full text-left rounded-lg px-3 py-2.5 ${i === cursor ? "bg-accent-blue/8" : ""}`}
                   >
-                    <span className="block font-mono text-[10.5px] tracking-[0.1em] uppercase text-cyan-700">
+                    <span className="block font-mono text-[10.5px] tracking-[0.1em] uppercase text-primary">
                       {r.group}
                     </span>
-                    <span className="block text-sm font-medium text-neutral-900">{r.title}</span>
+                    <span className="block text-sm font-medium text-ink">{r.title}</span>
                     {r.summary && (
-                      <span className="block text-xs text-neutral-500 line-clamp-1 mt-0.5">{r.summary}</span>
+                      <span className="block text-xs text-muted line-clamp-1 mt-0.5">{r.summary}</span>
                     )}
                   </button>
                 </li>

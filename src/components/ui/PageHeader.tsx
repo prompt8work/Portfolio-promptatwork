@@ -24,14 +24,14 @@ export default function PageHeader({
   titleMorph?: string;
   children?: ReactNode;
 }) {
-  const eyebrowColor = "text-plum-600";
-  const titleColor = "text-neutral-900";
-  const descColor = "text-neutral-600";
+  const eyebrowColor = "text-primary";
+  const titleColor = "text-ink";
+  const descColor = "text-muted";
 
   const h1 = (
     <WordReveal
       as="h1"
-      className={`font-display text-3xl sm:text-[42px] font-semibold leading-tight ${titleColor}`}
+      className={`text-3xl sm:text-[42px] font-semibold leading-tight ${titleColor}`}
     >
       {title}
     </WordReveal>
