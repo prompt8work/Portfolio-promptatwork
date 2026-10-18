@@ -10,6 +10,8 @@ const initialState: CommentFormState = { status: "idle", message: "" };
 export default function CommentForm({ contentId }: { contentId: string }) {
   const [state, formAction, isPending] = useActionState(submitComment, initialState);
 
+  const values = state.values ?? {};
+
   if (state.status === "success") return <FormSuccess message={state.message} />;
 
   return (
@@ -28,6 +30,7 @@ export default function CommentForm({ contentId }: { contentId: string }) {
           name="name"
           label="Name"
           autoComplete="name"
+          defaultValue={values.name}
           disabled={isPending}
           error={state.fieldErrors?.name}
         />
@@ -37,6 +40,7 @@ export default function CommentForm({ contentId }: { contentId: string }) {
           type="email"
           label="Email (not shown publicly)"
           autoComplete="email"
+          defaultValue={values.email}
           disabled={isPending}
           error={state.fieldErrors?.email}
         />
@@ -47,6 +51,7 @@ export default function CommentForm({ contentId }: { contentId: string }) {
         as="textarea"
         rows={3}
         label="Comment"
+        defaultValue={values.comment}
         disabled={isPending}
         error={state.fieldErrors?.comment}
       />
@@ -54,7 +59,7 @@ export default function CommentForm({ contentId }: { contentId: string }) {
       <button
         type="submit"
         disabled={isPending}
-        className="motion-btn self-start inline-flex items-center gap-2.5 bg-neutral-900 text-white text-sm font-semibold px-5 py-3 rounded-xl hover:bg-neutral-800 disabled:opacity-60"
+        className="paw-btn paw-btn--primary paw-btn--sm self-start"
       >
         {isPending ? "Submitting…" : "Submit Comment"}
       </button>

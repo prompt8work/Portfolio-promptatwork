@@ -26,13 +26,14 @@ type BlogListItem = {
   readingTime?: string;
   publishedAt: string;
   coverImage?: string;
+  tags?: string[];
 };
 
 export default async function BlogPage() {
   const posts: BlogListItem[] = await client.fetch(blogPostsQuery);
 
   return (
-    <PageTransition className="min-h-screen bg-neutral-50">
+    <PageTransition className="paw-page min-h-screen">
       <Nav />
       <main>
         <section className="w-full">

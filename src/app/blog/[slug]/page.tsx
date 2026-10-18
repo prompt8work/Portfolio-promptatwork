@@ -95,7 +95,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
   };
 
   return (
-    <PageTransition key={slug} className="min-h-screen bg-neutral-50">
+    <PageTransition key={slug} className="paw-page min-h-screen">
       <JsonLd data={articleJsonLd} />
       <JsonLd
         data={buildBreadcrumbJsonLd([
@@ -195,7 +195,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                 </StaggerGrid>
               )}
 
-              <Reveal className="bg-white border border-neutral-200 rounded-2xl p-6">
+              <Reveal className="bg-neutral-0 border border-neutral-200 rounded-2xl p-6">
                 <p className="text-xs text-neutral-600 mb-4">Comments are reviewed before they appear publicly.</p>
                 <CommentForm contentId={contentId} />
               </Reveal>
