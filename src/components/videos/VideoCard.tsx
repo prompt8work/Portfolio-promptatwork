@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import MotionCard, { MotionCardMedia } from "../motion/MotionCard";
+import { Play } from "lucide-react";
 
 export type VideoCardData = {
   slug: string;
@@ -10,31 +10,32 @@ export type VideoCardData = {
   thumbnailUrl?: string;
   description?: string;
   publishedAt?: string;
+  playlist?: string | null;
   externalUrl: string;
   externalId: string;
 };
 
-// Thumbnail only until clicked, then swap in a real embedded player — no
-// iframe loads on initial page render (Phase 6's own performance guidance:
-// "YouTube: thumbnails only, no embedded players on initial load, embed
-// on click"), so a page full of videos doesn't pay for N embedded players
-// nobody asked to play yet.
+// Luminous SaaS VideoCard (TV-Browse / TV-VideoStates boards): 16:9
+// thumbnail, channel avatar, two-line title, channel and date. Hover rings
+// the thumbnail in violet and shows the play button. The board's duration
+// badge and view counts are left out: the YouTube sync doesn't store them.
 //
-// timeZone: "UTC" on the date below isn't cosmetic — without it,
-// toLocaleDateString() formats in whatever OS timezone is running the
-// code, which differs between Vercel's server (UTC) and a visitor's
-// browser. Since this is a Client Component, that date re-renders during
-// hydration and a day-boundary timestamp can format to a different
-// calendar day server-side vs. client-side, which React treats as a
-// hydration mismatch (caught live on the deployed site, not in local dev
-// — production's stricter hydration check surfaced it, dev mode didn't).
+// Thumbnail only until clicked, then a real embedded player, so no iframe
+// loads on first render (Phase 6: "thumbnails only, embed on click").
+//
+// timeZone: "UTC" on the date isn't cosmetic: this is a Client Component,
+// and formatting in the OS timezone can render a different calendar day on
+// the server (UTC) and in the browser, which is a hydration mismatch.
 export default function VideoCard({ video }: { video: VideoCardData }) {
   const [playing, setPlaying] = useState(false);
+  const date = video.publishedAt
+    ? new Date(video.publishedAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric", timeZone: "UTC" })
+    : null;
 
   return (
-    <MotionCard className="h-full bg-white border border-neutral-200 rounded-2xl flex flex-col">
+    <article className="paw-video group">
       {playing ? (
-        <div className="relative w-full aspect-video bg-neutral-900 rounded-t-[inherit] overflow-hidden">
+        <div data-theme="dark" className="relative aspect-video rounded-2xl overflow-hidden bg-surface-container-lowest">
           <iframe
             src={`https://www.youtube.com/embed/${video.externalId}?autoplay=1`}
             title={video.title}
@@ -44,61 +45,40 @@ export default function VideoCard({ video }: { video: VideoCardData }) {
           />
         </div>
       ) : (
-        <MotionCardMedia
-          className="w-full aspect-video bg-neutral-900"
-          overlay={
-            <button
-              type="button"
-              onClick={() => setPlaying(true)}
-              aria-label={`Play ${video.title}`}
-              className="absolute inset-0 w-full h-full group cursor-pointer flex items-center justify-center"
-            >
-              <span className="motion-btn w-16 h-16 rounded-full bg-white/90 group-hover:bg-white flex items-center justify-center">
-                <svg
-                  width="22"
-                  height="22"
-                  viewBox="0 0 24 24"
-                  fill="currentColor"
-                  className="text-neutral-900 translate-x-0.5"
-                >
-                  <path d="M8 5v14l11-7z" />
-                </svg>
-              </span>
-            </button>
-          }
+        <button
+          type="button"
+          onClick={() => setPlaying(true)}
+          aria-label={`Play ${video.title}`}
+          data-theme="dark"
+          className="paw-thumb paw-thumb--blue block w-full cursor-pointer transition-[border-radius,box-shadow] duration-200 group-hover:rounded-xl group-hover:shadow-[0_0_0_2px_var(--accent-violet)] focus-visible:rounded-xl"
         >
           {video.thumbnailUrl && (
-            <Image
-              src={video.thumbnailUrl}
-              alt=""
-              fill
-              sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-              className="object-cover"
-            />
+            <Image src={video.thumbnailUrl} alt="" fill sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw" className="object-cover" />
           )}
-        </MotionCardMedia>
+          <span className="paw-thumb__play group-hover:opacity-100 group-focus-visible:opacity-100">
+            <span className="!w-12 !h-12">
+              <Play className="w-[18px] h-[18px] fill-current" aria-hidden="true" />
+            </span>
+          </span>
+        </button>
       )}
 
-      <div className="p-5 flex flex-col gap-2">
-        <a
-          href={video.externalUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="font-display text-[17px] font-semibold text-neutral-900 hover:text-plum-700 leading-snug"
-        >
-          {video.title}
-        </a>
-        {video.publishedAt && (
-          <span className="text-xs text-neutral-600">
-            {new Date(video.publishedAt).toLocaleDateString("en-US", {
-              year: "numeric",
-              month: "long",
-              day: "numeric",
-              timeZone: "UTC",
-            })}
-          </span>
-        )}
+      <div className="paw-video__row">
+        <Image src="/images/niharika-headshot.jpg" alt="" width={36} height={36} className="paw-avatar" />
+        <div className="min-w-0">
+          <h3 className="paw-video__title group-hover:text-primary transition-colors">
+            <a href={video.externalUrl} target="_blank" rel="noopener noreferrer" className="hover:underline">
+              {video.title}
+            </a>
+          </h3>
+          <div className="paw-video__channel">Niharika Dhande</div>
+          {date && (
+            <div className="paw-video__stats">
+              <time dateTime={video.publishedAt}>{date}</time>
+            </div>
+          )}
+        </div>
       </div>
-    </MotionCard>
+    </article>
   );
 }
