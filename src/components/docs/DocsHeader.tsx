@@ -56,6 +56,8 @@ export function DocsTag({ children }: { children: ReactNode }) {
 /**
  * A heading + summary + link row, used by every group page to list its
  * entries inline. Wrap a run of them in one element so first: applies.
+ * `media` (the entry's card image) sits beside the text from sm up and
+ * above it on phones.
  */
 export function DocsEntry({
   id,
@@ -64,6 +66,7 @@ export function DocsEntry({
   href,
   children,
   cta = "Read more",
+  media,
 }: {
   id: string;
   eyebrow?: ReactNode;
@@ -71,42 +74,51 @@ export function DocsEntry({
   href: string;
   children?: ReactNode;
   cta?: string;
+  media?: ReactNode;
 }) {
   return (
-    <section className="py-8 first:pt-0 border-t border-line first:border-t-0 flex flex-col gap-3">
-      {eyebrow && (
-        <span className="font-mono text-[10.5px] tracking-[0.14em] font-semibold text-muted uppercase">
-          {eyebrow}
-        </span>
-      )}
-      <h2
-        id={id}
-        className="scroll-mt-28 font-sans text-[21px] sm:text-[22px] font-semibold tracking-tight leading-snug"
-      >
-        <Link href={href} className="text-ink hover:text-primary">
-          {title}
+    <section className="py-8 first:pt-0 border-t border-line first:border-t-0 flex flex-col sm:flex-row-reverse sm:items-start gap-5 sm:gap-7">
+      {media && (
+        // Mouse shortcut only; the title link is the one keyboard and screen-reader users get.
+        <Link href={href} tabIndex={-1} aria-hidden className="block w-full sm:w-[220px] shrink-0">
+          {media}
         </Link>
-      </h2>
-      {children}
-      <Link
-        href={href}
-        className="motion-arrow self-start inline-flex items-center gap-1.5 text-[14px] font-semibold text-primary hover:text-primary"
-      >
-        {cta}
-        <svg
-          className="motion-arrow-icon"
-          width="12"
-          height="12"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2.2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
+      )}
+      <div className="flex-1 min-w-0 flex flex-col gap-3">
+        {eyebrow && (
+          <span className="font-mono text-[10.5px] tracking-[0.14em] font-semibold text-muted uppercase">
+            {eyebrow}
+          </span>
+        )}
+        <h2
+          id={id}
+          className="scroll-mt-28 font-sans text-[21px] sm:text-[22px] font-semibold tracking-tight leading-snug"
         >
-          <path d="M5 12h14M13 6l6 6-6 6" />
-        </svg>
-      </Link>
+          <Link href={href} className="text-ink hover:text-primary">
+            {title}
+          </Link>
+        </h2>
+        {children}
+        <Link
+          href={href}
+          className="motion-arrow self-start inline-flex items-center gap-1.5 text-[14px] font-semibold text-primary hover:text-primary"
+        >
+          {cta}
+          <svg
+            className="motion-arrow-icon"
+            width="12"
+            height="12"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path d="M5 12h14M13 6l6 6-6 6" />
+          </svg>
+        </Link>
+      </div>
     </section>
   );
 }

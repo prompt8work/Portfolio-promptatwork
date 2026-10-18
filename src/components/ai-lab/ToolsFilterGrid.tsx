@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import Link from "next/link";
 import Chip from "../ui/Chip";
 import { FilterGrid, FilterItem } from "../motion/FilterGrid";
+import Thumb from "../paw/Thumb";
 
 export type ToolListItem = {
   slug: string;
@@ -15,6 +16,7 @@ export type ToolListItem = {
   hasResearch?: boolean;
   videoCount?: number;
   resourceCount?: number;
+  cardImage?: string;
 };
 
 // PRD 04.1 §23/§24: "at minimum, search, category, content type, tags" and
@@ -118,42 +120,50 @@ function ChipRow({
 function ToolCard({ tool: t }: { tool: ToolListItem }) {
   const href = `/ai-lab/tools/${t.slug}`;
   return (
-    <section className="py-7 border-t border-line flex flex-col gap-2.5">
-      <div className="flex items-center gap-2 flex-wrap">
-        <span className="font-mono text-[10.5px] tracking-[0.14em] font-semibold text-muted uppercase">
-          {t.category}
-        </span>
-        {t.type && t.type !== "Tool" && (
-          <span className="font-mono text-[10px] text-primary border border-line bg-card rounded-md px-1.5 py-0.5">
-            {t.type}
-          </span>
-        )}
-      </div>
-      <h2 id={t.slug} className="scroll-mt-28 font-sans text-[20px] font-semibold tracking-tight">
-        <Link href={href} className="text-ink hover:text-primary">
-          {t.name}
+    <section className="py-7 border-t border-line flex flex-col sm:flex-row-reverse sm:items-start gap-5 sm:gap-7">
+      {t.cardImage && (
+        // Mouse shortcut only; the name link is the one keyboard and screen-reader users get.
+        <Link href={href} tabIndex={-1} aria-hidden className="block w-full sm:w-[220px] shrink-0">
+          <Thumb image={t.cardImage} sizes="(max-width: 640px) 100vw, 220px" />
         </Link>
-      </h2>
-      <p className="text-[15px] leading-[1.7] text-on-surface-variant">{t.description}</p>
-      <div className="flex items-center gap-4 flex-wrap">
-        <Link href={href} className="text-[14px] font-semibold text-primary hover:text-primary">
-          Read the research →
-        </Link>
-        {(t.hasResearch || !!t.videoCount || !!t.resourceCount) && (
-          <span className="flex gap-3 text-[11.5px] text-muted font-mono">
-            {t.hasResearch && <span>Research</span>}
-            {!!t.videoCount && (
-              <span>
-                {t.videoCount} Video{t.videoCount > 1 ? "s" : ""}
-              </span>
-            )}
-            {!!t.resourceCount && (
-              <span>
-                {t.resourceCount} Resource{t.resourceCount > 1 ? "s" : ""}
-              </span>
-            )}
+      )}
+      <div className="flex-1 min-w-0 flex flex-col gap-2.5">
+        <div className="flex items-center gap-2 flex-wrap">
+          <span className="font-mono text-[10.5px] tracking-[0.14em] font-semibold text-muted uppercase">
+            {t.category}
           </span>
-        )}
+          {t.type && t.type !== "Tool" && (
+            <span className="font-mono text-[10px] text-primary border border-line bg-card rounded-md px-1.5 py-0.5">
+              {t.type}
+            </span>
+          )}
+        </div>
+        <h2 id={t.slug} className="scroll-mt-28 font-sans text-[20px] font-semibold tracking-tight">
+          <Link href={href} className="text-ink hover:text-primary">
+            {t.name}
+          </Link>
+        </h2>
+        <p className="text-[15px] leading-[1.7] text-on-surface-variant">{t.description}</p>
+        <div className="flex items-center gap-4 flex-wrap">
+          <Link href={href} className="text-[14px] font-semibold text-primary hover:text-primary">
+            Read the research →
+          </Link>
+          {(t.hasResearch || !!t.videoCount || !!t.resourceCount) && (
+            <span className="flex gap-3 text-[11.5px] text-muted font-mono">
+              {t.hasResearch && <span>Research</span>}
+              {!!t.videoCount && (
+                <span>
+                  {t.videoCount} Video{t.videoCount > 1 ? "s" : ""}
+                </span>
+              )}
+              {!!t.resourceCount && (
+                <span>
+                  {t.resourceCount} Resource{t.resourceCount > 1 ? "s" : ""}
+                </span>
+              )}
+            </span>
+          )}
+        </div>
       </div>
     </section>
   );

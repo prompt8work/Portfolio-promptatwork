@@ -9,7 +9,7 @@ import type { Cta } from "../../lib/portfolio";
 export const card = "rounded-[20px] border border-line bg-card/60";
 export const cardStrong = "rounded-3xl border border-outline-variant bg-card/60";
 export const muted = "text-muted";
-export const faint = "text-outline";
+export const faint = "text-muted";
 export const eyebrow = "font-mono text-xs uppercase tracking-wider text-primary";
 export const tag = "rounded-full border border-outline-variant px-3 py-1 text-[13px] text-muted";
 export const gradientText = "bg-linear-to-r from-accent-blue to-accent-violet bg-clip-text text-transparent";

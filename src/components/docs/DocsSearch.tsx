@@ -94,7 +94,7 @@ export default function DocsSearch({ compact = false }: { compact?: boolean }) {
         >
           <SearchIcon />
           <span>Search the {label === "AI Lab" ? "lab" : label.toLowerCase()}</span>
-          <kbd className="ml-auto font-mono text-[10.5px] text-outline border border-line rounded px-1.5 py-0.5">
+          <kbd className="ml-auto font-mono text-[10.5px] text-muted border border-line rounded px-1.5 py-0.5">
             ⌘K
           </kbd>
         </button>
@@ -143,7 +143,7 @@ export default function DocsSearch({ compact = false }: { compact?: boolean }) {
                 aria-activedescendant={results[cursor] ? `docs-search-${cursor}` : undefined}
                 className="flex-1 py-3.5 text-[15px] text-ink placeholder:text-outline outline-none bg-transparent"
               />
-              <kbd className="font-mono text-[10.5px] text-outline border border-line rounded px-1.5 py-0.5">
+              <kbd className="font-mono text-[10.5px] text-muted border border-line rounded px-1.5 py-0.5">
                 esc
               </kbd>
             </div>

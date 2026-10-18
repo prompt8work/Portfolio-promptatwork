@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
+import { useReducedMotionSafe } from "./useReducedMotionSafe";
 import { DURATION, roleSwap } from "../../lib/motion";
 
 /**
@@ -10,7 +11,7 @@ import { DURATION, roleSwap } from "../../lib/motion";
  */
 export default function RotatingText({ items, className = "" }: { items: string[]; className?: string }) {
   const [i, setI] = useState(0);
-  const reduce = useReducedMotion();
+  const reduce = useReducedMotionSafe();
 
   useEffect(() => {
     if (reduce || items.length < 2) return;

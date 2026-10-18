@@ -1,7 +1,8 @@
 "use client";
 
 import { useLayoutEffect, useState, type RefObject } from "react";
-import { useInView, useReducedMotion } from "framer-motion";
+import { useInView } from "framer-motion";
+import { useReducedMotionSafe } from "./useReducedMotionSafe";
 import { VIEWPORT } from "../../lib/motion";
 
 /**
@@ -15,7 +16,7 @@ import { VIEWPORT } from "../../lib/motion";
  * and framer-motion reveals it once it scrolls into view.
  */
 export function useScrollReveal(ref: RefObject<Element | null>) {
-  const reduce = useReducedMotion();
+  const reduce = useReducedMotionSafe();
   const inView = useInView(ref, VIEWPORT);
   const [armed, setArmed] = useState(false);
 

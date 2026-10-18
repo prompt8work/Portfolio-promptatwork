@@ -23,7 +23,7 @@ function tokenThemeVariables(el: Element) {
     lineColor: v("--text-secondary"),
     textColor: v("--text-primary"),
     edgeLabelBackground: v("--surface-card"),
-    clusterBkg: v("--canvas"),
+    clusterBkg: v("--surface-container-low"),
     clusterBorder: v("--border-subtle"),
     noteBkgColor: v("--surface-container"),
     noteBorderColor: v("--border-subtle"),

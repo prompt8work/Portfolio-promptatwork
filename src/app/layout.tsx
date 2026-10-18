@@ -41,7 +41,8 @@ export const metadata: Metadata = {
   // Paste the content value of the Google Search Console / Bing Webmaster
   // "HTML tag" verification into these env vars; unset means no tag.
   verification: {
-    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || undefined,
+    // Either name works: Vercel production has GOOGLE_SITE_VERIFICATION.
+    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || process.env.GOOGLE_SITE_VERIFICATION || undefined,
     other: process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION
       ? { "msvalidate.01": process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION }
       : undefined,

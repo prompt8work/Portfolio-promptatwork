@@ -7,6 +7,9 @@ import IntroFade from "../../components/motion/IntroFade";
 import Reveal from "../../components/motion/Reveal";
 import { StaggerGrid, StaggerItem } from "../../components/motion/StaggerGrid";
 import Tag, { type TagTone } from "../../components/paw/Tag";
+import Thumb from "../../components/paw/Thumb";
+import { staticCardImage, staticCardKey } from "../../lib/card-images/static";
+import { aiLabHubSections } from "../../lib/navigation";
 import { buildMetadata } from "../../lib/site";
 import { client } from "../../sanity/lib/client";
 import { aiLabOverviewQuery } from "../../sanity/lib/queries";
@@ -75,14 +78,19 @@ export default async function AiLabPage() {
   const plural = (n: number, one: string, many = `${one}S`) => `${n} ${n === 1 ? one : many}`;
 
   // Sections with nothing published yet are left out, like in the sidebar.
-  const sections = [
-    { href: "/ai-lab/work", label: "Work & Case Studies", body: "Shipped projects: the problem, how it was solved, and the future scope.", count: plural(projects.length, "PROJECT") },
-    { href: "/ai-lab/engineering", label: "Engineering", body: "Each capability, linked to the project that proves it.", count: plural(capabilities.length, "CAPABILITY", "CAPABILITIES") },
-    counts.automations > 0 && { href: "/ai-lab/automations", label: "Automations", body: "Pipelines and connectors from those projects, laid out step by step.", count: plural(counts.automations, "FLOW") },
-    counts.tools > 0 && { href: "/ai-lab/tools", label: "Tools & Research", body: "Hands-on reviews of the tools used.", count: plural(counts.tools, "TOOL") },
-    counts.prompts > 0 && { href: "/ai-lab/prompts", label: "Prompt Library", body: "Reusable prompt templates.", count: plural(counts.prompts, "PROMPT") },
-    counts.experiments > 0 && { href: "/ai-lab/experiments", label: "Experiments", body: "What worked, what failed and what was decided.", count: plural(counts.experiments, "EXPERIMENT") },
-  ].filter((s): s is { href: string; label: string; body: string; count: string } => Boolean(s));
+  // Their copy is in src/lib/navigation.ts (aiLabHubSections).
+  const sectionCounts: Record<string, string | false> = {
+    "/ai-lab/work": plural(projects.length, "PROJECT"),
+    "/ai-lab/engineering": plural(capabilities.length, "CAPABILITY", "CAPABILITIES"),
+    "/ai-lab/automations": counts.automations > 0 && plural(counts.automations, "FLOW"),
+    "/ai-lab/tools": counts.tools > 0 && plural(counts.tools, "TOOL"),
+    "/ai-lab/prompts": counts.prompts > 0 && plural(counts.prompts, "PROMPT"),
+    "/ai-lab/experiments": counts.experiments > 0 && plural(counts.experiments, "EXPERIMENT"),
+  };
+  const sections = aiLabHubSections.flatMap((s) => {
+    const count = sectionCounts[s.href];
+    return count ? [{ ...s, count }] : [];
+  });
 
   const flowSteps = featured?.flow?.steps?.filter(Boolean) ?? [];
   const flowRows = [flowSteps.slice(0, 3), flowSteps.slice(3, 6)].filter((r) => r.length > 0);
@@ -120,6 +128,9 @@ export default async function AiLabPage() {
                   href={s.href}
                   className={`paw-card h-full p-6 gap-3 ${i === 0 ? "border-[color-mix(in_srgb,var(--accent-violet)_60%,transparent)] shadow-[var(--glow-sm)]" : ""}`}
                 >
+                  {staticCardImage(staticCardKey.section(s.href)) && (
+                    <Thumb image={staticCardImage(staticCardKey.section(s.href))} aspect="16 / 8" className="-mx-3 -mt-3 mb-1" />
+                  )}
                   <div className="flex justify-between items-center">
                     <span className={`w-10 h-10 rounded-[10px] grid place-items-center font-mono text-[13px] font-medium ${toneFill[tone]}`}>
                       {String(i + 1).padStart(2, "0")}

@@ -3,6 +3,7 @@ import PageTransition from "../../../components/PageTransition";
 import DocsArticle from "../../../components/docs/DocsArticle";
 import Callout from "../../../components/docs/Callout";
 import DocsHeader, { DocsEntry } from "../../../components/docs/DocsHeader";
+import Thumb from "../../../components/paw/Thumb";
 import { client } from "../../../sanity/lib/client";
 import { promptsQuery } from "../../../sanity/lib/queries";
 import { buildMetadata } from "../../../lib/site";
@@ -21,6 +22,7 @@ type PromptListItem = {
   category: string;
   purpose?: string;
   toolName?: string;
+  cardImage?: string;
 };
 
 export default async function PromptsPage() {
@@ -45,6 +47,7 @@ export default async function PromptsPage() {
               eyebrow={[p.category, p.toolName].filter(Boolean).join(" · ")}
               title={p.title}
               href={`/ai-lab/prompts/${p.slug}`}
+              media={p.cardImage && <Thumb image={p.cardImage} sizes="(max-width: 640px) 100vw, 220px" />}
               cta="View and copy the prompt"
             >
               {p.purpose && <p className="text-[15.5px] leading-[1.75] text-on-surface-variant">{p.purpose}</p>}

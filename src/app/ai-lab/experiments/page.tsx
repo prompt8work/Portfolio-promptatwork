@@ -3,6 +3,7 @@ import PageTransition from "../../../components/PageTransition";
 import DocsArticle from "../../../components/docs/DocsArticle";
 import Callout from "../../../components/docs/Callout";
 import DocsHeader, { DocsEntry } from "../../../components/docs/DocsHeader";
+import Thumb from "../../../components/paw/Thumb";
 import { client } from "../../../sanity/lib/client";
 import { experimentsQuery } from "../../../sanity/lib/queries";
 import { buildMetadata } from "../../../lib/site";
@@ -20,6 +21,7 @@ type ExperimentListItem = {
   title: string;
   objective: string;
   toolName?: string;
+  cardImage?: string;
 };
 
 export default async function ExperimentsPage() {
@@ -44,6 +46,7 @@ export default async function ExperimentsPage() {
               eyebrow={e.toolName}
               title={e.title}
               href={`/ai-lab/experiments/${e.slug}`}
+              media={e.cardImage && <Thumb image={e.cardImage} sizes="(max-width: 640px) 100vw, 220px" />}
               cta="Read the experiment"
             >
               <p className="text-[15.5px] leading-[1.75] text-on-surface-variant">{e.objective}</p>

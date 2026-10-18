@@ -1,4 +1,4 @@
-import type { ContentAdapter, NormalizedContentItem } from "../types";
+import type { ContentAdapter, NormalizedContentItem, PrivacyStatus } from "../types";
 
 type YouTubeSearchItem = {
   id: { videoId: string };
@@ -12,6 +12,11 @@ type YouTubeSearchItem = {
 
 type YouTubeSearchResponse = {
   items: YouTubeSearchItem[];
+  error?: { message: string };
+};
+
+type YouTubeVideosResponse = {
+  items: { id: string; status: { privacyStatus: PrivacyStatus } }[];
   error?: { message: string };
 };
 
@@ -65,7 +70,35 @@ export class YouTubeAdapter implements ContentAdapter {
       throw new Error(`YouTube API error: ${data.error?.message ?? res.statusText}`);
     }
 
-    return data.items.map((item) => this.normalize(item));
+    // Only public videos are synced. Private and unlisted videos are the
+    // channel owner's to share one-to-one, never something the site lists.
+    const statuses = await this.fetchPrivacyStatuses(data.items.map((item) => item.id.videoId));
+    return data.items
+      .filter((item) => statuses.get(item.id.videoId) === "public")
+      .map((item) => this.normalize(item));
+  }
+
+  // `search` doesn't report privacy, so each id is checked against
+  // `videos?part=status`. A private or deleted video comes back with no
+  // item at all when called with an API key, so it is reported as
+  // "private": either way the site must not show it.
+  async fetchPrivacyStatuses(videoIds: string[]): Promise<Map<string, PrivacyStatus>> {
+    const statuses = new Map<string, PrivacyStatus>(videoIds.map((id) => [id, "private"]));
+    // The videos endpoint accepts at most 50 ids per call.
+    for (let i = 0; i < videoIds.length; i += 50) {
+      const url = new URL("https://www.googleapis.com/youtube/v3/videos");
+      url.searchParams.set("key", this.apiKey);
+      url.searchParams.set("part", "status");
+      url.searchParams.set("id", videoIds.slice(i, i + 50).join(","));
+
+      const res = await fetch(url.toString());
+      const data: YouTubeVideosResponse = await res.json();
+      if (!res.ok) {
+        throw new Error(`YouTube API error: ${data.error?.message ?? res.statusText}`);
+      }
+      for (const video of data.items) statuses.set(video.id, video.status.privacyStatus);
+    }
+    return statuses;
   }
 
   private normalize(item: YouTubeSearchItem): NormalizedContentItem {
@@ -79,6 +112,7 @@ export class YouTubeAdapter implements ContentAdapter {
       description: decodeHtmlEntities(item.snippet.description),
       thumbnailUrl: thumb?.url,
       publishedAt: item.snippet.publishedAt,
+      privacyStatus: "public",
     };
   }
 }

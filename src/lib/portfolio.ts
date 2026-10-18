@@ -32,6 +32,8 @@ export type Offering = {
   link?: Cta;
   /** The offering's own page (trainings: /training/<slug>); links the title and cover. */
   href?: string;
+  /** Generated or hand-made cover image; replaces the gradient banner. */
+  image?: string;
 };
 
 export type DiagramNode = { _key: string; title: string; detail?: string; tone?: "plain" | "source" | "core" | "output" };
@@ -116,6 +118,7 @@ export type AiLabProject = {
   summary: string;
   stats?: string[];
   tech?: string[];
+  coverImage?: string;
 };
 
 export const portfolioPath = (slug: string) => `/portfolio/${slug}`;

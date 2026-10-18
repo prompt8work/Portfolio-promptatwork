@@ -11,6 +11,8 @@
 // ShareActions and Docs/development-plan/04.2-ai-lab-content-modification.md.
 export type ContentSource = "youtube";
 
+export type PrivacyStatus = "public" | "unlisted" | "private";
+
 export type NormalizedContentItem = {
   source: ContentSource;
   externalId: string;
@@ -19,6 +21,7 @@ export type NormalizedContentItem = {
   description?: string;
   thumbnailUrl?: string;
   publishedAt?: string;
+  privacyStatus: PrivacyStatus;
 };
 
 // PRD §55 Adapter Pattern: isolates one external API's quirks behind this

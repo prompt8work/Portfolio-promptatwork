@@ -7,7 +7,7 @@ import { client } from "../../sanity/lib/client";
 import { trainingsQuery } from "../../sanity/lib/queries";
 import { getBatchesForTraining } from "../../supabase/trainingRepository";
 import IntroFade from "../motion/IntroFade";
-import AgentPipeline from "./AgentPipeline";
+import WhatsAppAutomation from "./WhatsAppAutomation";
 
 // Luminous SaaS hero (Hub-Hero board). The H1 stays the plain identity line
 // for search (Docs/development-plan/13-seo-aeo.md); the display headline is
@@ -101,7 +101,7 @@ export default async function Hero() {
             style={{ background: "radial-gradient(70% 70% at 70% 30%, color-mix(in srgb, var(--accent-violet) 25%, transparent), transparent 70%)" }}
           />
           <div className="relative">
-            <AgentPipeline />
+            <WhatsAppAutomation />
           </div>
           <div
             className="paw-glass relative mt-4 lg:mt-0 lg:absolute lg:-left-8 lg:bottom-4 px-4 py-3 rounded-xl flex items-center gap-3 w-fit"
@@ -109,8 +109,8 @@ export default async function Hero() {
           >
             <Image src={brand.logo} alt="" width={36} height={36} className="w-9 h-9 rounded-[10px]" />
             <div>
-              <div className="text-sm font-semibold">Built on Claude &amp; Gemini</div>
-              <div className="label-md text-muted">RAG · AGENTS · MCP</div>
+              <div className="text-sm font-semibold">Agentic AI frameworks</div>
+              <div className="label-md text-muted">LANGGRAPH · CREWAI · MCP</div>
             </div>
           </div>
         </IntroFade>

@@ -250,9 +250,9 @@ function ProcessFlow({
             <span className="font-mono text-xs text-primary">
               {String(i + 1).padStart(2, "0")}
             </span>
-            <h4 className="mt-1.5 mb-1.5 text-[17px] font-semibold text-ink">
+            <h3 className="mt-1.5 mb-1.5 text-[17px] font-semibold text-ink">
               {s.title}
-            </h4>
+            </h3>
             {s.description && (
               <p className={`text-sm ${muted}`}>{s.description}</p>
             )}

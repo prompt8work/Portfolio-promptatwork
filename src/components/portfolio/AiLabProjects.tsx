@@ -1,4 +1,5 @@
 import Reveal from "../motion/Reveal";
+import Thumb from "../paw/Thumb";
 import { CtaButton, Tags, card, cardStrong, eyebrow, muted } from "./ui";
 import { aiLabProjectPath, type AiLabProject } from "../../lib/portfolio";
 
@@ -13,6 +14,7 @@ function ProjectCard({ project, featured }: { project: AiLabProject; featured: b
   const kind = kindOf(project.category);
   return (
     <Reveal className={`${featured ? cardStrong : card} flex flex-col p-6 lg:p-[30px]`}>
+      {project.coverImage && <Thumb image={project.coverImage} sizes="(max-width: 768px) 100vw, 50vw" className="mb-5" />}
       <span className={eyebrow}>{[featured && "Featured", kind].filter(Boolean).join(" · ")}</span>
       <h3 className="mt-1.5 mb-2.5 text-[24px] leading-tight font-bold text-ink">{project.title}</h3>
       <p className={`mb-4 flex-1 ${muted}`}>{project.summary}</p>

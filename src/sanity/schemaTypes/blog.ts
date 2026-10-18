@@ -1,4 +1,5 @@
 import { defineField, defineType } from "sanity";
+import { cardImageMetaField, coverImageField } from "./cardImage";
 import { diagramsField } from "./processDiagram";
 import { diagramPlacements } from "./diagramPlacements";
 
@@ -19,7 +20,8 @@ export default defineType({
       validation: (r) => r.required(),
     }),
     defineField({ name: "excerpt", type: "text", rows: 2, validation: (r) => r.required() }),
-    defineField({ name: "coverImage", type: "image", options: { hotspot: true } }),
+    coverImageField,
+    cardImageMetaField,
     defineField({ name: "body", type: "text", validation: (r) => r.required() }),
     defineField({ name: "category", type: "string" }),
     defineField({ name: "tags", type: "array", of: [{ type: "string" }] }),

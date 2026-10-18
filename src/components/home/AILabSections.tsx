@@ -3,7 +3,9 @@ import { ArrowRight } from "lucide-react";
 import { aiLabSections, portfolioSections } from "../../lib/navigation";
 import { StaggerGrid, StaggerItem } from "../motion/StaggerGrid";
 import SectionHeader from "../paw/SectionHeader";
-import Thumb, { type ThumbGlyph, type ThumbVariant } from "../paw/Thumb";
+import type { ThumbGlyph, ThumbVariant } from "../paw/Thumb";
+import ThumbCard from "../paw/ThumbCard";
+import { staticCardImage, staticCardKey } from "../../lib/card-images/static";
 
 // The homepage's way into the AI Lab, laid out like the Hub-Portfolio
 // ("Selected Work") board: one large tile and two stacked ones. It lists
@@ -38,11 +40,17 @@ export default function AILabSections() {
           }
         />
 
-        <StaggerGrid className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {featured && (
+        {featured && staticCardImage(staticCardKey.section(featured.href)) ? (
+          // With images: the board's one large tile and two stacked ones.
+          <StaggerGrid className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <StaggerItem className="lg:col-span-2">
-              <Link href={featured.href} className="paw-card h-full gap-5">
-                <Thumb {...art[featured.href]} word={featured.label} aspect="auto" className="min-h-[240px] lg:min-h-0 lg:flex-1 [&_.paw-thumb__word]:text-[28px] [&_.paw-thumb__word]:leading-8 sm:[&_.paw-thumb__word]:text-4xl sm:[&_.paw-thumb__word]:leading-10" />
+              <ThumbCard
+                href={featured.href}
+                image={staticCardImage(staticCardKey.section(featured.href))}
+                {...art[featured.href]}
+                sizes="(max-width: 1024px) 100vw, 66vw"
+                className="gap-5"
+              >
                 <div className="flex flex-wrap justify-between items-end gap-4 px-3">
                   <div className="flex flex-col gap-2">
                     <h3 className="m-0 text-xl leading-7 font-semibold">{featured.label}</h3>
@@ -52,24 +60,32 @@ export default function AILabSections() {
                     Open <ArrowRight className="w-4 h-4" aria-hidden="true" />
                   </span>
                 </div>
-              </Link>
+              </ThumbCard>
             </StaggerItem>
-          )}
 
-          <div className="flex flex-col gap-6">
-            {rest.map((s) => (
-              <StaggerItem key={s.href}>
-                <Link href={s.href} className="paw-card gap-3.5 pb-5">
-                  <Thumb variant={art[s.href].variant} glyph={art[s.href].glyph} kicker={art[s.href].kicker} aspect="16 / 7" />
-                  <div className="px-2 flex flex-col gap-2">
-                    <h3 className="m-0 text-lg leading-[26px] font-semibold">{s.label}</h3>
-                    <p className="m-0 text-sm text-muted">{s.description}</p>
-                  </div>
-                </Link>
+            <div className="flex flex-col gap-6">
+              {rest.map((s) => (
+                <StaggerItem key={s.href}>
+                  <ThumbCard href={s.href} image={staticCardImage(staticCardKey.section(s.href))} {...art[s.href]} aspect="16 / 7" className="gap-3.5 pb-5">
+                    <SectionText label={s.label} description={s.description} />
+                  </ThumbCard>
+                </StaggerItem>
+              ))}
+            </div>
+          </StaggerGrid>
+        ) : (
+          // Without images a large tile would be mostly empty artwork, so the
+          // three sections sit side by side, their text on the artwork.
+          <StaggerGrid className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {[featured, ...rest].filter(Boolean).map((s) => (
+              <StaggerItem key={s.href} className="h-full">
+                <ThumbCard href={s.href} {...art[s.href]}>
+                  <SectionText label={s.label} description={s.description} />
+                </ThumbCard>
               </StaggerItem>
             ))}
-          </div>
-        </StaggerGrid>
+          </StaggerGrid>
+        )}
 
         <div className="mt-6 flex justify-end">
           <Link href="/ai-lab" className="paw-section-head__link">
@@ -78,5 +94,17 @@ export default function AILabSections() {
         </div>
       </div>
     </section>
+  );
+}
+
+function SectionText({ label, description }: { label: string; description: string }) {
+  return (
+    <div className="px-3 flex flex-col gap-2">
+      <h3 className="m-0 text-lg leading-[26px] font-semibold">{label}</h3>
+      <p className="m-0 text-sm text-muted">{description}</p>
+      <span className="mt-2 inline-flex items-center gap-1 text-sm font-medium text-primary">
+        Open <ArrowRight className="w-4 h-4" aria-hidden="true" />
+      </span>
+    </div>
   );
 }

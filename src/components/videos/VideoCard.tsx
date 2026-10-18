@@ -66,11 +66,11 @@ export default function VideoCard({ video }: { video: VideoCardData }) {
       <div className="paw-video__row">
         <Image src="/images/niharika-headshot.jpg" alt="" width={36} height={36} className="paw-avatar" />
         <div className="min-w-0">
-          <h3 className="paw-video__title group-hover:text-primary transition-colors">
+          <h2 className="paw-video__title group-hover:text-primary transition-colors">
             <a href={video.externalUrl} target="_blank" rel="noopener noreferrer" className="hover:underline">
               {video.title}
             </a>
-          </h3>
+          </h2>
           <div className="paw-video__channel">Niharika Dhande</div>
           {date && (
             <div className="paw-video__stats">

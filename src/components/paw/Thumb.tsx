@@ -1,8 +1,12 @@
 import type { ReactNode } from "react";
+import Image from "next/image";
 
 // Token-built 16:9 artwork for anything without its own image (paw-thumb):
 // a radial accent wash, a faint dot grid, a mono kicker, a short title and
 // one line glyph. Always dark, in both themes — thumbnails are content.
+// With `image` (a generated or uploaded card image, src/lib/card-images)
+// the picture fills the thumb and the glyph is dropped; kicker, word and
+// children still sit on top, over a scrim that keeps them legible.
 
 export type ThumbVariant = "blue" | "violet" | "warm" | "teal" | "mono";
 export type ThumbGlyph = "code" | "network" | "flow" | "layers" | "orbit" | "terminal";
@@ -49,6 +53,8 @@ export default function Thumb({
   word,
   aspect = "16 / 9",
   className = "",
+  image,
+  sizes = "(max-width: 768px) 100vw, 33vw",
   children,
 }: {
   variant?: ThumbVariant;
@@ -57,11 +63,19 @@ export default function Thumb({
   word?: string;
   aspect?: string;
   className?: string;
+  image?: string;
+  sizes?: string;
   children?: ReactNode;
 }) {
   return (
     <div data-theme="dark" className={`paw-thumb paw-thumb--${variant} ${className}`} style={{ aspectRatio: aspect }}>
-      {glyph && (
+      {image && (
+        <>
+          <Image src={image} alt="" fill sizes={sizes} className="object-cover" />
+          {(kicker || word || children) && <div className="paw-thumb__scrim" aria-hidden="true" />}
+        </>
+      )}
+      {glyph && !image && (
         <svg className="paw-thumb__glyph" viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
           {glyphs[glyph]}
         </svg>

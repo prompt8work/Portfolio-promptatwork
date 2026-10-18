@@ -36,7 +36,7 @@ export default function AnalogyDiagram({
             <span className="rounded-lg border border-primary/30 bg-primary/[0.05] px-3.5 py-2.5 text-[14px] text-on-surface">
               {p.concept}
             </span>
-            <span aria-hidden className="flex items-center justify-center text-outline text-[13px]">
+            <span aria-hidden className="flex items-center justify-center text-muted text-[13px]">
               <span className="sm:hidden font-mono text-[10.5px] tracking-[0.1em]">IS LIKE ↓</span>
               <span className="hidden sm:inline">⟷</span>
             </span>

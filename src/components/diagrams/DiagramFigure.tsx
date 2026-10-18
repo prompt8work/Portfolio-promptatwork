@@ -18,11 +18,14 @@ const grid = {
 };
 
 /**
- * One diagram: eyebrow, title (an h3 with an id, so AI Lab's "On this
+ * One diagram: eyebrow, title (an h2/h3 with an id, so AI Lab's "On this
  * page" lists it), the drawing on a faint grid, and the caption that
  * explains it in words.
  */
 export function DiagramFigure({ d }: { d: Diagram }) {
+  // Top-of-page diagrams come before any section h2, so their title is an
+  // h2 itself; inside a section it's an h3 (no skipped heading levels).
+  const Title = (d.placement ?? "top") === "top" ? "h2" : "h3";
   let body = null;
   if ((d.kind === "flow" || d.kind === "loop") && d.steps && d.steps.length > 1) {
     body = (
@@ -40,12 +43,9 @@ export function DiagramFigure({ d }: { d: Diagram }) {
       <figure className="rounded-xl border border-line bg-card overflow-hidden">
         <div className="px-4 sm:px-6 pt-4 pb-3 border-b border-surface-container">
           <span className="font-mono text-[10px] font-semibold tracking-[0.16em] text-primary">{eyebrow[d.kind]}</span>
-          <h3
-            id={`diagram-${d.key}`}
-            className="mt-1 scroll-mt-28 text-[16.5px] font-semibold leading-snug text-ink"
-          >
+          <Title id={`diagram-${d.key}`} className="mt-1 scroll-mt-28 text-[16.5px] font-semibold leading-snug text-ink">
             {d.title}
-          </h3>
+          </Title>
         </div>
         <div className="px-4 sm:px-6 py-5" style={grid}>
           {body}

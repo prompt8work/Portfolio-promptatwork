@@ -102,7 +102,7 @@ export const portfolioProfileBySlugQuery = groq`
 // Same visibility filter as projectsQuery.
 export const portfolioAiLabProjectsQuery = groq`
   *[_type == "project" && visibility != "private"] | order(publishedAt desc) {
-    "slug": slug.current, title, category, summary, stats, tech
+    "slug": slug.current, title, category, summary, stats, tech, "coverImage": coverImage.asset->url
   }
 `;
 
@@ -135,8 +135,9 @@ export const toolsQuery = groq`
     officialUrl,
     pricing,
     "logo": logo.asset->url,
+    "cardImage": cardImage.asset->url,
     "hasResearch": defined(researchContent),
-    "videoCount": count(relatedVideos),
+    "videoCount": count(relatedVideos[@->privacyStatus == "public"]),
     "resourceCount": count(resources)
   }
 `;
@@ -166,7 +167,7 @@ export const toolBySlugQuery = groq`
     lastReviewed,
     sources,
     "logo": logo.asset->url,
-    "relatedVideos": relatedVideos[]->{ "slug": slug.current, title, thumbnailUrl, externalUrl },
+    "relatedVideos": relatedVideos[@->privacyStatus == "public"]->{ "slug": slug.current, title, thumbnailUrl, externalUrl },
     "resources": resources[]{ title, resourceType, description, version, publishedAt, updatedAt, "fileUrl": file.asset->url, "fileName": file.asset->originalFilename },
     ${diagramsProjection},
     ${relatedContentProjection},
@@ -184,7 +185,8 @@ export const promptsQuery = groq`
     title,
     category,
     purpose,
-    "toolName": tool->name
+    "toolName": tool->name,
+    "cardImage": cardImage.asset->url
   }
 `;
 
@@ -215,7 +217,8 @@ export const experimentsQuery = groq`
     "slug": slug.current,
     title,
     objective,
-    "toolName": tool->name
+    "toolName": tool->name,
+    "cardImage": cardImage.asset->url
   }
 `;
 
@@ -249,7 +252,8 @@ export const automationsQuery = groq`
     "slug": slug.current,
     title,
     description,
-    trigger
+    trigger,
+    "cardImage": cardImage.asset->url
   }
 `;
 
@@ -312,8 +316,11 @@ export const blogPostBySlugQuery = groq`
 
 export const blogSlugsQuery = groq`*[_type == "blog" && publishedAt <= now()].slug.current`;
 
+// Only public videos are ever shown. A video with no privacyStatus yet
+// (synced before the field existed) stays hidden until the next sync
+// confirms it is public.
 export const videosQuery = groq`
-  *[_type == "video"] | order(publishedAt desc) {
+  *[_type == "video" && privacyStatus == "public"] | order(publishedAt desc) {
     "slug": slug.current,
     title,
     thumbnailUrl,
@@ -332,7 +339,8 @@ export const trainingsQuery = groq`
     description,
     duration,
     mode,
-    audience
+    audience,
+    "cardImage": cardImage.asset->url
   }
 `;
 

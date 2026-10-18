@@ -1,4 +1,5 @@
 import { defineField, defineType } from "sanity";
+import { cardImageField, cardImageMetaField } from "./cardImage";
 import { diagramsField } from "./processDiagram";
 import { diagramPlacements } from "./diagramPlacements";
 import { engineeringAreasField } from "./engineeringArea";
@@ -17,6 +18,8 @@ export default defineType({
       validation: (r) => r.required(),
     }),
     defineField({ name: "objective", type: "text", rows: 2, validation: (r) => r.required() }),
+    cardImageField,
+    cardImageMetaField,
     defineField({
       name: "hypothesis",
       type: "text",

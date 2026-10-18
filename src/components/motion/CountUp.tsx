@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { animate, useInView, useReducedMotion } from "framer-motion";
+import { animate, useInView } from "framer-motion";
+import { useReducedMotionSafe } from "./useReducedMotionSafe";
 import { DURATION, EASE, VIEWPORT } from "../../lib/motion";
 
 // Leading number (optionally after a symbol like "$" or "~"), and no further
@@ -18,7 +19,7 @@ export default function CountUp({ value, className = "" }: { value: string | num
   const match = text.match(PATTERN);
   const ref = useRef<HTMLSpanElement>(null);
   const inView = useInView(ref, VIEWPORT);
-  const reduce = useReducedMotion();
+  const reduce = useReducedMotionSafe();
   const [display, setDisplay] = useState<string | null>(null);
 
   const [, prefix = "", raw = "", suffix = ""] = match ?? [];

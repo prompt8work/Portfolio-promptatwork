@@ -13,7 +13,8 @@ import {
   type ReactNode,
   type RefObject,
 } from "react";
-import { motion, useMotionValueEvent, useReducedMotion, useScroll, type MotionValue } from "framer-motion";
+import { motion, useMotionValueEvent, useScroll, type MotionValue } from "framer-motion";
+import { useReducedMotionSafe } from "./useReducedMotionSafe";
 import { SCALE, slideLeft, slideRight, transition } from "../../lib/motion";
 import { useScrollReveal } from "./useScrollReveal";
 
@@ -62,7 +63,7 @@ export function Timeline({
   className?: string;
 }) {
   const listRef = useRef<HTMLOListElement>(null);
-  const reduce = !!useReducedMotion();
+  const reduce = !!useReducedMotionSafe();
   // The fill's leading edge sits at 70% of the viewport height.
   const { scrollYProgress } = useScroll({ target: listRef, offset: ["start 70%", "end 70%"] });
 

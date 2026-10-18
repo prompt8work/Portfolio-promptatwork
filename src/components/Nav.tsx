@@ -14,7 +14,8 @@ import ThemeToggle from "./ui/ThemeToggle";
 // Luminous SaaS TopNav (design/promptatwork-redesign, Hub-Nav board): a
 // sticky glass bar, text-secondary links, and a gradient underline on the
 // bar's bottom edge under the hovered or current link. Colours come from
-// tokens, so it follows the light/dark toggle.
+// tokens, so it follows the light/dark toggle. The full menu needs ~1000px,
+// so below lg (1024px) it collapses into the menu button.
 export default function Nav() {
   const [open, setOpen] = useState(false);
   const [hovered, setHovered] = useState<string | null>(null);
@@ -35,7 +36,7 @@ export default function Nav() {
         <LayoutGroup id="nav">
           <nav
             aria-label="Primary"
-            className="hidden md:flex items-center gap-1 h-full flex-1"
+            className="hidden lg:flex items-center gap-1 h-full flex-1"
             onMouseLeave={() => {
               setHovered(null);
               setDropdown(null);
@@ -121,9 +122,9 @@ export default function Nav() {
           </nav>
         </LayoutGroup>
 
-        <div className="ml-auto md:ml-0 flex items-center gap-2">
+        <div className="ml-auto lg:ml-0 flex items-center gap-2">
           <ThemeToggle />
-          <Link href={contactCta.href} className="paw-btn paw-btn--secondary paw-btn--sm hidden md:inline-flex whitespace-nowrap">
+          <Link href={contactCta.href} className="paw-btn paw-btn--secondary paw-btn--sm hidden lg:inline-flex whitespace-nowrap">
             {contactCta.label}
           </Link>
           <button
@@ -131,7 +132,7 @@ export default function Nav() {
             onClick={() => setOpen((v) => !v)}
             aria-label={open ? "Close menu" : "Open menu"}
             aria-expanded={open}
-            className="paw-btn paw-btn--icon md:hidden"
+            className="paw-btn paw-btn--icon lg:hidden"
           >
             {open ? <X className="paw-icon" aria-hidden="true" /> : <Menu className="paw-icon" aria-hidden="true" />}
           </button>
@@ -147,7 +148,7 @@ export default function Nav() {
             initial="hidden"
             animate="visible"
             exit="hidden"
-            className="md:hidden border-t border-line bg-canvas px-4 py-4 flex flex-col gap-4 max-h-[calc(100dvh-68px)] overflow-y-auto"
+            className="lg:hidden border-t border-line bg-canvas px-4 py-4 flex flex-col gap-4 max-h-[calc(100dvh-68px)] overflow-y-auto"
           >
             {mainNav.map((l) => (
               <motion.div key={l.href} variants={menuItem}>
