@@ -80,6 +80,15 @@
     outline: 2px solid var(--focus-ring);
     outline-offset: 2px;
   }
+
+  /* An element pinned to a theme (data-theme="dark" on thumbnails and code
+     wells, "light" on the cover letter) switches the tokens for its
+     subtree, but the inherited text colour was already resolved from the
+     page's theme. Re-declare it, so headings with no colour class of their
+     own read correctly on dark art in light mode (and the reverse). */
+  [data-theme]:not(html) {
+    color: var(--text-primary);
+  }
 }
 
 /* ==========================================================================
