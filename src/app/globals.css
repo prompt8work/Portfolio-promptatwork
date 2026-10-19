@@ -654,6 +654,9 @@
     flex-direction: column;
     gap: 1.1rem;
   }
+  .blog-html :where(p, ul, ol, blockquote, table, h2, h3, h4, div, aside) {
+    margin-block: 0;
+  }
   .blog-html h2 {
     margin-top: 1.6rem;
     font-size: 1.5rem;
