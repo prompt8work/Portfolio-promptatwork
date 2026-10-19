@@ -3,6 +3,7 @@ import Reveal from "../motion/Reveal";
 import RichText from "../blog/RichText";
 import { DiagramFigure } from "./DiagramFigure";
 import type { Diagram } from "./types";
+import { isHtmlBody, sanitizeHtml } from "../../lib/safe-html";
 
 const marker = /^\s*\[\[diagram:([a-z0-9-]+)\]\]\s*$/i;
 
@@ -16,6 +17,21 @@ const marker = /^\s*\[\[diagram:([a-z0-9-]+)\]\]\s*$/i;
 export default function DiagramBody({ body, diagrams: items }: { body: string; diagrams?: Diagram[] | null }) {
   // Sanity returns null (not undefined) for documents without diagrams yet.
   const diagrams = items ?? [];
+
+  // Bodies authored as HTML (e.g. tool and model reviews) render as styled,
+  // sanitized HTML. Diagrams still show, ahead of the article.
+  if (isHtmlBody(body)) {
+    return (
+      <div className="flex flex-col gap-8">
+        {diagrams.map((d) => (
+          <DiagramFigure key={`html-${d.key}`} d={d} />
+        ))}
+        <Reveal>
+          <div className="blog-html" dangerouslySetInnerHTML={{ __html: sanitizeHtml(body) }} />
+        </Reveal>
+      </div>
+    );
+  }
   const byKey = new Map(diagrams.map((d) => [d.key, d]));
   const lines = body.split("\n");
   const markedKeys = new Set(lines.map((l) => l.match(marker)?.[1]).filter(Boolean) as string[]);

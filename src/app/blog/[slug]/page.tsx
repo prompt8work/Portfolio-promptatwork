@@ -55,6 +55,20 @@ export async function generateStaticParams() {
   return slugs.map((slug) => ({ slug }));
 }
 
+// Tool and model reviews carry a summary card (the review on one image)
+// as their cover. On the page it closes the article, after the sources;
+// when the post is shared it is the preview image.
+const REVIEW_CATEGORIES = new Set(["AI Tool Reviews", "AI Model Reviews"]);
+const isReview = (post: Pick<BlogPostDetail, "category">) => !!post.category && REVIEW_CATEGORIES.has(post.category);
+
+/** A review's cover is its summary card: share it as-is at 16:9 (JPEG keeps
+ * it under WhatsApp's ~300 KB preview limit) rather than composing a card. */
+function reviewShareImage(post: BlogPostDetail) {
+  const url = new URL(post.coverImage!);
+  url.search = "w=1200&h=675&fit=crop&fm=jpg&q=85";
+  return { url: url.toString(), width: 1200, height: 675, alt: post.title };
+}
+
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
   const post: BlogPostDetail | null = await client.fetch(blogPostBySlugQuery, { slug });
@@ -63,17 +77,27 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   // title rather than a "— Blog —" breadcrumb.
   const title = post.seoTitle || post.title;
   const description = post.seoDescription || post.excerpt;
+  const review = isReview(post) && !!post.coverImage?.startsWith("https://cdn.sanity.io/");
   const metadata = buildMetadata({
     title,
     description,
     path: `/blog/${post.slug}`,
     type: "article",
     image: post.coverImage,
-    card: { title: post.title, subtitle: post.excerpt, eyebrow: post.category || "Blog" },
+    // Reviews share their own summary card; other posts get a composed card.
+    card: review ? undefined : { title: post.title, subtitle: post.excerpt, eyebrow: post.category || "Blog" },
   });
+  const reviewImage = review ? reviewShareImage(post) : null;
   return {
     ...metadata,
-    openGraph: { ...metadata.openGraph, publishedTime: post.publishedAt, authors: post.author ? [post.author] : undefined, tags: post.tags },
+    openGraph: {
+      ...metadata.openGraph,
+      publishedTime: post.publishedAt,
+      authors: post.author ? [post.author] : undefined,
+      tags: post.tags,
+      ...(reviewImage ? { images: [reviewImage] } : {}),
+    },
+    ...(reviewImage ? { twitter: { ...metadata.twitter, images: [reviewImage.url] } } : {}),
   };
 }
 
@@ -140,7 +164,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
               {post.author && <span className="text-sm text-muted">By {post.author}</span>}
             </PageHeader>
 
-            {post.coverImage && (
+            {post.coverImage && !isReview(post) && (
               <Morph name={morphName.blogCover(post.slug)}>
                 <div className="relative w-full aspect-[16/9] rounded-2xl overflow-hidden">
                   <Image
@@ -161,6 +185,30 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             </Reveal>
 
             <DiagramBody body={post.body} diagrams={post.diagrams} />
+
+            {post.coverImage && isReview(post) && (
+              <Reveal>
+                <figure className="flex flex-col gap-3">
+                  <a
+                    href={post.coverImage}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="relative block w-full aspect-[16/9] rounded-2xl overflow-hidden border border-line"
+                  >
+                    <Image
+                      src={post.coverImage}
+                      alt={`${post.title}: the review in one card`}
+                      fill
+                      sizes="(max-width: 800px) 100vw, 800px"
+                      className="object-cover"
+                    />
+                  </a>
+                  <figcaption className="text-xs text-muted">
+                    The whole review on one card. Open it full size to save or share.
+                  </figcaption>
+                </figure>
+              </Reveal>
+            )}
 
             {post.tags && post.tags.length > 0 && (
               <StaggerGrid className="flex flex-wrap gap-2">

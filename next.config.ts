@@ -10,6 +10,8 @@ const nextConfig: NextConfig = {
   // function's bundle.
   outputFileTracingIncludes: {
     "/og": ["./public/images/headshot.png", "./public/images/brand/promptatwork-mark.png", "./src/app/og/fonts/*.ttf"],
+    // Review share cards (cover images for tool and model reviews).
+    "/og/review": ["./src/app/og/fonts/*.ttf"],
   },
   // Work, Engineering and About were folded into the AI Lab hub and the
   // homepage (Docs/development-plan/11-ai-lab-docs-hub.md). Permanent so
