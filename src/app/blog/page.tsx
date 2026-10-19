@@ -8,12 +8,12 @@ import BlogCard from "../../components/blog/BlogCard";
 import { client } from "../../sanity/lib/client";
 import { blogPostsQuery } from "../../sanity/lib/queries";
 import { buildMetadata } from "../../lib/site";
+import { getPage } from "../../lib/content";
 
-export const metadata: Metadata = buildMetadata({
-  title: "Blog — Prompt Engineering & Generative AI Writing by Niharika Dhande | PromptAtWork",
-  description: "Niharika Dhande writes on prompt engineering, Generative AI, Full-Stack AI Engineering and AI-assisted development.",
-  path: "/blog",
-});
+export async function generateMetadata(): Promise<Metadata> {
+  const page = await getPage("blog");
+  return buildMetadata({ title: page.seoTitle ?? "", description: page.seoDescription ?? "", path: "/blog" });
+}
 
 export const revalidate = 60;
 
@@ -30,7 +30,7 @@ type BlogListItem = {
 };
 
 export default async function BlogPage() {
-  const posts: BlogListItem[] = await client.fetch(blogPostsQuery);
+  const [posts, page]: [BlogListItem[], Awaited<ReturnType<typeof getPage>>] = await Promise.all([client.fetch(blogPostsQuery), getPage("blog")]);
 
   return (
     <PageTransition className="min-h-screen">
@@ -40,9 +40,9 @@ export default async function BlogPage() {
           <div className="max-w-[1280px] mx-auto px-5 sm:px-10 pt-16 sm:pt-20 pb-24 sm:pb-28">
             <SectionHeading
               level="page"
-              eyebrow="CONTENT"
-              title="Blog"
-              description="Writing on Full-Stack AI Engineering, prompt engineering and AI-assisted development — documented as it happens."
+              eyebrow={page.eyebrow ?? ""}
+              title={page.title ?? ""}
+              description={page.intro}
               align="start"
             />
 

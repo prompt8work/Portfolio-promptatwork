@@ -6,8 +6,6 @@
 // #about) — a bare #anchor silently does nothing from any route other
 // than "/", since there's no matching id on the current page to scroll to.
 
-import { personalInfo } from "../../data";
-
 export type NavLink = { href: string; label: string; external?: boolean };
 
 // The chevron-network mark (design/promptatwork-redesign/assets/logos). The
@@ -77,7 +75,8 @@ export const mainNav: (NavLink & { children?: typeof aiLabSections })[] = [
 
 export const contactCta: NavLink = { href: "/contact", label: "Let's Connect" };
 
-export const footerColumns: { title: string; links: NavLink[] }[] = [
+/** Footer link columns; the LinkedIn link is the profile URL from Site settings (left out when it isn't known). */
+export const footerColumns = (linkedinUrl?: string): { title: string; links: NavLink[] }[] => [
   {
     title: "AI Lab",
     links: [
@@ -101,7 +100,7 @@ export const footerColumns: { title: string; links: NavLink[] }[] = [
       { href: "/testimonials", label: "Testimonials" },
       // LinkedIn is a distribution channel for this site's blog content, not
       // an imported content source (PRD 04.2).
-      { href: `https://${personalInfo.linkedin}`, label: "LinkedIn", external: true },
+      ...(linkedinUrl ? [{ href: linkedinUrl, label: "LinkedIn", external: true }] : []),
       { href: "/portfolio", label: "Portfolio" },
     ],
   },

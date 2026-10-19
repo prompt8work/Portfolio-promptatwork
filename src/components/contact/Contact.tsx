@@ -2,7 +2,7 @@
 
 import { useActionState } from "react";
 import { Mail, MapPin, Send } from "lucide-react";
-import { personalInfo } from "../../../data";
+import { profileUrl, type Page, type SiteSettings } from "../../lib/content-types";
 import LinkedinIcon from "../icons/LinkedinIcon";
 import { submitContactForm, type ContactFormState } from "../../app/contact/actions";
 import IntroFade from "../motion/IntroFade";
@@ -31,7 +31,14 @@ const channelIcon = "w-10 h-10 rounded-[10px] grid place-items-center shrink-0";
 // Niharika on the left; the form on the right, with "Reach out about" as a
 // grid of toggle buttons. They're real radio inputs named "purpose", so the
 // form posts exactly what the old <select> did.
-export default function Contact() {
+export default function Contact({
+  page,
+  settings,
+}: {
+  page: Page;
+  settings: Pick<SiteSettings, "email" | "linkedin" | "location">;
+}) {
+  const remote = page.blocks?.find((b) => b.key === "location")?.text;
   const [state, formAction, isPending] = useActionState(submitContactForm, initialState);
   const values = state.values ?? {};
   const purpose = values.purpose && purposes.includes(values.purpose) ? values.purpose : purposes[0];
@@ -45,30 +52,29 @@ export default function Contact() {
       <div className="max-w-[1280px] mx-auto px-4 sm:px-8 py-14 lg:py-20 grid grid-cols-1 lg:grid-cols-[1fr_1.1fr] gap-12 lg:gap-[72px]">
         <div className="flex flex-col gap-[22px]">
           <IntroFade as="p" className="paw-section-head__eyebrow m-0">
-            CONTACT
+            {page.eyebrow}
           </IntroFade>
           <IntroFade step={1}>
             <h1 className="m-0 text-[40px] leading-[44px] sm:text-[56px] sm:leading-[60px] font-semibold tracking-[-0.035em]">
-              Let&apos;s make AI work for your team.
+              {page.title}
             </h1>
           </IntroFade>
           <IntroFade as="p" step={2} className="m-0 text-[17px] leading-[27px] text-muted">
-            Whether you need a workshop, a prompt library or a working AI solution, tell me what your team is trying to do and I&apos;ll show
-            you where AI fits.
+            {page.intro}
           </IntroFade>
 
           <IntroFade step={3} className="flex flex-col gap-3 mt-2">
-            <a href={`mailto:${personalInfo.email}`} className={`${channel} hover:border-outline transition-colors`}>
+            <a href={`mailto:${settings.email}`} className={`${channel} hover:border-outline transition-colors`}>
               <span className={`${channelIcon} bg-[color-mix(in_srgb,var(--accent-blue)_14%,transparent)] text-primary`}>
                 <Mail className="paw-icon" aria-hidden="true" />
               </span>
               <span className="min-w-0">
                 <span className="block label-md text-muted">EMAIL</span>
-                <span className="block text-[15px] font-medium truncate">{personalInfo.email}</span>
+                <span className="block text-[15px] font-medium truncate">{settings.email}</span>
               </span>
             </a>
             <a
-              href={`https://${personalInfo.linkedin}`}
+              href={profileUrl(settings.linkedin)}
               target="_blank"
               rel="noopener noreferrer"
               className={`${channel} hover:border-outline transition-colors`}
@@ -79,7 +85,7 @@ export default function Contact() {
               <span className="min-w-0">
                 <span className="block label-md text-muted">LINKEDIN</span>
                 <span className="block text-[15px] font-medium truncate">
-                  {personalInfo.linkedin.replace("linkedin.com/in/", "in/")}
+                  {settings.linkedin.replace("linkedin.com/in/", "in/")}
                 </span>
               </span>
             </a>
@@ -89,7 +95,7 @@ export default function Contact() {
               </span>
               <span>
                 <span className="block label-md text-muted">LOCATION</span>
-                <span className="block text-[15px] font-medium">{personalInfo.location} · Open to remote</span>
+                <span className="block text-[15px] font-medium">{settings.location}{remote ? ` · ${remote}` : ""}</span>
               </span>
             </div>
           </IntroFade>

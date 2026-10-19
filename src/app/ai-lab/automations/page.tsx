@@ -7,12 +7,12 @@ import Thumb from "../../../components/paw/Thumb";
 import { client } from "../../../sanity/lib/client";
 import { automationsQuery } from "../../../sanity/lib/queries";
 import { buildMetadata } from "../../../lib/site";
+import { getPage } from "../../../lib/content";
 
-export const metadata: Metadata = buildMetadata({
-  title: "AI Workflow Automations — End-to-End AI Automation Builds | PromptAtWork",
-  description: "AI workflow automations by Niharika Dhande, laid out end to end: trigger → input → AI processing → decision → action → output.",
-  path: "/ai-lab/automations",
-});
+export async function generateMetadata(): Promise<Metadata> {
+  const page = await getPage("ai-lab-automations");
+  return buildMetadata({ title: page.seoTitle ?? "", description: page.seoDescription ?? "", path: "/ai-lab/automations" });
+}
 
 export const revalidate = 60;
 
@@ -25,16 +25,13 @@ type AutomationListItem = {
 };
 
 export default async function AutomationsPage() {
+  const page = await getPage("ai-lab-automations");
   const automations: AutomationListItem[] = await client.fetch(automationsQuery);
 
   return (
     <PageTransition>
       <DocsArticle>
-        <DocsHeader
-          eyebrow="AI Lab / Automations"
-          title="Automations"
-          description="Trigger → input → AI processing → decision → action → output, laid out end to end for each real workflow."
-        />
+        <DocsHeader eyebrow={page.eyebrow} title={page.title ?? ""} description={page.intro} />
         {automations.length === 0 && (
           <Callout title="Nothing published yet">No automations are published yet. New entries appear here as they&apos;re written up.</Callout>
         )}

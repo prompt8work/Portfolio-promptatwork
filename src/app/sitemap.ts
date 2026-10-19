@@ -12,13 +12,13 @@ import {
   trainingSlugsQuery,
 } from "../sanity/lib/queries";
 import { getCanonicalUrl } from "../lib/site";
-import { trainings } from "../lib/trainings";
+import { getWorkshops } from "../lib/content";
 
 // Real, generated URLs only — every dynamic segment below is pulled from
 // the exact same Sanity queries the pages themselves use (never a
 // hand-maintained list that can drift from what's actually published).
-// Training workshops come from src/lib/trainings.ts, the same file their
-// pages are built from.
+// Training workshops are "Workshop / course" documents, read the same way
+// their pages read them.
 // /studio is deliberately excluded — see robots.ts.
 export const revalidate = 3600;
 
@@ -82,6 +82,7 @@ const hubTypes: Record<string, string[]> = {
 };
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const trainings = await getWorkshops();
   const [projectSlugs, toolSlugs, promptSlugs, experimentSlugs, automationSlugs, blogSlugs, trainingSlugs, portfolioSlugs, updatedDocs] =
     await Promise.all([
       client.fetch<string[]>(projectSlugsQuery),

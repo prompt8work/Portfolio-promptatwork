@@ -146,6 +146,7 @@ export const toolBySlugQuery = groq`
   *[${publishedToolFilter} && slug.current == $slug][0] {
     "slug": slug.current,
     name,
+    "cardImage": cardImage.asset->url,
     type,
     category,
     tags,
@@ -194,6 +195,7 @@ export const promptBySlugQuery = groq`
   *[_type == "prompt" && slug.current == $slug][0] {
     "slug": slug.current,
     title,
+    "cardImage": cardImage.asset->url,
     category,
     purpose,
     prompt,
@@ -226,6 +228,7 @@ export const experimentBySlugQuery = groq`
   *[_type == "experiment" && slug.current == $slug][0] {
     "slug": slug.current,
     title,
+    "cardImage": cardImage.asset->url,
     objective,
     hypothesis,
     problem,
@@ -261,6 +264,7 @@ export const automationBySlugQuery = groq`
   *[_type == "automation" && slug.current == $slug][0] {
     "slug": slug.current,
     title,
+    "cardImage": cardImage.asset->url,
     category,
     description,
     problem,

@@ -11,7 +11,31 @@ import blog from "./blog";
 import video from "./video";
 import training from "./training";
 import engineeringArea from "./engineeringArea";
+import siteSettings from "./siteSettings";
+import homePage from "./homePage";
+import page from "./page";
+import workshop from "./workshop";
+import institute from "./institute";
+import coverLetter from "./coverLetter";
 
 export const schema: { types: SchemaTypeDefinition[] } = {
-  types: [project, portfolioProfile, portfolioSettings, tool, prompt, experiment, automation, blog, video, training, engineeringArea],
+  types: [
+    siteSettings,
+    homePage,
+    page,
+    coverLetter,
+    project,
+    portfolioProfile,
+    portfolioSettings,
+    tool,
+    prompt,
+    experiment,
+    automation,
+    blog,
+    video,
+    training,
+    workshop,
+    institute,
+    engineeringArea,
+  ],
 };

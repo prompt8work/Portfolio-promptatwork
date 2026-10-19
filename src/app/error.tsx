@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 import Link from "next/link";
 import Nav from "../components/Nav";
-import SiteFooter from "../components/SiteFooter";
+import SiteFooterView from "../components/SiteFooterView";
 
 // Catches uncaught exceptions below the root layout — most likely a Sanity
 // or Supabase fetch failing during render. Never shows error.message: in
@@ -43,7 +43,7 @@ export default function ErrorPage({ error, retry }: { error: Error & { digest?: 
           </div>
         </div>
       </main>
-      <SiteFooter />
+      <SiteFooterView />
     </div>
   );
 }

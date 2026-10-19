@@ -22,8 +22,9 @@ import { client } from "../../../sanity/lib/client";
 import { blogPostBySlugQuery, blogSlugsQuery } from "../../../sanity/lib/queries";
 import { getReactionCounts, type ReactionCounts } from "../../../supabase/blogReactionRepository";
 import { getPublishedComments, type PublishedComment } from "../../../supabase/commentRepository";
-import { buildBreadcrumbJsonLd, getCanonicalUrl, siteUrl } from "../../../lib/site";
-import { personName, personRef } from "../../../lib/seo";
+import { buildBreadcrumbJsonLd, buildMetadata, getCanonicalUrl } from "../../../lib/site";
+import { personRef } from "../../../lib/seo";
+import { getSiteSettings } from "../../../lib/content";
 
 export const revalidate = 60;
 
@@ -60,46 +61,43 @@ export async function generateStaticParams() {
 const REVIEW_CATEGORIES = new Set(["AI Tool Reviews", "AI Model Reviews"]);
 const isReview = (post: Pick<BlogPostDetail, "category">) => !!post.category && REVIEW_CATEGORIES.has(post.category);
 
-/** Share image: the post's cover at 16:9, or the generated title card. */
-function shareImage(post: BlogPostDetail) {
-  if (post.coverImage) {
-    const sep = post.coverImage.includes("?") ? "&" : "?";
-    return { url: `${post.coverImage}${sep}w=1200&h=675&fit=crop&fm=png`, width: 1200, height: 675, alt: post.title };
-  }
-  return {
-    url: `${siteUrl}/og?title=${encodeURIComponent(post.title)}&variant=blog`,
-    width: 1200,
-    height: 630,
-    alt: post.title,
-  };
+/** A review's cover is its summary card: share it as-is at 16:9 (JPEG keeps
+ * it under WhatsApp's ~300 KB preview limit) rather than composing a card. */
+function reviewShareImage(post: BlogPostDetail) {
+  const url = new URL(post.coverImage!);
+  url.search = "w=1200&h=675&fit=crop&fm=jpg&q=85";
+  return { url: url.toString(), width: 1200, height: 675, alt: post.title };
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
   const post: BlogPostDetail | null = await client.fetch(blogPostBySlugQuery, { slug });
   if (!post) return {};
-  const title = post.seoTitle || `${post.title} — Blog — PromptAtWork`;
+  // buildMetadata adds "| PromptAtWork"; share cards show the post's own
+  // title rather than a "— Blog —" breadcrumb.
+  const title = post.seoTitle || post.title;
   const description = post.seoDescription || post.excerpt;
-  const canonicalUrl = getCanonicalUrl(`/blog/${post.slug}`);
-  // Link previews (LinkedIn, WhatsApp, X) show the headline and the
-  // excerpt as the subheading, over the share image.
-  const image = shareImage(post);
-  return {
+  const review = isReview(post) && !!post.coverImage?.startsWith("https://cdn.sanity.io/");
+  const metadata = buildMetadata({
     title,
     description,
-    alternates: { canonical: canonicalUrl },
+    path: `/blog/${post.slug}`,
+    type: "article",
+    image: post.coverImage,
+    // Reviews share their own summary card; other posts get a composed card.
+    card: review ? undefined : { title: post.title, subtitle: post.excerpt, eyebrow: post.category || "Blog" },
+  });
+  const reviewImage = review ? reviewShareImage(post) : null;
+  return {
+    ...metadata,
     openGraph: {
-      title: post.title,
-      description: post.excerpt,
-      url: canonicalUrl,
-      type: "article",
-      siteName: "PromptAtWork",
+      ...metadata.openGraph,
       publishedTime: post.publishedAt,
       authors: post.author ? [post.author] : undefined,
       tags: post.tags,
-      images: [image],
+      ...(reviewImage ? { images: [reviewImage] } : {}),
     },
-    twitter: { card: "summary_large_image", title: post.title, description: post.excerpt, images: [image.url] },
+    ...(reviewImage ? { twitter: { ...metadata.twitter, images: [reviewImage.url] } } : {}),
   };
 }
 
@@ -110,10 +108,9 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
   const contentId = `blog-${post.slug}`;
   const canonicalUrl = getCanonicalUrl(`/blog/${post.slug}`);
-  const [reactionCounts, comments]: [ReactionCounts, PublishedComment[]] = await Promise.all([
-    getReactionCounts(contentId),
-    getPublishedComments(contentId),
-  ]);
+  const [reactionCounts, comments, settings]: [ReactionCounts, PublishedComment[], Awaited<ReturnType<typeof getSiteSettings>>] =
+    await Promise.all([getReactionCounts(contentId), getPublishedComments(contentId), getSiteSettings()]);
+  const person = personRef(settings);
 
   const articleJsonLd = {
     "@context": "https://schema.org",
@@ -121,8 +118,8 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
     headline: post.title,
     description: post.seoDescription || post.excerpt,
     datePublished: post.publishedAt,
-    author: !post.author || post.author === personName ? personRef : { "@type": "Person", name: post.author },
-    publisher: personRef,
+    author: !post.author || post.author === settings.personName ? person : { "@type": "Person", name: post.author },
+    publisher: person,
     ...(post.coverImage ? { image: post.coverImage } : {}),
     mainEntityOfPage: canonicalUrl,
   };
@@ -184,7 +181,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
             <Reveal className="flex flex-wrap items-center justify-between gap-4 py-5 border-y border-line">
               <ReactionBar contentId={contentId} initialCounts={reactionCounts} />
-              <ShareActions url={canonicalUrl} title={post.title} />
+              <ShareActions url={canonicalUrl} title={post.title} summary={post.excerpt} />
             </Reveal>
 
             <DiagramBody body={post.body} diagrams={post.diagrams} />

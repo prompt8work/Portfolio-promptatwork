@@ -7,8 +7,14 @@ import CopyButton from "../motion/CopyButton";
 // API integration — LinkedIn opens with the canonical PromptAtWork blog URL
 // pre-filled; the user still writes and publishes the LinkedIn post
 // themselves. No LinkedIn API key or OAuth involved.
-export default function ShareActions({ url, title }: { url: string; title: string }) {
-  const shareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`;
+//
+// share-offsite only takes a URL and leaves the post text empty, so this
+// opens LinkedIn's composer with the text pre-filled instead: heading,
+// subheading and the link. LinkedIn still builds the link card (image,
+// title) from the page's Open Graph tags.
+export default function ShareActions({ url, title, summary }: { url: string; title: string; summary?: string }) {
+  const text = [title, summary, `Read the full post: ${url}`].filter(Boolean).join("\n\n");
+  const shareUrl = `https://www.linkedin.com/feed/?shareActive=true&text=${encodeURIComponent(text)}`;
   const pill =
     "border border-outline-variant text-on-surface-variant text-sm font-semibold px-4 py-2.5 rounded-full hover:border-primary/70 hover:text-primary";
 

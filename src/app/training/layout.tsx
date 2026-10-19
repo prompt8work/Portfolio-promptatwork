@@ -4,7 +4,8 @@ import DocsSidebar from "../../components/docs/DocsSidebar";
 import { AiLabNavProvider, type DocsGroup } from "../../components/docs/AiLabNavContext";
 import { client } from "../../sanity/lib/client";
 import { trainingsQuery } from "../../sanity/lib/queries";
-import { trainingCategories, trainingPath, trainings } from "../../lib/trainings";
+import { trainingCategories, trainingPath } from "../../lib/trainings";
+import { getWorkshops } from "../../lib/content";
 
 // Interim revalidation strategy until the Sanity webhook is wired up.
 export const revalidate = 60;
@@ -13,12 +14,15 @@ type CourseRow = { slug: string; title: string; description: string };
 
 /**
  * The Training hub, built on the AI Lab's docs shell: one persistent
- * sidebar with a group per audience category (from src/lib/trainings.ts)
+ * sidebar with a group per audience category (workshops from Sanity)
  * plus the cohort courses open for registration (Sanity). Each page renders
  * <PageTransition><DocsArticle>…</DocsArticle></PageTransition>.
  */
 export default async function TrainingLayout({ children }: LayoutProps<"/training">) {
-  const courses: CourseRow[] = await client.fetch(trainingsQuery);
+  const [courses, trainings]: [CourseRow[], Awaited<ReturnType<typeof getWorkshops>>] = await Promise.all([
+    client.fetch(trainingsQuery),
+    getWorkshops(),
+  ]);
 
   const groups: DocsGroup[] = [
     {

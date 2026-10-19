@@ -8,7 +8,8 @@ import { getAiLabProjects, getPortfolioProfile, getPortfolioSettings, getPortfol
 import { buildMetadata } from "../../../lib/site";
 import { buildFaqJsonLd } from "../../../lib/seo";
 import JsonLd from "../../../components/JsonLd";
-import { institutes, trainings, trainingToOffering } from "../../../lib/trainings";
+import { trainingToOffering } from "../../../lib/trainings";
+import { getInstitutes, getSiteSettings, getWorkshops } from "../../../lib/content";
 
 // One page per Sanity "Portfolio profile" (AI Solutions Engineer, AI
 // Enablement Officer & Corporate Trainer). Replaced /resume, which now
@@ -20,7 +21,7 @@ export const revalidate = 60;
 // hand-written cards, so publishing a project in AI Lab adds it here too.
 const aiLabProjectProfiles = new Set(["ai-solutions-engineer"]);
 
-// Profiles whose workshops and institutes come from src/lib/trainings.ts,
+// Profiles whose workshops and institutes come from their Sanity documents,
 // the same data /training uses, so each card links to its /training page.
 // Section headings (eyebrow, title, intro) still come from Studio.
 const trainingProfiles = new Set(["ai-enablement-officer"]);
@@ -33,21 +34,25 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
-  const profile = await getPortfolioProfile(slug);
+  const [profile, s] = await Promise.all([getPortfolioProfile(slug), getSiteSettings()]);
   if (!profile) return {};
   return buildMetadata({
-    title: profile.seoTitle ?? `${profile.title} — Niharika Dhande | PromptAtWork`,
+    title: profile.seoTitle ?? `${profile.title} — ${s.personName} | ${s.brandName}`,
     description: profile.summary,
     path: portfolioPath(profile.slug),
+    image: profile.heroImage?.url,
   });
 }
 
 export default async function PortfolioProfilePage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const [profile, settings, aiLabProjects] = await Promise.all([
+  const [profile, settings, aiLabProjects, trainings, institutes, site] = await Promise.all([
     getPortfolioProfile(slug),
     getPortfolioSettings(),
     aiLabProjectProfiles.has(slug) ? getAiLabProjects() : undefined,
+    trainingProfiles.has(slug) ? getWorkshops() : [],
+    trainingProfiles.has(slug) ? getInstitutes() : [],
+    getSiteSettings(),
   ]);
   if (!profile) notFound();
 
@@ -67,7 +72,7 @@ export default async function PortfolioProfilePage({ params }: { params: Promise
       {profile.faq?.items?.length ? <JsonLd data={buildFaqJsonLd(profile.faq.items)} /> : null}
       <Nav />
       <main id="top">
-        <PortfolioProfileView p={view} settings={settings} aiLabProjects={aiLabProjects} />
+        <PortfolioProfileView p={view} settings={settings} aiLabProjects={aiLabProjects} personName={site.personName} />
       </main>
       <SiteFooter />
     </PageTransition>

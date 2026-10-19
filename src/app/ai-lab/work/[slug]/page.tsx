@@ -17,6 +17,7 @@ import { buildBreadcrumbJsonLd, buildMetadata } from "../../../../lib/site";
 type ProjectDetail = {
   slug: string;
   title: string;
+  coverImage?: string;
   category: string;
   visibility: "public" | "generalized" | "private";
   confidentialityNote?: string;
@@ -56,6 +57,7 @@ export async function generateMetadata({ params }: PageProps<"/ai-lab/work/[slug
     description: project.summary,
     path: `/ai-lab/work/${project.slug}`,
     type: "article",
+    image: project.coverImage,
   });
 }
 

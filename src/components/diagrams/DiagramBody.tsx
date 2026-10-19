@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import Reveal from "../motion/Reveal";
+import RichText from "../blog/RichText";
 import { DiagramFigure } from "./DiagramFigure";
 import type { Diagram } from "./types";
 import { isHtmlBody, sanitizeHtml } from "../../lib/safe-html";
@@ -83,5 +84,9 @@ export default function DiagramBody({ body, diagrams: items }: { body: string; d
 }
 
 function Prose({ children }: { children: string }) {
-  return <Reveal className="text-[15.5px] leading-relaxed text-on-surface-variant whitespace-pre-wrap">{children}</Reveal>;
+  return (
+    <Reveal>
+      <RichText text={children} />
+    </Reveal>
+  );
 }

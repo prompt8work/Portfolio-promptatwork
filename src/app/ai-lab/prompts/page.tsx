@@ -7,12 +7,12 @@ import Thumb from "../../../components/paw/Thumb";
 import { client } from "../../../sanity/lib/client";
 import { promptsQuery } from "../../../sanity/lib/queries";
 import { buildMetadata } from "../../../lib/site";
+import { getPage } from "../../../lib/content";
 
-export const metadata: Metadata = buildMetadata({
-  title: "Prompt Library — Working Prompts with Example Input & Output | PromptAtWork",
-  description: "A working prompt library by prompt engineer Niharika Dhande: categorized, copyable prompts, each with example input and output.",
-  path: "/ai-lab/prompts",
-});
+export async function generateMetadata(): Promise<Metadata> {
+  const page = await getPage("ai-lab-prompts");
+  return buildMetadata({ title: page.seoTitle ?? "", description: page.seoDescription ?? "", path: "/ai-lab/prompts" });
+}
 
 export const revalidate = 60;
 
@@ -26,16 +26,13 @@ type PromptListItem = {
 };
 
 export default async function PromptsPage() {
+  const page = await getPage("ai-lab-prompts");
   const prompts: PromptListItem[] = await client.fetch(promptsQuery);
 
   return (
     <PageTransition>
       <DocsArticle>
-        <DocsHeader
-          eyebrow="AI Lab / Prompt Library"
-          title="Prompt Library"
-          description="Categorized, copyable prompts with example input and output — real templates behind real projects, not generic starter examples."
-        />
+        <DocsHeader eyebrow={page.eyebrow} title={page.title ?? ""} description={page.intro} />
         {prompts.length === 0 && (
           <Callout title="Nothing published yet">No prompts are published yet. New entries appear here as they&apos;re written up.</Callout>
         )}

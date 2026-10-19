@@ -1,229 +1,102 @@
 import { getCanonicalUrl, siteUrl } from "./site";
-import { personalInfo } from "../../data";
+import type { SiteSettings } from "./content";
 
-// Search positioning. Every phrase here is backed by a fact already on the
-// site: Indore (data/personalInfo.ts, data/aboutMe.ts), the trainer role
-// (hero roles, aboutMe workshops/mentoring, /training), and the engineering
-// areas (Sanity "engineeringArea" documents, /ai-lab/engineering). Don't add a city, service or credential that
-// isn't true — search engines and AI assistants repeat what this says.
+// Structured data (JSON-LD) and search keywords, built from Site settings in
+// Sanity. Every phrase there should be backed by a fact already on the
+// site — search engines and AI assistants repeat what this says.
 
-// Generative AI tools Niharika builds with, trains on and consults on — so
-// someone searching "<tool> trainer / expert in Indore" can find this site
-// and get in touch. Sources: the portfolio profiles (scripts/seed-portfolio.ts), data/skills.ts,
-// the Engineering areas in Sanity.
-// GitHub Copilot, Cursor, Perplexity, Notion AI and NotebookLM were added
-// on Niharika's own word (October 2026). Only list tools Niharika has
-// actually used. Also rendered as the "AI tools" section on /training.
-export const aiTools: { category: string; description: string; tools: string[] }[] = [
-  {
-    category: "AI chat assistants",
-    description: "Everyday writing, analysis and problem-solving with the major AI assistants.",
-    tools: ["ChatGPT", "Claude", "Google Gemini"],
-  },
-  {
-    category: "AI coding tools",
-    description:
-      "Copilots and AI editors that work inside the tools developers already use — GitHub, the code editor and the terminal — to speed up coding, reviews and routine work.",
-    tools: ["GitHub Copilot", "Cursor", "Claude Code"],
-  },
-  {
-    category: "AI research & productivity",
-    description: "Faster research, note-taking and knowledge work with AI built into search, notebooks and docs.",
-    tools: ["Perplexity", "NotebookLM", "Notion AI"],
-  },
-  {
-    category: "LLM platforms & frameworks",
-    description: "Building AI features into products with model APIs and orchestration frameworks.",
-    tools: ["OpenAI API", "Anthropic Claude API", "Gemini API", "Groq", "LangChain"],
-  },
-  {
-    category: "AI automation & voice",
-    description: "Connecting AI to everyday workflows and voice agents, so repetitive work runs on its own.",
-    tools: ["n8n", "Zapier", "Workato", "Vapi"],
-  },
-  {
-    category: "Generative image & video",
-    description: "Creating and comparing images and video with generative media tools.",
-    tools: ["Midjourney", "DALL·E", "Stable Diffusion", "Adobe Firefly", "Runway", "Sora", "Pika"],
-  },
-];
-
-export const aiToolNames = aiTools.flatMap((group) => group.tools);
-
-// Search phrases for the tools people most often hire help with.
-const toolKeywords = [
-  "ChatGPT",
-  "Claude",
-  "Claude Code",
-  "GitHub Copilot",
-  "Cursor",
-  "Gemini",
-  "Perplexity",
-  "NotebookLM",
-  "Notion AI",
-  "n8n",
-  "Zapier",
-  "Midjourney",
-].flatMap(
-  (tool) => [`${tool} training`, `${tool} expert in Indore`],
-);
-
-export const siteKeywords = [
-  "Niharika Dhande",
-  "Niharika Saxena Dhande",
-  "PromptAtWork",
-  "Prompt at Work",
-  "Prompt for Work",
-  "prompt engineer in Indore",
-  "prompt engineering trainer in Indore",
-  "prompt engineering course in Indore",
-  "AI Enablement Officer",
-  "AI Enablement Officer in Indore",
-  "AI Solutions Engineer",
-  "AI Solutions Engineer in Indore",
-  "AI engineer in Indore",
-  "generative AI engineer in Indore",
-  "corporate AI trainer in Indore",
-  "AI tools trainer in Indore",
-  "office AI tools training",
-  "Claude trainer in Indore",
-  "Claude Code training",
-  "prompt library",
-  "working prompt library",
-  "prompt engineering trainer",
-  "generative AI trainer in Indore",
-  "generative AI training",
-  "prompt engineering course",
-  "prompt engineering training India",
-  "AI trainer",
-  "AI engineer",
-  "full-stack AI engineer",
-  "generative AI engineer",
-  "LLM application developer",
-  "RAG developer",
-  "agentic AI",
-  "AI automation",
-  "AI-assisted software development",
-  "AI workshops",
-  "generative AI tools training",
-  "AI productivity tools training",
-  "AI tools consultant",
-  "Generative AI consulting",
-  "AI consulting",
-  "AI Fluency training",
-  "AI literacy training",
-  "AI literacy workshops",
-  "AI Corporate Training",
-  ...toolKeywords,
-];
-
-export const personName = "Niharika Dhande";
-
-// Every profile Niharika owns, so search engines tie them to one person.
-// Add new profiles to data/personalInfo.ts and list them here.
-const profileUrls = [`https://${personalInfo.linkedin}`, `https://${personalInfo.github}`];
-
-// How people write the brand name. "Prompt for Work" is a mis-hearing,
-// not a name, so it stays a keyword above rather than an alternateName.
-const brandAlternateNames = ["Prompt at Work", "Prompt @ Work", "Prompt@Work"];
 export const personId = `${siteUrl}/#person`;
 const organizationId = `${siteUrl}/#organization`;
 const websiteId = `${siteUrl}/#website`;
 
-const indoreAddress = {
-  "@type": "PostalAddress",
-  addressLocality: "Indore",
-  addressRegion: "Madhya Pradesh",
-  addressCountry: "IN",
-};
+/** The sitewide keyword list: the base keywords plus "<tool> training" / "<tool> expert in <city>". */
+export function siteKeywords(s: SiteSettings): string[] {
+  const city = s.address?.city;
+  return [...(s.keywords ?? []), ...(s.toolKeywords ?? []).flatMap((tool) => [`${tool} training`, `${tool} expert in ${city}`])];
+}
 
-const indore = {
-  "@type": "City",
-  name: "Indore",
-  containedInPlace: { "@type": "State", name: "Madhya Pradesh", containedInPlace: { "@type": "Country", name: "India" } },
-};
+/** Every tool named in the AI tools groups, in order. */
+export const aiToolNames = (s: SiteSettings) => (s.aiTools ?? []).flatMap((group) => group.tools);
 
-// Short reference used inside other schemas (Article author, Course
-// instructor) so search engines tie every page back to the same person.
-export const personRef = { "@type": "Person", "@id": personId, name: personName, url: getCanonicalUrl("/") };
+export function personRef(s: SiteSettings) {
+  return { "@type": "Person", "@id": personId, name: s.personName, url: getCanonicalUrl("/") };
+}
 
-// One linked @graph for the homepage: who Niharika is, what PromptAtWork
+const profileUrls = (s: SiteSettings) => [`https://${s.linkedin}`, `https://${s.github}`];
+
+function place(s: SiteSettings) {
+  const a = s.address;
+  return {
+    address: { "@type": "PostalAddress", addressLocality: a.city, addressRegion: a.region, addressCountry: a.countryCode },
+    city: {
+      "@type": "City",
+      name: a.city,
+      containedInPlace: { "@type": "State", name: a.region, containedInPlace: { "@type": "Country", name: a.countryName } },
+    },
+  };
+}
+
+// One linked @graph for the homepage: who the person is, what the business
 // offers and where, and the website itself.
-export const homeJsonLd = {
-  "@context": "https://schema.org",
-  "@graph": [
-    {
-      "@type": "Person",
-      "@id": personId,
-      name: personName,
-      alternateName: ["Niharika Saxena Dhande", "Niharika"],
-      jobTitle: [personalInfo.title, "AI Solutions Engineer", "Prompt Engineer", "Corporate AI Trainer"],
-      description:
-        "AI Enablement Officer, AI Solutions Engineer and corporate AI trainer based in Indore, India, and founder of Prompt at Work. Finds where AI fits in a team's workflow, builds the solution, and trains the people who will use it.",
-      url: getCanonicalUrl("/"),
-      image: getCanonicalUrl("/images/Hero_image.png"),
-      email: `mailto:${personalInfo.email}`,
-      address: indoreAddress,
-      homeLocation: indore,
-      knowsAbout: [
-        "Prompt engineering",
-        "Generative AI",
-        "Large language models",
-        "Retrieval-augmented generation (RAG)",
-        "Agentic AI",
-        "AI automation",
-        "AI-assisted software development",
-        "Full-stack development",
-        ...aiToolNames,
-      ],
-      hasOccupation: [
-        { "@type": "Occupation", name: "AI Enablement Officer", occupationLocation: indore },
-        { "@type": "Occupation", name: "AI Solutions Engineer", occupationLocation: indore },
-        { "@type": "Occupation", name: "Corporate AI Trainer", occupationLocation: indore },
-        { "@type": "Occupation", name: "Prompt Engineer", occupationLocation: indore },
-      ],
-      worksFor: { "@id": organizationId },
-      sameAs: profileUrls,
-    },
-    {
-      "@type": "ProfessionalService",
-      "@id": organizationId,
-      name: "PromptAtWork",
-      alternateName: brandAlternateNames,
-      url: getCanonicalUrl("/"),
-      description:
-        "Prompt engineering and Generative AI training, workshops and AI engineering by Niharika Dhande, based in Indore, India.",
-      image: getCanonicalUrl("/images/Hero_image.png"),
-      founder: { "@id": personId },
-      address: indoreAddress,
-      areaServed: [indore, { "@type": "Country", name: "India" }],
-      knowsAbout: ["Prompt engineering", "Generative AI", "RAG", "AI automation", "AI enablement", "Claude and Claude Code", "AI tools training"],
-      makesOffer: [
-        { "@type": "Offer", itemOffered: { "@type": "Service", name: "Prompt engineering training" } },
-        { "@type": "Offer", itemOffered: { "@type": "Service", name: "Generative AI workshops" } },
-        { "@type": "Offer", itemOffered: { "@type": "Service", name: "AI consulting" } },
-        ...aiTools.map((group) => ({
-          "@type": "Offer",
-          itemOffered: {
-            "@type": "Service",
-            name: `${group.category} — training & consulting`,
-            description: `Hands-on training, setup and consulting for ${group.tools.join(", ")}.`,
-          },
-        })),
-      ],
-      sameAs: profileUrls,
-    },
-    {
-      "@type": "WebSite",
-      "@id": websiteId,
-      name: "PromptAtWork",
-      alternateName: [...brandAlternateNames, "PromptAtWork — Niharika Dhande"],
-      url: getCanonicalUrl("/"),
-      inLanguage: "en-IN",
-      publisher: { "@id": personId },
-    },
-  ],
-};
+export function buildHomeJsonLd(s: SiteSettings) {
+  const { address, city } = place(s);
+  return {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Person",
+        "@id": personId,
+        name: s.personName,
+        alternateName: s.personAlternateNames,
+        jobTitle: [s.jobTitle, ...(s.jobTitles ?? [])],
+        description: s.personDescription,
+        url: getCanonicalUrl("/"),
+        image: getCanonicalUrl("/images/Hero_image.png"),
+        email: `mailto:${s.email}`,
+        address,
+        homeLocation: city,
+        knowsAbout: [...(s.personKnowsAbout ?? []), ...aiToolNames(s)],
+        hasOccupation: (s.occupations ?? []).map((name) => ({ "@type": "Occupation", name, occupationLocation: city })),
+        worksFor: { "@id": organizationId },
+        sameAs: profileUrls(s),
+      },
+      {
+        "@type": "ProfessionalService",
+        "@id": organizationId,
+        name: s.brandName,
+        alternateName: s.brandAlternateNames,
+        url: getCanonicalUrl("/"),
+        description: s.organizationDescription,
+        image: getCanonicalUrl("/images/Hero_image.png"),
+        founder: { "@id": personId },
+        address,
+        areaServed: [city, { "@type": "Country", name: s.address.countryName }],
+        knowsAbout: s.organizationKnowsAbout,
+        makesOffer: [
+          ...(s.services ?? []).map((name) => ({ "@type": "Offer", itemOffered: { "@type": "Service", name } })),
+          ...(s.aiTools ?? []).map((group) => ({
+            "@type": "Offer",
+            itemOffered: {
+              "@type": "Service",
+              name: `${group.category} — training & consulting`,
+              description: `Hands-on training, setup and consulting for ${group.tools.join(", ")}.`,
+            },
+          })),
+        ],
+        sameAs: profileUrls(s),
+      },
+      {
+        "@type": "WebSite",
+        "@id": websiteId,
+        name: s.brandName,
+        alternateName: [...(s.brandAlternateNames ?? []), `${s.brandName} — ${s.personName}`],
+        url: getCanonicalUrl("/"),
+        inLanguage: "en-IN",
+        publisher: { "@id": personId },
+      },
+    ],
+  };
+}
 
 // FAQPage for any page that shows question-and-answer pairs on screen.
 // Answer engines (ChatGPT, Perplexity, Gemini) quote these directly, so

@@ -3,6 +3,7 @@ import { ArrowRight } from "lucide-react";
 import { aiLabSections, portfolioSections } from "../../lib/navigation";
 import { StaggerGrid, StaggerItem } from "../motion/StaggerGrid";
 import SectionHeader from "../paw/SectionHeader";
+import { getHomePage } from "../../lib/content";
 import type { ThumbGlyph, ThumbVariant } from "../paw/Thumb";
 import ThumbCard from "../paw/ThumbCard";
 import { staticCardImage, staticCardKey } from "../../lib/card-images/static";
@@ -19,7 +20,8 @@ const art: Record<string, { variant: ThumbVariant; glyph: ThumbGlyph; kicker: st
   "/ai-lab/automations": { variant: "mono", glyph: "flow", kicker: "AUTOMATION" },
 };
 
-export default function AILabSections() {
+export default async function AILabSections() {
+  const home = await getHomePage();
   const [featured, ...rest] = aiLabSections.filter((s) => art[s.href]);
   const profiles = portfolioSections.filter((p) => p.href !== "/portfolio");
 
@@ -27,8 +29,8 @@ export default function AILabSections() {
     <section id="ai-lab" className="w-full">
       <div className="max-w-[1280px] mx-auto px-4 sm:px-8 py-16 lg:py-[72px]">
         <SectionHeader
-          eyebrow="AI LAB"
-          title="All my work lives in one place"
+          eyebrow={home.aiLabHeading?.eyebrow}
+          title={home.aiLabHeading?.title ?? ""}
           action={
             <div className="flex flex-wrap gap-2">
               {profiles.map((p) => (

@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Play } from "lucide-react";
-import { hero } from "../../../data/homeContent";
+import { getHomePage, getSiteSettings } from "../../lib/content";
 import { brand } from "../../lib/navigation";
 import { client } from "../../sanity/lib/client";
 import { trainingsQuery } from "../../sanity/lib/queries";
@@ -23,7 +23,7 @@ async function openCourseTitle(): Promise<string | null> {
 }
 
 export default async function Hero() {
-  const openCourse = await openCourseTitle();
+  const [openCourse, home, settings] = await Promise.all([openCourseTitle(), getHomePage(), getSiteSettings()]);
 
   return (
     <section
@@ -38,7 +38,7 @@ export default async function Hero() {
         <div className="flex flex-col items-start">
           <IntroFade className="flex flex-wrap items-center gap-x-2.5 gap-y-1">
             <span className="label-md inline-flex items-center h-[26px] px-2.5 rounded-md text-primary bg-[color-mix(in_srgb,var(--accent-blue)_14%,transparent)] border border-[color-mix(in_srgb,var(--primary)_20%,transparent)]">
-              PROMPT AT WORK
+              {home.heroTag}
             </span>
             {openCourse && (
               <Link href="/training" className="text-[13px] text-muted hover:text-ink">
@@ -48,48 +48,47 @@ export default async function Hero() {
           </IntroFade>
 
           <IntroFade step={1}>
-            <h1 className="mt-5 text-sm sm:text-[15px] leading-snug font-medium text-muted max-w-[560px]">{hero.identity}</h1>
+            <h1 className="mt-5 text-sm sm:text-[15px] leading-snug font-medium text-muted max-w-[560px]">{home.heroIdentity}</h1>
           </IntroFade>
 
           <IntroFade step={2}>
             <p className="mt-4 mb-5 text-[40px] leading-[44px] sm:text-[52px] sm:leading-[56px] lg:text-[64px] lg:leading-[68px] font-semibold tracking-[-0.035em] text-ink">
-              {hero.display.lead}
-              <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">{hero.display.accent}</span>
+              {home.heroDisplayLead}
+              <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">{home.heroDisplayAccent}</span>
             </p>
           </IntroFade>
 
           <IntroFade as="p" step={3} className="mb-8 text-lg leading-7 text-muted max-w-[560px]">
-            {hero.heading} {hero.description}
+            {home.heroLead}
           </IntroFade>
 
           <IntroFade step={4} className="flex flex-wrap gap-3">
-            <Link href="/training" className="paw-btn paw-btn--primary">
-              <Play className="w-4 h-4 fill-current" aria-hidden="true" />
-              Start Learning
-            </Link>
-            <Link href="/portfolio" className="paw-btn paw-btn--secondary bg-card">
-              View Portfolio
-            </Link>
+            {(home.heroCtas ?? []).map((c, i) => (
+              <Link key={c.href} href={c.href} className={`paw-btn ${i === 0 ? "paw-btn--primary" : "paw-btn--secondary bg-card"}`}>
+                {i === 0 && <Play className="w-4 h-4 fill-current" aria-hidden="true" />}
+                {c.label}
+              </Link>
+            ))}
           </IntroFade>
 
           <IntroFade step={5} className="mt-10 pt-7 border-t border-line flex flex-wrap items-center gap-6 w-full">
             <div className="flex items-center gap-3">
               <Image
                 src="/images/niharika-headshot.jpg"
-                alt="Niharika Dhande"
+                alt={settings.personName}
                 width={44}
                 height={44}
                 className="w-11 h-11 rounded-full object-cover border border-line"
               />
               <div>
-                <div className="text-[15px] font-semibold">Niharika Dhande</div>
-                <div className="text-[13px] text-muted">AI Enablement Officer · Founder</div>
+                <div className="text-[15px] font-semibold">{settings.personName}</div>
+                <div className="text-[13px] text-muted">{home.heroPersonRole}</div>
               </div>
             </div>
             <span className="hidden sm:block w-px h-9 bg-line" aria-hidden="true" />
             <div>
-              <div className="text-xl font-semibold tracking-[-0.01em]">{hero.credential.value}</div>
-              <div className="text-[13px] text-muted">{hero.credential.label}</div>
+              <div className="text-xl font-semibold tracking-[-0.01em]">{home.credentialValue}</div>
+              <div className="text-[13px] text-muted">{home.credentialLabel}</div>
             </div>
           </IntroFade>
         </div>
@@ -101,7 +100,15 @@ export default async function Hero() {
             style={{ background: "radial-gradient(70% 70% at 70% 30%, color-mix(in srgb, var(--accent-violet) 25%, transparent), transparent 70%)" }}
           />
           <div className="relative">
-            <WhatsAppAutomation />
+            <WhatsAppAutomation
+              title={home.heroCardTitle}
+              meta={home.heroCardMeta}
+              badge={home.heroCardBadge}
+              customer={home.heroCardCustomer}
+              reply={home.heroCardReply}
+              steps={home.heroCardSteps ?? []}
+              footer={home.heroCardFooter}
+            />
           </div>
           <div
             className="paw-glass relative mt-4 lg:mt-0 lg:absolute lg:-left-8 lg:bottom-4 px-4 py-3 rounded-xl flex items-center gap-3 w-fit"
@@ -109,8 +116,8 @@ export default async function Hero() {
           >
             <Image src={brand.logo} alt="" width={36} height={36} className="w-9 h-9 rounded-[10px]" />
             <div>
-              <div className="text-sm font-semibold">Agentic AI frameworks</div>
-              <div className="label-md text-muted">LANGGRAPH · CREWAI · MCP</div>
+              <div className="text-sm font-semibold">{home.heroChipTitle}</div>
+              <div className="label-md text-muted">{home.heroChipMeta}</div>
             </div>
           </div>
         </IntroFade>

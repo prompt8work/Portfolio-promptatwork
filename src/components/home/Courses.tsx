@@ -2,15 +2,15 @@ import { ArrowRight } from "lucide-react";
 import { client } from "../../sanity/lib/client";
 import { trainingsQuery } from "../../sanity/lib/queries";
 import { getBatchesForTraining, type TrainingBatch } from "../../supabase/trainingRepository";
-import { trainingPath, trainings as workshops } from "../../lib/trainings";
+import { trainingPath } from "../../lib/trainings";
+import { getHomePage, getWorkshops } from "../../lib/content";
 import { StaggerGrid, StaggerItem } from "../motion/StaggerGrid";
 import SectionHeader from "../paw/SectionHeader";
 import type { ThumbGlyph, ThumbVariant } from "../paw/Thumb";
 import ThumbCard from "../paw/ThumbCard";
-import { staticCardImage, staticCardKey } from "../../lib/card-images/static";
 
 // Courses (Hub-Courses board): the cohort courses open for registration
-// (Sanity), then the workshops from src/lib/trainings.ts, three cards in
+// (Sanity), then the workshops (also Sanity), three cards in
 // all. The board's progress bars are per-learner data the site doesn't
 // have, so a course card shows its real batch status and a workshop card
 // its audience category.
@@ -29,13 +29,14 @@ function batchLine(batches: TrainingBatch[]) {
 }
 
 export default async function Courses() {
-  const trainings: Training[] = await client.fetch(trainingsQuery);
+  const [trainings, workshops, home]: [Training[], Awaited<ReturnType<typeof getWorkshops>>, Awaited<ReturnType<typeof getHomePage>>] =
+    await Promise.all([client.fetch(trainingsQuery), getWorkshops(), getHomePage()]);
   const batches = await Promise.all(trainings.map((t) => getBatchesForTraining(t.slug)));
 
   return (
     <section id="training" className="w-full">
       <div className="max-w-[1280px] mx-auto px-4 sm:px-8 py-16 lg:py-[72px]">
-        <SectionHeader eyebrow="COURSES" title="Latest Frameworks" link={{ href: "/training", label: "All courses" }} />
+        <SectionHeader eyebrow={home.coursesHeading?.eyebrow} title={home.coursesHeading?.title ?? ""} link={{ href: "/training", label: "All courses" }} />
 
         <StaggerGrid className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {trainings.map((t, i) => {
@@ -73,7 +74,7 @@ export default async function Courses() {
               <StaggerItem key={w.slug} className="h-full">
                 <ThumbCard
                   href={trainingPath(w.slug)}
-                  image={staticCardImage(staticCardKey.training(w.slug))}
+                  image={w.image}
                   variant={variant}
                   glyph={glyph}
                   kicker={`WORKSHOP · ${w.category.toUpperCase()}`}

@@ -26,7 +26,6 @@ import { cardImagesConfigured, generateCardImage } from "../src/lib/card-images/
 import { ensureCardImage, listPendingCardImages } from "../src/lib/card-images/sanity";
 import { staticCardKey, type StaticCardEntry } from "../src/lib/card-images/static";
 import { aiLabHubSections } from "../src/lib/navigation";
-import { trainings } from "../src/lib/trainings";
 
 const args = new Set(process.argv.slice(2));
 const confirm = args.has("--confirm");
@@ -63,10 +62,6 @@ const OUT_DIR = path.join("public/images/cards");
 
 function staticTopics(): { key: string; topic: CardTopic }[] {
   return [
-    ...trainings.map((t) => ({
-      key: staticCardKey.training(t.slug),
-      topic: { kind: "training workshop", title: t.title, summary: t.description, keywords: [...t.tags, ...t.highlights] },
-    })),
     ...aiLabHubSections.map((s) => ({
       key: staticCardKey.section(s.href),
       topic: { kind: "section of an AI lab website", title: s.label, summary: s.body },

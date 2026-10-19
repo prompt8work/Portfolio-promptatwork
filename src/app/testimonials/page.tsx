@@ -9,17 +9,19 @@ import { StaggerGrid, StaggerItem } from "../../components/motion/StaggerGrid";
 import TestimonialForm from "../../components/testimonials/TestimonialForm";
 import { getPublishedTestimonials } from "../../supabase/testimonialRepository";
 import { buildMetadata } from "../../lib/site";
+import { getBlock, getPage } from "../../lib/content";
 
-export const metadata: Metadata = buildMetadata({
-  title: "Testimonials — Niharika Dhande, AI Trainer & AI Solutions Engineer | PromptAtWork",
-  description: "What it's been like working with Niharika Dhande — and a place to add your own.",
-  path: "/testimonials",
-});
+export async function generateMetadata(): Promise<Metadata> {
+  const page = await getPage("testimonials");
+  return buildMetadata({ title: page.seoTitle ?? "", description: page.seoDescription ?? "", path: "/testimonials" });
+}
 
 export const revalidate = 60;
 
 export default async function TestimonialsPage() {
   const testimonials = await getPublishedTestimonials();
+  const page = await getPage("testimonials");
+  const formBlock = getBlock(page, "form");
 
   return (
     <PageTransition className="min-h-screen">
@@ -29,9 +31,9 @@ export default async function TestimonialsPage() {
           <div className="max-w-[1100px] mx-auto px-5 sm:px-10 pt-16 sm:pt-20 pb-10">
             <SectionHeading
               level="page"
-              eyebrow="TESTIMONIALS"
-              title="What it's been like to work together"
-              description="Real feedback from clients, colleagues and training participants — and a place to add your own."
+              eyebrow={page.eyebrow ?? ""}
+              title={page.title ?? ""}
+              description={page.intro}
               align="start"
             />
           </div>
@@ -69,10 +71,8 @@ export default async function TestimonialsPage() {
         <section className="w-full bg-surface-container">
           <div className="max-w-[700px] mx-auto px-5 sm:px-10 py-16 sm:py-20">
             <Reveal>
-              <h2 className="text-2xl font-semibold text-ink mb-2">Share your experience</h2>
-              <p className="text-sm text-muted mb-8">
-                Worked together on a project, training or consulting engagement? A couple of sentences helps a lot.
-              </p>
+              <h2 className="text-2xl font-semibold text-ink mb-2">{formBlock?.title}</h2>
+              <p className="text-sm text-muted mb-8">{formBlock?.text}</p>
             </Reveal>
             <Reveal index={1}>
               <TestimonialForm />

@@ -48,6 +48,11 @@ export const cardImageSources: Record<string, Source> = {
     imageField: "cardImage",
     topic: `"title": title, "summary": description, "keywords": coalesce(topics, [])`,
   },
+  workshop: {
+    kind: "training course",
+    imageField: "cardImage",
+    topic: `"title": title, "summary": description, "keywords": [category] + coalesce(tags, [])`,
+  },
 };
 
 export const cardImageTypes = Object.keys(cardImageSources);

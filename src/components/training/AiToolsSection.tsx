@@ -1,28 +1,26 @@
 import Button from "../ui/Button";
 import Tag from "../ui/Tag";
 import { StaggerGrid, StaggerItem } from "../motion/StaggerGrid";
-import { aiTools } from "../../lib/seo";
+import type { AiToolGroup, PageBlock } from "../../lib/content";
 
-// "AI tools I train on" — the visible half of the tools list in
-// src/lib/seo.ts (the same list feeds the structured data and /llms.txt),
+// "AI tools I train on" — the visible half of the AI tools list in Site
+// settings (the same list feeds the structured data and /llms.txt),
 // so the tool names people search for appear as real page text. In-depth
 // tool reviews stay in the AI Lab; this only points there. Sized for the
 // Training hub's reading column.
-export default function AiToolsSection() {
+export default function AiToolsSection({ tools, block }: { tools: AiToolGroup[]; block?: PageBlock }) {
+  const cta = block?.ctas?.[0];
   return (
     <section className="flex flex-col gap-5">
       <div className="flex flex-col gap-2">
         <h2 id="ai-tools" className="font-sans text-[26px] font-semibold tracking-tight text-ink scroll-mt-28">
-          AI tools I train teams on
+          {block?.title}
         </h2>
-        <p className="text-[15.5px] leading-[1.75] text-on-surface-variant">
-          Hands-on training, setup and consulting for individuals and teams, in Indore or online. If you want to get more
-          done with any of these tools, get in touch.
-        </p>
+        {block?.text && <p className="text-[15.5px] leading-[1.75] text-on-surface-variant">{block.text}</p>}
       </div>
 
       <StaggerGrid className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        {aiTools.map((group) => (
+        {tools.map((group) => (
           <StaggerItem key={group.category}>
             <div className="h-full bg-card border border-line rounded-2xl p-5 flex flex-col gap-3">
               <h3 className="text-lg font-semibold text-ink">{group.category}</h3>
@@ -39,9 +37,10 @@ export default function AiToolsSection() {
         ))}
       </StaggerGrid>
 
+      {cta && (
       <div>
         <Button
-          href="/contact"
+          href={cta.href}
           icon={
             <svg
               width="15"
@@ -58,9 +57,10 @@ export default function AiToolsSection() {
           }
           arrow
         >
-          Talk about training
+          {cta.label}
         </Button>
       </div>
+      )}
     </section>
   );
 }

@@ -53,7 +53,7 @@ const nodeTone = {
   output: "border-secondary/55 bg-secondary/[0.07]",
 };
 
-function Hero({ p }: { p: PortfolioProfile }) {
+function Hero({ p, personName }: { p: PortfolioProfile; personName: string }) {
   // Frame follows the photo: portrait and square photos get a narrower
   // card so faces aren't cropped; landscape ones fill the column at 4:3.
   const ratio = p.heroImage.height / p.heroImage.width;
@@ -148,7 +148,7 @@ function Hero({ p }: { p: PortfolioProfile }) {
           />
         </div>
         <h2 className="mt-4 mb-0.5 text-xl font-semibold text-ink">
-          Niharika Dhande
+          {personName}
         </h2>
         {p.profileRole && (
           <p className={`mb-3 text-sm ${muted}`}>{p.profileRole}</p>
@@ -305,9 +305,12 @@ export default function PortfolioProfileView({
   p,
   settings,
   aiLabProjects,
+  personName,
 }: {
   p: PortfolioProfile;
   settings: PortfolioSettings | null;
+  /** From Site settings: the name on the profile card. */
+  personName: string;
   // When given, the projects section is built from these AI Lab case studies
   // instead of the profile's hand-written featured project.
   aiLabProjects?: AiLabProject[];
@@ -677,7 +680,7 @@ export default function PortfolioProfileView({
   let stripe = 0;
   return (
     <>
-      <Hero p={p} />
+      <Hero p={p} personName={personName} />
       {sections.map((s) => {
         const alt = !s.plain && stripe++ % 2 === 0;
         return (

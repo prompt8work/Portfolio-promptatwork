@@ -4,12 +4,18 @@ import { Download, Mail, MapPin } from "lucide-react";
 import PageTransition from "./PageTransition";
 import IntroFade from "./motion/IntroFade";
 import LinkedinIcon from "./icons/LinkedinIcon";
-import { personalInfo, coverLetter } from "../../data";
+import type { CoverLetter, SiteSettings } from "../lib/content-types";
 
 const sectionHeading =
   "text-base font-bold tracking-wide text-ink border-b-2 border-primary/30 pb-2 mb-3 print:text-sm print:pb-1 print:mb-2";
 
-export default function CoverLetterContent() {
+export default function CoverLetterContent({
+  coverLetter,
+  person,
+}: {
+  coverLetter: CoverLetter;
+  person: Pick<SiteSettings, "personNameCaps" | "personName" | "email" | "linkedin" | "location">;
+}) {
   // "Today's" date, formatted once server-side and again on client
   // hydration (same VideoCard/BatchCard hydration-mismatch pattern —
   // timeZone: "UTC" fixes the timezone half of it) — the remaining sliver
@@ -49,32 +55,32 @@ export default function CoverLetterContent() {
           <div data-print-header className="bg-surface-container text-ink border-b border-line p-4 md:p-8 print:p-4 print:py-2">
             <div className="text-center md:text-left print:text-left">
               <h1 className="text-2xl md:text-3xl font-semibold mb-1 print:text-xl print:mb-0.5">
-                {personalInfo.name}
+                {person.personNameCaps ?? person.personName}
               </h1>
               <p className="text-muted text-xs md:text-sm mb-4 print:text-xs print:mb-2">
-                {personalInfo.title}
+                {coverLetter.headerTitle}
               </p>
               <div className="flex flex-col md:flex-row items-center md:items-start gap-1 md:gap-4 text-xs print:flex-row print:gap-3 print:text-xs">
                 <div className="flex items-center gap-1">
                   <Mail className="w-3 h-3 md:hidden print:hidden" />
-                  <a href={`mailto:${personalInfo.email}`} className="text-on-surface hover:text-primary transition-colors">
-                    {personalInfo.email}
+                  <a href={`mailto:${person.email}`} className="text-on-surface hover:text-primary transition-colors">
+                    {person.email}
                   </a>
                 </div>
                 <div className="flex items-center gap-1">
                   <LinkedinIcon className="w-3 h-3 md:hidden print:hidden" />
                   <a
-                    href={`https://${personalInfo.linkedin}`}
+                    href={`https://${person.linkedin}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-on-surface hover:text-primary transition-colors"
                   >
-                    {personalInfo.linkedin}
+                    {person.linkedin}
                   </a>
                 </div>
                 <div className="flex items-center gap-1 md:ml-auto print:ml-auto">
                   <MapPin className="w-3 h-3" />
-                  <span>{personalInfo.location}</span>
+                  <span>{person.location}</span>
                 </div>
               </div>
             </div>
@@ -87,17 +93,17 @@ export default function CoverLetterContent() {
 
             <div className="mb-6 print:mb-3">
               <p className="text-lg font-bold text-ink print:text-base">
-                {coverLetter.recipient.salutation},
+                {coverLetter.salutation},
               </p>
             </div>
 
             <div className="mb-6 print:mb-3">
               <p className="text-sm text-on-surface-variant leading-relaxed print:text-xs print:leading-tight">
-                {coverLetter.opening.paragraph}
+                {coverLetter.opening}
               </p>
             </div>
 
-            {coverLetter.body.map((section, idx) => (
+            {(coverLetter.sections ?? []).map((section, idx) => (
               <div key={idx} className="mb-6 print:mb-3">
                 <h2 className={sectionHeading}>{section.heading.toUpperCase()}</h2>
                 <p className="text-sm text-on-surface-variant leading-relaxed print:text-xs print:leading-tight">
@@ -108,28 +114,28 @@ export default function CoverLetterContent() {
 
             <div className="mb-6 print:mb-3">
               <p className="text-sm text-on-surface-variant leading-relaxed mb-4 print:text-xs print:leading-tight print:mb-2">
-                {coverLetter.closing.paragraph}
+                {coverLetter.closing}
               </p>
               <p className="text-sm text-on-surface-variant leading-relaxed print:text-xs print:leading-tight">
-                {coverLetter.closing.callToAction}
+                {coverLetter.callToAction}
               </p>
             </div>
 
             <div className="mt-8 mb-6 print:mt-6 print:mb-4">
               <p className="text-sm text-on-surface mb-8 print:text-xs print:mb-6">
-                {coverLetter.signature.closing},
+                {coverLetter.signOff},
               </p>
               <div className="mb-8 print:mb-6">
                 <div className="h-12 border-b border-outline-variant mb-2 print:h-10"></div>
               </div>
-              <p className="text-base font-semibold text-ink print:text-sm">{coverLetter.signature.name}</p>
-              <p className="text-sm text-muted print:text-xs">{coverLetter.signature.title}</p>
+              <p className="text-base font-semibold text-ink print:text-sm">{coverLetter.signatureName}</p>
+              <p className="text-sm text-muted print:text-xs">{coverLetter.signatureTitle}</p>
             </div>
 
             <div className="mt-6 pt-6 border-t border-line no-print">
               <h3 className="text-sm font-bold text-ink mb-3">Attachments:</h3>
               <ul className="space-y-2">
-                {coverLetter.attachments.map((attachment, idx) => (
+                {(coverLetter.attachments ?? []).map((attachment, idx) => (
                   <li key={idx} className="flex items-center gap-2 text-muted text-sm">
                     <span className="text-primary">📎</span>
                     <span className="font-semibold">{attachment.name}</span>

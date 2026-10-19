@@ -1,18 +1,22 @@
 import type { Metadata } from "next";
 import CoverLetterContent from "../../components/CoverLetterContent";
 import { buildMetadata } from "../../lib/site";
+import { getCoverLetter, getSiteSettings } from "../../lib/content";
 
-// A Server Component wrapper solely so this route can export `metadata` —
-// Next.js doesn't allow that export from a Client Component, which is why
-// this page had none at all before (a real gap, not a stylistic choice).
-// All the actual interactive content (the print button) lives in
-// CoverLetterContent, which stays a Client Component.
-export const metadata: Metadata = buildMetadata({
-  title: "Cover Letter — PromptAtWork",
-  description: "Cover letter of Niharika Dhande, Full-Stack AI Engineer.",
-  path: "/cover-letter",
-});
+// Server component: the letter is the "Cover letter" document and the
+// contact details are Site settings. The interactive part (the print
+// button) lives in CoverLetterContent, a Client Component.
+export async function generateMetadata(): Promise<Metadata> {
+  const letter = await getCoverLetter();
+  return buildMetadata({ title: letter.pageTitle, description: letter.seoDescription, path: "/cover-letter" });
+}
 
-export default function CoverLetterPage() {
-  return <CoverLetterContent />;
+export default async function CoverLetterPage() {
+  const [coverLetter, s] = await Promise.all([getCoverLetter(), getSiteSettings()]);
+  return (
+    <CoverLetterContent
+      coverLetter={coverLetter}
+      person={{ personNameCaps: s.personNameCaps, personName: s.personName, email: s.email, linkedin: s.linkedin, location: s.location }}
+    />
+  );
 }

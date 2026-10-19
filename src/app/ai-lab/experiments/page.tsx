@@ -7,12 +7,12 @@ import Thumb from "../../../components/paw/Thumb";
 import { client } from "../../../sanity/lib/client";
 import { experimentsQuery } from "../../../sanity/lib/queries";
 import { buildMetadata } from "../../../lib/site";
+import { getPage } from "../../../lib/content";
 
-export const metadata: Metadata = buildMetadata({
-  title: "AI Experiments — Hands-On LLM & RAG Tests by Niharika Dhande | PromptAtWork",
-  description: "Hands-on AI experiments by Niharika Dhande: the objective, setup, what worked, what failed and what was learned.",
-  path: "/ai-lab/experiments",
-});
+export async function generateMetadata(): Promise<Metadata> {
+  const page = await getPage("ai-lab-experiments");
+  return buildMetadata({ title: page.seoTitle ?? "", description: page.seoDescription ?? "", path: "/ai-lab/experiments" });
+}
 
 export const revalidate = 60;
 
@@ -25,16 +25,13 @@ type ExperimentListItem = {
 };
 
 export default async function ExperimentsPage() {
+  const page = await getPage("ai-lab-experiments");
   const experiments: ExperimentListItem[] = await client.fetch(experimentsQuery);
 
   return (
     <PageTransition>
       <DocsArticle>
-        <DocsHeader
-          eyebrow="AI Lab / Experiments"
-          title="Experiments"
-          description="Objective → setup → what worked, what failed, what was learned — documented as I build, not written up after the fact."
-        />
+        <DocsHeader eyebrow={page.eyebrow} title={page.title ?? ""} description={page.intro} />
         {experiments.length === 0 && (
           <Callout title="Nothing published yet">No experiments are published yet. New entries appear here as they&apos;re written up.</Callout>
         )}
