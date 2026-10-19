@@ -19,6 +19,7 @@ export const revalidate = 60;
 type AutomationDetail = {
   slug: string;
   title: string;
+  cardImage?: string;
   category?: string;
   description: string;
   problem?: string;
@@ -50,6 +51,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     description: automation.description,
     path: `/ai-lab/automations/${automation.slug}`,
     type: "article",
+    image: automation.cardImage,
   });
 }
 

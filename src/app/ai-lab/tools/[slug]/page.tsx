@@ -33,6 +33,7 @@ type ToolResource = {
 type ToolDetail = {
   slug: string;
   name: string;
+  cardImage?: string;
   type?: string;
   category?: string;
   tags?: string[];
@@ -76,6 +77,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     description: tool.description,
     path: `/ai-lab/tools/${tool.slug}`,
     type: "article",
+    image: tool.cardImage,
   });
 }
 

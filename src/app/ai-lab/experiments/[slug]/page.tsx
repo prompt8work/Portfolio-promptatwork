@@ -19,6 +19,7 @@ export const revalidate = 60;
 type ExperimentDetail = {
   slug: string;
   title: string;
+  cardImage?: string;
   objective: string;
   hypothesis?: string;
   problem?: string;
@@ -51,6 +52,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     description: experiment.objective,
     path: `/ai-lab/experiments/${experiment.slug}`,
     type: "article",
+    image: experiment.cardImage,
   });
 }
 

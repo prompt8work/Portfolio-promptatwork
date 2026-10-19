@@ -70,6 +70,7 @@ export async function generateMetadata({ params }: PageProps<"/training/[slug]">
       title: `${training.title} Training by ${s.personName} (${training.category}) | ${s.brandName}`,
       description: training.description,
       path: trainingPath(training.slug),
+      image: training.image,
       keywords: [
         `${training.title.toLowerCase()} training`,
         `${training.title.toLowerCase()} workshop`,

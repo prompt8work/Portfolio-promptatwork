@@ -20,6 +20,7 @@ export const revalidate = 60;
 type PromptDetail = {
   slug: string;
   title: string;
+  cardImage?: string;
   category: string;
   purpose?: string;
   prompt: string;
@@ -49,6 +50,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     description: prompt.purpose || prompt.title,
     path: `/ai-lab/prompts/${prompt.slug}`,
     type: "article",
+    image: prompt.cardImage,
   });
 }
 

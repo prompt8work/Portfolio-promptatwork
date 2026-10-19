@@ -40,6 +40,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     title: profile.seoTitle ?? `${profile.title} — ${s.personName} | ${s.brandName}`,
     description: profile.summary,
     path: portfolioPath(profile.slug),
+    image: profile.heroImage?.url,
   });
 }
 

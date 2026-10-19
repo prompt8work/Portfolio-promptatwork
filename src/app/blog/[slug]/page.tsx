@@ -22,7 +22,7 @@ import { client } from "../../../sanity/lib/client";
 import { blogPostBySlugQuery, blogSlugsQuery } from "../../../sanity/lib/queries";
 import { getReactionCounts, type ReactionCounts } from "../../../supabase/blogReactionRepository";
 import { getPublishedComments, type PublishedComment } from "../../../supabase/commentRepository";
-import { buildBreadcrumbJsonLd, getCanonicalUrl } from "../../../lib/site";
+import { buildBreadcrumbJsonLd, buildMetadata, getCanonicalUrl } from "../../../lib/site";
 import { personRef } from "../../../lib/seo";
 import { getSiteSettings } from "../../../lib/content";
 
@@ -59,15 +59,21 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params;
   const post: BlogPostDetail | null = await client.fetch(blogPostBySlugQuery, { slug });
   if (!post) return {};
-  const title = post.seoTitle || `${post.title} — Blog — PromptAtWork`;
+  // buildMetadata adds "| PromptAtWork"; share cards show the post's own
+  // title rather than a "— Blog —" breadcrumb.
+  const title = post.seoTitle || post.title;
   const description = post.seoDescription || post.excerpt;
-  const canonicalUrl = getCanonicalUrl(`/blog/${post.slug}`);
-  return {
+  const metadata = buildMetadata({
     title,
     description,
-    alternates: { canonical: canonicalUrl },
-    openGraph: { title, description, url: canonicalUrl, type: "article" },
-    twitter: { card: "summary_large_image", title, description },
+    path: `/blog/${post.slug}`,
+    type: "article",
+    image: post.coverImage,
+    card: { title: post.title, subtitle: post.excerpt, eyebrow: post.category || "Blog" },
+  });
+  return {
+    ...metadata,
+    openGraph: { ...metadata.openGraph, publishedTime: post.publishedAt, authors: post.author ? [post.author] : undefined, tags: post.tags },
   };
 }
 
@@ -151,7 +157,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
             <Reveal className="flex flex-wrap items-center justify-between gap-4 py-5 border-y border-line">
               <ReactionBar contentId={contentId} initialCounts={reactionCounts} />
-              <ShareActions url={canonicalUrl} title={post.title} />
+              <ShareActions url={canonicalUrl} title={post.title} summary={post.excerpt} />
             </Reveal>
 
             <DiagramBody body={post.body} diagrams={post.diagrams} />
