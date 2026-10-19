@@ -11,18 +11,17 @@ import Thumb from "../../components/paw/Thumb";
 import { staticCardImage, staticCardKey } from "../../lib/card-images/static";
 import { aiLabHubSections } from "../../lib/navigation";
 import { buildMetadata } from "../../lib/site";
+import { getBlock, getPage } from "../../lib/content";
 import { client } from "../../sanity/lib/client";
 import { aiLabOverviewQuery } from "../../sanity/lib/queries";
 
 // Interim revalidation strategy until the Sanity webhook is wired up.
 export const revalidate = 60;
 
-export const metadata: Metadata = buildMetadata({
-  title: "AI Lab — Generative & Agentic AI Projects by Niharika Dhande | PromptAtWork",
-  description:
-    "Generative AI and agentic AI work by Niharika Dhande: case studies, engineering capabilities and automations, each explained step by step with process diagrams — in one place.",
-  path: "/ai-lab",
-});
+export async function generateMetadata(): Promise<Metadata> {
+  const page = await getPage("ai-lab");
+  return buildMetadata({ title: page.seoTitle ?? "", description: page.seoDescription ?? "", path: "/ai-lab" });
+}
 
 type Part = { _type: string; slug: string; title: string };
 type Project = {
@@ -72,7 +71,13 @@ const validParts = (p: Project) => (p.parts ?? []).filter((r): r is Part => Bool
 // of every project. The board's Grid/List toggle and index filters are left
 // out: with this few projects they'd filter nothing.
 export default async function AiLabPage() {
-  const { projects, engineering, counts }: Overview = await client.fetch(aiLabOverviewQuery);
+  const [{ projects, engineering, counts }, page]: [Overview, Awaited<ReturnType<typeof getPage>>] = await Promise.all([
+    client.fetch(aiLabOverviewQuery),
+    getPage("ai-lab"),
+  ]);
+  const featuredBlock = getBlock(page, "featured");
+  const engineeringBlock = getBlock(page, "engineering");
+  const indexBlock = getBlock(page, "index");
   const capabilities = engineering.filter((e) => e.evidence.length > 0);
   const featured = projects[0];
   const plural = (n: number, one: string, many = `${one}S`) => `${n} ${n === 1 ? one : many}`;
@@ -104,18 +109,17 @@ export default async function AiLabPage() {
         <header className="max-w-[720px] flex flex-col gap-3.5">
           <IntroFade className="flex flex-wrap items-center gap-2.5">
             <span className="label-md inline-flex items-center h-[26px] px-2.5 rounded-md bg-[color-mix(in_srgb,var(--accent-blue)_14%,transparent)] text-primary">
-              AI LAB · OVERVIEW
+              {page.eyebrow}
             </span>
-            <span className="text-[13px] text-muted">Generative &amp; agentic AI, built in the open</span>
+            {page.tagline && <span className="text-[13px] text-muted">{page.tagline}</span>}
           </IntroFade>
           <IntroFade step={1}>
             <h1 className="m-0 text-[40px] leading-[44px] sm:text-[56px] sm:leading-[60px] font-semibold tracking-[-0.035em]">
-              Real projects, documented end to end.
+              {page.title}
             </h1>
           </IntroFade>
           <IntroFade as="p" step={2} className="m-0 text-[17px] leading-[27px] text-muted">
-            Each project is written up as a case study and split into pages for its parts. Every page explains the process in text and
-            diagrams and links to the rest of the same project.
+            {page.intro}
           </IntroFade>
         </header>
 
@@ -150,7 +154,7 @@ export default async function AiLabPage() {
           <Reveal as="section" className="flex flex-col gap-5">
             <div className="flex flex-wrap justify-between items-end gap-3">
               <div>
-                <p className="paw-section-head__eyebrow">FEATURED · WORK &amp; CASE STUDIES</p>
+                <p className="paw-section-head__eyebrow">{featuredBlock?.eyebrow}</p>
                 <h2 id="featured" className="m-0 text-[28px] leading-[34px] font-semibold tracking-[-0.02em] scroll-mt-28">
                   {featured.title}
                 </h2>
@@ -232,9 +236,9 @@ export default async function AiLabPage() {
         {capabilities.length > 0 && (
           <Reveal as="section" className="flex flex-col gap-5">
             <div>
-              <p className="paw-section-head__eyebrow">ENGINEERING</p>
+              <p className="paw-section-head__eyebrow">{engineeringBlock?.eyebrow}</p>
               <h2 id="engineering" className="m-0 text-[28px] leading-[34px] font-semibold tracking-[-0.02em] scroll-mt-28">
-                Capabilities, each backed by real project evidence
+                {engineeringBlock?.title}
               </h2>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-5 gap-3">
@@ -255,9 +259,9 @@ export default async function AiLabPage() {
 
         <Reveal as="section" className="flex flex-col gap-4">
           <div>
-            <p className="paw-section-head__eyebrow">PROJECT INDEX</p>
+            <p className="paw-section-head__eyebrow">{indexBlock?.eyebrow}</p>
             <h2 id="projects" className="m-0 text-[28px] leading-[34px] font-semibold tracking-[-0.02em] scroll-mt-28">
-              Everything in the lab
+              {indexBlock?.title}
             </h2>
           </div>
           <div className="rounded-2xl border border-line bg-card overflow-hidden">

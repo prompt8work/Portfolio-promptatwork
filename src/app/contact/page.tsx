@@ -4,20 +4,20 @@ import PageTransition from "../../components/PageTransition";
 import SiteFooter from "../../components/SiteFooter";
 import Contact from "../../components/contact/Contact";
 import { buildMetadata } from "../../lib/site";
+import { getPage, getSiteSettings } from "../../lib/content";
 
-export const metadata: Metadata = buildMetadata({
-  title: "Contact Niharika Dhande — AI Training & Prompt Engineering, Indore | PromptAtWork",
-  description:
-    "Get in touch with Niharika Dhande in Indore, India about prompt engineering and Generative AI training, workshops, AI consulting, job opportunities or collaboration.",
-  path: "/contact",
-});
+export async function generateMetadata(): Promise<Metadata> {
+  const page = await getPage("contact");
+  return buildMetadata({ title: page.seoTitle ?? "", description: page.seoDescription ?? "", path: "/contact" });
+}
 
-export default function ContactPage() {
+export default async function ContactPage() {
+  const [page, settings] = await Promise.all([getPage("contact"), getSiteSettings()]);
   return (
     <PageTransition className="min-h-screen">
       <Nav />
       <main>
-        <Contact />
+        <Contact page={page} settings={{ email: settings.email, linkedin: settings.linkedin, location: settings.location }} />
       </main>
       <SiteFooter />
     </PageTransition>

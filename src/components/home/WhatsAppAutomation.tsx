@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useReducedMotion } from "framer-motion";
+import { useReducedMotionSafe } from "../motion/useReducedMotionSafe";
 import { MessageCircle } from "lucide-react";
 
 // The hero's business card: the WhatsApp automation service Prompt at Work
@@ -12,22 +12,23 @@ import { MessageCircle } from "lucide-react";
 // meeting-intelligence-chatbot.md, ai-executive-command-center.md);
 // WhatsApp Business Cloud API is the channel listed in
 // Docs/architecture-blueprint.md.
-const steps = [
-  { label: "Message received", note: "WhatsApp Business API" },
-  { label: "Understand intent", note: "LLM router agent" },
-  { label: "Act on your systems", note: "CRM · orders · calendar" },
-  { label: "Reply on WhatsApp", note: "human handoff if needed" },
-];
-
-const chat = {
-  customer: "Hi, is my order shipped? Can I also book a demo for Friday?",
-  agent: "Yes, it shipped today and arrives Thursday. Friday 11:00 is booked for your demo ✓",
-};
-
 const STEP_MS = 1800;
 
-export default function WhatsAppAutomation() {
-  const reduce = useReducedMotion();
+type Props = {
+  title: string;
+  meta: string;
+  badge: string;
+  customer: string;
+  reply: string;
+  steps: { label: string; note: string }[];
+  footer: string;
+};
+
+// Copy comes from the Home page document ("Hero card" in Studio).
+export default function WhatsAppAutomation({ title, meta, badge, customer, reply, steps, footer }: Props) {
+  // Hydration-safe: framer's useReducedMotion differs between server and
+  // client for visitors with reduced motion on.
+  const reduce = useReducedMotionSafe();
   const [tick, setTick] = useState(1);
   // Reduced motion: hold on the finished state, with the reply shown.
   const active = reduce ? steps.length - 1 : tick;
@@ -36,7 +37,7 @@ export default function WhatsAppAutomation() {
     if (reduce) return;
     const id = setInterval(() => setTick((i) => (i + 1) % steps.length), STEP_MS);
     return () => clearInterval(id);
-  }, [reduce]);
+  }, [reduce, steps.length]);
 
   const pct = Math.round(((active + 1) / steps.length) * 100);
   const replied = active === steps.length - 1;
@@ -51,12 +52,12 @@ export default function WhatsAppAutomation() {
           <MessageCircle className="paw-icon" aria-hidden="true" />
         </span>
         <div className="flex-1 min-w-0">
-          <div className="text-base font-semibold">WhatsApp automation</div>
-          <div className="label-md text-muted truncate">AGENTIC WORKFLOW · ANY BUSINESS SIZE</div>
+          <div className="text-base font-semibold">{title}</div>
+          <div className="label-md text-muted truncate">{meta}</div>
         </div>
         <span className="label-md inline-flex items-center gap-1.5 h-6 px-2.5 rounded-full text-tertiary border border-[color-mix(in_srgb,var(--tertiary)_30%,transparent)] bg-[color-mix(in_srgb,var(--tertiary)_12%,transparent)] shrink-0">
           <span className="w-1.5 h-1.5 rounded-full bg-tertiary" aria-hidden="true" />
-          WHAT WE BUILD
+          {badge}
         </span>
       </div>
 
@@ -67,7 +68,7 @@ export default function WhatsAppAutomation() {
       >
         <div className="flex flex-col gap-2 text-[13px] leading-5" aria-label="Sample chat">
           <p className="m-0 self-start max-w-[85%] px-3 py-2 rounded-xl rounded-tl-sm bg-surface-container-high">
-            {chat.customer}
+            {customer}
           </p>
           <p
             className={`m-0 self-end max-w-[85%] px-3 py-2 rounded-xl rounded-tr-sm bg-[color-mix(in_srgb,var(--accent-violet)_30%,transparent)] transition-opacity duration-300 motion-reduce:transition-none ${
@@ -75,7 +76,7 @@ export default function WhatsAppAutomation() {
             }`}
             aria-hidden={!replied}
           >
-            {chat.agent}
+            {reply}
           </p>
         </div>
 
@@ -104,7 +105,7 @@ export default function WhatsAppAutomation() {
 
       <div>
         <div className="flex justify-between text-[13px] text-muted mb-2">
-          <span>Leads · orders · bookings · support</span>
+          <span>{footer}</span>
           <span className="font-mono text-ink">{pct}%</span>
         </div>
         <div className="paw-progress h-1.5" role="progressbar" aria-valuenow={pct} aria-valuemin={0} aria-valuemax={100} aria-label="Workflow progress">

@@ -27,25 +27,27 @@ export type OgVariant = keyof typeof VARIANTS;
 // the site's typeface. The two-tone wordmark is two text runs, which the
 // renderer doesn't kern across, so "AtWork" is pulled 2px left to close the
 // "t|A" gap the browser closes on the site.
-let fonts: { name: string; data: Buffer; weight: 400 | 600; style: "normal" }[] | null = null;
-function geist() {
-  fonts ??= ([400, 600] as const).map((weight) => ({
-    name: "Geist",
-    data: readFileSync(path.join(process.cwd(), `src/app/og/fonts/Geist-${weight}.ttf`)),
-    weight,
-    style: "normal" as const,
-  }));
-  return fonts;
-}
+// Every path is a literal so the build traces only these files (a
+// variable path makes it bundle the whole project into this function).
+const read = {
+  geist400: () => readFileSync(path.join(process.cwd(), "src/app/og/fonts/Geist-400.ttf")),
+  geist600: () => readFileSync(path.join(process.cwd(), "src/app/og/fonts/Geist-600.ttf")),
+  mark: () => readFileSync(path.join(process.cwd(), "public/images/brand/promptatwork-mark.png")),
+  headshot: () => readFileSync(path.join(process.cwd(), "public/images/headshot.png")),
+};
 
-const dataUris = new Map<string, string>();
-function dataUri(file: string): string {
-  let uri = dataUris.get(file);
-  if (!uri) {
-    uri = `data:image/png;base64,${readFileSync(path.join(process.cwd(), file)).toString("base64")}`;
-    dataUris.set(file, uri);
-  }
-  return uri;
+let assets: { fonts: { name: string; data: Buffer; weight: 400 | 600; style: "normal" }[]; mark: string; headshot: string } | null = null;
+function loadAssets() {
+  const png = (b: Buffer) => `data:image/png;base64,${b.toString("base64")}`;
+  assets ??= {
+    fonts: [
+      { name: "Geist", data: read.geist400(), weight: 400, style: "normal" },
+      { name: "Geist", data: read.geist600(), weight: 600, style: "normal" },
+    ],
+    mark: png(read.mark()),
+    headshot: png(read.headshot()),
+  };
+  return assets;
 }
 
 function truncate(text: string, max: number): string {
@@ -53,6 +55,7 @@ function truncate(text: string, max: number): string {
 }
 
 export async function GET(request: Request) {
+  const a = loadAssets();
   const { searchParams } = new URL(request.url);
   const title = truncate(searchParams.get("title") || "PromptAtWork", 90);
   const variantKey = (searchParams.get("variant") as OgVariant) || "blog";
@@ -75,7 +78,7 @@ export async function GET(request: Request) {
       <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", padding: "72px 40px 72px 72px", width: 700 }}>
         <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 44 }}>
           {/* eslint-disable-next-line @next/next/no-img-element -- next/image doesn't work inside ImageResponse */}
-          <img src={dataUri("public/images/brand/promptatwork-mark.png")} width={56} height={56} style={{ borderRadius: 14 }} alt="" />
+          <img src={a.mark} width={56} height={56} style={{ borderRadius: 14 }} alt="" />
           <div style={{ display: "flex", fontSize: 28, fontWeight: 600, color: BASE.text }}>
             <div style={{ display: "flex" }}>Prompt</div>
             <div style={{ display: "flex", color: BASE.word, marginLeft: -2 }}>AtWork</div>
@@ -101,9 +104,9 @@ export async function GET(request: Request) {
         }}
       >
         {/* eslint-disable-next-line @next/next/no-img-element -- next/image doesn't work inside ImageResponse */}
-        <img src={dataUri("public/images/headshot.png")} width={488} height={488} style={{ objectFit: "cover", borderRadius: "50%" }} alt="" />
+        <img src={a.headshot} width={488} height={488} style={{ objectFit: "cover", borderRadius: "50%" }} alt="" />
       </div>
     </div>,
-    { width: 1200, height: 630, fonts: geist() },
+    { width: 1200, height: 630, fonts: a.fonts },
   );
 }

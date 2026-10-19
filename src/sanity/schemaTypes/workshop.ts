@@ -105,6 +105,7 @@ export default defineType({
       ],
     }),
 
+    defineField({ name: "timelinesIntro", title: "Timelines intro", type: "text", rows: 2, group: "programs" }),
     defineField({
       name: "programs",
       title: "Ways to take it",

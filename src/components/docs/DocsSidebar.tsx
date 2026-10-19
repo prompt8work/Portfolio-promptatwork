@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useAiLabNav, useDocsLabel, type DocsGroup } from "./AiLabNavContext";
 import DocsSearch from "./DocsSearch";
+import type { PageBlock } from "../../lib/content-types";
 
 function isCurrent(pathname: string, href: string) {
   return !href.includes("#") && pathname === href;
@@ -106,15 +107,18 @@ function Tree({ onNavigate }: { onNavigate?: () => void }) {
   );
 }
 
-/** Sidebar foot card (Page-AILab board): a single way to get in touch. */
-function WorkWithMe({ onNavigate }: { onNavigate?: () => void }) {
+/** Sidebar foot card (Page-AILab board): a single way to get in touch. Copy is the AI Lab page's "sidebar-cta" block. */
+function WorkWithMe({ cta, onNavigate }: { cta: PageBlock; onNavigate?: () => void }) {
+  const link = cta.ctas?.[0];
   return (
     <div className="mt-auto p-4 rounded-[14px] bg-card border border-line flex flex-col gap-2.5">
-      <span className="text-sm font-semibold text-ink">Want this for your team?</span>
-      <span className="text-[13px] leading-[19px] text-muted">Every project here started as a team&apos;s real workflow.</span>
-      <Link href="/contact" onClick={onNavigate} className="paw-btn paw-btn--primary paw-btn--sm justify-center">
-        Work with me
-      </Link>
+      {cta.title && <span className="text-sm font-semibold text-ink">{cta.title}</span>}
+      {cta.text && <span className="text-[13px] leading-[19px] text-muted">{cta.text}</span>}
+      {link && (
+        <Link href={link.href} onClick={onNavigate} className="paw-btn paw-btn--primary paw-btn--sm justify-center">
+          {link.label}
+        </Link>
+      )}
     </div>
   );
 }
@@ -124,7 +128,7 @@ function WorkWithMe({ onNavigate }: { onNavigate?: () => void }) {
  * on smaller screens it collapses into a "Browse AI Lab" bar that opens
  * the same tree as a drawer.
  */
-export default function DocsSidebar() {
+export default function DocsSidebar({ cta }: { cta?: PageBlock }) {
   const [drawer, setDrawer] = useState(false);
   const pathname = usePathname();
   const groups = useAiLabNav();
@@ -147,7 +151,7 @@ export default function DocsSidebar() {
         <div className="sticky top-[68px] h-[calc(100vh-68px)] overflow-y-auto px-4 py-6 flex flex-col gap-4">
           <DocsSearch />
           <Tree />
-          {label === "AI Lab" && <WorkWithMe />}
+          {cta && <WorkWithMe cta={cta} />}
         </div>
       </aside>
 
@@ -210,7 +214,7 @@ export default function DocsSidebar() {
               </button>
             </div>
             <Tree onNavigate={() => setDrawer(false)} />
-            {label === "AI Lab" && <WorkWithMe onNavigate={() => setDrawer(false)} />}
+            {cta && <WorkWithMe cta={cta} onNavigate={() => setDrawer(false)} />}
           </div>
         </div>
       )}

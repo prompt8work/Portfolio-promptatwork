@@ -1,6 +1,7 @@
 import Nav from "../../components/Nav";
 import SiteFooter from "../../components/SiteFooter";
 import DocsSidebar from "../../components/docs/DocsSidebar";
+import { getBlock, getPage } from "../../lib/content";
 import { AiLabNavProvider, type DocsGroup, type ProjectSeries } from "../../components/docs/AiLabNavContext";
 import { client } from "../../sanity/lib/client";
 import { aiLabNavQuery } from "../../sanity/lib/queries";
@@ -33,7 +34,7 @@ const rows = (base: string, list: NavRow[]) =>
  * renders <PageTransition><DocsArticle>…</DocsArticle></PageTransition>.
  */
 export default async function AiLabLayout({ children }: LayoutProps<"/ai-lab">) {
-  const data: AiLabNavData = await client.fetch(aiLabNavQuery);
+  const [data, page]: [AiLabNavData, Awaited<ReturnType<typeof getPage>>] = await Promise.all([client.fetch(aiLabNavQuery), getPage("ai-lab")]);
 
   const groups: DocsGroup[] = [
     {
@@ -77,7 +78,7 @@ export default async function AiLabLayout({ children }: LayoutProps<"/ai-lab">) 
       <Nav />
       <AiLabNavProvider groups={groups} series={series}>
         <div className="flex-1 w-full max-w-[1440px] mx-auto lg:grid lg:grid-cols-[280px_minmax(0,1fr)]">
-          <DocsSidebar />
+          <DocsSidebar cta={getBlock(page, "sidebar-cta")} />
           <main className="min-w-0">{children}</main>
         </div>
       </AiLabNavProvider>

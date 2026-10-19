@@ -21,18 +21,13 @@ import { client } from "../../../sanity/lib/client";
 import { trainingBySlugQuery, trainingSlugsQuery } from "../../../sanity/lib/queries";
 import { getBatchesForTraining, getScheduleForBatch, type TrainingBatch } from "../../../supabase/trainingRepository";
 import { buildBreadcrumbJsonLd, buildMetadata, getCanonicalUrl } from "../../../lib/site";
-import { personName, personRef } from "../../../lib/seo";
-import {
-  getTraining,
-  trainingCategoryPath,
-  trainingPath,
-  trainings,
-  type Training,
-} from "../../../lib/trainings";
+import { personRef } from "../../../lib/seo";
+import { getSiteSettings, getWorkshop, getWorkshops, type SiteSettings } from "../../../lib/content";
+import { trainingCategoryPath, trainingPath, type Training } from "../../../lib/trainings";
 
-// One route for two kinds of page: the workshops in src/lib/trainings.ts,
-// and the cohort courses in Sanity (with batches and registration from
-// Supabase). Workshop slugs are checked first.
+// One route for two kinds of page: workshops ("Workshop / course"
+// documents) and the cohort courses ("Training" documents, with batches and
+// registration from Supabase). Workshop slugs are checked first.
 
 export const revalidate = 60;
 
@@ -56,57 +51,61 @@ type CourseDetail = {
   }[];
 };
 
-const provider = { "@type": "Organization", "@id": `${getCanonicalUrl("/")}#organization`, name: "PromptAtWork", url: getCanonicalUrl("/") };
+const provider = (s: SiteSettings) => ({ "@type": "Organization", "@id": `${getCanonicalUrl("/")}#organization`, name: s.brandName, url: getCanonicalUrl("/") });
 
 export async function generateStaticParams() {
-  const courseSlugs: string[] = await client.fetch(trainingSlugsQuery);
-  return [...trainings.map((t) => t.slug), ...courseSlugs.filter((s) => !getTraining(s))].map((slug) => ({ slug }));
+  const [courseSlugs, workshops]: [string[], Awaited<ReturnType<typeof getWorkshops>>] = await Promise.all([
+    client.fetch(trainingSlugsQuery),
+    getWorkshops(),
+  ]);
+  const workshopSlugs = workshops.map((t) => t.slug);
+  return [...workshopSlugs, ...courseSlugs.filter((s) => !workshopSlugs.includes(s))].map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({ params }: PageProps<"/training/[slug]">): Promise<Metadata> {
   const { slug } = await params;
-  const training = getTraining(slug);
+  const [training, s] = await Promise.all([getWorkshop(slug), getSiteSettings()]);
   if (training) {
     return buildMetadata({
-      title: `${training.title} Training by Niharika Dhande (${training.category}) | PromptAtWork`,
+      title: `${training.title} Training by ${s.personName} (${training.category}) | ${s.brandName}`,
       description: training.description,
       path: trainingPath(training.slug),
       keywords: [
         `${training.title.toLowerCase()} training`,
         `${training.title.toLowerCase()} workshop`,
         ...training.tags.map((t) => `${t} training`),
-        "generative AI trainer in Indore",
-        "Niharika Dhande",
+        `generative AI trainer in ${s.address.city}`,
+        s.personName,
       ],
     });
   }
   const course: CourseDetail | null = await client.fetch(trainingBySlugQuery, { slug });
   if (!course) return {};
   return buildMetadata({
-    title: `${course.title} Course by Niharika Dhande, Indore (Online) — PromptAtWork`,
+    title: `${course.title} Course by ${s.personName}, ${s.address.city} (Online) — ${s.brandName}`,
     description: course.description,
     path: trainingPath(course.slug),
     keywords: [
       `${course.title.toLowerCase()} course`,
-      `${course.title.toLowerCase()} training in Indore`,
-      "generative AI trainer in Indore",
-      "Niharika Dhande",
+      `${course.title.toLowerCase()} training in ${s.address.city}`,
+      `generative AI trainer in ${s.address.city}`,
+      s.personName,
     ],
   });
 }
 
 export default async function TrainingDetailPage({ params }: PageProps<"/training/[slug]">) {
   const { slug } = await params;
-  const training = getTraining(slug);
-  if (training) return <WorkshopPage t={training} />;
+  const [training, settings] = await Promise.all([getWorkshop(slug), getSiteSettings()]);
+  if (training) return <WorkshopPage t={training} settings={settings} />;
 
   const course: CourseDetail | null = await client.fetch(trainingBySlugQuery, { slug });
   if (!course || !course.registrationEnabled) notFound();
-  return <CoursePage course={course} />;
+  return <CoursePage course={course} settings={settings} />;
 }
 
-function WorkshopPage({ t }: { t: Training }) {
-  const more = trainings.filter((o) => o.category === t.category && o.slug !== t.slug);
+async function WorkshopPage({ t, settings }: { t: Training; settings: SiteSettings }) {
+  const more = (await getWorkshops()).filter((o) => o.category === t.category && o.slug !== t.slug);
 
   return (
     <PageTransition key={t.slug}>
@@ -118,8 +117,8 @@ function WorkshopPage({ t }: { t: Training }) {
           description: t.description,
           url: getCanonicalUrl(trainingPath(t.slug)),
           inLanguage: "en",
-          provider,
-          instructor: personRef,
+          provider: provider(settings),
+          instructor: personRef(settings),
           audience: { "@type": "Audience", audienceType: t.idealFor.join(", ") },
           keywords: t.tags.join(", "),
         }}
@@ -154,7 +153,7 @@ function WorkshopPage({ t }: { t: Training }) {
           {t.sessionFormat && <SessionFormat format={t.sessionFormat} />}
           {t.programs?.length ? <ProgramFormats programs={t.programs} /> : null}
 
-          {/* Module outlines go in `modules` in src/lib/trainings.ts. Until then the note below shows. */}
+          {/* Module outlines are the workshop's "Module groups" in Sanity. Until then the note below shows. */}
           <Reveal>
             <section className="flex flex-col gap-4">
               <BlockLabel>Modules</BlockLabel>
@@ -169,7 +168,7 @@ function WorkshopPage({ t }: { t: Training }) {
             </section>
           </Reveal>
 
-          {t.programs?.length ? <ProgramTimelines programs={t.programs} /> : null}
+          {t.programs?.length ? <ProgramTimelines programs={t.programs} intro={t.timelinesIntro} /> : null}
 
           {more.length > 0 && (
             <Reveal>
@@ -197,7 +196,9 @@ function WorkshopPage({ t }: { t: Training }) {
   );
 }
 
-async function CoursePage({ course }: { course: CourseDetail }) {
+async function CoursePage({ course, settings }: { course: CourseDetail; settings: SiteSettings }) {
+  const person = personRef(settings);
+  const isMe = course.instructor === settings.personName;
   const batches: TrainingBatch[] = await getBatchesForTraining(course.slug);
   const schedulesByBatch = await Promise.all(batches.map((b) => getScheduleForBatch(b.id)));
 
@@ -208,17 +209,15 @@ async function CoursePage({ course }: { course: CourseDetail }) {
     description: course.description,
     url: getCanonicalUrl(trainingPath(course.slug)),
     inLanguage: "en",
-    provider,
-    ...(course.instructor
-      ? { instructor: course.instructor === personName ? personRef : { "@type": "Person", name: course.instructor } }
-      : {}),
+    provider: provider(settings),
+    ...(course.instructor ? { instructor: isMe ? person : { "@type": "Person", name: course.instructor } } : {}),
     ...(course.mode || course.duration
       ? {
           hasCourseInstance: {
             "@type": "CourseInstance",
             ...(course.mode ? { courseMode: course.mode } : {}),
             ...(course.duration ? { courseWorkload: course.duration } : {}),
-            ...(course.instructor === personName ? { instructor: personRef } : {}),
+            ...(isMe ? { instructor: person } : {}),
           },
         }
       : {}),

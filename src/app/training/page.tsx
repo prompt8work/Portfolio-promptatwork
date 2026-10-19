@@ -13,40 +13,36 @@ import AiToolsSection from "../../components/training/AiToolsSection";
 import TeamsBand from "../../components/training/TeamsBand";
 import { client } from "../../sanity/lib/client";
 import { trainingsQuery } from "../../sanity/lib/queries";
-import { institutes } from "../../lib/trainings";
+import { getBlock, getInstitutes, getPage, getSiteSettings, getWorkshops } from "../../lib/content";
 import { buildMetadata } from "../../lib/site";
 
-export const metadata: Metadata = buildMetadata({
-  title: "Prompt Engineering & Generative AI Training in Indore (Online) — PromptAtWork",
-  description:
-    "Cohort-based, hands-on prompt engineering and Generative AI training by Niharika Dhande, an AI trainer based in Indore, India. Courses, workshops and AI tools training (ChatGPT, Claude, GitHub Copilot, Cursor, Perplexity, NotebookLM) taught online.",
-  path: "/training",
-  keywords: [
-    "prompt engineering training in Indore",
-    "generative AI trainer in Indore",
-    "prompt engineering course online",
-    "generative AI course India",
-    "AI workshops Indore",
-    "Niharika Dhande training",
-    "AI tools training for teams",
-    "ChatGPT and Claude training",
-    "GitHub Copilot training",
-    "Cursor AI training",
-  ],
-});
+export async function generateMetadata(): Promise<Metadata> {
+  const page = await getPage("training");
+  return buildMetadata({ title: page.seoTitle ?? "", description: page.seoDescription ?? "", path: "/training", keywords: page.seoKeywords });
+}
 
 // Interim revalidation strategy until the Sanity webhook is wired up.
 export const revalidate = 60;
 
-const headline = "Courses & Workshops";
 const h2 = "font-sans text-[26px] font-semibold tracking-[-0.02em] text-ink scroll-mt-28";
 const lead = "text-[15.5px] leading-[1.75] text-muted";
 
-// Workshops and institutes come from src/lib/trainings.ts (shared with the
-// AI Enablement portfolio); cohort courses open for registration come from
-// Sanity.
+// All copy is the "Courses (/training)" Page document; workshops, institutes
+// and the AI tools list are their own Sanity documents, and cohort courses
+// open for registration are "Training" documents.
 export default async function TrainingPage() {
-  const courses: CourseCardData[] = await client.fetch(trainingsQuery);
+  const [courses, page, workshops, institutes, settings]: [
+    CourseCardData[],
+    Awaited<ReturnType<typeof getPage>>,
+    Awaited<ReturnType<typeof getWorkshops>>,
+    Awaited<ReturnType<typeof getInstitutes>>,
+    Awaited<ReturnType<typeof getSiteSettings>>,
+  ] = await Promise.all([client.fetch(trainingsQuery), getPage("training"), getWorkshops(), getInstitutes(), getSiteSettings()]);
+  const headline = page.title ?? "";
+  const workshopsBlock = getBlock(page, "workshops");
+  const coursesBlock = getBlock(page, "courses");
+  const institutesBlock = getBlock(page, "institutes");
+  const helpBlock = getBlock(page, "help");
 
   return (
     <PageTransition>
@@ -54,41 +50,41 @@ export default async function TrainingPage() {
         <header className="pb-10 border-b border-line flex flex-col gap-3.5">
           <IntroFade className="flex flex-wrap items-center gap-2.5">
             <span className="label-md inline-flex items-center h-[26px] px-2.5 rounded-md bg-[color-mix(in_srgb,var(--accent-blue)_14%,transparent)] text-primary">
-              COURSES · OVERVIEW
+              {page.eyebrow}
             </span>
-            <span className="text-[13px] text-muted">Workshops, cohort courses and institutes</span>
+            {page.tagline && <span className="text-[13px] text-muted">{page.tagline}</span>}
           </IntroFade>
           <WordReveal as="h1" className="m-0 text-[40px] leading-[44px] sm:text-[56px] sm:leading-[60px] font-semibold tracking-[-0.035em]">
             {headline}
           </WordReveal>
           <IntroFade as="p" after={headline} step={1} className="m-0 text-[17px] leading-[27px] text-muted max-w-[600px]">
-            Hands-on, cohort-based prompt engineering and Generative AI training by Niharika Dhande, an AI trainer based in
-            Indore, India — taught online, using the same practices documented in the AI Lab.
+            {page.intro}
           </IntroFade>
-          <IntroFade after={headline} step={2} className="mt-3 flex flex-wrap gap-3">
-            <a href="#workshops" className="paw-btn paw-btn--primary">
-              Browse the workshops
-            </a>
-            <a href="#teams" className="paw-btn paw-btn--secondary">
-              Training for teams
-            </a>
-          </IntroFade>
+          {page.ctas?.length ? (
+            <IntroFade after={headline} step={2} className="mt-3 flex flex-wrap gap-3">
+              {page.ctas.map((c, i) => (
+                <a key={c.href} href={c.href} className={`paw-btn ${i === 0 ? "paw-btn--primary" : "paw-btn--secondary"}`}>
+                  {c.label}
+                </a>
+              ))}
+            </IntroFade>
+          ) : null}
         </header>
 
         <div className="mt-10 flex flex-col gap-14">
           <section className="flex flex-col gap-5">
             <div className="flex flex-col gap-2">
               <h2 id="workshops" className={h2}>
-                Workshops & courses
+                {workshopsBlock?.title}
               </h2>
-              <p className={lead}>Pick a category to narrow the list, or open any training for its details.</p>
+              {workshopsBlock?.text && <p className={lead}>{workshopsBlock.text}</p>}
             </div>
-            <TrainingGrid />
+            <TrainingGrid workshops={workshops} />
           </section>
 
           <section className="flex flex-col gap-5">
             <h2 id="courses" className={h2}>
-              Cohort courses
+              {coursesBlock?.title}
             </h2>
             {courses.length === 0 ? (
               <div className="border border-line rounded-2xl p-8 text-center bg-card">
@@ -108,22 +104,22 @@ export default async function TrainingPage() {
           <section className="flex flex-col gap-5">
             <div className="flex flex-col gap-2">
               <h2 id="institutes" className={h2}>
-                Institutes I&apos;ve trained for
+                {institutesBlock?.title}
               </h2>
-              <p className={lead}>
-                From .NET classrooms to agentic AI cohorts, teaching has run alongside my engineering work since 2010.
-              </p>
+              {institutesBlock?.text && <p className={lead}>{institutesBlock.text}</p>}
             </div>
             <InstituteCarousel items={institutes} />
           </section>
 
-          <AiToolsSection />
+          <AiToolsSection tools={settings.aiTools} block={getBlock(page, "ai-tools")} />
 
-          <TeamsBand />
+          <TeamsBand block={getBlock(page, "teams")} />
 
-          <Callout title="Not sure which training fits?">
-            <Link href="/contact">Get in touch</Link> and tell me about your team and the tools it uses.
-          </Callout>
+          {helpBlock && (
+            <Callout title={helpBlock.title ?? ""}>
+              {helpBlock.ctas?.[0] && <Link href={helpBlock.ctas[0].href}>{helpBlock.ctas[0].label}</Link>} {helpBlock.text}
+            </Callout>
+          )}
         </div>
       </DocsArticle>
     </PageTransition>

@@ -2,6 +2,7 @@ import Link from "next/link";
 import { getPublishedTestimonials } from "../../supabase/testimonialRepository";
 import { StaggerGrid, StaggerItem } from "../motion/StaggerGrid";
 import Reveal from "../motion/Reveal";
+import { getHomePage } from "../../lib/content";
 
 // Testimonial wall (New-Testimonials board), from the published rows of the
 // testimonial table only. It renders nothing until at least one real
@@ -9,7 +10,8 @@ import Reveal from "../motion/Reveal";
 // three), never the board's bracketed sample cards. No star ratings: the
 // table doesn't collect them.
 export default async function Testimonial() {
-  const testimonials = (await getPublishedTestimonials()).slice(0, 3);
+  const [all, home] = await Promise.all([getPublishedTestimonials(), getHomePage()]);
+  const testimonials = all.slice(0, 3);
   if (testimonials.length === 0) return null;
 
   const cols = testimonials.length === 1 ? "max-w-[480px] mx-auto" : testimonials.length === 2 ? "md:grid-cols-2 max-w-[960px] mx-auto" : "md:grid-cols-3";
@@ -21,9 +23,9 @@ export default async function Testimonial() {
     >
       <div className="max-w-[1280px] mx-auto px-4 sm:px-8 py-16 lg:py-[72px] flex flex-col gap-10">
         <Reveal className="flex flex-col items-center gap-2 text-center">
-          <p className="paw-section-head__eyebrow m-0">TESTIMONIAL WALL</p>
+          <p className="paw-section-head__eyebrow m-0">{home.testimonialsHeading?.eyebrow}</p>
           <h2 className="m-0 text-[32px] leading-10 sm:text-[40px] sm:leading-[44px] font-semibold tracking-[-0.03em]">
-            What learners say
+            {home.testimonialsHeading?.title}
           </h2>
         </Reveal>
 

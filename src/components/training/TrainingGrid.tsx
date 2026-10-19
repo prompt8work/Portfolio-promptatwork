@@ -3,7 +3,7 @@
 import { Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import OfferingCard, { FilterPills } from "../offerings/OfferingCard";
-import { trainingCategories, trainings, trainingToOffering } from "../../lib/trainings";
+import { trainingCategories, trainingToOffering, type Workshop } from "../../lib/trainings";
 
 // The /training workshop cards with category tabs. The active tab lives in
 // the URL (/training?category=technical) so any tab can be linked to
@@ -14,7 +14,7 @@ const options = [
   ...trainingCategories.map((c) => ({ key: c.slug, label: c.label, href: `/training?category=${c.slug}` })),
 ];
 
-function Grid({ active }: { active: string | null }) {
+function Grid({ active, trainings }: { active: string | null; trainings: Workshop[] }) {
   const category = trainingCategories.find((c) => c.slug === active);
   const items = trainings.filter((t) => !category || t.category === category.label);
   return (
@@ -29,15 +29,15 @@ function Grid({ active }: { active: string | null }) {
   );
 }
 
-function GridFromUrl() {
-  return <Grid active={useSearchParams().get("category")} />;
+function GridFromUrl({ trainings }: { trainings: Workshop[] }) {
+  return <Grid active={useSearchParams().get("category")} trainings={trainings} />;
 }
 
-export default function TrainingGrid() {
+export default function TrainingGrid({ workshops }: { workshops: Workshop[] }) {
   // The fallback is what's prerendered: every card, "All" selected.
   return (
-    <Suspense fallback={<Grid active={null} />}>
-      <GridFromUrl />
+    <Suspense fallback={<Grid active={null} trainings={workshops} />}>
+      <GridFromUrl trainings={workshops} />
     </Suspense>
   );
 }

@@ -8,13 +8,12 @@ import Thumb from "../../../components/paw/Thumb";
 import { client } from "../../../sanity/lib/client";
 import { projectsQuery } from "../../../sanity/lib/queries";
 import { buildMetadata } from "../../../lib/site";
+import { getPage } from "../../../lib/content";
 
-export const metadata: Metadata = buildMetadata({
-  title: "AI Engineering Case Studies — RAG, Agentic & Full-Stack AI by Niharika Dhande | PromptAtWork",
-  description:
-    "Full-Stack AI and agentic AI case studies: the problem, how it was solved, and the future scope, linked to every page that documents each project.",
-  path: "/ai-lab/work",
-});
+export async function generateMetadata(): Promise<Metadata> {
+  const page = await getPage("ai-lab-work");
+  return buildMetadata({ title: page.seoTitle ?? "", description: page.seoDescription ?? "", path: "/ai-lab/work" });
+}
 
 // Interim revalidation strategy until the Sanity webhook is wired up.
 export const revalidate = 60;
@@ -32,16 +31,13 @@ type ProjectListItem = {
 // `visibility != "private"` is already filtered in the query itself
 // (see queries.ts) — defense-in-depth, not just a UI-level hide.
 export default async function WorkPage() {
+  const page = await getPage("ai-lab-work");
   const projects: ProjectListItem[] = await client.fetch(projectsQuery);
 
   return (
     <PageTransition>
       <DocsArticle>
-        <DocsHeader
-          eyebrow="AI Lab / Work"
-          title="Work & Case Studies"
-          description="Every project in one scroll: what it is, the numbers that matter and the stack behind it. Open any case study for the full problem → solution → future scope write-up, linked to every page that documents the same project."
-        />
+        <DocsHeader eyebrow={page.eyebrow} title={page.title ?? ""} description={page.intro} />
         {projects.length === 0 && (
           <Callout title="Nothing published yet">No case studies are published yet. New entries appear here as they&apos;re written up.</Callout>
         )}

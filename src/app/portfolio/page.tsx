@@ -10,15 +10,14 @@ import { StaggerGrid, StaggerItem } from "../../components/motion/StaggerGrid";
 import { TagList } from "../../components/paw/Tag";
 import { getPortfolioProfiles, getPortfolioSettings, portfolioPath } from "../../lib/portfolio";
 import { buildMetadata } from "../../lib/site";
+import { getPage, getSiteSettings } from "../../lib/content";
 
 export const revalidate = 60;
 
-export const metadata: Metadata = buildMetadata({
-  title: "Portfolio — Niharika Dhande, AI Solutions Engineer & AI Corporate Trainer | PromptAtWork",
-  description:
-    "Two profiles of Niharika Dhande: AI Solutions Engineer building RAG, agents and AI integrations, and AI Enablement Officer & Corporate Trainer running hands-on AI workshops.",
-  path: "/portfolio",
-});
+export async function generateMetadata(): Promise<Metadata> {
+  const page = await getPage("portfolio");
+  return buildMetadata({ title: page.seoTitle ?? "", description: page.seoDescription ?? "", path: "/portfolio" });
+}
 
 const icons = [Code, GraduationCap];
 
@@ -27,7 +26,7 @@ const icons = [Code, GraduationCap];
 // featured case study, projects, process, stack and institutes sections
 // already live on each profile page, so they aren't repeated here.
 export default async function PortfolioPage() {
-  const [profiles, settings] = await Promise.all([getPortfolioProfiles(), getPortfolioSettings()]);
+  const [profiles, settings, site] = await Promise.all([getPortfolioProfiles(), getPortfolioSettings(), getSiteSettings()]);
 
   return (
     <PageTransition className="relative min-h-screen overflow-x-hidden">
@@ -41,7 +40,7 @@ export default async function PortfolioPage() {
         <div className="mx-auto max-w-[1280px] px-4 sm:px-8 pt-14 pb-20 lg:pt-20 grid grid-cols-1 lg:grid-cols-[1fr_1.25fr] gap-12 lg:gap-16 items-start">
           <div className="flex flex-col gap-5 lg:sticky lg:top-28">
             <IntroFade as="p" className="paw-section-head__eyebrow m-0">
-              {(settings?.landingEyebrow ?? "Portfolio").toUpperCase()} · NIHARIKA DHANDE
+              {(settings?.landingEyebrow ?? "Portfolio").toUpperCase()} · {site.personName.toUpperCase()}
             </IntroFade>
             <IntroFade step={1}>
               <h1 className="m-0 text-[40px] leading-[44px] sm:text-[56px] sm:leading-[60px] font-semibold tracking-[-0.035em]">

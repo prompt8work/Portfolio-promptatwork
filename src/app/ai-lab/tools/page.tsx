@@ -7,27 +7,23 @@ import ToolsFilterGrid, { type ToolListItem } from "../../../components/ai-lab/T
 import { client } from "../../../sanity/lib/client";
 import { toolsQuery } from "../../../sanity/lib/queries";
 import { buildMetadata } from "../../../lib/site";
+import { getPage } from "../../../lib/content";
 
-export const metadata: Metadata = buildMetadata({
-  title: "AI Tools Research — Claude, Claude Code, Gemini, OpenAI & Groq Reviewed | PromptAtWork",
-  description:
-    "AI tools, features, concepts and platforms researched hands-on — reviews, practical use cases and learning resources.",
-  path: "/ai-lab/tools",
-});
+export async function generateMetadata(): Promise<Metadata> {
+  const page = await getPage("ai-lab-tools");
+  return buildMetadata({ title: page.seoTitle ?? "", description: page.seoDescription ?? "", path: "/ai-lab/tools" });
+}
 
 export const revalidate = 60;
 
 export default async function ToolsPage() {
+  const page = await getPage("ai-lab-tools");
   const tools: ToolListItem[] = await client.fetch(toolsQuery);
 
   return (
     <PageTransition>
       <DocsArticle>
-        <DocsHeader
-          eyebrow="AI Lab / Tools & Research"
-          title="Tools & Research"
-          description="Research, practical use cases, tutorials and learning resources for AI tools, features and concepts explored hands-on — not a generic feature comparison."
-        />
+        <DocsHeader eyebrow={page.eyebrow} title={page.title ?? ""} description={page.intro} />
         {tools.length > 0 ? (
           <ToolsFilterGrid tools={tools} />
         ) : (

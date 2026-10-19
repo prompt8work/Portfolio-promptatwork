@@ -23,7 +23,8 @@ import { blogPostBySlugQuery, blogSlugsQuery } from "../../../sanity/lib/queries
 import { getReactionCounts, type ReactionCounts } from "../../../supabase/blogReactionRepository";
 import { getPublishedComments, type PublishedComment } from "../../../supabase/commentRepository";
 import { buildBreadcrumbJsonLd, getCanonicalUrl } from "../../../lib/site";
-import { personName, personRef } from "../../../lib/seo";
+import { personRef } from "../../../lib/seo";
+import { getSiteSettings } from "../../../lib/content";
 
 export const revalidate = 60;
 
@@ -77,10 +78,9 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
   const contentId = `blog-${post.slug}`;
   const canonicalUrl = getCanonicalUrl(`/blog/${post.slug}`);
-  const [reactionCounts, comments]: [ReactionCounts, PublishedComment[]] = await Promise.all([
-    getReactionCounts(contentId),
-    getPublishedComments(contentId),
-  ]);
+  const [reactionCounts, comments, settings]: [ReactionCounts, PublishedComment[], Awaited<ReturnType<typeof getSiteSettings>>] =
+    await Promise.all([getReactionCounts(contentId), getPublishedComments(contentId), getSiteSettings()]);
+  const person = personRef(settings);
 
   const articleJsonLd = {
     "@context": "https://schema.org",
@@ -88,8 +88,8 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
     headline: post.title,
     description: post.seoDescription || post.excerpt,
     datePublished: post.publishedAt,
-    author: !post.author || post.author === personName ? personRef : { "@type": "Person", name: post.author },
-    publisher: personRef,
+    author: !post.author || post.author === settings.personName ? person : { "@type": "Person", name: post.author },
+    publisher: person,
     ...(post.coverImage ? { image: post.coverImage } : {}),
     mainEntityOfPage: canonicalUrl,
   };

@@ -116,15 +116,12 @@ export function ModuleGroups({ groups }: { groups: ModuleGroup[] }) {
 }
 
 /** One collapsible timeline per program; the first starts open. */
-export function ProgramTimelines({ programs }: { programs: TrainingProgram[] }) {
+export function ProgramTimelines({ programs, intro }: { programs: TrainingProgram[]; intro?: string }) {
   return (
     <Reveal>
       <section className="flex flex-col gap-4">
         <BlockLabel>Program timelines</BlockLabel>
-        <p className="m-0 text-[15.5px] leading-relaxed text-on-surface-variant">
-          Concept (2 hrs) and practical (1 hr) for every session, with a resume-ready capstone at the end of every month
-          in the 3-month and 6-month courses.
-        </p>
+        {intro && <p className="m-0 text-[15.5px] leading-relaxed text-on-surface-variant">{intro}</p>}
         <div className="flex flex-col gap-3">
           {programs.map((p, i) => (
             <details key={p.name} open={i === 0} className={`${card} group`}>

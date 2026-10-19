@@ -3,7 +3,7 @@ import Link from "next/link";
 import { ArrowRight, Play } from "lucide-react";
 import { client } from "../../sanity/lib/client";
 import { blogPostsQuery, videosQuery } from "../../sanity/lib/queries";
-import { personalInfo } from "../../../data";
+import { getHomePage, getSiteSettings, profileUrl } from "../../lib/content";
 import LinkedinIcon from "../icons/LinkedinIcon";
 import { StaggerGrid, StaggerItem } from "../motion/StaggerGrid";
 import SectionHeader from "../paw/SectionHeader";
@@ -18,14 +18,19 @@ type Post = { slug: string; title: string; excerpt: string; category?: string; t
 type Video = { slug: string; title: string; description?: string; thumbnailUrl?: string; externalUrl: string; publishedAt?: string };
 
 export default async function ContentPreview() {
-  const [posts, videos] = await Promise.all([client.fetch<Post[]>(blogPostsQuery), client.fetch<Video[]>(videosQuery)]);
+  const [posts, videos, home, settings] = await Promise.all([
+    client.fetch<Post[]>(blogPostsQuery),
+    client.fetch<Video[]>(videosQuery),
+    getHomePage(),
+    getSiteSettings(),
+  ]);
   const post = posts[0];
   const video = videos[0];
 
   return (
     <section id="content" className="w-full">
       <div className="max-w-[1280px] mx-auto px-4 sm:px-8 py-16 lg:py-[72px] flex flex-col gap-8">
-        <SectionHeader eyebrow="CONTENT" title="Latest Writing & Videos" link={{ href: "/blog", label: "View all" }} />
+        <SectionHeader eyebrow={home.contentHeading?.eyebrow} title={home.contentHeading?.title ?? ""} link={{ href: "/blog", label: "View all" }} />
 
         {(post || video) && (
           <StaggerGrid className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -90,7 +95,7 @@ export default async function ContentPreview() {
         )}
 
         <a
-          href={`https://${personalInfo.linkedin}`}
+          href={profileUrl(settings.linkedin)}
           target="_blank"
           rel="noopener noreferrer"
           className="flex items-center gap-4 px-5 py-4 rounded-xl border border-dashed border-line hover:border-outline transition-colors"
@@ -99,10 +104,8 @@ export default async function ContentPreview() {
             <LinkedinIcon className="w-4 h-4" />
           </span>
           <span className="flex-1">
-            <span className="block text-[15px] font-semibold">Follow on LinkedIn</span>
-            <span className="block text-[13px] text-muted">
-              New articles get shared there first — follow along, or check back here for the full write-up.
-            </span>
+            <span className="block text-[15px] font-semibold">{home.linkedinTitle}</span>
+            <span className="block text-[13px] text-muted">{home.linkedinText}</span>
           </span>
           <ArrowRight className="w-4 h-4 text-muted shrink-0" aria-hidden="true" />
         </a>

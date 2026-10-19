@@ -10,26 +10,26 @@ import ContentPreview from "../components/home/ContentPreview";
 import SiteFooter from "../components/SiteFooter";
 import JsonLd from "../components/JsonLd";
 import { buildMetadata } from "../lib/site";
-import { homeJsonLd } from "../lib/seo";
+import { buildHomeJsonLd } from "../lib/seo";
+import { getHomePage, getSiteSettings } from "../lib/content";
 
 // Interim revalidation strategy until the Sanity webhook is wired up
 // (needs a deployed URL first — see Phase 2 doc). Hero, Courses and
 // ContentPreview fetch Sanity data inside this page's tree.
 export const revalidate = 60;
 
-export const metadata: Metadata = buildMetadata({
-  title: "Niharika Dhande — AI Enablement Officer, AI Solutions Engineer & Prompt Engineer, Indore | PromptAtWork",
-  description:
-    "Niharika Dhande is an AI Enablement Officer, AI Solutions Engineer and prompt engineering trainer in Indore, India: AI enablement, RAG and generative AI solutions, and hands-on Claude, ChatGPT and AI tools training for teams. Founder of Prompt at Work.",
-  path: "/",
-});
+export async function generateMetadata(): Promise<Metadata> {
+  const home = await getHomePage();
+  return buildMetadata({ title: home.seoTitle, description: home.seoDescription, path: "/" });
+}
 
-export default function Home() {
+export default async function Home() {
+  const settings = await getSiteSettings();
   return (
     // Section order follows the redesign's Hub boards; the Downloadable Notes and Newsletter boards are left out
     // until real notes and a newsletter provider exist.
     <PageTransition className="min-h-screen">
-      <JsonLd data={homeJsonLd} />
+      <JsonLd data={buildHomeJsonLd(settings)} />
       <Nav />
       <main>
         <Hero />

@@ -7,16 +7,15 @@ import Reveal from "../../../components/motion/Reveal";
 import { client } from "../../../sanity/lib/client";
 import { engineeringAreasQuery } from "../../../sanity/lib/queries";
 import { buildMetadata } from "../../../lib/site";
+import { getPage } from "../../../lib/content";
 
 // Interim revalidation strategy until the Sanity webhook is wired up.
 export const revalidate = 60;
 
-export const metadata: Metadata = buildMetadata({
-  title: "AI Engineering — RAG, Generative AI, Agentic AI & AI Automation | PromptAtWork",
-  description:
-    "Full-Stack AI Engineering, RAG & Retrieval, Generative AI, Agentic AI and AI Automation — each grounded in real, shipped work.",
-  path: "/ai-lab/engineering",
-});
+export async function generateMetadata(): Promise<Metadata> {
+  const page = await getPage("ai-lab-engineering");
+  return buildMetadata({ title: page.seoTitle ?? "", description: page.seoDescription ?? "", path: "/ai-lab/engineering" });
+}
 
 type Evidence = { _type: string; slug: string; title: string };
 type EngineeringArea = { id: string; title: string; description: string; items?: string[] | null; evidence: Evidence[] };
@@ -33,6 +32,7 @@ const evidenceBase: Record<string, string> = {
 const evidenceRank = ["project", "automation", "experiment", "prompt", "tool"];
 
 export default async function EngineeringPage() {
+  const page = await getPage("ai-lab-engineering");
   const areas: EngineeringArea[] = await client.fetch(engineeringAreasQuery);
   // An area with nothing published behind it isn't shown (content doc §32).
   const shown = areas.filter((a) => a.evidence.length > 0);
@@ -40,11 +40,7 @@ export default async function EngineeringPage() {
   return (
     <PageTransition>
       <DocsArticle>
-        <DocsHeader
-          eyebrow="AI Lab / Engineering"
-          title="Generative AI, Agentic AI & Full-Stack AI Development"
-          description="A software engineering foundation applied to Generative AI. Each area below links to the real project or content behind it."
-        />
+        <DocsHeader eyebrow={page.eyebrow} title={page.title ?? ""} description={page.intro} />
 
         <div>
           {shown.map((s, i) => {
