@@ -69,25 +69,33 @@ function reviewShareImage(post: BlogPostDetail) {
   return { url: url.toString(), width: 1200, height: 675, alt: post.title };
 }
 
-export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
-  const { slug } = await params;
-  const post: BlogPostDetail | null = await client.fetch(blogPostBySlugQuery, { slug });
-  if (!post) return {};
+const hasReviewCard = (post: BlogPostDetail) => isReview(post) && !!post.coverImage?.startsWith("https://cdn.sanity.io/");
+
+function baseMetadata(post: BlogPostDetail) {
   // buildMetadata adds "| PromptAtWork"; share cards show the post's own
   // title rather than a "— Blog —" breadcrumb.
-  const title = post.seoTitle || post.title;
-  const description = post.seoDescription || post.excerpt;
-  const review = isReview(post) && !!post.coverImage?.startsWith("https://cdn.sanity.io/");
-  const metadata = buildMetadata({
-    title,
-    description,
+  return buildMetadata({
+    title: post.seoTitle || post.title,
+    description: post.seoDescription || post.excerpt,
     path: `/blog/${post.slug}`,
     type: "article",
     image: post.coverImage,
     // Reviews share their own summary card; other posts get a composed card.
-    card: review ? undefined : { title: post.title, subtitle: post.excerpt, eyebrow: post.category || "Blog" },
+    card: hasReviewCard(post) ? undefined : { title: post.title, subtitle: post.excerpt, eyebrow: post.category || "Blog" },
   });
-  const reviewImage = review ? reviewShareImage(post) : null;
+}
+
+/** The image a share of this post shows: the same one its Open Graph tags name. */
+function shareImageUrl(post: BlogPostDetail) {
+  return hasReviewCard(post) ? reviewShareImage(post).url : baseMetadata(post).openGraph.images[0].url;
+}
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
+  const post: BlogPostDetail | null = await client.fetch(blogPostBySlugQuery, { slug });
+  if (!post) return {};
+  const metadata = baseMetadata(post);
+  const reviewImage = hasReviewCard(post) ? reviewShareImage(post) : null;
   return {
     ...metadata,
     openGraph: {
@@ -181,7 +189,14 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
             <Reveal className="flex flex-wrap items-center justify-between gap-4 py-5 border-y border-line">
               <ReactionBar contentId={contentId} initialCounts={reactionCounts} />
-              <ShareActions url={canonicalUrl} title={post.title} summary={post.excerpt} />
+              <ShareActions
+                url={canonicalUrl}
+                slug={post.slug}
+                title={post.title}
+                summary={post.excerpt}
+                tags={post.tags}
+                image={shareImageUrl(post)}
+              />
             </Reveal>
 
             <DiagramBody body={post.body} diagrams={post.diagrams} />
