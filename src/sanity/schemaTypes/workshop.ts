@@ -119,12 +119,7 @@ export default defineType({
             defineField({ name: "mode", type: "string" }),
             defineField({ name: "schedule", type: "string" }),
             defineField({ name: "duration", type: "string" }),
-            defineField({
-              name: "weeks",
-              type: "number",
-              description: "For weekly programs: sessions and hours are worked out from this (MWF and Tue/Thu batches, 2-hr classes, Saturday doubt session). Leave empty for one-off formats and fill “Sessions · hours” instead.",
-            }),
-            defineField({ name: "sessions", title: "Sessions · hours", type: "string", description: "Only for formats without weeks" }),
+            defineField({ name: "sessions", title: "Sessions · hours", type: "string", description: 'e.g. "MWF 48 sessions, 84 hrs · TT 36 sessions, 60 hrs"' }),
             defineField({ name: "projects", type: "string" }),
             defineField({ name: "summary", type: "string" }),
             defineField({

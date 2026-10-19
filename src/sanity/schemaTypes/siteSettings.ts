@@ -58,7 +58,15 @@ export default defineType({
     defineField({ name: "organizationDescription", title: "Business description (structured data)", type: "text", rows: 3, group: "seo" }),
     defineField({ name: "organizationKnowsAbout", title: "Business knows about", type: "array", of: [{ type: "string" }], group: "seo" }),
     defineField({ name: "services", title: "Services offered (structured data)", type: "array", of: [{ type: "string" }], group: "seo" }),
-    defineField({ name: "llmsSummary", title: "llms.txt summary", type: "text", rows: 4, group: "seo" }),
+    defineField({
+      name: "llmsTxt",
+      title: "llms.txt",
+      type: "text",
+      rows: 20,
+      description:
+        "The /llms.txt summary for AI assistants, in Markdown. Placeholders: {{url:/path}} (full link), {{linkedin}}, {{github}}, {{tools}} (the AI tools list).",
+      group: "seo",
+    }),
 
     defineField({
       name: "aiTools",
