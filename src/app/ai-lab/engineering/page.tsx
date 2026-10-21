@@ -7,7 +7,7 @@ import Reveal from "../../../components/motion/Reveal";
 import { client } from "../../../sanity/lib/client";
 import { engineeringAreasQuery } from "../../../sanity/lib/queries";
 import { buildMetadata } from "../../../lib/site";
-import { getPage } from "../../../lib/content";
+import { getPage, type EngineeringArea } from "../../../lib/content";
 
 // Interim revalidation strategy until the Sanity webhook is wired up.
 export const revalidate = 60;
@@ -17,8 +17,6 @@ export async function generateMetadata(): Promise<Metadata> {
   return buildMetadata({ title: page.seoTitle ?? "", description: page.seoDescription ?? "", path: "/ai-lab/engineering" });
 }
 
-type Evidence = { _type: string; slug: string; title: string };
-type EngineeringArea = { id: string; title: string; description: string; items?: string[] | null; evidence: Evidence[] };
 
 const evidenceBase: Record<string, string> = {
   project: "/ai-lab/work",

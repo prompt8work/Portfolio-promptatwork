@@ -241,7 +241,7 @@ export default async function AiLabPage() {
                 {engineeringBlock?.title}
               </h2>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-5 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-3">
               {capabilities.map((c, i) => (
                 <Link
                   key={c.id}

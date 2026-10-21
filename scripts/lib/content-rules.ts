@@ -6,33 +6,20 @@
  * Errors block a push. Warnings are shown but don't block.
  */
 import { diagramPlacements } from "../../src/sanity/schemaTypes/diagramPlacements";
+import type { Diagram, DiagramStep } from "../../src/components/diagrams/types";
+import { experimentStatuses } from "../../src/lib/content-types";
 
 export const contentTypes = ["project", "blog", "tool", "experiment", "prompt", "automation"] as const;
 export type ContentType = (typeof contentTypes)[number];
 
-export type DraftStep = {
-  label: string;
-  detail?: string;
-  kind?: string;
-  metric?: string;
-  before?: string;
-  after?: string;
-  edgeLabel?: string;
-};
-
-export type DraftDiagram = {
-  key: string;
-  title: string;
-  kind: "flow" | "loop" | "analogy" | "advanced";
+// The shared diagram shape (src/components/diagrams/types.ts), loosened where
+// a draft can be wrong in ways these rules report: any step kind, and
+// placement/caption required.
+export type DraftStep = Omit<DiagramStep, "kind"> & { kind?: string };
+export type DraftDiagram = Omit<Diagram, "steps" | "placement" | "caption"> & {
   placement: string;
   caption: string;
   steps?: DraftStep[];
-  loopBackTo?: number;
-  loopLabel?: string;
-  concept?: string;
-  analogy?: string;
-  pairs?: { concept: string; analogy: string }[];
-  mermaid?: string;
 };
 
 /** The file format the /case-study skill writes to Docs/content-drafts/<slug>.json. */
@@ -131,6 +118,22 @@ export function checkDraft(draft: Draft, sourceText: string | null): Report {
       errors.push('Case studies need "visibility": "public" | "generalized" | "private" — ask the author if unsure.');
     if (vis !== "public" && !draft.fields.confidentialityNote)
       errors.push('A "generalized" or "private" case study needs a "confidentialityNote".');
+  }
+  if (type === "experiment") {
+    const status = draft.fields.status;
+    const statuses: unknown[] = experimentStatuses.map((st) => st.value);
+    if (status !== undefined && !statuses.includes(status))
+      errors.push(`Experiment "status" must be one of: ${statuses.join(", ")}.`);
+    // A designed experiment is a protocol, not a result: no measured
+    // figure in its outcome fields, not even a single digit.
+    if (status === "designed")
+      for (const f of ["whatWorked", "whatFailed"]) {
+        const nums = allStrings(draft.fields[f]).join("\n").match(/\d+(?:[.,]\d+)*\s?(?:%|ms\b|s\b|x\b|k\b)?/g) ?? [];
+        if (nums.length)
+          errors.push(
+            `"${f}" has result numbers (${[...new Set(nums)].join(", ")}) but the experiment is "designed" (not run). Remove them, or set "status" to "running" or "completed".`,
+          );
+      }
   }
   if (type === "blog" && draft.engineeringAreas?.length)
     errors.push('Blog posts can\'t carry "engineeringAreas"; tag the AI Lab entries the post is about instead.');

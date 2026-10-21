@@ -7,7 +7,7 @@ import Thumb from "../../../components/paw/Thumb";
 import { client } from "../../../sanity/lib/client";
 import { automationsQuery } from "../../../sanity/lib/queries";
 import { buildMetadata } from "../../../lib/site";
-import { getPage } from "../../../lib/content";
+import { getPage, type AutomationListItem } from "../../../lib/content";
 
 export async function generateMetadata(): Promise<Metadata> {
   const page = await getPage("ai-lab-automations");
@@ -15,14 +15,6 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export const revalidate = 60;
-
-type AutomationListItem = {
-  slug: string;
-  title: string;
-  description: string;
-  trigger?: string;
-  cardImage?: string;
-};
 
 export default async function AutomationsPage() {
   const page = await getPage("ai-lab-automations");

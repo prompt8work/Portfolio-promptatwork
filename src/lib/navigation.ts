@@ -12,26 +12,35 @@ export type NavLink = { href: string; label: string; external?: boolean };
 // old "P/" text mark is retired.
 export const brand = { name: "PromptAtWork", logo: "/images/brand/promptatwork-mark.png" };
 
-// The AI Lab hub's groups, in reading order, for Nav's dropdown. Only
-// sections with published entries are listed: add Tools & Research
-// (/ai-lab/tools), Experiments (/ai-lab/experiments) or Prompt Library
-// (/ai-lab/prompts) back here once they have content. The AI Lab sidebar
-// does this automatically (src/app/ai-lab/layout.tsx).
+// The AI Lab hub's segments, in reading order, for Nav's dropdown. Tools &
+// Research (/ai-lab/tools) is left out of the dropdown; it stays in the AI
+// Lab sidebar and overview, which drop any section with nothing published
+// (src/app/ai-lab/layout.tsx, src/app/ai-lab/page.tsx).
 export const aiLabSections: (NavLink & { description: string })[] = [
   { href: "/ai-lab", label: "Overview", description: "Where to start and how the lab is organised." },
   {
     href: "/ai-lab/work",
-    label: "Work & Case Studies",
-    description: "Shipped projects: the problem, how it was solved, and the future scope.",
+    label: "Case Studies & Architecture",
+    description: "Shipped systems: the problem, the architecture that solved it, and the future scope.",
   },
   {
     href: "/ai-lab/engineering",
-    label: "Engineering",
-    description: "Capabilities, each backed by real project evidence.",
+    label: "Systems & Core Engineering",
+    description: "Engineering capabilities, each backed by real project evidence.",
+  },
+  {
+    href: "/ai-lab/experiments",
+    label: "Applied Experiments & Benchmarks",
+    description: "Designed and completed tests: the protocol, and the results once it has run.",
+  },
+  {
+    href: "/ai-lab/prompts",
+    label: "Prompt & Content Engineering",
+    description: "Reusable enterprise prompts with example input, output and failure modes.",
   },
   {
     href: "/ai-lab/automations",
-    label: "Automations",
+    label: "Intelligent Automations & Pipelines",
     description: "Trigger → AI processing → action, end to end.",
   },
 ];
@@ -39,13 +48,18 @@ export const aiLabSections: (NavLink & { description: string })[] = [
 // The AI Lab overview's section cards, in order. Copy lives here so the
 // card images (src/lib/card-images) are generated from the same text.
 export const aiLabHubSections = [
-  { href: "/ai-lab/work", label: "Work & Case Studies", body: "Shipped projects: the problem, how it was solved, and the future scope." },
-  { href: "/ai-lab/engineering", label: "Engineering", body: "Each capability, linked to the project that proves it." },
-  { href: "/ai-lab/automations", label: "Automations", body: "Pipelines and connectors from those projects, laid out step by step." },
+  { href: "/ai-lab/work", label: "Case Studies & Architecture", body: "Shipped systems: the problem, the architecture that solved it, and the future scope." },
+  { href: "/ai-lab/engineering", label: "Systems & Core Engineering", body: "Each engineering capability, linked to the project that proves it." },
+  { href: "/ai-lab/experiments", label: "Applied Experiments & Benchmarks", body: "Test protocols and benchmarks, marked designed, running or completed." },
+  { href: "/ai-lab/prompts", label: "Prompt & Content Engineering", body: "Reusable enterprise prompt templates, ready to copy." },
+  { href: "/ai-lab/automations", label: "Intelligent Automations & Pipelines", body: "Pipelines and connectors from those projects, laid out step by step." },
   { href: "/ai-lab/tools", label: "Tools & Research", body: "Hands-on reviews of the tools used." },
-  { href: "/ai-lab/prompts", label: "Prompt Library", body: "Reusable prompt templates." },
-  { href: "/ai-lab/experiments", label: "Experiments", body: "What worked, what failed and what was decided." },
 ] as const;
+
+/** Sidebar, breadcrumb and page-title label for an AI Lab segment, e.g. aiLabLabel("/ai-lab/work"). */
+export function aiLabLabel(href: (typeof aiLabHubSections)[number]["href"]): string {
+  return aiLabHubSections.find((s) => s.href === href)!.label;
+}
 
 // The two portfolio profiles (Sanity "Portfolio profile" documents). Static
 // here rather than fetched, like the AI Lab groups above.
@@ -80,9 +94,7 @@ export const footerColumns = (linkedinUrl?: string): { title: string; links: Nav
   {
     title: "AI Lab",
     links: [
-      { href: "/ai-lab/work", label: "Work & Case Studies" },
-      { href: "/ai-lab/engineering", label: "Engineering" },
-      { href: "/ai-lab/automations", label: "Automations" },
+      ...aiLabSections.filter((s) => s.href !== "/ai-lab").map(({ href, label }) => ({ href, label })),
     ],
   },
   {

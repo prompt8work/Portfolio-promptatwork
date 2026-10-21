@@ -6,36 +6,16 @@ import DocsHeader, { DocsTag } from "../../../../components/docs/DocsHeader";
 import ArrowLink from "../../../../components/ui/ArrowLink";
 import ContentSection, { BlockLabel } from "../../../../components/ui/ContentSection";
 import Reveal from "../../../../components/motion/Reveal";
-import RelatedContent, { type RelatedItem } from "../../../../components/ai-lab/RelatedContent";
+import RelatedContent from "../../../../components/ai-lab/RelatedContent";
 import JsonLd from "../../../../components/JsonLd";
 import Diagrams, { DiagramFigure } from "../../../../components/diagrams/DiagramFigure";
-import type { Diagram } from "../../../../components/diagrams/types";
 import { client } from "../../../../sanity/lib/client";
 import { automationBySlugQuery, automationSlugsQuery } from "../../../../sanity/lib/queries";
 import { buildBreadcrumbJsonLd, buildMetadata } from "../../../../lib/site";
+import { aiLabLabel } from "../../../../lib/navigation";
+import type { AutomationDetail } from "../../../../lib/content-types";
 
 export const revalidate = 60;
-
-type AutomationDetail = {
-  slug: string;
-  title: string;
-  cardImage?: string;
-  category?: string;
-  description: string;
-  problem?: string;
-  trigger?: string;
-  steps?: { label: string; description?: string }[];
-  architecture?: string;
-  input?: string;
-  output?: string;
-  integrations?: string[];
-  limitations?: string;
-  securityNotes?: string;
-  learnings?: string;
-  tools?: { slug: string; name: string }[];
-  relatedContent?: RelatedItem[];
-  diagrams?: Diagram[];
-};
 
 export async function generateStaticParams() {
   const slugs: string[] = await client.fetch(automationSlugsQuery);
@@ -47,7 +27,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const automation: AutomationDetail | null = await client.fetch(automationBySlugQuery, { slug });
   if (!automation) return {};
   return buildMetadata({
-    title: `${automation.title} — Automations — PromptAtWork`,
+    title: `${automation.title} — ${aiLabLabel("/ai-lab/automations")} — PromptAtWork`,
     description: automation.description,
     path: `/ai-lab/automations/${automation.slug}`,
     type: "article",
@@ -66,7 +46,7 @@ export default async function AutomationDetailPage({ params }: { params: Promise
         data={buildBreadcrumbJsonLd([
           { name: "Home", path: "/" },
           { name: "AI Lab", path: "/ai-lab" },
-          { name: "Automations", path: "/ai-lab/automations" },
+          { name: aiLabLabel("/ai-lab/automations"), path: "/ai-lab/automations" },
           { name: automation.title, path: `/ai-lab/automations/${automation.slug}` },
         ])}
       />

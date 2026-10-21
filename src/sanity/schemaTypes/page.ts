@@ -7,12 +7,12 @@ import { defineArrayMember, defineField, defineType } from "sanity";
 
 export const pageKeys = [
   { title: "AI Lab — overview", value: "ai-lab" },
-  { title: "AI Lab — Work & case studies", value: "ai-lab-work" },
-  { title: "AI Lab — Engineering", value: "ai-lab-engineering" },
-  { title: "AI Lab — Automations", value: "ai-lab-automations" },
+  { title: "AI Lab — Case studies & architecture", value: "ai-lab-work" },
+  { title: "AI Lab — Systems & core engineering", value: "ai-lab-engineering" },
+  { title: "AI Lab — Intelligent automations & pipelines", value: "ai-lab-automations" },
   { title: "AI Lab — Tools & research", value: "ai-lab-tools" },
-  { title: "AI Lab — Experiments", value: "ai-lab-experiments" },
-  { title: "AI Lab — Prompt library", value: "ai-lab-prompts" },
+  { title: "AI Lab — Applied experiments & benchmarks", value: "ai-lab-experiments" },
+  { title: "AI Lab — Prompt & content engineering", value: "ai-lab-prompts" },
   { title: "Courses (/training)", value: "training" },
   { title: "TV (/videos)", value: "videos" },
   { title: "Blog", value: "blog" },
