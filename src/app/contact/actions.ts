@@ -1,7 +1,9 @@
 "use server";
 
+import { after } from "next/server";
 import { z } from "zod";
 import { createContactMessage } from "../../supabase/contactRepository";
+import { sendContactEmails } from "../../lib/email/contactEmails";
 
 // PRD §41 purpose options, exactly.
 const purposes = [
@@ -84,14 +86,16 @@ export async function submitContactForm(
     return { status: "success", message: "Thanks — I'll get back to you soon." };
   }
 
+  const contact = {
+    name: parsed.data.name,
+    email: parsed.data.email,
+    organization: parsed.data.organization,
+    purpose: parsed.data.purpose,
+    message: parsed.data.message,
+  };
+
   try {
-    await createContactMessage({
-      name: parsed.data.name,
-      email: parsed.data.email,
-      organization: parsed.data.organization,
-      purpose: parsed.data.purpose,
-      message: parsed.data.message,
-    });
+    await createContactMessage(contact);
   } catch {
     // Never surface the real error (PRD §97) — database details, RLS
     // errors etc. stay in server logs, not in the response.
@@ -101,5 +105,9 @@ export async function submitContactForm(
     };
   }
 
-  return { status: "success", message: "Thanks — I'll get back to you soon." };
+  // Emails go out after the response, so the visitor isn't kept waiting on
+  // SMTP, and a mail failure never turns a saved message into an error.
+  after(() => sendContactEmails(contact));
+
+  return { status: "success", message: "Thanks — I'll reply within 1 working day. A confirmation is on its way to your inbox." };
 }
