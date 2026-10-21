@@ -8,37 +8,12 @@ import DocsHeader, { DocsTag } from "../../../../components/docs/DocsHeader";
 import ContentSection, { BlockLabel } from "../../../../components/ui/ContentSection";
 import Reveal from "../../../../components/motion/Reveal";
 import CountUp from "../../../../components/motion/CountUp";
-import RelatedContent, { type RelatedItem } from "../../../../components/ai-lab/RelatedContent";
+import RelatedContent from "../../../../components/ai-lab/RelatedContent";
 import JsonLd from "../../../../components/JsonLd";
 import Diagrams from "../../../../components/diagrams/DiagramFigure";
-import type { Diagram } from "../../../../components/diagrams/types";
 import { buildBreadcrumbJsonLd, buildMetadata } from "../../../../lib/site";
-
-type ProjectDetail = {
-  slug: string;
-  title: string;
-  coverImage?: string;
-  category: string;
-  visibility: "public" | "generalized" | "private";
-  confidentialityNote?: string;
-  summary: string;
-  stats?: string[];
-  tech: string[];
-  aiModels?: string[];
-  overview: string;
-  problem: string;
-  context: string;
-  solution: string;
-  role: string;
-  architecture: string;
-  workflow: string;
-  challenges: string;
-  results: string;
-  learnings: string;
-  futureScope?: string;
-  relatedContent?: RelatedItem[];
-  diagrams?: Diagram[];
-};
+import { aiLabLabel } from "../../../../lib/navigation";
+import type { ProjectDetail } from "../../../../lib/content-types";
 
 // Interim revalidation strategy until the Sanity webhook is wired up.
 export const revalidate = 60;
@@ -74,12 +49,12 @@ export default async function ProjectDetailPage({ params }: PageProps<"/ai-lab/w
         data={buildBreadcrumbJsonLd([
           { name: "Home", path: "/" },
           { name: "AI Lab", path: "/ai-lab" },
-          { name: "Work & Case Studies", path: "/ai-lab/work" },
+          { name: aiLabLabel("/ai-lab/work"), path: "/ai-lab/work" },
           { name: project.title, path: `/ai-lab/work/${project.slug}` },
         ])}
       />
       <DocsArticle>
-        <DocsHeader eyebrow={`Case study / ${project.category}`} title={project.title} description={project.summary}>
+        <DocsHeader eyebrow={["Case study", project.category].filter(Boolean).join(" / ")} title={project.title} description={project.summary}>
           {project.stats && project.stats.length > 0 && (
             <div className="flex gap-x-5 gap-y-1 flex-wrap">
               {project.stats.map((s) => (
@@ -87,11 +62,13 @@ export default async function ProjectDetailPage({ params }: PageProps<"/ai-lab/w
               ))}
             </div>
           )}
-          <div className="flex flex-wrap gap-1.5">
-            {project.tech.map((t) => (
-              <DocsTag key={t}>{t}</DocsTag>
-            ))}
-          </div>
+          {project.tech && project.tech.length > 0 && (
+            <div className="flex flex-wrap gap-1.5">
+              {project.tech.map((t) => (
+                <DocsTag key={t}>{t}</DocsTag>
+              ))}
+            </div>
+          )}
         </DocsHeader>
 
         <div className="flex flex-col gap-10">

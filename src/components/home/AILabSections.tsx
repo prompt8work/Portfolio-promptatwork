@@ -15,9 +15,9 @@ import { staticCardImage, staticCardKey } from "../../lib/card-images/static";
 // Docs/development-plan/11-ai-lab-docs-hub.md). The portfolio links sit
 // where the board had its profile chips.
 const art: Record<string, { variant: ThumbVariant; glyph: ThumbGlyph; kicker: string }> = {
-  "/ai-lab/work": { variant: "teal", glyph: "layers", kicker: "CASE STUDIES" },
-  "/ai-lab/engineering": { variant: "violet", glyph: "orbit", kicker: "ENGINEERING" },
-  "/ai-lab/automations": { variant: "mono", glyph: "flow", kicker: "AUTOMATION" },
+  "/ai-lab/work": { variant: "teal", glyph: "layers", kicker: "CASE STUDIES & ARCHITECTURE" },
+  "/ai-lab/engineering": { variant: "violet", glyph: "orbit", kicker: "SYSTEMS & CORE ENGINEERING" },
+  "/ai-lab/automations": { variant: "mono", glyph: "flow", kicker: "AUTOMATIONS & PIPELINES" },
 };
 
 export default async function AILabSections() {

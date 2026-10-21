@@ -1,4 +1,6 @@
 import type { PortableTextBlock } from "next-sanity";
+import type { Diagram } from "../components/diagrams/types";
+import type { RelatedItem } from "../components/ai-lab/RelatedContent";
 
 // Types and pure helpers for the Sanity-backed site content. No server
 // imports, so client components can use them; the fetchers are in
@@ -158,6 +160,145 @@ export type Institute = {
   highlightText?: string;
   tags: string[];
 };
+
+// --- AI Lab -------------------------------------------------------------
+// One type per GROQ projection in src/sanity/lib/queries.ts; keep the two in
+// step. Fields are optional unless the schema marks them required.
+// Diagrams use the shared Diagram type (src/components/diagrams/types.ts).
+
+type ToolRef = { slug: string; name: string };
+
+export type ProjectListItem = {
+  slug: string;
+  title: string;
+  category?: string;
+  visibility: "public" | "generalized" | "private";
+  confidentialityNote?: string;
+  summary: string;
+  stats?: string[];
+  tech?: string[];
+  aiModels?: string[];
+  coverImage?: string;
+};
+
+export type ProjectDetail = ProjectListItem & {
+  overview?: string;
+  problem?: string;
+  context?: string;
+  solution?: string;
+  role?: string;
+  architecture?: string;
+  workflow?: string;
+  challenges?: string;
+  results?: string;
+  learnings?: string;
+  futureScope?: string;
+  diagrams?: Diagram[];
+  relatedContent?: RelatedItem[];
+};
+
+/** Schema options for experiment.status (src/sanity/schemaTypes/experiment.ts). */
+export const experimentStatuses = [
+  { value: "designed", title: "Designed, not run yet", badge: "Designed · not run yet" },
+  { value: "running", title: "Running", badge: "Running" },
+  { value: "completed", title: "Completed", badge: "Completed" },
+] as const;
+export type ExperimentStatus = (typeof experimentStatuses)[number]["value"];
+
+/** An experiment saved before the status field existed reads as completed. */
+export const experimentStatus = (e: { status?: ExperimentStatus | null }): ExperimentStatus => e.status ?? "completed";
+
+export type ExperimentListItem = {
+  slug: string;
+  title: string;
+  objective: string;
+  status?: ExperimentStatus | null;
+  toolName?: string;
+  cardImage?: string;
+};
+
+export type ExperimentDetail = {
+  slug: string;
+  title: string;
+  status?: ExperimentStatus | null;
+  cardImage?: string;
+  objective: string;
+  hypothesis?: string;
+  problem?: string;
+  setup?: string;
+  promptOrWorkflow?: string;
+  input?: string;
+  output?: string;
+  whatWorked?: string;
+  whatFailed?: string;
+  learning?: string;
+  decision?: string;
+  nextStep?: string;
+  useCases?: string[];
+  tool?: ToolRef;
+  diagrams?: Diagram[];
+  relatedContent?: RelatedItem[];
+};
+
+export type PromptListItem = {
+  slug: string;
+  title: string;
+  category: string;
+  purpose?: string;
+  toolName?: string;
+  cardImage?: string;
+};
+
+export type PromptDetail = {
+  slug: string;
+  title: string;
+  cardImage?: string;
+  category: string;
+  purpose?: string;
+  prompt: string;
+  variables?: string[];
+  exampleInput?: string;
+  exampleOutput?: string;
+  expectedBehavior?: string;
+  failureModes: string[];
+  difficulty?: string;
+  tips?: string;
+  tool?: ToolRef;
+  diagrams?: Diagram[];
+  relatedContent?: RelatedItem[];
+};
+
+export type AutomationListItem = {
+  slug: string;
+  title: string;
+  description: string;
+  trigger?: string;
+  cardImage?: string;
+};
+
+export type AutomationDetail = {
+  slug: string;
+  title: string;
+  cardImage?: string;
+  category?: string;
+  description: string;
+  problem?: string;
+  trigger?: string;
+  steps?: { label: string; description?: string }[];
+  architecture?: string;
+  input?: string;
+  output?: string;
+  integrations: string[];
+  limitations?: string;
+  securityNotes?: string;
+  learnings?: string;
+  tools?: ToolRef[];
+  diagrams?: Diagram[];
+  relatedContent?: RelatedItem[];
+};
+
+export type EngineeringEvidence = { _type: "project" | "automation" | "prompt" | "experiment" | "tool"; slug: string; title: string };
+export type EngineeringArea = { id: string; title: string; description: string; items?: string[] | null; evidence: EngineeringEvidence[] };
 
 /** A named extra block on a page, e.g. getBlock(page, "teams"). */
 export function getBlock(page: Page, key: string): PageBlock | undefined {

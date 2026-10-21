@@ -6,37 +6,17 @@ import DocsHeader from "../../../../components/docs/DocsHeader";
 import ArrowLink from "../../../../components/ui/ArrowLink";
 import ContentSection, { BlockLabel, ListSection } from "../../../../components/ui/ContentSection";
 import Reveal from "../../../../components/motion/Reveal";
-import RelatedContent, { type RelatedItem } from "../../../../components/ai-lab/RelatedContent";
+import ExperimentStatusTag from "../../../../components/ai-lab/ExperimentStatusTag";
+import RelatedContent from "../../../../components/ai-lab/RelatedContent";
 import JsonLd from "../../../../components/JsonLd";
 import Diagrams from "../../../../components/diagrams/DiagramFigure";
-import type { Diagram } from "../../../../components/diagrams/types";
 import { client } from "../../../../sanity/lib/client";
 import { experimentBySlugQuery, experimentSlugsQuery } from "../../../../sanity/lib/queries";
 import { buildBreadcrumbJsonLd, buildMetadata } from "../../../../lib/site";
+import { aiLabLabel } from "../../../../lib/navigation";
+import type { ExperimentDetail } from "../../../../lib/content-types";
 
 export const revalidate = 60;
-
-type ExperimentDetail = {
-  slug: string;
-  title: string;
-  cardImage?: string;
-  objective: string;
-  hypothesis?: string;
-  problem?: string;
-  setup?: string;
-  promptOrWorkflow?: string;
-  input?: string;
-  output?: string;
-  whatWorked?: string;
-  whatFailed?: string;
-  learning?: string;
-  decision?: string;
-  nextStep?: string;
-  useCases?: string[];
-  tool?: { slug: string; name: string };
-  relatedContent?: RelatedItem[];
-  diagrams?: Diagram[];
-};
 
 export async function generateStaticParams() {
   const slugs: string[] = await client.fetch(experimentSlugsQuery);
@@ -48,7 +28,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const experiment: ExperimentDetail | null = await client.fetch(experimentBySlugQuery, { slug });
   if (!experiment) return {};
   return buildMetadata({
-    title: `${experiment.title} — Experiments — PromptAtWork`,
+    title: `${experiment.title} — ${aiLabLabel("/ai-lab/experiments")} — PromptAtWork`,
     description: experiment.objective,
     path: `/ai-lab/experiments/${experiment.slug}`,
     type: "article",
@@ -60,6 +40,10 @@ export default async function ExperimentDetailPage({ params }: { params: Promise
   const { slug } = await params;
   const experiment: ExperimentDetail | null = await client.fetch(experimentBySlugQuery, { slug });
   if (!experiment) notFound();
+  // A designed experiment has no results yet: its outcome blocks stay out
+  // unless they hold text, so no empty "What worked" heading renders.
+  const whatWorked = experiment.whatWorked?.trim();
+  const whatFailed = experiment.whatFailed?.trim();
 
   return (
     <PageTransition key={slug}>
@@ -67,17 +51,20 @@ export default async function ExperimentDetailPage({ params }: { params: Promise
         data={buildBreadcrumbJsonLd([
           { name: "Home", path: "/" },
           { name: "AI Lab", path: "/ai-lab" },
-          { name: "Experiments", path: "/ai-lab/experiments" },
+          { name: aiLabLabel("/ai-lab/experiments"), path: "/ai-lab/experiments" },
           { name: experiment.title, path: `/ai-lab/experiments/${experiment.slug}` },
         ])}
       />
       <DocsArticle>
         <DocsHeader eyebrow="Experiment" title={experiment.title} description={experiment.objective}>
-          {experiment.tool && (
-            <ArrowLink href={`/ai-lab/tools/${experiment.tool.slug}`} size="sm">
-              Used {experiment.tool.name}
-            </ArrowLink>
-          )}
+          <div className="flex flex-wrap items-center gap-4">
+            <ExperimentStatusTag status={experiment.status} />
+            {experiment.tool && (
+              <ArrowLink href={`/ai-lab/tools/${experiment.tool.slug}`} size="sm">
+                Used {experiment.tool.name}
+              </ArrowLink>
+            )}
+          </div>
         </DocsHeader>
 
         <div className="flex flex-col gap-10">
@@ -95,18 +82,18 @@ export default async function ExperimentDetailPage({ params }: { params: Promise
           <ContentSection heading="Output" body={experiment.output} />
           <Diagrams items={experiment.diagrams} at="output" />
 
-          {(experiment.whatWorked || experiment.whatFailed) && (
+          {(whatWorked || whatFailed) && (
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {experiment.whatWorked && (
+              {whatWorked && (
                 <Reveal className="rounded-xl border border-line bg-card p-5 flex flex-col gap-2">
                   <BlockLabel>What worked</BlockLabel>
-                  <p className="text-[15px] leading-relaxed text-on-surface-variant whitespace-pre-line">{experiment.whatWorked}</p>
+                  <p className="text-[15px] leading-relaxed text-on-surface-variant whitespace-pre-line">{whatWorked}</p>
                 </Reveal>
               )}
-              {experiment.whatFailed && (
+              {whatFailed && (
                 <Reveal className="rounded-xl border border-line bg-surface-container p-5 flex flex-col gap-2">
                   <BlockLabel>What failed</BlockLabel>
-                  <p className="text-[15px] leading-relaxed text-on-surface-variant whitespace-pre-line">{experiment.whatFailed}</p>
+                  <p className="text-[15px] leading-relaxed text-on-surface-variant whitespace-pre-line">{whatFailed}</p>
                 </Reveal>
               )}
             </div>

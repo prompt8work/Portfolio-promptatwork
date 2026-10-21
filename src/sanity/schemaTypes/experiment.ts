@@ -3,6 +3,7 @@ import { cardImageField, cardImageMetaField } from "./cardImage";
 import { diagramsField } from "./processDiagram";
 import { diagramPlacements } from "./diagramPlacements";
 import { engineeringAreasField } from "./engineeringArea";
+import { experimentStatuses } from "../../lib/content-types";
 
 // PRD §25 structure.
 export default defineType({
@@ -18,6 +19,16 @@ export default defineType({
       validation: (r) => r.required(),
     }),
     defineField({ name: "objective", type: "text", rows: 2, validation: (r) => r.required() }),
+    defineField({
+      name: "status",
+      type: "string",
+      options: {
+        list: experimentStatuses.map(({ title, value }) => ({ title, value })),
+        layout: "radio",
+      },
+      initialValue: "completed",
+      description: "Designed = a protocol with no results. Never add result numbers to a designed experiment.",
+    }),
     cardImageField,
     cardImageMetaField,
     defineField({

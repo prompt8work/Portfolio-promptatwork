@@ -65,3 +65,11 @@ Docs/resumes/
 # Early visual references for the redesign (Stitch exports) — kept locally, not in git
 design/stitch_promptatwork_ai_hub/
 design/stitch_promptatwork_ai_hub.zip
+
+# Old, unsanitized case-study drafts and Sanity exports. They live outside
+# the repo in ../promptatwork-private/Docs/; these paths are local symlinks
+# to it so the /case-study skill and scripts/check-content.ts,
+# push-draft.ts and fetch-content.ts keep working. No trailing slash: git
+# sees a symlink as a file.
+/Docs/content-drafts
+/Docs/backups

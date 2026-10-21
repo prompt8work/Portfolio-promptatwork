@@ -7,7 +7,8 @@ import Thumb from "../../../components/paw/Thumb";
 import { client } from "../../../sanity/lib/client";
 import { experimentsQuery } from "../../../sanity/lib/queries";
 import { buildMetadata } from "../../../lib/site";
-import { getPage } from "../../../lib/content";
+import { getPage, type ExperimentListItem } from "../../../lib/content";
+import ExperimentStatusTag from "../../../components/ai-lab/ExperimentStatusTag";
 
 export async function generateMetadata(): Promise<Metadata> {
   const page = await getPage("ai-lab-experiments");
@@ -15,14 +16,6 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export const revalidate = 60;
-
-type ExperimentListItem = {
-  slug: string;
-  title: string;
-  objective: string;
-  toolName?: string;
-  cardImage?: string;
-};
 
 export default async function ExperimentsPage() {
   const page = await getPage("ai-lab-experiments");
@@ -46,6 +39,9 @@ export default async function ExperimentsPage() {
               media={e.cardImage && <Thumb image={e.cardImage} sizes="(max-width: 640px) 100vw, 220px" />}
               cta="Read the experiment"
             >
+              <div className="paw-tags">
+                <ExperimentStatusTag status={e.status} />
+              </div>
               <p className="text-[15.5px] leading-[1.75] text-on-surface-variant">{e.objective}</p>
             </DocsEntry>
           ))}

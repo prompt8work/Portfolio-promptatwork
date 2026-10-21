@@ -8,7 +8,7 @@ import Thumb from "../../../components/paw/Thumb";
 import { client } from "../../../sanity/lib/client";
 import { projectsQuery } from "../../../sanity/lib/queries";
 import { buildMetadata } from "../../../lib/site";
-import { getPage } from "../../../lib/content";
+import { getPage, type ProjectListItem } from "../../../lib/content";
 
 export async function generateMetadata(): Promise<Metadata> {
   const page = await getPage("ai-lab-work");
@@ -17,16 +17,6 @@ export async function generateMetadata(): Promise<Metadata> {
 
 // Interim revalidation strategy until the Sanity webhook is wired up.
 export const revalidate = 60;
-
-type ProjectListItem = {
-  slug: string;
-  title: string;
-  category?: string;
-  summary: string;
-  stats?: string[];
-  tech?: string[];
-  coverImage?: string;
-};
 
 // `visibility != "private"` is already filtered in the query itself
 // (see queries.ts) — defense-in-depth, not just a UI-level hide.

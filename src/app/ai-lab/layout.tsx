@@ -5,6 +5,7 @@ import { getBlock, getPage } from "../../lib/content";
 import { AiLabNavProvider, type DocsGroup, type ProjectSeries } from "../../components/docs/AiLabNavContext";
 import { client } from "../../sanity/lib/client";
 import { aiLabNavQuery } from "../../sanity/lib/queries";
+import { aiLabLabel } from "../../lib/navigation";
 
 // Interim revalidation strategy until the Sanity webhook is wired up.
 export const revalidate = 60;
@@ -42,9 +43,9 @@ export default async function AiLabLayout({ children }: LayoutProps<"/ai-lab">) 
       href: "/ai-lab",
       items: [{ title: "Overview", href: "/ai-lab", summary: "Where to start and how the lab is organised." }],
     },
-    { title: "Work & Case Studies", href: "/ai-lab/work", items: rows("/ai-lab/work", data.projects) },
+    { title: aiLabLabel("/ai-lab/work"), href: "/ai-lab/work", items: rows("/ai-lab/work", data.projects) },
     {
-      title: "Engineering",
+      title: aiLabLabel("/ai-lab/engineering"),
       href: "/ai-lab/engineering",
       items: data.engineering.map((s) => ({
         title: s.title,
@@ -52,10 +53,10 @@ export default async function AiLabLayout({ children }: LayoutProps<"/ai-lab">) 
         summary: s.summary,
       })),
     },
-    { title: "Tools & Research", href: "/ai-lab/tools", items: rows("/ai-lab/tools", data.tools) },
-    { title: "Experiments", href: "/ai-lab/experiments", items: rows("/ai-lab/experiments", data.experiments) },
-    { title: "Prompt Library", href: "/ai-lab/prompts", items: rows("/ai-lab/prompts", data.prompts) },
-    { title: "Automations", href: "/ai-lab/automations", items: rows("/ai-lab/automations", data.automations) },
+    { title: aiLabLabel("/ai-lab/experiments"), href: "/ai-lab/experiments", items: rows("/ai-lab/experiments", data.experiments) },
+    { title: aiLabLabel("/ai-lab/prompts"), href: "/ai-lab/prompts", items: rows("/ai-lab/prompts", data.prompts) },
+    { title: aiLabLabel("/ai-lab/automations"), href: "/ai-lab/automations", items: rows("/ai-lab/automations", data.automations) },
+    { title: aiLabLabel("/ai-lab/tools"), href: "/ai-lab/tools", items: rows("/ai-lab/tools", data.tools) },
   ].filter((g) => g.title === "Start" || g.items.length > 0);
 
   // A case study and the entries documenting parts of the same project read

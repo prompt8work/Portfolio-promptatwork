@@ -7,34 +7,16 @@ import ArrowLink from "../../../../components/ui/ArrowLink";
 import CopyPromptButton from "../../../../components/ai-lab/CopyPromptButton";
 import ContentSection, { BlockLabel, ListSection } from "../../../../components/ui/ContentSection";
 import Reveal from "../../../../components/motion/Reveal";
-import RelatedContent, { type RelatedItem } from "../../../../components/ai-lab/RelatedContent";
+import RelatedContent from "../../../../components/ai-lab/RelatedContent";
 import JsonLd from "../../../../components/JsonLd";
 import Diagrams from "../../../../components/diagrams/DiagramFigure";
-import type { Diagram } from "../../../../components/diagrams/types";
 import { client } from "../../../../sanity/lib/client";
 import { promptBySlugQuery, promptSlugsQuery } from "../../../../sanity/lib/queries";
 import { buildBreadcrumbJsonLd, buildMetadata } from "../../../../lib/site";
+import { aiLabLabel } from "../../../../lib/navigation";
+import type { PromptDetail } from "../../../../lib/content-types";
 
 export const revalidate = 60;
-
-type PromptDetail = {
-  slug: string;
-  title: string;
-  cardImage?: string;
-  category: string;
-  purpose?: string;
-  prompt: string;
-  variables?: string[];
-  exampleInput?: string;
-  exampleOutput?: string;
-  expectedBehavior?: string;
-  failureModes?: string[];
-  difficulty?: string;
-  tips?: string;
-  tool?: { slug: string; name: string };
-  relatedContent?: RelatedItem[];
-  diagrams?: Diagram[];
-};
 
 export async function generateStaticParams() {
   const slugs: string[] = await client.fetch(promptSlugsQuery);
@@ -46,7 +28,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const prompt: PromptDetail | null = await client.fetch(promptBySlugQuery, { slug });
   if (!prompt) return {};
   return buildMetadata({
-    title: `${prompt.title} — Prompt Library — PromptAtWork`,
+    title: `${prompt.title} — ${aiLabLabel("/ai-lab/prompts")} — PromptAtWork`,
     description: prompt.purpose || prompt.title,
     path: `/ai-lab/prompts/${prompt.slug}`,
     type: "article",
@@ -65,7 +47,7 @@ export default async function PromptDetailPage({ params }: { params: Promise<{ s
         data={buildBreadcrumbJsonLd([
           { name: "Home", path: "/" },
           { name: "AI Lab", path: "/ai-lab" },
-          { name: "Prompt Library", path: "/ai-lab/prompts" },
+          { name: aiLabLabel("/ai-lab/prompts"), path: "/ai-lab/prompts" },
           { name: prompt.title, path: `/ai-lab/prompts/${prompt.slug}` },
         ])}
       />

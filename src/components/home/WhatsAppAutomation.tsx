@@ -8,8 +8,8 @@ import { MessageCircle } from "lucide-react";
 // builds for small and large businesses. It is a service blueprint, not a
 // client project, so it is labelled "WHAT WE BUILD" and carries no client
 // names or results. The sample chat is illustrative. The frameworks named
-// are ones Niharika already works with (Docs/content-drafts/
-// meeting-intelligence-chatbot.md, ai-executive-command-center.md);
+// are ones Niharika already works with (the AI Lab case studies
+// sdlc-artifact-generation-pipeline and ai-executive-command-center);
 // WhatsApp Business Cloud API is the channel listed in
 // Docs/architecture-blueprint.md.
 const STEP_MS = 1800;

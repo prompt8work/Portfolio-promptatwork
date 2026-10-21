@@ -219,6 +219,7 @@ export const experimentsQuery = groq`
     "slug": slug.current,
     title,
     objective,
+    status,
     "toolName": tool->name,
     "cardImage": cardImage.asset->url
   }
@@ -230,6 +231,7 @@ export const experimentBySlugQuery = groq`
     title,
     "cardImage": cardImage.asset->url,
     objective,
+    status,
     hypothesis,
     problem,
     setup,

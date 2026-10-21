@@ -35,6 +35,18 @@ const nextConfig: NextConfig = {
       { source: "/resume", destination: "/portfolio", permanent: true },
       { source: "/resume/:path*", destination: "/portfolio", permanent: true },
       { source: "/experience", destination: "/portfolio", permanent: true },
+      // Case studies renamed in the AI Lab refactor (Oct 2026); keeps shared
+      // and indexed links working.
+      {
+        source: "/ai-lab/work/meeting-intelligence-chatbot",
+        destination: "/ai-lab/work/sdlc-artifact-generation-pipeline",
+        permanent: true,
+      },
+      {
+        source: "/ai-lab/work/poc-festivals-rag-chatbot-langchain",
+        destination: "/ai-lab/work/langchain-knowledge-retrieval-reference-build",
+        permanent: true,
+      },
     ];
   },
   // Baseline security headers on every response. No Content-Security-Policy
