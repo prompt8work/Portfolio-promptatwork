@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Course cover</title>
+<style>
+body{margin:0}
+.c{width:1600px;height:900px;box-sizing:border-box;padding:84px 96px;display:flex;gap:72px;background:#0F1318;
+  background-image:radial-gradient(#222B34 1.4px,transparent 1.4px);background-size:26px 26px;color:#E8ECEF;
+  font-family:Poppins,"Archivo","Helvetica Neue",Arial,sans-serif;overflow:hidden}
+.l{flex:1;display:flex;flex-direction:column;min-width:0}
+.eb{font-size:21px;letter-spacing:.22em;font-weight:600;color:#E8A33D}
+h1{margin:40px 0 0;font-size:104px;line-height:.98;font-weight:700;letter-spacing:-.03em;color:#fff}
+h1 .dot{color:#E8A33D}
+p{margin:30px 0 0;font-size:32px;line-height:1.38;font-weight:300;color:#C4CCD4;max-width:880px}
+.chips{margin-top:40px;display:flex;gap:14px;flex-wrap:wrap}
+.chips span{padding:12px 20px;border:2px solid #36414D;font-size:22px;font-family:"DejaVu Sans Mono",Menlo,monospace}
+.chips span.a{border-color:#E8A33D;color:#E8A33D}
+.who{margin-top:auto;font-size:26px;color:#AEB7C0}
+.who b{color:#fff;font-weight:600}
+.r{width:400px;display:flex;flex-direction:column;justify-content:center;gap:24px}
+.r img,.r .nophoto{width:400px;height:480px;object-fit:cover;border:3px solid #E8A33D}
+.r .nophoto{box-sizing:border-box;background:repeating-linear-gradient(135deg,transparent 0 10px,rgba(255,255,255,.04) 10px 11px)}
+.flow{display:flex;align-items:center;gap:12px;font-family:"DejaVu Sans Mono",Menlo,monospace;font-size:18px}
+.flow i{font-style:normal;padding:6px 10px;border:2px solid #56626E;color:#E8A33D;font-weight:700}
+.flow em{flex:1;height:3px;background:#E8A33D}
+</style>
+</head>
+<body>
+<div class="c">
+  <div class="l">
+    <div class="eb">{{EYEBROW}}</div>
+    <h1>{{TITLE_HTML}}</h1>
+    <p>{{SUBTITLE}}</p>
+    <div class="chips">{{CHIPS}}</div>
+    <div class="who"><b>Niharika Dhande</b> · Generative AI Engineer &amp; Corporate Trainer</div>
+  </div>
+  <div class="r">
+    {{PHOTO_BLOCK}}
+    <div class="flow"><i>LEARN</i><em></em><i>BUILD</i></div>
+  </div>
+</div>
+</body>
+</html>

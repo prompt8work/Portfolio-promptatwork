@@ -1,0 +1,4 @@
+# Written during pipeline runs; not source.
+topic-index.json
+hook-log.jsonl
+runs/

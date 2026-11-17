@@ -2,7 +2,7 @@ import Link from "next/link";
 import { BookOpen, Download, ExternalLink, FileCode2, FileText } from "lucide-react";
 import { BlockLabel } from "../ui/ContentSection";
 import Reveal from "../motion/Reveal";
-import type { CourseResource } from "../../lib/trainings";
+import type { CourseResource, Workshop } from "../../lib/trainings";
 
 // Free downloads and related links on a workshop page: the "Free downloads
 // & links" list on a Workshop / course document. Files are served from the
@@ -67,6 +67,37 @@ export default function CourseResources({ resources }: { resources: CourseResour
             );
           })}
         </ul>
+      </section>
+    </Reveal>
+  );
+}
+
+/** The course's version history, newest first, each linked to its blog post when there is one. */
+export function CourseVersions({ version, changelog }: { version?: string; changelog: NonNullable<Workshop["changelog"]> }) {
+  return (
+    <Reveal>
+      <section className="flex flex-col gap-3" aria-labelledby="version-history">
+        <BlockLabel id="version-history">{version ? `Version history · now v${version}` : "Version history"}</BlockLabel>
+        <ol className="m-0 p-0 list-none flex flex-col gap-2">
+          {changelog.map((c) => (
+            <li key={c._key} className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-4 text-[14.5px]">
+              <span className="font-mono text-[11px] tracking-[0.08em] uppercase text-muted shrink-0 sm:w-36">
+                v{c.version} · {new Date(c.date).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" })}
+              </span>
+              <span className="text-on-surface-variant leading-relaxed">
+                {c.summary}
+                {c.postSlug && (
+                  <>
+                    {" "}
+                    <Link href={`/blog/${c.postSlug}`} className="text-primary underline underline-offset-4">
+                      Read the post
+                    </Link>
+                  </>
+                )}
+              </span>
+            </li>
+          ))}
+        </ol>
       </section>
     </Reveal>
   );

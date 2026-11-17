@@ -1,0 +1,16 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "^mcp__(Sanity|sanity|plugin_sanity_[A-Za-z0-9-]+)__(create_documents|patch_documents)$",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/check-topic-unique.mjs\"",
+            "timeout": 30
+          }
+        ]
+      }
+    ]
+  }
+}
