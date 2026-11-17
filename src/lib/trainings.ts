@@ -5,7 +5,7 @@ import type { TrainingCategory, Workshop } from "./content";
 // programs, timelines, institutes) is in Sanity — "Workshop / course" and
 // "Institute" documents — read through src/lib/content.ts.
 
-export type { Workshop, Institute, TrainingCategory, TrainingProgram, ModuleGroup, Capstone, SessionPart, TimelineRow, TimelineBlock } from "./content";
+export type { Workshop, CourseResource, Institute, TrainingCategory, TrainingProgram, ModuleGroup, Capstone, SessionPart, TimelineRow, TimelineBlock } from "./content";
 /** Kept for components typed against the old name. */
 export type Training = Workshop;
 

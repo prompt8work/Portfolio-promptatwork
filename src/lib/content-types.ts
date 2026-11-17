@@ -149,6 +149,19 @@ export type Workshop = {
   programs?: TrainingProgram[];
   timelinesIntro?: string;
   modules?: ModuleGroup[];
+  resources?: CourseResource[];
+};
+
+/** A free download or related link on a course page. */
+export type CourseResource = {
+  _key: string;
+  title: string;
+  description?: string;
+  kind?: "PDF" | "Notebook" | "Article" | "Link";
+  meta?: string;
+  url?: string;
+  fileUrl?: string;
+  fileName?: string;
 };
 
 export type Institute = {
