@@ -14,7 +14,9 @@ const workshopProjection = groq`{
   "slug": slug.current, category, title, coverTitle, coverVariant, tone,
   "tags": coalesce(tags, []), "highlights": coalesce(highlights, []), description,
   "idealFor": coalesce(idealFor, []), "image": cardImage.asset->url,
-  sessionFormat, programs, timelinesIntro, modules
+  sessionFormat, programs, timelinesIntro, modules,
+  "resources": resources[]{ _key, title, description, kind, meta, url,
+    "fileUrl": file.asset->url, "fileName": file.asset->originalFilename }
 }`;
 
 export const getSiteSettings = cache(

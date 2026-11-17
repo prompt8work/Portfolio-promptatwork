@@ -32,6 +32,7 @@ export default defineType({
     { name: "card", title: "Card & hero", default: true },
     { name: "outline", title: "Outline" },
     { name: "programs", title: "Programs" },
+    { name: "resources", title: "Downloads" },
   ],
   orderings: [{ title: "Display order", name: "order", by: [{ field: "order", direction: "asc" }] }],
   fields: [
@@ -105,6 +106,35 @@ export default defineType({
       ],
     }),
 
+    defineField({
+      name: "resources",
+      title: "Free downloads & links",
+      description: "Handbooks, notebooks and related posts learners can open from the course page. Upload a file, or give a link.",
+      type: "array",
+      group: "resources",
+      of: [
+        defineArrayMember({
+          type: "object",
+          name: "courseResource",
+          fields: [
+            defineField({ name: "title", type: "string", validation: (r) => r.required() }),
+            defineField({ name: "description", type: "text", rows: 2 }),
+            defineField({
+              name: "kind",
+              type: "string",
+              options: { list: ["PDF", "Notebook", "Article", "Link"], layout: "radio" },
+              initialValue: "PDF",
+            }),
+            defineField({ name: "meta", type: "string", description: 'Short detail, e.g. "67 pages · 1.4 MB"' }),
+            defineField({ name: "file", type: "file", description: "Upload for a download" }),
+            defineField({ name: "url", type: "url", description: "Or a link (site paths like /blog/my-post are allowed)", validation: (r) => r.uri({ allowRelative: true, scheme: ["http", "https"] }) }),
+          ],
+          validation: (r) =>
+            r.custom((v: { file?: unknown; url?: string } | undefined) => (v?.file || v?.url ? true : "Add a file or a link")),
+          preview: { select: { title: "title", subtitle: "kind" } },
+        }),
+      ],
+    }),
     defineField({ name: "timelinesIntro", title: "Timelines intro", type: "text", rows: 2, group: "programs" }),
     defineField({
       name: "programs",
