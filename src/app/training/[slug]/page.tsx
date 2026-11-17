@@ -15,7 +15,7 @@ import TestimonialQuote from "../../../components/testimonials/TestimonialQuote"
 import RelatedContent from "../../../components/ai-lab/RelatedContent";
 import BatchCard from "../../../components/training/BatchCard";
 import TrainingHero from "../../../components/training/TrainingHero";
-import CourseResources from "../../../components/training/CourseResources";
+import CourseResources, { CourseVersions } from "../../../components/training/CourseResources";
 import { ModuleGroups, ProgramFormats, ProgramTimelines, SessionFormat } from "../../../components/training/CourseOutline";
 import JsonLd from "../../../components/JsonLd";
 import { client } from "../../../sanity/lib/client";
@@ -153,6 +153,7 @@ async function WorkshopPage({ t, settings }: { t: Training; settings: SiteSettin
           <TrainingHero t={t} />
 
           {t.resources?.length ? <CourseResources resources={t.resources} /> : null}
+          {t.changelog?.length ? <CourseVersions version={t.version} changelog={t.changelog} /> : null}
 
           {t.sessionFormat && <SessionFormat format={t.sessionFormat} />}
           {t.programs?.length ? <ProgramFormats programs={t.programs} /> : null}

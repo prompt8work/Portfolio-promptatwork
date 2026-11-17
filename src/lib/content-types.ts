@@ -150,6 +150,8 @@ export type Workshop = {
   timelinesIntro?: string;
   modules?: ModuleGroup[];
   resources?: CourseResource[];
+  version?: string;
+  changelog?: { _key: string; version: string; date: string; summary?: string; postSlug?: string }[];
 };
 
 /** A free download or related link on a course page. */

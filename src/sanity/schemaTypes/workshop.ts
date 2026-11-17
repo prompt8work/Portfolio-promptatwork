@@ -40,6 +40,34 @@ export default defineType({
     defineField({ name: "slug", type: "slug", options: { source: "title" }, validation: (r) => r.required(), group: "card" }),
     defineField({ name: "order", type: "number", description: "Lower comes first", group: "card" }),
     defineField({
+      name: "topicKey",
+      title: "Topic key",
+      type: "string",
+      description: "Unique lower-case, hyphenated topic id (e.g. mcp-server). One course per topic; updates bump the version instead.",
+      validation: (r) => r.regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, { name: "kebab-case" }),
+      group: "card",
+    }),
+    defineField({ name: "version", type: "string", description: 'Current version, e.g. "2.0"', group: "card" }),
+    defineField({
+      name: "changelog",
+      title: "Version history",
+      type: "array",
+      group: "resources",
+      of: [
+        defineArrayMember({
+          type: "object",
+          name: "versionNote",
+          fields: [
+            defineField({ name: "version", type: "string", validation: (r) => r.required() }),
+            defineField({ name: "date", type: "date", validation: (r) => r.required() }),
+            defineField({ name: "summary", type: "text", rows: 2 }),
+            defineField({ name: "post", title: "Blog post for this version", type: "reference", to: [{ type: "blog" }] }),
+          ],
+          preview: { select: { title: "version", subtitle: "date" } },
+        }),
+      ],
+    }),
+    defineField({
       name: "category",
       type: "string",
       options: { list: trainingCategoryOptions, layout: "radio" },

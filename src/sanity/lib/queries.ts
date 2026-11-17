@@ -314,6 +314,9 @@ export const blogPostBySlugQuery = groq`
     publishedAt,
     seoTitle,
     seoDescription,
+    version,
+    "previousVersion": previousVersion->{ "slug": slug.current, title, version },
+    "newerVersion": *[_type == "blog" && previousVersion._ref == ^._id && publishedAt <= now()] | order(publishedAt desc)[0]{ "slug": slug.current, title, version },
     "coverImage": coverImage.asset->url,
     ${diagramsProjection},
     ${relatedContentProjection}

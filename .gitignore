@@ -57,6 +57,9 @@ service-account*.json
 # Ignore all markdown except README files
 *.md
 !README.md
+# The handbook pipeline's agents and skill are instructions, not private docs.
+!.claude/agents/*.md
+!.claude/skills/publish-handbook/SKILL.md
 
 # ---------- Local-only resume skill and generated resumes (personal data) ----------
 .claude/skills/resume/

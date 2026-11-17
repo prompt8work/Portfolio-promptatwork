@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Image from "next/image";
+import Link from "next/link";
 import Nav from "../../../components/Nav";
 import PageTransition from "../../../components/PageTransition";
 import SiteFooter from "../../../components/SiteFooter";
@@ -41,6 +42,9 @@ type BlogPostDetail = {
   seoTitle?: string;
   seoDescription?: string;
   coverImage?: string;
+  version?: string;
+  previousVersion?: VersionLink | null;
+  newerVersion?: VersionLink | null;
   diagrams?: Diagram[];
   relatedContent?: {
     _type: "project" | "tool" | "prompt" | "experiment" | "automation";
@@ -49,6 +53,8 @@ type BlogPostDetail = {
     name?: string;
   }[];
 };
+
+type VersionLink = { slug: string; title: string; version?: string };
 
 export async function generateStaticParams() {
   const slugs: string[] = await client.fetch(blogSlugsQuery);
@@ -171,6 +177,26 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             >
               {post.author && <span className="text-sm text-muted">By {post.author}</span>}
             </PageHeader>
+
+            {post.newerVersion && (
+              <p className="m-0 rounded-xl border border-primary/50 bg-primary/10 px-4 py-3 text-[15px] leading-relaxed text-ink" role="note">
+                <strong>There is a newer version of this post.</strong>{" "}
+                <Link href={`/blog/${post.newerVersion.slug}`} className="text-primary underline underline-offset-4">
+                  {post.newerVersion.title}
+                  {post.newerVersion.version ? ` (v${post.newerVersion.version})` : ""}
+                </Link>
+              </p>
+            )}
+            {post.previousVersion && (
+              <p className="m-0 text-[14px] text-muted">
+                {post.version ? `Version ${post.version}. ` : ""}Updates{" "}
+                <Link href={`/blog/${post.previousVersion.slug}`} className="text-primary underline underline-offset-4">
+                  {post.previousVersion.title}
+                  {post.previousVersion.version ? ` (v${post.previousVersion.version})` : ""}
+                </Link>
+                .
+              </p>
+            )}
 
             {post.coverImage && !isReview(post) && (
               <Morph name={morphName.blogCover(post.slug)}>
